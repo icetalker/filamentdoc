@@ -1,0 +1,647 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/01-getting-started.md"
+title: 开始
+keywords: [Filament 资源, Filament resource, 资源管理器 ]
+description: 资源是用来为模型创建 CRUD 接口的静态类。它描述了管理员如何在应用内，使用表格和表单，与数据进行交互的。
+---
+
+资源是用来为模型创建 CRUD 接口的静态类。它描述了管理员如何在应用内，使用表格和表单，与数据进行交互的。
+
+## 新建资源
+
+为 `App\Models\Customer` 模型新建资源:
+
+```bash
+php artisan make:filament-resource Customer
+```
+
+在 `app/Filament/Resources` 目录下将会生成一系列文件:
+
+```
+.
++-- CustomerResource.php
++-- CustomerResource
+|   +-- Pages
+|   |   +-- CreateCustomer.php
+|   |   +-- EditCustomer.php
+|   |   +-- ListCustomers.php
+```
+
+新的资源类在 `CustomerResource.php` 中。
+
+`Pages` 目录下的类用于自定义后台管理面板中和资源交互的页面。这些页面是全页[Livewire](https://laravel-livewire.com)组件，你可以根据需要自定义。
+
+> 如果你创建的资源并没有在导航菜单中显示，很可能是因为你的[模型策略](#授权)的 `viewAny()` 方法并没有返回 `true`。
+
+### 简易(模态框)资源
+
+有时候，你的模型过于简单，因此你只想在单个页面中管理记录。这种情况下你可以使用模态框进行创建，编辑和删除记录。要生成这样一个带有模态框的简易资源：
+
+```bash
+php artisan make:filament-resource Customer --simple
+```
+
+你的资源有一个管理(Manage)页面，该页面是一个带有模态框的列表页。
+
+另外，你的资源类不再会有 `getRelations()` 方法，因为关系管理器只会在编辑页和查看页中展示，不会出现在简易资源中。其他方面则与普通资源相同。
+
+### 自动生成表单和表格
+
+如果你要节约时间，Filament 也可以基于你模型数据库的字段，为你自动生成一些[表单](#表单)和[表格](#表格)：
+
+使用此功能需要安装 `doctrine/dbal` 包：
+
+```bash
+composer require doctrine/dbal --dev
+```
+
+现在你可以使用 `--generate` 来生成资源了:
+
+```bash
+php artisan make:filament-resource Customer --generate
+```
+
+> 注意：如果表格中含有 ENUM 字段，`doctrine/dbal` 将无法扫描表格且会崩溃。因此 Filament 无法据此为资源生成 schema。更多详情查阅[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
+
+### 处理软删除
+
+默认情况下，在后台面板中你不能处理删除了的记录。如果你想要在资源中添加恢复(restore)、强制删除和过滤垃圾记录等功能，可以在生成资源的时候使用 `--soft-deletes` 标志：
+
+```bash
+php artisan make:filament-resource Customer --soft-deletes
+```
+
+更多软删除的相关内容，查看[此处](deleting-records#处理软删除)。
+
+### 生成查看页面
+
+默认情况下，资源只会生成列表页，新建页和编辑页。如果你也想要生成[查看页]，使用 `--view-page` :
+
+```bash
+php artisan make:filament-resource Customer --view-page
+```
+
+## 记录标题
+
+资源可以设置 `$recordTitleAttribute` 属性，该属性对应模型上的字段名，可以用于将其与其他模型区别开来。*(译者：此处直译，意思是大体是在搜索时用以确认某条记录的唯一性。)*
+
+比如，它可以是博客文章的`标题(title)` 或者客户的`名字(name)`:
+
+```php
+protected static ?string $recordTitleAttribute = 'name';
+```
+
+此属性需要启用[全局搜索](global-search)特性才有效。
+
+> 如果某个单一字段无法有效识别一条记录，你可以指定一个[Eloquent获取器](https://laravel.com/docs/eloquent-mutators#defining-an-accessor)的名称。
+
+## 表单
+
+资源类中包含着一个 `form()` 方法，用于为新建和编辑页面创建表单:
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('email')->email()->required(),
+            // ...
+        ]);
+}
+```
+
+### 表单控件
+
+`schema()` 方法用于定义表单结构。它是一个[表单控件](../../forms/fields)数组，按照显示顺序在表单中排序。
+
+表单的可用字段包括:
+
+- [文本框](../../forms/fields#文本框)
+- [下拉列表](../../forms/fields#下拉列表)
+- [多选列表](../../forms/fields#多选列表)
+- [复选框](../../forms/fields#复选框)
+- [日期时间选择器](../../forms/fields#日期时间选择器)
+- [文件上传](../../forms/fields#文件上传)
+- [富文本编辑器](../../forms/fields#富文本编辑器)
+- [Markdown 编辑器](../../forms/fields#Markdown编辑器)
+- [Repeater](../../forms/fields#repeater)
+
+查看所有可用表单[控件](../../forms/fields)，请查阅 [表单构造器文档](../../forms/fields)。
+
+你也可以创建完全[自定义的表单字段](../../forms/fields#创建自定义字段)。
+
+### 布局
+
+表单布局完全可以自定义。我们提供了许多布局组件，它们之间可以联合使用：
+
+- [网格Grid](../../forms/layout#网格)
+- [卡片Card](../../forms/layout#卡片)
+- [标签页Tabs](../../forms/layout#标签页)
+
+要查看所有可用[布局组件](../../forms/layout)清单，请查阅[表单构造器文档](../../forms/layout)。
+
+你也可以创建你自己的完全[自定义布局组件](../../forms/layout#创建自定义布局组件)。
+
+### 根据情况隐藏组件
+
+表单组件的 `hiddenOn()` 方法让你可以基于当前页面或操作隐藏控件。
+
+此例中，我们在 `edit` 编辑页面中隐藏了 `password` 字段控件：
+
+```php
+use Livewire\Component;
+
+Forms\Components\TextInput::make('password')
+    ->password()
+    ->required()
+    ->hiddenOn('edit'),
+```
+
+此外，有一个 `visibleOn()` 快捷方法用以在指定页面或操作中显示控件。
+
+```php
+use Livewire\Component;
+
+Forms\Components\TextInput::make('password')
+    ->password()
+    ->required()
+    ->visibleOn('create'),
+```
+
+## 表格
+
+Resource 类包含一个静态 `table()` 方法，用以在[列表页](listing-records)中创建表格：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('name'),
+            Tables\Columns\TextColumn::make('email'),
+            // ...
+        ])
+        ->filters([
+            Tables\Filters\Filter::make('verified')
+                ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
+            // ...
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\DeleteBulkAction::make(),
+        ]);;
+}
+```
+查阅[列表页](listing-records)文档，可以查看表格[字段](listing-records#表格字段)、[过滤器](listing-records#过滤器)，[操作](listing-records#操作)，[批量操作](listing-records#批量操作)等是怎么添加的。
+
+## 关联
+
+Filament 有多种用于管理资源关联的工具。你可以根据你的实际情况选择使用：
+
+### `BelongsTo`
+
+#### 下拉列表
+
+Filament 有一个专门用于自动从 `BelongsTo` 关联加载选项的下拉列表控件：
+
+```php
+use Filament\Forms\Components\BelongsToSelect;
+
+BelongsToSelect::make('author_id')
+    ->relationship('author', 'name')
+```
+
+关于 `BelongsToSelect` 的更多信息，可以查看[表单文档](../../forms/fields#从`BelongsTo`关联模型中自动添加数据)。
+
+#### 布局组件
+
+表单布局组件可以用来[保存子数据到关联模型](../../forms/layout#保存数据到关联模型)，比如 `BelongsTo` 关联:
+
+```php
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+
+Fieldset::make('Author')
+    ->relationship('author')
+    ->schema([
+        TextInput::make('name')->required(),
+        Textarea::make('bio'),
+    ])
+```
+
+更多信息，可以查看[表单文档](../../forms/layout#保存数据到关联模型)。
+
+### `HasOne`
+
+#### 布局组件
+
+表单布局组件可以用来[保存子数据到关联模型](../../forms/layout#保存数据到关联模型)，比如 `HasOne` 关联:
+
+```php
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+
+Fieldset::make('Metadata')
+    ->relationship('metadata')
+    ->schema([
+        TextInput::make('title'),
+        Textarea::make('description'),
+        FileUpload::make('image'),
+    ])
+```
+
+更多信息，可以查看[表单文档](../../forms/layout#保存数据到关联模型)。
+
+### `HasMany`
+
+#### 关联管理器
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不必离开资源编辑页面的情况下，展示列表、新建、编辑、删除、关联和取消关联相关记录。
+
+相关的记录在表格中展示，可以通过按钮为每个操作打开一个模态框。
+
+更多关于关联管理器的信息，查看[相关文档](relation-managers)。
+
+#### Repeater
+
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用[Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
+
+```php
+use App\Models\App;
+use Filament\Forms\Components\HasManyRepeater;
+ 
+HasManyRepeater::make('qualifications')
+    ->relationship('qualifications')
+    ->schema([
+        // ...
+    ])
+```
+
+就用户体验而言，此方案仅适用于你关联的模型只有一些有限的字段。否则，表单会变得很长。
+
+### `HasManyThrough`
+
+#### 关联管理器
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除相关记录。
+
+相关的记录在表格中展示，有一些按钮用来让每个操作打开一个模态框。
+
+更多关于关联管理器的信息，查看[相关文档](relation-managers)。
+
+### `BelongsToMany`
+
+#### 多选下拉列表
+
+Filament 可以从 `BelongsToMany` 关联中自动加载下拉列表：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('technologies')
+    ->multiple()
+    ->relationship('technologies', 'name')
+```
+
+更多信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship)。
+
+#### 复选框列表控件
+
+Filament 可以从 `BelongsToMany` 关联中自动加载复选框列表控件：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->relationship('technologies', 'name')
+```
+
+更多关于 `CheckboxList` 的信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship-1).
+
+#### 关联管理器
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除、关联和取消关联相关记录。
+
+相关的记录在表格中展示，有一些按钮用来让每个操作打开一个模态框。
+
+更多关于关联管理器的信息，查看[相关文档](relation-managers)。
+
+### `MorphTo`
+
+#### 下拉列表
+
+Filament 可以自动从 `MorphTo` 关联中加载数据作为选项：
+
+```php
+use Filament\Forms\Components\MorphToSelect;
+
+MorphToSelect::make('commentable')
+    ->types([
+        MorphToSelect\Type::make(Product::class)->titleColumnName('name'),
+        MorphToSelect\Type::make(Post::class)->titleColumnName('title'),
+    ])
+```
+
+更多相关信息请查看表单构造器文档。
+
+### `MorphOne`
+
+#### 布局组件
+
+表单布局组件可以用来[保存子数据到关联模型](../../forms/layout#保存数据到关联模型)，比如 `MorphOne` 关联:
+
+```php
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+
+Fieldset::make('Metadata')
+    ->relationship('metadata')
+    ->schema([
+        TextInput::make('title'),
+        Textarea::make('description'),
+        FileUpload::make('image'),
+    ])
+```
+
+更多信息，请查看[表单文档](../../forms/layout#保存数据到关联模型)。
+
+### `MorphMany`
+
+#### 关联管理器
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除、关联和取消关联相关记录。
+
+相关的记录在表格中展示，有一些按钮用来让每个操作打开一个模态框。
+
+更多关于关联管理器的信息，查看[相关文档](relation-managers)。
+
+#### Repeater
+
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用[Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
+
+```php
+use Filament\Forms\Components\Repeater;
+ 
+Repeater::make('qualifications')
+    ->schema([
+        // ...
+    ])
+```
+
+就用户体验而言，此方案仅适用于你关联的模型只有一些有限的字段。否则，表单会变得很长。
+
+### `MorphToMany`
+
+#### 关联管理器
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除、关联和取消关联相关记录。
+
+相关的记录在表格中展示，有一些按钮用来让每个操作打开一个模态框。
+
+更多关于关联管理器的信息，查看[相关文档](relation-managers)。
+
+## 授权
+
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。使用如下方法：
+
+- `viewAny()` 用于完全从导航菜单中隐藏资源，阻止用户访问任何页面。
+- `create()` 用于控制[新建记录](creating-records)。
+- `update()` 用于控制[编辑记录](editing-records)。
+- `view()` 用于控制[查看记录](viewing-records)。
+- `delete()` 用于阻止单条记录被删除。`deleteAny()` 用于防止记录被批量删除。Filament 使用 `deleteAny()` 方法因为通过迭代检查 `delete()` 策略性能不是很好。
+- `forceDelete()` 用于防止单条软删除记录被强制删除。`forceDeleteAny()` 用于防止记录被批量强制删除。Filament 之所以使用 `forceDeleteAny()` 因为在多条记录中迭代检查 `forceDelete()` 策略性能不佳。
+- `restore()` 用于防止单条软删除记录被强制恢复。 `restoreAny()` 用于防止记录被批量强制删除。Filament 之所以使用 `restoreAny()` 因为在多条记录中迭代检查 `restore()` 策略性能不佳。
+- `reorder()` 用于控制记录重新排序。
+
+## 资源标签
+
+每个资源都有一个基于模型名称自动生成的资源标签(label)。比如，`App\Models\Customer` 模型会生成 `customer` 标签。
+
+这个标签在用户界面的很多地方上使用到了，你也可以使用 `$label` 属性自定义：
+
+```php
+protected static ?string $label = 'cliente';
+```
+
+此外，你也可以使用 `getLabel()` 来定义动态标签：
+
+```php
+public static function getLabel(): string
+{
+    return __('filament::resources/customer.label');
+}
+```
+
+### 复数标签
+
+每个资源同时也有一个基于标签自动生成的“复数标签(plural label)”。比如，`customer` 标签会生成 `customers` 复数标签。
+
+你也可以使用 `$pluralLabel` 属性自定义复数标签：
+
+```php
+protected static ?string $pluralLabel = 'clientes';
+```
+
+此外，你也可以使用 `getPluralLabel()` 来定义动态复数标签：
+
+```php
+public static function getPluralLabel(): string
+{
+    return __('filament::resources/customer.plural_label');
+}
+```
+
+## 导航
+
+Filament 会使用[复数标签](#复数标签)自动为资源生成一个导航菜单项。
+
+如果你想自定义导航菜单，可以使用 `$navigationLabel` 属性：
+
+```php
+protected static ?string $navigationLabel = 'Mis Clientes';
+```
+
+此外，你也可以使用 `getNavigationLabel()` 方法来定义动态复数标签：
+
+```php
+public static function getNavigationLabel(): string
+{
+    return __('filament::resources/customer.navigation_label');
+}
+```
+
+### 图标
+
+`$navigationIcon` 属性支持任何Blade模板组件名。默认情况下，Filament 安装了[Blade Heroicons V1](https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1)包，你可以开箱即用地使用[Heroicon V1](https://v1.heroicons.com)的图标名。除此之外，你也可以创建你自己自定义的ICON组件或者安装其他图标库。
+
+```php
+protected static ?string $navigationIcon = 'heroicon-o-user-group';
+```
+
+此外，你可以在 `getNavigationIcon()` 方法中设置动态导航图标：
+
+```php
+public static function getNavigationIcon(): string
+{
+    return 'heroicon-o-user-group';
+}
+```
+
+### 导航菜单排序
+
+`$navigationSort` 属性让你可以指定导航菜单项排列顺序：
+
+```php
+protected static ?int $navigationSort = 2;
+```
+
+此外，你也可以在 `getNavigaionSort()` 方法中动态设置导航排序：
+
+```php
+public static function getNavigationSort(): ?int
+{
+    return 2;
+}
+```
+
+### 导航菜单分组
+
+你可以通过 `$navigationGroup` 属性对导航菜单进行分组：
+
+```php
+protected static ?string $navigationGroup = 'Shop';
+```
+
+此外，你也可以使用 `getNavigationGroup()` 方法设置动态分组标签：
+
+```php
+protected static function getNavigationGroup(): ?string
+{
+    return return __('filament::navigation.groups.shop');
+}
+```
+
+## 自定义Eloquent查询
+
+在 Filament 中，每个资源模型的查询都会从 `getEloquentQuery()` 方法开始。
+
+因此，可以很容易使用你自己的[模型范围(scope)查询](https://laravel.com/docs/eloquent#query-scopes)。你可以在后台面板中用它来实现[多租户(multi-tenancy)](#multi-tenancy)特性。
+
+### 禁用全局范围查询
+
+默认情况下，Filament 会监听所有注册到模型的全局范围查询。不过，如果你想要获取比如软删除记录时，这可能不是理想的方案。
+
+要解决此问题，你可以重写 `getEloquentQuery()` 方法：
+
+```php
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()->withoutGlobalScopes();
+}
+```
+
+此外，你也可以移除特定的全局范围查询：
+
+```php
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()->withoutGlobalScopes([ActiveScope::class]);
+}
+```
+
+更多关于移除全局范围查询的信息可查阅[Laravel文档](https://laravel.com/docs/eloquent#removing-global-scopes)。
+
+## 自定义 URL slug
+
+默认请胯下，Filament 会根据模型名称生成一个资源 URL。你可以在资源上设置 `$slug` 属性来自定义：
+
+```php
+protected static ?string $slug = 'pending-orders';
+```
+
+## Multi-tenancy
+
+多租户(Multi-tenancy)，简单地说，就是用户拥有记录，并且只能获取到他们自己的记录。*(译者注：让多用户在共用程序组件之时，仍确保各用户见数据的隔离性。)*
+
+### 从头开始实现简单多租户技术
+
+简单的多租户(multi-tenancy)策略在 Filament 中很容易设置。
+
+首先，通过 `getEloquentQuery()` 方法为每个资源限定[基础 Eloquent 查询范围](#自定义Eloquent查询)：
+
+```php
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()->whereBelongsTo(auth()->user());
+}
+```
+
+此例中，使用 `whereBelongsTo()` 来限定属于当前认证用户的记录。此外，你可以使用任何你想用的 Eloquent 方法，包括手动的 `where()` 查询，或者[scope范围查询](https://laravel.com/docs/eloquent#local-scopes)。
+
+最好，如果要让新建的记录附加到当前用户上。最简单的办法是使用[模型观察者](https://laravel.com/docs/eloquent#observers)：
+
+```php
+public function creating(Post $post): void
+{
+    $post->user()->associate(auth()->user());
+}
+```
+
+此外，你也可以在[关联管理器](relation-managers)的 `AttachAction` 或 `AssociateAction` 中设置选项的查询范围。
+
+```php
+use Filament\Tables\Actions\AttachAction;
+use Illuminate\Database\Eloquent\Builder;
+
+AttachAction::make()
+    ->recordSelectOptionsQuery(fn (Builder $query) => $query->whereBelongsTo(auth()->user())
+```
+
+### `stancl/tenancy`
+
+要在 Filament 中使用 [`stancl/tenancy`](https://tenancyforlaravel.com/docs)，你只需要添加 `InitializeTenancyByDomain::class` 中间件到 [Livewire](https://tenancyforlaravel.com/docs/v3/integrations/livewire) 和 [Filament 配置文件](../installation#发布配置文件)即可:
+
+```php
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+
+'middleware' => [
+    // ...
+    'base' => [
+        // ...
+        InitializeTenancyByDomain::class
+    ],
+],
+```
+
+## 删除页面
+
+如果你要从你的资源(resource)中删除一个页面，你只需要删除资源 `Pages` 目录下的对应文件，以及它在 `getPages()` 方法下的入口。
+
+比如，你有一个资源不想让任何人添加记录。删除 `Create` 页面文件，然后在`getPages()`中移除:
+
+```php
+public static function getPages(): array
+{
+    return [
+        'index' => Pages\ListCustomers::route('/'),
+        'edit' => Pages\EditCustomer::route('/{record}/edit'),
+    ];
+}
+```

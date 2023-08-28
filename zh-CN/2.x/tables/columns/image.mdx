@@ -1,0 +1,91 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/04-image.md"
+title: 图片字段
+---
+
+在表格中展示图片也很简单:
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('header_image')
+```
+
+对应的数据库字段必须包含图片路径，相对于存储盘根目录的相对路径。
+
+## 管理图片存储盘
+
+默认情况下，`pulbic` 磁盘会被用于检索图片。你可以在 `disk()` 方法中传入自定义磁盘名：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('header_image')->disk('s3')
+```
+
+## 私有图片
+
+Filament 可以生成临时 URL，用来渲染临时私有图片，你可以在 `visibility()` 中设置 `private`: 
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('header_image')->visibility('private')
+```
+
+## 正方形图片
+
+可以使用 1:1 的高宽比展示图片 ：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('author.avatar')->square();
+```
+
+## 圆形图片
+
+你可以将图片渲染成圆形，这适用于渲染头像：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('author.avatar')->circular()
+```
+
+## 自定义 size
+
+你可以传入宽度到 `width()`，传入高度到 `height()`，或者使用 `size()`，自定义图片尺寸：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('header_image')->width(200)
+
+ImageColumn::make('header_image')->height(50)
+
+ImageColumn::make('author.avatar')->size(40)
+```
+
+## 添加默认图片 URL
+
+在 `defaultImageUrl()` 方法中传入一个图片网址，可以在图片还不存在时，展示占位符图片：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('avatar')
+    ->defaultImageUrl(url('/images/placeholder.png'))
+```
+
+## 自定义属性
+
+你可以使用 `extraImgAttributes()` 自定义图片的其他HTML属性：
+
+```php
+use Filament\Tables\Columns\ImageColumn;
+
+ImageColumn::make('logo')
+    ->extraImgAttributes(['title' => 'Company logo']),
+```

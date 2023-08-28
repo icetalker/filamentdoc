@@ -1,0 +1,592 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/02-getting-started.md"
+title: 开始
+description: Filament Table Builder 即表格构造器，用于将数据库中的字段按照开发者要求以表格形式展示。该软件包提供了丰富的便捷操作接口，使得开发者可以快速对展示字段、展示样式、展示数据等进行配置。
+keywords: [Filament Table, Table Builder, 表格构造器, 快速入门教程]
+---
+
+## 准备 Livewire 组件
+
+实现 `HasTable` 接口，使用 `InteractsWithTable` trait:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable // [tl! focus]
+{
+    use Tables\Concerns\InteractsWithTable; // [tl! focus]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+在 Livewire 组件视图中，渲染表格:
+
+```blade
+<div>
+    {{ $this->table }}
+</div>
+```
+
+然后，在 `getTableQuery()` 方法中添加表格所需要的 Eloquent 查询:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+    
+    protected function getTableQuery(): Builder // [tl! focus:start]
+    {
+        return Post::query();
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+最后，将[表格字段](columns)、[过滤器](filters)和[动作](actions)添加到 Livewire 组件中:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+    
+    protected function getTableQuery(): Builder
+    {
+        return Post::query();
+    }
+    
+    protected function getTableColumns(): array // [tl! focus:start]
+    {
+        return [ // [tl! collapse:start]
+            Tables\Columns\ImageColumn::make('author.avatar')
+                ->size(40)
+                ->rounded(),
+            Tables\Columns\TextColumn::make('title'),
+            Tables\Columns\TextColumn::make('author.name'),
+            Tables\Columns\BadgeColumn::make('status')
+                ->colors([
+                    'danger' => 'draft',
+                    'warning' => 'reviewing',
+                    'success' => 'published',
+                ]),
+            Tables\Columns\IconColumn::make('is_featured')->boolean(),
+        ]; // [tl! collapse:end]
+    }
+    
+    protected function getTableFilters(): array
+    {
+        return [ // [tl! collapse:start]
+            Tables\Filters\Filter::make('published')
+                ->query(fn (Builder $query): Builder => $query->where('is_published', true)),
+            Tables\Filters\SelectFilter::make('status')
+                ->options([
+                    'draft' => 'Draft',
+                    'in_review' => 'In Review',
+                    'approved' => 'Approved',
+                ]),
+        ]; // [tl! collapse:end]
+    }
+    
+    protected function getTableActions(): array
+    {
+        return [ // [tl! collapse:start]
+            Tables\Actions\Action::make('edit')
+                ->url(fn (Post $record): string => route('posts.edit', $record)),
+        ]; // [tl! collapse:end]
+    }
+    
+    protected function getTableBulkActions(): array
+    {
+        return [ // [tl! collapse:start]
+            Tables\Actions\BulkAction::make('delete')
+                ->label('Delete selected')
+                ->color('danger')
+                ->action(function (Collection $records): void {
+                    $records->each->delete();
+                })
+                ->requiresConfirmation(),
+        ]; // [tl! collapse:end]
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+在浏览器中访问 Livewire 组件，你就能看到表格了。
+
+## 分页
+
+默认情况下，表格是分页的。要禁用此功能，你可以在Livewire组件上重写 `isTablePaginationEnabled()` 方法： 
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+    
+    protected function getTableQuery(): Builder
+    {
+        return Post::query();
+    }
+    
+    protected function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('title'),
+            Tables\Columns\TextColumn::make('author.name'),
+        ];
+    }
+    
+    protected function isTablePaginationEnabled(): bool // [tl! focus:start]
+    {
+        return false;
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+在 Livewire 组件上重写 `getTableRecordsPerPageSelectOptions()` 方法，你可以自定义每页显示数的可选项：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+    
+    protected function getTableQuery(): Builder
+    {
+        return Post::query();
+    }
+    
+    protected function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('title'),
+            Tables\Columns\TextColumn::make('author.name'),
+        ];
+    }
+    
+    protected function getTableRecordsPerPageSelectOptions(): array // [tl! focus:start]
+    {
+        return [10, 25, 50, 100];
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+默认情况下，Livewire 将分页状态保存在URL查询字符串的 `page` 参数中。如果你在同一页面有多张表格，这就会导致一张表格的分页状态可能会被其他表格的分页状态所覆盖。
+
+要解决这一问题，你可以在组件上定义 `getTableQueryStringIdentifier()`，为该表格返回唯一查询字符串标识符：
+
+```php
+protected function getTableQueryStringIdentifier(): string
+{
+    return 'users';
+}
+```
+
+### 简单分页
+
+你可以在 Livewire 组件上重写 `paginateTableQuery()` 方法，使用简单分页：
+
+```php
+
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
+
+protected function paginateTableQuery(Builder $query): Paginator
+{
+    return $query->simplePaginate($this->getTableRecordsPerPage() == -1 ? $query->count() : $this->getTableRecordsPerPage());
+}
+```
+
+## 使用Laravel Scount搜索记录
+
+Filament 并没有提供直接与 [Laravel Scout](https://laravel.com/docs/scout) 整合的方式，你可以在 Livewire 组件内重写方法进行整合。
+
+首先，确保表格搜索框可见：
+
+```php
+public function isTableSearchable(): bool
+{
+    return true;
+}
+```
+
+然后，使用 `whereIn` 条款过滤 Scount 的查询结果：
+
+```php
+use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
+
+protected function applySearchToTableQuery(Builder $query): Builder
+{
+    if (filled($searchQuery = $this->getTableSearchQuery())) {
+        $query->whereIn('id', Post::search($searchQuery)->keys());
+    }
+
+    return $query;
+}
+```
+
+Scout 内部使用 `whereIn()` 方法查询结果，因此使用它不会有性能代偿。
+
+## 可点击的行
+
+### 记录URL
+
+通过重写 Livewire 组件上的 `getTableRecordUrlUsing()` 方法，你可以让表格行完全可点击：
+
+```php
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+
+protected function getTableRecordUrlUsing(): Closure
+{
+    return fn (Model $record): string => route('posts.edit', ['record' => $record]);
+}
+```
+
+本例中，点击每个post都会转到 `posts.edit` 路由。
+
+如果你要为一个特定的字段[重写URL](columns/getting-started#打开URL)，或者在点击字段时[运行Livewire操作](columns#执行操作)，请查看[表格字段文档](columns#打开URL)。
+
+### 记录 action
+
+另外，你也可以配置表格行，用以触发action，替代打开URL:
+
+```php
+use Closure;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\DeleteAction;
+
+protected function getTableRecordActionUsing(): ?Closure
+{
+    return fn (): string => 'edit';
+}
+```
+
+### 禁用可点击行
+
+如果你想完全禁用整行的点击操作，你可以在 Livewire 组件中重写 `getTableRecordActionUsing()` 方法，并返回 null:
+
+```php
+use Closure;
+
+protected function getTableRecordActionUsing(): ?Closure
+{
+    return null;
+}
+```
+
+## 记录样式类
+
+你可能希望根据记录数据在不同行内展示不同样式。使用 `getTableRecordClassesUsing()` 方法，指定一个 CSS 类字符串或数组，可以使之实现：
+
+```php
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+
+protected function getTableRecordClassesUsing(): ?Closure
+{
+    return fn (Model $record) => match ($record->status) {
+        'draft' => 'opacity-30',
+        'reviewing' => [
+            'border-l-2 border-orange-600',
+            'dark:border-orange-300' => config('tables.dark_mode'),
+        ],
+        'published' => 'border-l-2 border-green-600',
+        default => null,
+    };
+}
+```
+
+这些类不会被 Tailwind 自动编译。如果你想要使用没有在 Blade 中文件中使用的 Tailwind CSS 类，你需要更新 `tailwind.config.js` 文件中的 `content` 配置项，使之同时扫描对应 PHP 文件中的类： 
+
+```js
+export default {
+    content: [
+        './app/Filament/**/*.php',
+    ],
+}
+```
+
+另外，你也可以将这些类添加到[安全列表](https://tailwindcss.com/docs/content-configuration#safelisting-classes)：
+
+```js
+export default {
+    safelist: [
+        'border-green-600',
+        'border-l-2',
+        'border-orange-600',
+        'dark:border-orange-300',
+        'opacity-30',
+    ],
+}
+```
+
+## 空状态
+
+默认情况下，如果表格为空，会渲染"空状态(Empty State)"卡片。要自定义此，你可以在 Livewire 组件中定义方法：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+
+    protected function getTableQuery(): Builder
+    {
+        return Post::query();
+    }
+
+    protected function getTableColumns(): array
+    {
+        return [ // [tl! collapse:start]
+            Tables\Columns\ImageColumn::make('author.avatar')
+                ->size(40)
+                ->circular(),
+            Tables\Columns\TextColumn::make('title'),
+            Tables\Columns\TextColumn::make('author.name'),
+            Tables\Columns\BadgeColumn::make('status')
+                ->colors([
+                    'danger' => 'draft',
+                    'warning' => 'reviewing',
+                    'success' => 'published',
+                ]),
+            Tables\Columns\IconColumn::make('is_featured')->boolean(),
+        ]; // [tl! collapse:end]
+    }
+
+    protected function getTableEmptyStateIcon(): ?string // [tl! focus:start]
+    {
+        return 'heroicon-o-bookmark';
+    }
+
+    protected function getTableEmptyStateHeading(): ?string
+    {
+        return 'No posts yet';
+    }
+
+    protected function getTableEmptyStateDescription(): ?string
+    {
+        return 'You may create a post using the button below.';
+    }
+
+    protected function getTableEmptyStateActions(): array
+    {
+        return [
+            Tables\Actions\Action::make('create')
+                ->label('Create post')
+                ->url(route('posts.create'))
+                ->icon('heroicon-o-plus')
+                ->button(),
+        ];
+    } // [tl! focus:end]
+
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```
+
+## 查询字符串
+
+Livewire 使用了一个在 UR L查询字符串中存储数据的特性，用来获取跨请求数据。
+
+对应于 Filament，此特性让你可以在 URL 中存储表格过滤器、排序、搜索和分页状态。
+
+要在查询字符串中存储表格的过滤器、排序、搜索状态：
+
+```php
+protected $queryString = [
+    'tableFilters',
+    'tableSortColumn',
+    'tableSortDirection',
+    'tableSearchQuery' => ['except' => ''],
+    'tableColumnSearchQueries',
+];
+```
+
+## 重新排序
+
+可以使用 `getTableReorderColumn()` 方法，让用户可以在表格中使用拖拽重新排序记录：
+
+```php
+protected function getTableReorderColumn(): ?string
+{
+    return 'sort';
+}
+```
+
+当表格可重新排序，表格中会有一个新的按钮来开关重新排序。
+
+`getTableReorderColumn()` 返回保存记录排序的字段名。比如像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) 使用 `order_column` 作为排序字段，你可以这样返回：
+
+```php
+protected function getTableReorderColumn(): ?string
+{
+    return 'order_column';
+}
+```
+
+### 重新排序时启用分页
+
+在重新排序模式中，分页功能会被禁用，这样你才可以在不同页面中移动记录。在排序时启用分页功能，用户体验通常不好，不过如果你确信的话你也可以这样使用：
+
+```php
+protected function isTablePaginationEnabledWhileReordering(): bool
+{
+    return true;
+}
+```
+
+## 轮询内容
+
+使用 `getTablePollingInterval()` 方法，你可以轮询表格内容，使之可以在设定的时间间隔内进行刷新：
+
+```php
+protected function getTablePollingInterval(): ?string
+{
+    return '10s';
+}
+```
+
+## 使用表单构造器
+
+表格构造器内部使用了[表单构造器](/docs/zh-CN/2.x/forms)来实现过滤器、操作和批量操作。因此，表单构造器已经在 Livewire 组件中就绪，可以使用自定义表单。
+
+你也可以使用开箱即用的默认 `表单` :
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Tables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Component;
+
+class ListPosts extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+    
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            // ...
+        ];
+    }
+    
+    protected function getTableQuery(): Builder // [tl! collapse:start]
+    {
+        return Post::query();
+    }
+    
+    protected function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\ImageColumn::make('author.avatar')
+                ->size(40)
+                ->rounded(),
+            Tables\Columns\TextColumn::make('title'),
+            Tables\Columns\TextColumn::make('author.name'),
+            Tables\Columns\BadgeColumn::make('status')
+                ->colors([
+                    'danger' => 'draft',
+                    'warning' => 'reviewing',
+                    'success' => 'published',
+                ]),
+            Tables\Columns\IconColumn::make('is_featured')->boolean(),
+        ];
+    } // [tl! collapse:end]
+    
+    public function render(): View
+    {
+        return view('list-posts');
+    }
+}
+```

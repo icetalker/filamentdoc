@@ -1,0 +1,56 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/07-notifications.md"
+title: 通知
+---
+
+后台面板使用 [Notiications](../notifications/sending-notifications)包，将消息发送给用户。
+
+请阅读[文档](../notifications/sending-notification)，查看如何发送通知。
+
+不过，使用后台面板时配置会有些不同。
+
+## 数据库通知
+
+你必须在后台面板中专门启用数据库通知，而非在通知包中启用。
+
+首先，你要[发布配置文件](安装#发布配置文件)。
+
+然后，启用数据库通知：
+
+```php
+'database_notifications' => [
+    'enabled' => true,
+    // ...
+],
+```
+
+你也可以控制[轮询](../notifications/database-notifications#轮询)
+
+```php
+'database' => [
+    'enabled' => true,
+    'polling_interval' => '30s',
+    // ...
+],
+```
+
+## Echo
+
+通知包的一些特性，包括[获取实时数据库通知](../notifications/database-notifications#echo)和[广播通知](../notifications/broadcast-notifications)，要求安装Laravel Echo。
+
+首先，你必须安装[服务端websocket集成](https://laravel.com/docs/broadcasting#server-side-installation)，比如Pusher。
+
+然后，在后台面板[配置文件](installation#发布配置文件)中定义 Echo 配置：
+
+```php
+'broadcasting' => [
+    'echo' => [
+        'broadcaster' => 'pusher',
+        'key' => env('VITE_PUSHER_APP_KEY'),
+        'cluster' => env('VITE_PUSHER_APP_CLUSTER'),
+        'forceTLS' => true,
+    ],
+    
+],
+```

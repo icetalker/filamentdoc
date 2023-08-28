@@ -1,0 +1,138 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/04-dashboard/01-getting-started.md"
+title: 开始
+---
+
+Filament 让你可以通过插件卡片，简单地创建动态自定义面板。
+
+Widget 是纯 [Livewire](https://laravel-livewire.com) 组件，因此可以使用 Livewire 包的所有功能。
+
+Widgets 也能用在[资源页](../resources/widgets)或者[自定义页面](../pages/widgets)中使用。
+
+## 可用插件
+
+Filament 附带有一些预制插件，同时也能创建[自定义插件](#自定义插件)：
+
+- [统计](stats)插件可以在卡片内显示任何数据，通常为数值型数据。
+- [图表](charts)插件在一个可视化图标中显示数值型数据。 
+- [表格](tables)插件在表格中渲染数据，支持排序、搜索、过滤、操作及其他[表格构造器](../../tables)中的功能。
+
+你也可以创建[自定义插件](#自定义插件)。
+
+## 插件排序
+
+每一个插件类都有一个 `$sort` 属性，可用于改变该插件在页面中相对于其他插件的排序：
+
+```php
+protected static ?int $sort = 2;
+```
+
+## 自定义插件宽度
+
+你可以使用 `$columnSpan` 属性自定义插件的宽度。你可以设置为 1 到 12 之间的数字，表明插件占用多少列宽，或者使用 `full` 占用全部宽度：
+
+```php
+protected int | string | array $columnSpan = 'full';
+```
+
+### 响应式插件宽度
+
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，修改插件宽度。可以使用包含各个临界点对应数字的数组实现：
+
+```php
+protected int | string | array $columnSpan = [
+    'md' => 2,
+    'xl' => 3,
+];
+```
+
+当使用[响应式插件网格](#响应式插件网格)时，尤其有用。
+
+## 自定义插件网格
+
+你可以修改有多少网格数被用于展示插件。
+
+首先，你必须[替换原来的Dashboard页面](#自定义Dashboard页面)。
+
+然后，在新建的 `app/Filament/Pages/Dashboard.php` 文件中，你可以重写 `getColumns()` 方法，来返回占用的网格列数：
+
+```php
+protected function getColumns(): int | array
+{
+    return 3;
+}
+```
+
+### 响应式插件网格
+
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，调整插件占用的网格数。返回一个类似如下数组，包含各个临界点对应的列数：
+
+```php
+protected function getColumns(): int | array
+{
+    return [
+        'md' => 4,
+        'xl' => 5,
+    ];
+}
+```
+
+可以和[响应式插件宽度](#响应式插件宽度)配合使用。
+
+## 条件性隐藏插件
+
+你可以重写插件的静态 `canView()` 方法，条件性地对其进行隐藏:
+
+```php
+public static function canView(): bool
+{
+    return auth()->user()->isAdmin();
+}
+```
+
+## 禁用默认插件
+
+默认情况下，控制面板上有两个插件。这些插件可以通过更新[配置文件](installation#发布配置文件)的 `widgets.register` 属性禁用:
+
+```php
+'widgets' => [
+    // ...
+    'register' => [],
+],
+```
+
+## 自定义插件
+
+创建一个名为 `BlogPostsOverview` 的 widget:
+
+```bash
+php artisan make:filament-widget BlogPostsOverview
+```
+
+该命令会创建两个文件 - 一个插件类文件位于 Filament 目录下的 `/Widgets` 文件夹中，以及一个位于 Filament 视图目录 `/widgets` 文件夹中的视图文件。
+
+## 自定义控制面板页面
+
+如果你想要自定义 Dashboard 类，比如[修改插件宽度](#自定义插件宽度)，请新建文件 `app/Filament/Pages/Dashboard.php`：
+
+```php
+<?php
+namespace App\Filament\Pages;
+
+use Filament\Pages\Dashboard as BasePage;
+
+class Dashboard extends BasePage
+{
+    // ...
+}
+```
+
+最后，在[配置文件](installation#发布配置文件)中移除原本的 `Dashboard` 类：
+
+```php
+'pages' => [
+    // ...
+    'register' => [],
+],
+```

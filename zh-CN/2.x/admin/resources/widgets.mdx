@@ -1,0 +1,72 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/09-widgets.md"
+title: 页内插件(widget)
+---
+
+## 开始
+
+Filament 允许你在页面内展示插件，置于页头(header)之下或者页脚(footer)之上。 
+
+你可以使用现有的 [dashboard 插件](dashboard)，或为资源创建一个专门的插件。
+
+## 新建资源插件
+
+使用如下命令为资源创建页内插件:
+
+```bash
+php artisan make:filament-widget CustomerOverview --resource=CustomerResource
+```
+
+此命令会创建两个文件 - 在 `app/Filament/Resources/CustomerResource/Widgets` 目录下创建一个插件类，在 `resources/views/filament/resources/customer-resource/widgets` 目录下生成视图文件。
+
+你必须在资源的 `getWidgets()` 方法下注册新插件： 
+
+```php
+public static function getWidgets(): array
+{
+    return [
+        Widgets\CustomerOverview::class,
+    ];
+}
+```
+
+关于如何创建自定义插件，请查看[Dashboard](../dashboard) 文档。
+
+## 在资源页中显示页内插件
+
+要在资源页面中展示插件，在相应页面中使用 `getHeaderWidgets()` 或者 `getFooterWidgets()` 方法:
+
+```php
+<?php
+ 
+namespace App\Filament\Resources\CustomerResource\Pages;
+
+use App\Filament\Resources\CustomerResource;
+
+class ListCustomers extends ListRecords
+{
+    public static string $resource = CustomerResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            CustomerResource\Widgets\CustomerOverview::class,
+        ];
+    }
+}
+```
+
+`getHeaderWidgets()` 返回要在页面内容上面显示的插件数组，而 `getFooterWidgets()` 则显示在其下。
+
+自定义插件占用的网格列数，请查看[页面文档](../pages/widgets#自定义插件网格)。
+
+## 访问当前记录
+
+如果你在Edit或View页面中使用插件(widget)，你可以通过在插件类中定义 `$record` 属性来获取当前的记录。
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+public ?Model $record = null;
+```

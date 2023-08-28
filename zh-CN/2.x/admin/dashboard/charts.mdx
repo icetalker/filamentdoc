@@ -1,0 +1,171 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/04-dashboard/03-charts.md"
+title: 图表插件
+description: Filament 自带多种"图表"插件模板，可以用来显示实时的、可交互的图表。
+---
+
+## 开始
+
+Filament 自带诸多"图表"插件模板，可以用来显示实时的、可交互的图表。
+
+创建图表插件命令:
+
+```bash
+php artisan make:filament-widget BlogPostsChart --chart
+```
+
+有多种可用的图表类，此处示例使用的是 `LineChartWidget`。.
+
+`getHeading()` 方法用来返回图表的标题。
+
+`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集的是一个标签化数组用来绘制图表的point，标签为字符串。Filament 用来渲染图表的这种数据结构，与[Chart.js](https://www.chartjs.org/docs)图表库是一致的。你可以借助[Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
+
+```php
+<?php
+
+namespace App\Filament\Widgets;
+
+use Filament\Widgets\LineChartWidget;
+
+class BlogPostsChart extends LineChartWidget
+{
+    protected function getHeading(): string
+    {
+        return 'Blog posts';
+    }
+
+    protected function getData(): array
+    {
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Blog posts created',
+                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                ],
+            ],
+            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        ];
+    }
+}
+```
+
+现在，你可以在控制面板上查看插件了。
+
+## 可用图表类型
+
+以下是你可以继承的图表插件类清单，以及他们对应的[Chart.js](https://www.chartjs.org/docs)文档页面，从中你可以知晓 `getData()` 应该怎么返回哪些值。
+
+- `Filament\Widgets\BarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bar)
+- `Filament\Widgets\BubbleChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bubble)
+- `Filament\Widgets\DoughnutChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\LineChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/line)
+- `Filament\Widgets\PieChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/polar)
+- `Filament\Widgets\RadarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/radar)
+- `Filament\Widgets\ScatterChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/scatter)
+
+## 从Eloquent模型中生成图表数据
+
+要想从 Eloquent 模型中生成数据，Filament 推荐你安装 `flowframe/laravel-trend` 包。查看文档请到[Flowframe 网站](https://docs.flowfra.me/docs/laravel-trend/installation-and-setup)。
+
+以下是使用 `laravel-trend` 包生成图表数据的一个示例：
+
+```php
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+
+protected function getData(): array
+{
+    $data = Trend::model(BlogPost::class)
+        ->between(
+            start: now()->startOfYear(),
+            end: now()->endOfYear(),
+        )
+        ->perMonth()
+        ->count();
+
+    return [
+        'datasets' => [
+            [
+                'label' => 'Blog posts',
+                'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+            ],
+        ],
+        'labels' => $data->map(fn (TrendValue $value) => $value->date),
+    ];
+}
+```
+
+## 图表数据过滤
+
+你可以安装图表过滤器，用以调整图表上显示的数据。通常用来调整图表数据渲染的时间周期：
+
+要设置过滤器的默认值，使用 `$filter` 属性：
+
+```php
+public ?string $filter = 'today';
+```
+
+然后，定义 `getFilters()` 方法，返回一个值和标签组成的数组给过滤器：
+
+```php
+protected function getFilters(): ?array
+{
+    return [
+        'today' => 'Today',
+        'week' => 'Last week',
+        'month' => 'Last month',
+        'year' => 'This year',
+    ];
+}
+```
+
+你可以在 `getData()` 方法内使用当前活跃的过滤值：
+
+```php
+protected function getData(): array
+{
+    $activeFilter = $this->filter;
+    
+    // ...
+}
+```
+
+## 实时更新(轮询)
+
+图表插件默认每5秒钟刷新一次数据。
+
+你可以通过重写类上的 `$pollingInterval` 属性自定义间隔时间:
+
+```php
+protected static ?string $pollingInterval = '10s';
+```
+
+或者，也可以完全禁用轮询：
+
+```php
+protected static ?string $pollingInterval = null;
+```
+
+## 设置图表最大高度
+
+使用 `$maxHeight` 属性，你可以在图表上设置一个最大高度，以避免其变得太大：
+
+```php
+protected static ?string $maxHeight = '300px';
+```
+
+## 设置图表配置项
+
+你可以在图表类中指定 `$options` 属性，用以控制 Chart.js 库提供的多个配置项。比如，你想让 `LineChartWidget` 类关闭 [legend](https://www.chartjs.org/docs/latest/configuration/legend.html)。
+
+```php
+protected static ?array $options = [
+    'plugins' => [
+        'legend' => [
+            'display' => false,
+        ],
+    ],
+];
+```

@@ -1,0 +1,13 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/09-toggle.md"
+title: Toggle字段
+---
+
+Toggle 字段允许你在表格中渲染Toggle按钮，可用于在不打开新页面或模态框的情况下更新数据库记录：
+
+```php
+use Filament\Tables\Columns\ToggleColumn;
+
+ToggleColumn::make('is_admin')
+```

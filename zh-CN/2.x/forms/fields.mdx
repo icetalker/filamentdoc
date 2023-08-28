@@ -1,0 +1,2127 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/forms/docs/03-fields.md"
+title: 表单字段控件
+description: 在 Filament 表单构造器中，使用各种类型的表单控件构建表单。
+keywords: [Filament, Form Builder, Form Fields] 
+---
+
+## 开始
+
+字段类(Field)位于 `Filament\Form\Components` 命名空间中。
+
+字段组件和[布局组件](layout)一起，在表单 schema 中。
+
+如果你想在 Livewire 组件中使用这些字段，你可以将它们放到 `getFormSchema()` 方法中： 
+
+```php
+protected function getFormSchema(): array
+{
+    return [
+        // ...
+    ];
+}
+```
+
+如果你在后台面板的资源或者关联管理器中使用，你必须将它们放在 `$form->schema()` 方法中:
+
+```php
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            // ...
+        ]);
+}
+```
+
+字段可以用静态方法 `make()` 传入字段名为参数创建。字段名应该对应 Livewire 组件的属性名。你可以使用[Livewire"点语法"](https://laravel-livewire.com/docs/properties#binding-nested-data)将字段绑定到像数组或者Eloquent模型这样的嵌套属性中。
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+```
+
+### 设置标签
+
+默认情况下，字段标签会按照字段名自动生成。你可以使用 `label()` 方法重写字段标签。如果你想使用[语言本地化](https://laravel.com/docs/localization#retrieving-translation-strings)，可以使用这种方法自定义标签：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->label(__('fields.name'))
+```
+
+此外，你也可以使用 `translateLabel()` 方法自动翻译标签：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->translateLabel() // 相当于 `label(__('Name'))
+```
+
+### 设置ID
+
+像设置标签一样，字段ID会根据他们的字段名自动生成。可以使用 `id()` 重写：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->id('name-field')
+```
+
+### 设置默认值
+
+字段可以有默认值。如果[表单 `fill()` 方法](getting-started#default-data)调用时没有传参，就会填充这个默认值。使用 `default()` 方法，可以定义默认值:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->default('John')
+```
+
+### 帮助消息及提示
+
+有时，你需要为表单用户提供额外消息。这种情况下，你可以使用帮助消息或者提示。
+
+帮助消息显示在字段下面。`helperText()` 方法支持 Mardown 格式：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->helperText('Your full name here, including any middle names.')
+```
+
+提示可以显示在标签旁边：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('password')->hint('[Forgotten your password?](forgotten-password)')
+```
+
+提示也可以添加图标，将其渲染在旁边：
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+    ->hint('Translatable')
+    ->hintIcon('heroicon-s-translate')
+```
+
+提示也可以添加颜色`color()`。默认是灰色，不过你也可以设为 `primary`、`success`、`warning` 或  `danger`：
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+    ->hint('Translatable')
+    ->hintColor('primary')
+```
+
+### 自定义属性
+
+可以在 `extraAttributes()` 中传入一个数组，自定义字段所在代码块的 HTML 属性：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->extraAttributes(['title' => 'Text input'])
+```
+
+如果要将额外的HTML属性添加到输入框本身，则使用 `extraInputAttributes()`:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('categories')
+    ->extraInputAttributes(['multiple' => true])
+```
+
+### 禁用
+
+你可以禁用字段，使之不能编辑:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->disabled()
+```
+
+另外，也可以传一个布尔值控制字段是否禁用：
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')->disabled(! auth()->user()->isAdmin())
+```
+
+请注意，禁用字段并不会影响保存，懂技术的用户仍然可以操作页面HTML改变他的值。
+
+要阻止字段值被保存，请使用 `dehydrated(false)` 方法：
+
+```php
+Toggle::make('is_admin')->dehydrated(false)
+```
+
+此外，你也可以根据情况决定是否保存一个字段，比如当用户是管理员时:
+
+```php
+Toggle::make('is_admin')
+    ->disabled(! auth()->user()->isAdmin())
+    ->dehydrated(auth()->user()->isAdmin())
+```
+
+如果你使用[后台面板](/docs/zh-CN/2.x/admin)，且只想在[资源的新建页](/docs/zh-CN/2.x/admin/resources)保存禁用字段:
+
+```php
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\Page;
+
+TextInput::make('slug')
+    ->disabled()
+    ->dehydrated(fn (Page $livewire) => $livewire instanceof CreateRecord)
+```
+
+### 隐藏字段
+
+你可以隐藏一个字段：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->hidden()
+```
+
+另外，你也可以传入一个布尔值来控制字段是否隐藏：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->hidden(! auth()->user()->isAdmin())
+```
+
+### 自动聚焦
+
+大部分字段时可自动聚焦的。一般来说，让你表单中第一个重要的字段获得自动聚焦，会带来最好的用户体验。
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->autofocus()
+```
+
+### 设置占位符
+
+很多字段当值为空时，通常会有一个占位符。你可以使用 `placeholder()` 方法自定义:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->placeholder('John Doe')
+```
+
+### 全局设置
+
+如果你想要全局修改字段的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的复选框[`inline(false)`](#复选框)，你可以这样做：
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+Checkbox::configureUsing(function (Checkbox $checkbox): void {
+    $checkbox->inline(false);
+});
+```
+
+当然，你仍然可以对每个字段单独重写这一样式:
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+Checkbox::make('is_admin')->inline()
+```
+
+## 文本框
+
+文本框(Text Input) 用于与字符串交互：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147612753-1d4514ea-dba9-4f5c-9efc-08f09608e90d.png)
+
+你可以用一系列方法设置文本框类型。其中有些，比如像 `email()`，同时也提供验证：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('text')
+    ->email()
+    ->numeric()
+    ->password()
+    ->tel()
+    ->url()
+```
+
+同样的，你也可以使用 `type()` 传一个[HTML 文本框类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)参数:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('backgroundColor')->type('color')
+```
+
+你可以设置 `minLength()` 和 `maxLength()` 限制输入文本长度。此方法会同时添加前端和后端验证:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+    ->minLength(2)
+    ->maxLength(255)
+```
+
+你也可以通过设置 `length()` 指定输入框的精确长度。此方法同样在前后端都添加了验证：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('code')->length(8)
+```
+
+另外，你也可以设置 `minValue()` 和 `maxValue()` 验证输入的最小和最大值：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('number')
+    ->numeric()
+    ->minValue(1)
+    ->maxValue(100)
+```
+
+你可以使用 `autocomplete()` 方法，为文本输入框设置自动补全配置:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('password')
+    ->password()
+    ->autocomplete('new-password')
+```
+
+你也可以用 `disableAutocomplete()`，它是关闭自动补全的快捷方法:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('password')
+    ->password()
+    ->disableAutocomplete()
+```
+
+更多自动补全选项，文本框也支持 [datalists](#datalists)。
+
+#### Phone number validation
+
+使用 `tel()` 字段时，字段值将会使用如下规则进行验证：`/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/`。
+
+如果你需要修改验证规则，可以使用 `telRegex()` 方法：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('phone')
+    ->tel()
+    ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+```
+
+另外，要在全局中自定义 `telRegex()`，请使用服务提供者：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::configureUsing(function (TextInput $component): void {
+    $component->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/');
+});
+```
+
+### 前后缀
+
+你也可以使用 `prefix()` 和 `suffix()` 方法，在文本框前后添加文本内容:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('domain')
+    ->url()
+    ->prefix('https://')
+    ->suffix('.com')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147612784-5eb58d0f-5111-4db8-8f54-3b5c3e2cc80a.png)
+
+你可以使用 `prefixIcon()` 和 `suffixIcon()` 方法在输入框前后放入图标：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('domain')
+    ->url()
+    ->prefixIcon('heroicon-o-external-link')
+    ->suffixIcon('heroicon-o-external-link')
+```
+
+你也可以使用 `prefixAction()` 和 `suffixAction()` 方法，在输入框前后渲染 action 按钮:
+
+```php
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('domain')
+    ->suffixAction(fn (?string $state): Action =>
+        Action::make('visit')
+            ->icon('heroicon-s-external-link')
+            ->url(
+                filled($state) ? "https://{$state}" : null,
+                shouldOpenInNewTab: true,
+            ),
+    )
+```
+
+### 输入遮罩
+
+输入遮罩(Input mask)定义了输入必须遵循的格式。
+
+Filament 中，你可以在 `mask()` 方法中与 `Mask` 对象进行交互，配置你的mask:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+    ->mask(fn (TextInput\Mask $mask) => $mask->pattern('+{7}(000)000-00-00'))
+```
+
+在底层，masking 使用 [`imaskjs`](https://imask.js.org) 驱动。它主要的特性在Filament中同样可用。先阅读[指南](https://imask.js.org/guide.html)，再使用 Filament 实现，或许是最便利的方法。
+
+你可以定义和配置一个 [numeric mask](https://imask.js.org/guide.html#masked-number)，用来处理数字:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('number')
+    ->numeric()
+    ->mask(fn (TextInput\Mask $mask) => $mask
+        ->numeric()
+        ->decimalPlaces(2) // Set the number of digits after the decimal point.
+        ->decimalSeparator(',') // Add a separator for decimal numbers.
+        ->integer() // Disallow decimal numbers.
+        ->mapToDecimalSeparator([',']) // Map additional characters to the decimal separator.
+        ->minValue(1) // Set the minimum value that the number can be.
+        ->maxValue(100) // Set the maximum value that the number can be.
+        ->normalizeZeros() // Append or remove zeros at the end of the number.
+        ->padFractionalZeros() // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
+        ->thousandsSeparator(','), // Add a separator for thousands.
+    )
+```
+
+[Enum masks](https://imask.js.org/guide.html#enum) 可以限制用户的输入选项:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('code')->mask(fn (TextInput\Mask $mask) => $mask->enum(['F1', 'G2', 'H3']))
+```
+
+[Range masks](https://imask.js.org/guide.html#masked-range) 可被用作限制数字输入范围:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('code')->mask(fn (TextInput\Mask $mask) => $mask
+    ->range()
+    ->from(1) // Set the lower limit.
+    ->to(100) // Set the upper limit.
+    ->maxValue(100), // Pad zeros at the start of smaller numbers.
+)
+```
+
+除了简单样式，你也可以定义多重模式块[pattern blocks](https://imask.js.org/guide.html#masked-pattern):
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('cost')->mask(fn (TextInput\Mask $mask) => $mask
+    ->patternBlocks([
+        'money' => fn (Mask $mask) => $mask
+            ->numeric()
+            ->thousandsSeparator(',')
+            ->decimalSeparator('.'),
+    ])
+    ->pattern('$money'),
+)
+```
+
+里面也包含了一个 `money()` 方法，可以更容易格式化货币输入。本例，前缀符号是 `$`、千位分隔符 `,` 、及两位小数:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('cost')->mask(fn (TextInput\Mask $mask) => $mask->money(prefix: '$', thousandsSeparator: ',', decimalPlaces: 2))
+```
+
+你也可以控制数字是否有符号。默认情况下，正数和负数都是允许的。`isSigned: false` 只允许正数：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('cost')->mask(fn (TextInput\Mask $mask) => $mask->money(prefix: '$', thousandsSeparator: ',', decimalPlaces: 2, isSigned: false))
+```
+
+### Datalists
+
+你可以使用 `datalist()` 方法为文本框指定一个 [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)选项:
+
+```php
+TextInput::make('manufacturer')
+    ->datalist([
+        'BWM',
+        'Ford',
+        'Mercedes-Benz',
+        'Porsche',
+        'Toyota',
+        'Tesla',
+        'Volkswagen',
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147612844-f46e113f-82b3-4675-9097-4d64a4315082.png)
+
+Datalist 为用户提供文本框自动补全选项。不过，这些值只是单纯推荐，用户仍然可以输入任何值到文本框中。如果你想要限制定义选项，请用[选择框](#选择框)。
+
+## 下拉列表
+
+下拉列表组件让你可以使用一组预定义的选项：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+在选项中的数组，数组的键名会被保存，数组值则是每个下拉选项的标签。
+
+![](https://user-images.githubusercontent.com/41773797/147612885-888dfd64-6256-482d-b4bc-840191306d2d.png)
+
+你可以使用 `searchable()` 方法启用搜索输入框，使之更容易找到选项:
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('authorId')
+    ->label('Author')
+    ->options(User::all()->pluck('name', 'id'))
+    ->searchable()
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613023-cb7d1907-e4d3-4a33-aa86-1c25d780c861.png)
+
+如果你有很多选项，需要根据数据库搜索或者其他外部数据源填充数据，你可以使用 `getSearchResultsUsing()` 和 `getOptionLabelUsing()` 方法代替 `options()` 。
+
+`getSearchResultsUsing()` 方法接收一个回调函数作为参数，该回调以 `$key => $value` 格式返回搜索结果。
+
+`getSearchResultsUsing()` 方法接收一个回调函数，该回调将选中的选项的 `$value` 转换成标签。
+
+```php
+Select::make('authorId')
+    ->searchable()
+    ->getSearchResultsUsing(fn (string $searchQuery) => User::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id'))
+    ->getOptionLabelUsing(fn ($value): ?string => User::find($value)?->name),
+```
+
+使用 `disablePlaceholderSelection()` 方法可以防止占位符被选中：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->default('draft')
+    ->disablePlaceholderSelection()
+```
+
+### Multi-select
+
+在 `Select` 组件上使用 `multiple()` 方法，允许你在下拉列表中进行多选：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('technologies')
+    ->multiple()
+    ->options([
+        'tailwind' => 'Tailwind CSS',
+        'alpine' => 'Alpine.js',
+        'laravel' => 'Laravel',
+        'livewire' => 'Laravel Livewire',
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613070-cd82703a-fa05-4f29-b0ac-3eb03b542077.png)
+
+这些选项以 JSON 格式返回。如果你使用的是 Eloquent，你应该在模型属性中添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class App extends Model
+{
+    protected $casts = [
+        'technologies' => 'array',
+    ];
+
+    // ...
+}
+```
+
+`getOptionLabelsUsing()` 方法可以用作对选中的选项值转成标签。注意，`getOptionLabelUsing()` 将被 `getOptionLabelsUsing()` 替换。
+
+### 依赖下拉列表
+
+通常情况下，你可能会需要用到"依赖"下拉列表，它基于其他字段控件的状态值填充选项。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/W_eNyimRi3w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+在[高级表单](advanced)区域提及的一些技术，需要使用依赖下拉列表。可使用这些技术对所有表单组件进行动态自定义。
+
+### 从关联中自动加载数据
+
+你可以使用`Select` 的 `relationship()` 方法，用以配置 `BelongTo` 关联模型，自动检索和保存选项：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('authorId')
+    ->relationship('author', 'name')
+```
+
+`multiple()` 方法可与 `relationship()` 方法联合使用，用来从 `BelongsToMany` 关联中自动加载数据：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('technologies')
+    ->multiple()
+    ->relationship('technologies', 'name')
+```
+
+> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](docs/admin)，可以跳过此步。
+
+你可以使用 `relationship()` 方法的第三个参数，自定义数据库查询:
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('authorId')
+    ->relationship('author', 'name')
+    ->preload()
+```
+
+你可以使用 `relationship()` 方法的第三个参数来自定义数据库查询检索选项：
+
+```php
+use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Builder;
+
+Select::make('authorId')
+    ->relationship('author', 'name', fn (Builder $query) => $query->withTrashed())
+```
+
+如果你想要自定义每个选项的标签，比如让其更具描述性、或者连接名和姓，你应该在数据库迁移中使用(virtual)虚拟字段:
+
+```php
+$table->string('full_name')->virtualAs('concat(first_name, \' \', last_name)');
+```
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('authorId')
+    ->relationship('author', 'full_name')
+```
+
+另外，你也可以使用 `getOptionLabelFromRecordUsing()` 方法将选中选项的 Eloquent 模型转换成标签。不过需要注意的是，这种方式比使用虚拟字段(virtual column)低效：
+
+```php
+use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
+
+Select::make('authorId')
+    ->relationship('author', 'first_name')
+    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+```
+
+#### 处理`MorphTo`关联
+
+`MorphTo` 关联比较特别，因为它使用户可以从一系列不同模型中选则记录。因此，有了 `MorphToSelect` 组件，实际上它不是一个 Select 字段，而是 Fieldset 中的两个 Select 字段。第一个 Select 字段允许你选择类型，第二个允许你选择对应类型的记录。
+
+要使用 `MorphToSelect`，你必须将 类型通过 `types()` 传入组件，使组件了解如何渲染不同类型选项：
+
+```php
+use Filament\Forms\Components\MorphToSelect;
+
+MorphToSelect::make('commentable')
+    ->types([
+        MorphToSelect\Type::make(Product::class)->titleColumnName('name'),
+        MorphToSelect\Type::make(Post::class)->titleColumnName('title'),
+    ])
+```
+
+`titleColumnName()` 被用作从Product或者Post中提取出标题。你也可以使用 `getOptionLabelFromRecordUsing` 提取选项标签：
+
+```php
+use Filament\Forms\Components\MorphToSelect;
+
+MorphToSelect::make('commentable')
+    ->types([
+        MorphToSelect\Type::make(Product::class)
+            ->getOptionLabelFromRecordUsing(fn (Product $record): string => "{$record->name} - {$record->slug}"),
+        MorphToSelect\Type::make(Post::class)->titleColumnName('title'),
+    ])
+```
+
+你也可以使用 `modifyOptionsQueryUsing()` 方法自定义数据查询检索选项：
+
+```php
+use Filament\Forms\Components\MorphToSelect;
+use Illuminate\Database\Eloquent\Builder;
+
+MorphToSelect::make('commentable')
+    ->types([
+        MorphToSelect\Type::make(Product::class)
+            ->titleColumnName('name')
+            ->modifyOptionsQueryUsing(fn (Builder $query) => $query->whereBelongsTo($this->team)),
+        MorphToSelect\Type::make(Post::class)
+            ->titleColumnName('title')
+            ->modifyOptionsQueryUsing(fn (Builder $query) => $query->whereBelongsTo($this->team)),
+    ])
+```
+
+> 在 Select 字段中许多选项对于 `MorphToSelect` 都是可用的，包括 `searchable()`、`preload()`、`allowHtml()` 和 `optionsLimit()`。
+
+#### 创建新记录
+
+你可以自定义表单，使之可以用来创建新纪录并附加到 `BelongsTo` 关联:
+
+```php
+use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
+
+Select::make('authorId')
+    ->relationship('author', 'name')
+    ->createOptionForm([
+        Forms\Components\TextInput::make('name')
+            ->required(),
+        Forms\Components\TextInput::make('email')
+            ->required()
+            ->email(),
+    ]),
+```
+
+这个表单会在模态框内打开，用户可以在里面填写数据。一旦表单提交，新记录就会被字段选中。
+
+由于HTML不支持嵌套 `<form>` 元素，你必须在视图的 `<form>` 表单之外渲染模态框。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，这已经被包含在内了：
+
+```blade
+<form wire:submit.prevent="submit">
+    {{ $this->form }}
+    
+    <button type="submit">
+        Submit
+    </button>
+</form>
+
+{{ $this->modal }}
+```
+
+## 复选框
+
+复选框(checkbox)组件，类似于[toggle](#toggle)，让你可以和布尔值交互。
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+Checkbox::make('is_admin')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613098-db8d3571-1835-4714-b422-619755c0b722.png)
+
+复选框字段有两种布局模式，inline 和 stacked。默认为inline。
+
+如果是inline，标签会紧邻着复选框：
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+Checkbox::make('is_admin')->inline()
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613098-db8d3571-1835-4714-b422-619755c0b722.png)
+
+如果是stacked，标签会在复选框之上：
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+Checkbox::make('is_admin')->inline(false)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613119-0bc731dd-fcdd-4c1a-9a26-cce2b0f589d2.png)
+
+如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到模型属性中：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
+
+    // ...
+}
+```
+
+## Toggle
+
+Toggle 组件，类似于 [复选框](#复选框)，用于和布尔值交互。
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613146-f5ebde21-f72d-44dd-b5c0-5d229fcd91ef.png)
+
+Toggle 字段控件有两种布局模式，inline 和 stacked。默认是inline(行内)。
+
+如果是inline，标签会紧挨着它：
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')->inline()
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613146-f5ebde21-f72d-44dd-b5c0-5d229fcd91ef.png)
+
+如果是stacked，标签会在它上面：
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')->inline(false)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613161-43bfa094-0916-4e01-b86d-dbcf8ee63a17.png)
+
+Toggle 也可以使用开/关图标。会被显示在手柄上，指示字段含义。参数必须是Blade模板图标组件：
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')
+    ->onIcon('heroicon-s-lightning-bolt')
+    ->offIcon('heroicon-s-user')
+```
+
+你也可以自定义每个状态显示的颜色。可用颜色包括 `primary`、`secondary`、`success`、`warning` 或 `danger`：
+
+```php
+use Filament\Forms\Components\Toggle;
+
+Toggle::make('is_admin')
+    ->onColor('success')
+    ->offColor('danger')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613184-9086c102-ad71-4c4e-9170-9a4201a80c66.png)
+
+如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting)到相应的模型属性上。
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
+
+    // ...
+}
+```
+
+## 复选框列表
+
+复选框列表让你可以从一组预定义的选项中选择多个值：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->options([
+        'tailwind' => 'TailwindCSS',
+        'alpine' => 'Alpine.js',
+        'laravel' => 'Laravel',
+        'livewire' => 'Laravel Livewire',
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147761423-bd6e99ec-104d-40c2-875a-fed1d638f2c3.png)
+
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加`array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)到模型属性中：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class App extends Model
+{
+    protected $casts = [
+        'technologies' => 'array',
+    ];
+
+    // ...
+}
+```
+
+你也可以使用 `columns()` 方法将选项分成对应的列数：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->options([
+        'tailwind' => 'TailwindCSS',
+        'alpine' => 'Alpine.js',
+        'laravel' => 'Laravel',
+        'livewire' => 'Laravel Livewire',
+    ])
+    ->columns(2)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147761438-558a9dcc-b81a-4fbe-a922-a6771407d928.png)
+
+此方法像[grid](layout#网格)的 `columns()` 方法一样，接收选项作为参数。你可以在不同的临界点中，以自适应的方式定制列数。
+
+你也可以使用 `bulkToggleable()` 方法让用户一次性切换所有复选框：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->options([
+        'tailwind' => 'Tailwind CSS',
+        'alpine' => 'Alpine.js',
+        'laravel' => 'Laravel',
+        'livewire' => 'Laravel Livewire',
+    ])
+    ->bulkToggleable()
+```
+
+### 自动从关联中获取数据
+
+你可以使用 `relationship()` 方法，配置关联模型用来自动检索和保存选项：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->relationship('technologies', 'name')
+```
+
+> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](/docs/zh-CN/2.x/admin)，可以跳过此步。
+
+你可以使用 `relationship()` 方法的第三个参数，自定义数据库查询检索选项：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+use Illuminate\Database\Eloquent\Builder;
+
+CheckboxList::make('technologies')
+    ->relationship('technologies', 'name', fn (Builder $query) => $query->withTrashed())
+```
+
+如果你想要自定义每个选项的标签，比如让它更具描述性、或者连接名和姓，你应该在数据库迁移中使用(virtual)虚拟字段:
+
+```php
+$table->string('full_name')->virtualAs('concat(first_name, \' \', last_name)');
+```
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('participants')
+    ->relationship('participants', 'full_name')
+```
+
+另外，你也可以使用 `getOptionLabelFromRecordUsing()` 方法将选中选项的Eloquent模型转换成标签。不过需要注意的是，这种方式会比使用虚拟字段(virtual column)性能低：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+use Illuminate\Database\Eloquent\Model;
+
+CheckboxList::make('participants')
+    ->relationship('participants', 'first_name')
+    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+```
+
+## 单选框
+
+单选框提供单选按钮组，用来从一个预定义的选项列表中选择一个值：
+
+```php
+use Filament\Forms\Components\Radio;
+
+Radio::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'scheduled' => 'Scheduled',
+        'published' => 'Published'
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613206-644bd6a4-4814-4a99-b398-d03625179bfa.png)
+
+你可以使用 `descriptions()` 方法提供对每个选项的描述：
+
+```php
+use Filament\Forms\Components\Radio;
+
+Radio::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'scheduled' => 'Scheduled',
+        'published' => 'Published'
+    ])
+    ->descriptions([
+        'draft' => 'Is not visible.',
+        'scheduled' => 'Will be visible.',
+        'published' => 'Is visible.'
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613223-0114ad7e-091c-43cf-b156-67cd0aaf5c0c.png)
+
+请确保在描述数组中使用和选项数组中同样的 `键(key)`，这样描述才能和选项匹配。
+
+如果你只是需要简单的布尔单选按钮组，带有"是/否"选项，你可以使用 `boolean()` 方法:
+
+```php
+Radio::make('feedback')
+    ->label('Do you like this post?')
+    ->boolean()
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613274-04745624-3ddd-46bb-b25c-1e756d6f4958.png)
+
+你可以使用标签在行内(inline)显示选项：
+
+```php
+Radio::make('feedback')
+    ->label('Do you like this post?')
+    ->boolean()
+    ->inline()
+```
+
+![](https://user-images.githubusercontent.com/41773797/147709853-198d54fb-1bb1-4e82-87d0-3034b9152f0e.png)
+
+## 日期时间选择器
+
+日期时间选择器(Date-time Picker)提供了选择日期和时间的交互接口。
+
+```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\TimePicker;
+
+DateTimePicker::make('published_at')
+DatePicker::make('date_of_birth')
+TimePicker::make('alarm_at')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613326-004b09c8-c224-4676-a70f-cf6b7e3f0306.png)
+
+你可以限制选择器可选的最小/最大日期。`minDate()` 和 `maxDate()` 方法接收一个 `DateTime` 实例(如 Carbon)或字符串作为参数：
+
+```php
+use Filament\Forms\Components\DatePicker;
+
+DatePicker::make('date_of_birth')
+    ->minDate(now()->subYears(150))
+    ->maxDate(now())
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613432-41e22381-af01-4f5e-8d0d-0ba535d1e444.png)
+
+你可以使用 `format()`方法，自定义存入数据库时的字段格式。它接收字符串日期格式，使用[PHP日期格式](https://www.php.net/manual/en/datetime.format.php)：
+
+```php
+use Filament\Forms\Components\DatePicker;
+
+DatePicker::make('date_of_birth')->format('d/m/Y')
+```
+
+你可以自定义字段的显示格式，以不同于存入数据库时候的格式。对此，使用 `displayFormat()` 方法，它也可以接收字符串日期格式，使用[PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+
+```php
+use Filament\Forms\Components\DatePicker;
+
+DatePicker::make('date_of_birth')->displayFormat('d/m/Y')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613473-51ffe805-2a7f-47e5-af8b-e7871e9c5a85.png)
+
+当使用的是时间选择器时，你可以使用 `withoutSeconds()` 方法禁用秒输入框：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('published_at')->withoutSeconds()
+```
+
+你也可以使用 `hoursStep()`、 `minutesStep()` 或 `secondsStep()` 方法，自定义输入小时/分钟/秒钟的增加间隔：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('published_at')
+    ->hoursStep(2)
+    ->minutesStep(15)
+    ->secondsStep(10)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613511-30d7b2d8-227a-42ff-a6c7-e080d22305ad.png)
+
+在某些国家，星期的第一天不是周一。使用 `forms.components.date_time_picker.first_day_of_week` 配置选项或者组件的 `firstDayOfWeek()` 方法，可以自定义时间选择器中星期的第一天。可接收的参数值从 0 到 7，周一是1，周日为 7 或 0：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('published_at')->firstDayOfWeek(7)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613536-6c2bdc63-03f8-4dd9-92eb-9a0aca5e7263.png)
+
+另外也有一些额外的便利方法，可以更方便地设置星期的第一天：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('published_at')->weekStartsOnMonday()
+DateTimePicker::make('published_at')->weekStartsOnSunday()
+```
+
+要禁用特定的日期：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('date')
+    ->label('Appointment date')
+    ->minDate(now())
+    ->maxDate(Carbon::now()->addDays(30))
+    ->disabledDates(['2022-10-02', '2022-10-05', '2022-10-15'])
+```
+
+你可以使用 `icon` 方法修改日历图标：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('date')
+    ->icon('heroicon-o-calendar')
+```
+
+此外，你也可以传入`false` 移除图标：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('date')
+    ->icon(false)
+```
+
+### 时区
+
+你可以使用 `timezone()` 方法，让用户可以管理自己的时区：
+
+```php
+use Filament\Forms\Components\DateTimePicker;
+
+DateTimePicker::make('published_at')->timezone('America/New_York')
+```
+
+日期仍然会使用应用配置的时区保存，日期在加载时会适用新的时区，表单保存时会转换回系统配置的时区。
+
+## 文件上传
+
+文件上传字段基于 [Filepond](https://pqina.nl/filepond)。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613556-62c62153-4d21-4801-8a71-040d528d5757.png)
+
+默认情况下，文件会被公开上传到默认的存储盘中。
+
+> 请注意，要正确地预览图片及其他文件，FilePond要求从与应用程序相同的域名提供文件，否则需要设置设置好 CORS 标头。请确保 `APP_URL` 环境变量设置正确，或者修改[文件系统](https://laravel.com/docs/10.x/filesystem)驱动，以设置正确的URL。如果你将文件托管在其他域名中，比如S3，请确保 CORS 表头设置正确。
+
+可以使用 `disk()`、`directory()` 和 `visibility()` 方法，修改文件保存的磁盘和目录，以及可见性： 
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->disk('s3')
+    ->directory('form-attachments')
+    ->visibility('private')
+```
+
+> 请注意，由开发者决定是否将文件从磁盘上删除，因为Filament不知道其他地方是否也依赖于他。一种自动实现的方法是监听[模型事件](https://laravel.com/docs/eloquent#events)。
+
+默认情况下，新上传的文件会生成随机文件名。可以使用 `preserveFilenames()` 方法，保留上传文件的原文件名：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')->preserveFilenames()
+```
+
+你可以使用 `getUploadedFileNameForStorageUsing()` 方法，在回调函数中返回字符串，这样就可以完全自定义文件名怎么生成：
+
+```php
+use Livewire\TemporaryUploadedFile;
+
+FileUpload::make('attachment')
+    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+        return (string) str($file->getClientOriginalName())->prepend('custom-prefix-');
+    })
+```
+
+使用 `storeFileNamesIn()` 方法，你可以在保留原始文件名的同时，使用随机生成的文件名：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->storeFileNamesIn('attachment_file_names')
+```
+
+`attachment_file_names` 中会保存你上传文件的原始文件名。
+
+你可以使用 `acceptedFileTypes()` 方法，传入MIME类型数组，来限制可以上传的文件类型。你也可以使用 `image()` 方法作为速记方法，允许所有图片的MIME类型。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('document')->acceptedFileTypes(['application/pdf'])
+FileUpload::make('image')->image()
+```
+
+你也可以限制上传文件的大小，以 KB 计算：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->minSize(512)
+    ->maxSize(1024)
+```
+
+> 要自定义 Livewire 默认的文件上传验证规则，包括最大 12MB 文件限制，请查阅相关[文档](https://laravel-livewire.com/docs/file-uploads#global-validation)
+
+Filepond 允许你在上传之前对图片进行裁切或者调整大小。你可以使用 `imageResizeMode()`、`imageCropAspectRatio()`、`imageResizeTargetHeight()` 和 `imageResizeTargetWidth()` 方法进行自定义。其他方法要生效，需先设置 `imageResizeMode()` - 将其设为 [`force`、`cover` 或 `contain`](https://pqina.nl/filepond/docs/api/plugins/image-resize)。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageResizeMode('cover')
+    ->imageCropAspectRatio('16:9')
+    ->imageResizeTargetWidth('1920')
+    ->imageResizeTargetHeight('1080')
+```
+
+你也可以修改Filepond组件的一般外观。这些方法可用的选项可以在[Filepond网站](https://pqina.nl/filepond/docs/api/instance/properties/#styles)查看。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->imagePreviewHeight('250')
+    ->loadingIndicatorPosition('left')
+    ->panelAspectRatio('2:1')
+    ->panelLayout('integrated')
+    ->removeUploadedFileButtonPosition('right')
+    ->uploadButtonPosition('left')
+    ->uploadProgressIndicatorPosition('left')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613590-9ee07ce7-a43e-46a0-bb40-7a21a3692aea.png)
+
+你也可以上传多个文件。网址会以 JSON 方式保存：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')->multiple()
+```
+
+如果你使用Eloquent保存这些网址，你需要添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)到模型属性中：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Message extends Model
+{
+    protected $casts = [
+        'attachments' => 'array',
+    ];
+
+    // ...
+}
+```
+
+使用 `minFiles()` 和 `maxFiles()` 方法，你可以自定义文件上传的数量：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->minFiles(2)
+    ->maxFiles(5)
+```
+
+使用 `enableReordering()` 方法，你也可以启用上传文件的重新排序功能：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multipe()
+    ->enableReordering()
+```
+
+使用 `enableOpen()` 方法，你可以添加按钮使文件可以在新的标签页中打开： 
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multipe()
+    ->enableOpen()
+```
+
+使用 `enableDownload()` 方法，你可以为每个上传文件添加一个下载按钮：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multipe()
+    ->enableDownload()
+```
+
+> Filament 也支持 [`spatie/laravel-medialibrary`](https://github.com/spatie/laravel-medialibrary)。更多信息可查看[插件文档](/docs/spatie-laravel-media-library-plugin)。
+
+## 富文本编辑器
+
+富文本编辑器让你可以编辑和预览HTML内容，上传图片。
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613608-b1236c72-d5cf-40d5-aa73-70c37a5c7e4d.png)
+
+你可以使用一系列便捷方法启用/禁用工具栏按钮：
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+    ->toolbarButtons([
+        'attachFiles',
+        'blockquote',
+        'bold',
+        'bulletList',
+        'codeBlock',
+        'h2',
+        'h3',
+        'italic',
+        'link',
+        'orderedList',
+        'redo',
+        'strike',
+        'undo',
+    ])
+RichEditor::make('content')
+    ->disableToolbarButtons([
+        'attachFiles',
+        'codeBlock',
+    ])
+RichEditor::make('content')
+    ->disableAllToolbarButtons()
+    ->enableToolbarButtons([
+        'bold',
+        'bulletList',
+        'italic',
+        'strike',
+    ])
+```
+
+你可以使用配置方法自定义图片如何上传：
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+    ->fileAttachmentsDisk('s3')
+    ->fileAttachmentsDirectory('attachments')
+    ->fileAttachmentsVisibility('private')
+```
+
+## Markdown编辑器
+
+Markdown 编辑器让你可以编辑和预览 markdown 内容，也可以上传图片。
+
+```php
+use Filament\Forms\Components\MarkdownEditor;
+
+MarkdownEditor::make('content')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613631-0f9254aa-0abb-4a2e-b9d7-bda1a01b8d57.png)
+
+你可以使用一系列便捷方法启用/禁用工具栏按钮：
+
+```php
+use Filament\Forms\Components\MarkdownEditor;
+
+MarkdownEditor::make('content')
+    ->toolbarButtons([
+        'attachFiles',
+        'bold',
+        'bulletList',
+        'codeBlock',
+        'edit',
+        'italic',
+        'link',
+        'orderedList',
+        'preview',
+        'strike',
+    ])
+MarkdownEditor::make('content')
+    ->disableToolbarButtons([
+        'attachFiles',
+        'codeBlock',
+    ])
+MarkdownEditor::make('content')
+    ->disableAllToolbarButtons()
+    ->enableToolbarButtons([
+        'bold',
+        'bulletList',
+        'edit',
+        'italic',
+        'preview',
+        'strike',
+    ])
+```
+
+你可以使用配置方法自定义图片如何上传：
+
+```php
+use Filament\Forms\Components\MarkdownEditor;
+
+MarkdownEditor::make('content')
+    ->fileAttachmentsDisk('s3')
+    ->fileAttachmentsDirectory('attachments')
+    ->fileAttachmentsVisibility('private')
+```
+
+## Hidden
+
+Hidden 组件让你可以在表单内创建一个带值的隐藏(hidden)字段。
+
+```php
+use Filament\Forms\Components\Hidden;
+
+Hidden::make('token')
+```
+
+## Repeater
+
+Repeater 组件让你在重复的表单组件中输出JSON数组。
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+
+Repeater::make('members')
+    ->schema([
+        TextInput::make('name')->required(),
+        Select::make('role')
+            ->options([
+                'member' => 'Member',
+                'administrator' => 'Administrator',
+                'owner' => 'Owner',
+            ])
+            ->required(),
+    ])
+    ->columns(2)
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613690-9c36779b-f3dc-4710-bdba-dc5c81ddd3cd.png)
+
+我们建议您将数据以 `JSON` 字段的形式保存在数据库中。另外，如果使用了 Eloquent，确保对该字段进行了 `array` cast。
+
+如上例所示，组件的 schema 可以在 `schema()` 方法中定义：
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
+
+Repeater::make('members')
+    ->schema([
+        TextInput::make('name')->required(),
+        // ...
+    ])
+```
+
+如果你想要使用多重 schema 代码块定义 Repeater 并使之可以以任何顺序重复，请使用 [builer](#builder)。
+
+使用 `defaultItems()` 方法，Repeater 默认会有一些特定数量的空项目。
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->defaultItems(3)
+```
+
+你可以设置标签，自定义显示在添加项目按钮上的文本。
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->createItemButtonLabel('Add member')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613748-6fdf2eff-de09-4ba0-8d01-68888802b152.png)
+
+你也可以阻止用户添加项目，删除项目或者在 Repeater 内移动项目：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->disableItemCreation()
+    ->disableItemDeletion()
+    ->disableItemMovement()
+```
+
+你可以使用 `minItems()` 和 `maxItems()` 方法自定义创建的 Item 数量：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->minItems(1)
+    ->maxItems(10)
+```
+
+### 可折叠
+
+Repeater 可以是可折叠的 `collapsible()`， 用来在长表单中选择性隐藏内容： 
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->schema([
+        // ...
+    ])
+    ->collapsible()
+```
+
+你也可以让它在默认情况下是折叠的：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->schema([
+        // ...
+    ])
+    ->collapsed()
+```
+
+### 克隆项目
+
+使用 `cloneable()` 方法，可以允许复制 repeater 项：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->schema([
+        // ...
+    ])
+    ->cloneable()
+```
+
+### 自动从关联中填充数据
+
+你可以使用 Repeater 的 `relationship()` 方法配置关联，自动检索和保存 Repeater 数据：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->relationship()
+    ->schema([
+        // ...
+    ])
+```
+
+>要启用该功能，**你也必须按照[关联字段](getting-started#关联字段)区域的指示进行设置**。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，可以忽略此步
+
+#### 排序项目
+
+默认情况下，对 `Repeater` 项目进行排序是被禁用的。这是因为关联模型需要有一个 `sort` 字段，用来保存关联记录的顺序。要启用排序，你可以使用 `orderable()` 方法：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+HasManyRepeater::make('qualifications')
+    ->relationship('qualifications')
+    ->schema([
+        // ...
+    ])
+    ->orderable()
+```
+
+本例假定你的关联模型中有一个 `sort` 字段。
+
+如果你使用了像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable)这样的包，使用了像 `order_column` 这样的字段名作为排序字段，你可以将其作为参数传入 `orderable()` 中：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->relationship('qualifications')
+    ->schema([
+        // ...
+    ])
+    ->orderable('order_column')
+```
+
+### 网格布局
+
+你可以使用 `grid()` 方法组织 Repeater 项目：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->grid(2)
+```
+
+该方法与[grid](layout#网格)的 `columns()` 方法相似，接收相同的参数选项。让你可以在不同临界点自定义网格列数。
+
+### 项目标签
+
+你可以使用 `itemLabel()` 方法，为 Repeater 项目添加标签：
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
+
+Repeater::make('members')
+    ->schema([
+        TextInput::make('name')
+            ->lazy(),
+    ])
+    ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
+```
+
+如果你希望项目标签动态更新，那么使用 `$state` 获取的字段，应该是 `reactive()` 或 `lazy()` 的。
+
+### 使用 `$get()` 访问父级字段值
+
+所有表单组件都可以[使用 `$get()` 和 `$set()`](advanced)获取其他字段的值。然而，在 Repeater 中使用可能会碰到异常。
+
+这是因为默认情况下，`$get()` 和 `$set()` 被限定在当前repeater项目中。也就是说，你可以在repeater项目中的其他字段交互，而不需要了解该表单属于哪一个repeater条目。
+
+其结果是，当你不能与repeater字段进行互动时，会感到困惑。我们使用 `../` 语法来解决此问题 - `$get('../../parent_field_name')`。
+
+假设你的表单数据结构如下：
+
+```php
+[
+    'client_id' => 1,
+
+    'repeater' => [
+        'item1' => [
+            'service_id' => 2,
+        ],
+    ],
+]
+```
+
+你需要在 repeater 项目中检索 `client_id` 的值。
+
+`$get()` 用于检索当前的repeater项， 因此 `$get('client_id')` 意味着 `$get('repeater.item1.client_id')`。
+
+你可以使用 `../` 切换到数据结构的上一级，因此 `$get('../client_id')` 相当于 `$get('repeater.client_id')`，`$get('../../client_id')` 相当于 `$get('client_id')`。
+
+## Builder
+
+类似于[Repeater](#repeater)，Builder 组件让你可以以JSON数组的形式输出重复的表单组件。所有不同的是，Repeater 只定义了一个需要重复的表单的 shema，而 Builder 允许定义多个 schema 代码块，你可以以任何顺序进行排序。这有助于创建更高级的数组结构。
+
+Builder 组件的主要用途，是使用预定义的代码块来搭建网页内容。下例在页面内容中为不同的元素定义了多个代码块。在你网站的前端，你可以使用 JSON 或者你需要的格式遍历每个代码块。
+
+```php
+use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+
+Builder::make('content')
+    ->blocks([
+        Builder\Block::make('heading')
+            ->schema([
+                TextInput::make('content')
+                    ->label('Heading')
+                    ->required(),
+                Select::make('level')
+                    ->options([
+                        'h1' => 'Heading 1',
+                        'h2' => 'Heading 2',
+                        'h3' => 'Heading 3',
+                        'h4' => 'Heading 4',
+                        'h5' => 'Heading 5',
+                        'h6' => 'Heading 6',
+                    ])
+                    ->required(),
+            ]),
+        Builder\Block::make('paragraph')
+            ->schema([
+                MarkdownEditor::make('content')
+                    ->label('Paragraph')
+                    ->required(),
+            ]),
+        Builder\Block::make('image')
+            ->schema([
+                FileUpload::make('url')
+                    ->label('Image')
+                    ->image()
+                    ->required(),
+                TextInput::make('alt')
+                    ->label('Alt text')
+                    ->required(),
+            ]),
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147613850-8693abe9-78c9-4f01-b40e-9cd9a567e168.png)
+
+建议在数据库中以 JSON 方式保存 Builder 的数据。另外，如果使用的是 Eloquent，确保对字段进行 `array` 造型。
+
+如上例所示，代码块被定义在组件的 `blocks()` 方法中。代码块(Block) 是 `Builder\Block` 对象，有一个唯一名称以及一个组件 schema:
+
+```php
+use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\TextInput;
+
+Builder::make('content')
+    ->blocks([
+        Builder\Block::make('heading')
+            ->schema([
+                TextInput::make('content')->required(),
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+默认情况下，代码块的标签会基于其名称自动生成。要重写代码块标签，请使用 `label()` 方法。如果你想使用[本地化翻译字符](https://laravel.com/docs/localization#retrieving-translation-strings)，以此自定义标签是个有效的方式：
+
+```php
+use Filament\Forms\Components\Builder;
+
+Builder\Block::make('heading')->label(__('blocks.heading'))
+```
+
+Block 也可以添加图标，显示在标签旁边。`icon()` 方法接收Blade图标组件作为参数：
+
+```php
+use Filament\Forms\Components\Builder;
+
+Builder\Block::make('heading')->icon('heroicon-o-bookmark')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614039-d9aa43dd-acfe-43b6-9cd1-1fc322aa4526.png)
+
+你也可以使用 `minItems()` 和 `maxItems()` 方法自定义可以创建的项目数量：
+
+```php
+use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\TextInput;
+
+Builder::make('content')
+    ->blocks([
+        // ...
+    ])
+    ->minItems(1)
+    ->maxItems(10)
+```
+
+### 可折叠
+
+可以使用 `collapsible()` 方法，在长表单中选择性隐藏内容：
+
+```php
+use Filament\Forms\Components\Builder;
+
+Builder::make('content')
+    ->blocks([
+        // ...
+    ])
+    ->collapsible()
+```
+
+可以默认折叠所有项目：
+
+```php
+use Filament\Forms\Components\Builder;
+
+Builder::make('content')
+    ->blocks([
+        // ...
+    ])
+    ->collapsed()
+```
+
+## 标签输入框
+
+标签(Tag)输入组件让你可以和标签列表交互。
+
+默认情况下，标签以 JOSN 方式保存：
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614098-14d6eecb-2674-49b6-a5ee-e963c4d88a6e.png)
+
+如果你使用 Eloquent 保存 JSON 标签，你应该在模型属性中添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)。
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    protected $casts = [
+        'tags' => 'array',
+    ];
+
+    // ...
+}
+```
+
+你也可以用分隔字符串保存 Tag 标签。要启用这种方法，在 `separator()` 方法传入分隔字符：
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')->separator(',')
+```
+
+标签输入框可以使用自动补全建议。要启用这个功能，在 `suggestions()` 方法中传入一个数组：
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')
+    ->suggestions([
+        'tailwindcss',
+        'alpinejs',
+        'laravel',
+        'livewire',
+    ])
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614115-7570a6cb-dd91-4912-8adf-e54a51f1c567.png)
+
+> Filament 也支持 [`spatie/laravel-tags`](https://github.com/spatie/laravel-tags)。更多信息可查看[插件文档](/docs/spatie-laravel-tags-plugin)
+
+## 文本区
+
+文本区(textarea)让你可以和多行字符串进行交互：
+
+```php
+use Filament\Forms\Components\Textarea;
+
+Textarea::make('description')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614131-e3db8d23-5045-4e0e-8de4-30823a4af362.png)
+
+通过定义 `rows()` 和 `cols()` 方法来调整文本区的大小：
+
+```php
+use Filament\Forms\Components\Textarea;
+
+Textarea::make('description')
+    ->rows(10)
+    ->cols(20)
+```
+
+你可以设置 `minLength()` 和 `maxLength()` 方法限制字符串长度。这些方法同时添加了前端和后端验证器：
+
+```php
+use Filament\Forms\Components\Textarea;
+
+Textarea::make('description')
+    ->minLength(50)
+    ->maxLength(500)
+```
+
+## 键值对
+
+键值对(key-value)字段让你可以与一维 JSON 对象进行交互:
+
+```php
+use Filament\Forms\Components\KeyValue;
+
+KeyValue::make('meta')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614182-52756a59-a9c4-4371-ac61-cd77c977808e.png)
+
+你可以使用 `keyLable()` 和 `valueLabel()` 方法，自定义键值对字段的标签：
+
+```php
+use Filament\Forms\Components\KeyValue;
+
+KeyValue::make('meta')
+    ->keyLabel('Property name')
+    ->valueLabel('Property value')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614196-27341757-b50e-45c2-8b40-728cb985d2cd.png)
+
+你也可以禁止用户添加行，删除行，或者编辑行：
+
+```php
+use Filament\Forms\Components\KeyValue;
+
+KeyValue::make('meta')
+    ->disableAddingRows()
+    ->disableDeletingRows()
+    ->disableEditingKeys()
+```
+
+你可以允许用户在表格中对行重新排序:
+
+```php
+use Filament\Forms\Components\KeyValue;
+
+KeyValue::make('meta')
+    ->reorderable()
+```
+
+你也可以使用 `keyPlaceholder()` 和 `valuePlaceholder()` 方法为键值对字段添加占位符：
+
+```php
+use Filament\Forms\Components\KeyValue;
+
+KeyValue::make('meta')
+    ->keyPlaceholder('Property name')
+    ->valuePlaceholder('Property value')
+```
+
+![](https://user-images.githubusercontent.com/41773797/147614208-936fa7ee-f719-466f-b7de-56ecc2558c0a.png)
+
+## 颜色选择器
+
+颜色选择器(Color Picker)组件让你可以以一系列格式选择颜色。
+
+默认情况下，组件使用HEX(16进制)格式：
+
+```php
+use Filament\Forms\Components\ColorPicker;
+
+ColorPicker::make('color')
+```
+
+![](https://user-images.githubusercontent.com/41773797/163201755-8926ce35-0d72-42b0-bd31-8967ba40f089.png)
+
+另外，你可以使用不同格式:
+
+```php
+use Filament\Forms\Components\ColorPicker;
+
+ColorPicker::make('hsl_color')->hsl()
+ColorPicker::make('rgb_color')->rgb()
+ColorPicker::make('rgba_color')->rgba()
+```
+
+## 视图字段
+
+除了[创建自定义字段](#创建自定义字段)，你可以创造"视图(view)"字段，让你可以不需要创建另外的PHP类就可以创建自定义字段。
+
+```php
+use Filament\Forms\Components\ViewField;
+
+ViewField::make('notifications')->view('filament.forms.components.range-slider')
+```
+
+在你的视图内，你可以使用 Livewire和 Alpine.js 与表单组件进行状态交互。 
+
+视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding)进行数据绑定, 或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互。
+
+使用 [Livewire's entangle](https://laravel-livewire.com/docs/2.x/alpine-js#sharing-state) 与 Alpine.js 共享 state:
+
+```blade
+<x-dynamic-component
+    :component="$getFieldWrapperView()"
+    :id="$getId()"
+    :label="$getLabel()"
+    :label-sr-only="$isLabelHidden()"
+    :helper-text="$getHelperText()"
+    :hint="$getHint()"
+    :hint-action="$getHintAction()"
+    :hint-color="$getHintColor()"
+    :hint-icon="$getHintIcon()"
+    :required="$isRequired()"
+    :state-path="$getStatePath()"
+>
+    <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}').defer }">
+        <!-- Interact with the `state` property in Alpine.js -->
+    </div>
+</x-dynamic-component>
+```
+
+或者，你可以使用[`wire:model`](https://laravel-livewire.com/docs/properties#data-binding)将其值绑定到Livewire属性：
+
+```blade
+<x-dynamic-component
+    :component="$getFieldWrapperView()"
+    :id="$getId()"
+    :label="$getLabel()"
+    :label-sr-only="$isLabelHidden()"
+    :helper-text="$getHelperText()"
+    :hint="$getHint()"
+    :hint-action="$getHintAction()"
+    :hint-color="$getHintColor()"
+    :hint-icon="$getHintIcon()"
+    :required="$isRequired()"
+    :state-path="$getStatePath()"
+>
+    <input wire:model.defer="{{ $getStatePath() }}" />
+</x-dynamic-component>
+```
+
+## 创建自定义字段
+
+你也可以创建自定义的表单类和视图，用来在应用内复用，甚至向社区发布插件。
+
+> 如果你只是需要创建一次性使用的简单自定义字段，你可以使用[视图字段](#视图字段)来渲染自定义模板文件。
+
+要自定义表单字段类和视图，你可以使用以下命令:
+
+```bash
+php artisan make:form-field RangeSlider
+```
+
+该命令会创建如下字段类：
+
+```php
+use Filament\Forms\Components\Field;
+
+class RangeSlider extends Field
+{
+    protected string $view = 'filament.forms.components.range-slider';
+}
+```
+
+在你的视图内，你可以使用 Livewire 和 Alpine.js 与表单组件进行状态交互。 
+
+视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定，或者[`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互:
+
+```blade
+<x-dynamic-component
+    :component="$getFieldWrapperView()"
+    :id="$getId()"
+    :label="$getLabel()"
+    :label-sr-only="$isLabelHidden()"
+    :helper-text="$getHelperText()"
+    :hint="$getHint()"
+    :hint-action="$getHintAction()"
+    :hint-color="$getHintColor()"
+    :hint-icon="$getHintIcon()"
+    :required="$isRequired()"
+    :state-path="$getStatePath()"
+>
+    <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}').defer }">
+        <!-- Interact with the `state` property in Alpine.js -->
+    </div>
+</x-dynamic-component>
+```

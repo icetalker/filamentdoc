@@ -1,0 +1,69 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/03-pages/01-getting-started.md"
+title: 开始
+description: Filament 允许你为后台面板创建完全自定义的页面。
+---
+
+Filament 允许你为后台面板创建完全自定义的页面。
+
+## 创建页面
+
+要创建新页面，你可以:
+
+```bash
+php artisan make:filament-page Settings
+```
+
+该命令会生成两个文件 - 一个位于Filament目录的 `/Pages` 文件夹中的页面类，以及一个位于 Filament 视图目录的 `/pages` 文件夹中的视图文件。
+
+页面类是全页[Livewire](https://laravel-livewire.com)组件，带有一些你可以在后台面板中使用的额外功能。 
+
+## 在导航中条件性隐藏页面
+
+你可以通过重写页面类的 `shouldRegisterNavigation()` 方法来隐藏菜单。这对于控制哪些用户可以在侧边栏中查看页面非常有用。
+
+```php
+protected static function shouldRegisterNavigation(): bool
+{
+    return auth()->user()->canManageSettings();
+}
+```
+
+请注意，此时所有用户仍然可以直接通过 URL 访问该页面，因此你必须同时检查页面的 `mount()` 方法进行全面限制:
+
+```php
+public function mount(): void
+{
+    abort_unless(auth()->user()->canManageSettings(), 403);
+}
+```
+
+## 自定义
+
+Filament 会基于页面名称自动生成标签、导航标签和 URL(Slug)。你可以使用页面类的静态属性重写：
+
+```php
+protected static ?string $title = 'Custom Page Title';
+
+protected static ?string $navigationLabel = 'Custom Navigation Label';
+
+protected static ?string $slug = 'custom-url-slug';
+```
+
+你也可以为任何页面指定自定义页头(header)和页尾(footer)。在 `getHeader()` 和 `getFooter()` 方法中返回：
+
+```php
+
+use Illuminate\Contracts\View\View;
+
+protected function getHeader(): View
+{
+    return view('filament.settings.custom-header');
+}
+
+protected function getFooter(): View
+{
+    return view('filament.settings.custom-footer');
+}
+```

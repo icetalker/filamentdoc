@@ -1,0 +1,51 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/13-relationships.md"
+title: 字段关联
+---
+
+# 展示关联中的数据
+
+你可以使用“点语法”，在关联中访问字段。关联名在前，然后是点号，最后是要展示的字段名：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('author.name')
+```
+
+## 计数关联
+
+如果你想要在一个表格字段中计算关联记录的数量，你可以使用 `count()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('users_count')->counts('users')
+```
+
+本例中，`users` 是要统计的模型关联的方法名。表格字段名必须是 `users_count`，因为这是[Laravel使用](https://laravel.com/docs/eloquent-relationships#counting-related-models)的用于存储这类结果的命名规范。
+
+## 查询关联是否存在
+
+如果你只是想检查关联模型中是否有相关记录，你可以使用 `exists()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('users_exists')->exists('users')
+```
+
+本例中，`users` 是模型关联的名字。表格字段名必须是 `users_exists`，因为这是[Laravel使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。
+
+## 聚合关联
+
+Filament 提供了诸如 `avg()`、`max()`、`min()` 和 `sum()` 多个方法来聚合关联字段。比如，你想要在一个字段中显示该字段下所有相关记录的平均值，你可以使用 `avg()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('users_avg_age')->avg('users', 'age')
+```
+
+本例中，`users` 是模型关联的名字，`age` 是需要被平均的字段名。表格字段名必须是 `users_avg_age`，因为这是[Laravel使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。

@@ -1,0 +1,472 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/03-creating-records.md"
+title: 新建记录
+description: Filament 后台面板集成了Filament 表单构造器，使得开发者可以使用表单构造器快速创建表单、开发新建记录页面。
+keywords: [Filament Admin, 资源管理器 ,新建记录, 新建页面, ]
+---
+
+## 保存前自定义数据
+
+有时，你需要在保存到数据库之前修改表单数据。你可以定义 `mutateFormDataBeforeCreate()` 方法，使其接收 `$data` 数组作为参数，并返回修改过的版本：
+
+```php
+protected function mutateFormDataBeforeCreate(array $data): array
+{
+    $data['user_id'] = auth()->id();
+
+    return $data;
+}
+```
+
+此外，如果你是通过模态框操作新建记录：
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->mutateFormDataUsing(function (array $data): array {
+        $data['user_id'] = auth()->id();
+
+        return $data;
+    })
+```
+
+## 自定义新建过程
+
+你可以使用 `handleRecordCreation()` 方法调整记录创建方式：
+
+```php
+
+use Illuminate\Database\Eloquent\Model;
+
+protected function handleRecordCreation(array $data): Model
+{
+    return static::getModel()::create($data);
+}
+```
+
+此外，如果你是通过模态框操作新建记录：
+
+```php
+use Filament\Pages\Actions\CreateAction;
+use Illuminate\Database\Eloquent\Model;
+
+CreateAction::make()
+    ->using(function (array $data): Model {
+        return static::getModel()::create($data);
+    })
+```
+
+## 自定义表单重定向
+
+默认情况下，表单保存后，用户会被重定向到资源[编辑页](editing-records)，或[查看页](viewing-records)(当其存在时)。
+
+你可以重写 `getRedirectUrl()` 自定义表单保存后的跳转页面。
+
+比如，表单可以跳转回[列表页](listing-records)：
+
+```php
+protected function getRedirectUrl(): string
+{
+    return $this->getResource()::getUrl('index');
+}
+```
+
+如果你想跳转到之前的页面，否则再到首页：
+
+```php
+protected function getRedirectUrl(): string
+{
+    return $this->previousUrl ?? $this->getResource()::getUrl('index');
+}
+```
+
+## 自定义保存通知
+
+当记录创建成功，会派送一个通知给用户，告知操作成功。
+
+要自定义通知标题，在创建页类中定义 `getCreatedNotificationTitle()` 方法:
+
+```php
+protected function getCreatedNotificationTitle(): ?string
+{
+    return 'User registered';
+}
+```
+
+另外，如果你是在模态框操作中创建记录:
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->successNotificationTitle('User registered')
+```
+
+你可以在新建页类中通过重写 `getCreatedNotification()` 方法自定义整个通知：
+
+```php
+use Filament\Notifications\Notification;
+
+protected function getCreatedNotification(): ?Notification
+{
+    return Notification::make()
+        ->success()
+        ->title('User registered')
+        ->body('The user has been created successfully.');
+}
+```
+
+另外，如果你是在模态框操作中创建记录：
+
+```php
+use Filament\Notifications\Notification;
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->successNotification(
+       Notification::make()
+            ->success()
+            ->title('User registered')
+            ->body('The user has been created successfully.'),
+    )
+```
+
+要完全禁用通知，在新建页类的 `getCreatedNotification()` 方法中返回 null:
+
+```php
+use Filament\Notifications\Notification;
+
+protected function getCreatedNotification(): ?Notification
+{
+    return null;
+}
+```
+
+此外，如果你通过模态框操作中新建记录：
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->successNotification(null)
+```
+
+## 生命周期钩子
+
+钩子可用在页面生命周期的各种节点中执行代码，比如表单数据保存之前。要启用钩子，在页面类中以钩子名新建一个 protected 修饰的方法:
+
+```php
+protected function beforeCreate(): void
+{
+    // ...
+}
+```
+
+此例中，`beforeCreate()` 方法会在表单数据保存到数据库之前被调用。
+
+新建页还有一些可用的钩子:
+
+```php
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateUser extends CreateRecord
+{
+    // ...
+
+    protected function beforeFill(): void
+    {
+        // 在表单填充默认值之前运行
+    }
+
+    protected function afterFill(): void
+    {
+        // 在表单填充默认值之后运行
+    }
+
+    protected function beforeValidate(): void
+    {
+        // 表单提交后，表单验证之前运行
+    }
+
+    protected function afterValidate(): void
+    {
+        // 表单提交后，表单验证之后运行
+    }
+
+    protected function beforeCreate(): void
+    {
+        // 表单字段保存到数据库之前运行
+    }
+
+    protected function afterCreate(): void
+    {
+        // 表单字段保存到数据库之后运行
+    }
+}
+```
+
+此外，如果你是通过模态框操作新建记录：
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->beforeFormFilled(function () {
+        // Runs before the form fields are populated with their default values.
+    })
+    ->afterFormFilled(function () {
+        // Runs after the form fields are populated with their default values.
+    })
+    ->beforeFormValidated(function () {
+        // Runs before the form fields are validated when the form is submitted.
+    })
+    ->afterFormValidated(function () {
+        // Runs after the form fields are validated when the form is submitted.
+    })
+    ->before(function () {
+        // Runs before the form fields are saved to the database.
+    })
+    ->after(function () {
+        // Runs after the form fields are saved to the database.
+    })
+```
+
+## 停止新建处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个新建处理过程：
+
+```php
+se Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+
+protected function beforeCreate(): void
+{
+    if (! $this->record->team->subscribed()) {
+        Notification::make()
+            ->warning()
+            ->title('You don\'t have an active subscription!')
+            ->body('Choose a plan to continue.')
+            ->persistent()
+            ->actions([
+                Action::make('subscribe')
+                    ->button()
+                    ->url(route('subscribe'), shouldOpenInNewTab: true),
+            ])
+            ->send();
+    
+        $this->halt();
+    }
+}
+```
+
+此外，如果你是通过模态框操作新建记录：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->before(function (CreateAction $action) {
+        if (! $this->record->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 授权
+
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
+
+如果模型策略的 `create()` 方法中返回的是 `true()`，用户可以访问新建页。 
+
+## Wizards
+
+你可以简单地将新建过程转换成多个步骤。
+
+在页面类中，添加相应的 `HasWizard` trait:
+
+```php
+use App\Filament\Resources\CategoryResource;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateCategory extends CreateRecord
+{
+    use CreateRecord\Concerns\HasWizard;
+    
+    protected static string $resource = CategoryResource::class;
+
+    protected function getSteps(): array
+    {
+        return [
+            // ...
+        ];
+    }
+}
+```
+
+在 `getSteps()` 数组中，返回[wizard步骤](../../forms/layout#wizard)：
+
+```php
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Wizard\Step;
+
+protected function getSteps(): array
+{
+    return [
+        Step::make('Name')
+            ->description('Give the category a clear and unique name')
+            ->schema([
+                TextInput::make('name')
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                TextInput::make('slug')
+                    ->disabled()
+                    ->required()
+                    ->unique(Category::class, 'slug', fn ($record) => $record),
+            ]),
+        Step::make('Description')
+            ->description('Add some extra details')
+            ->schema([
+                MarkdownEditor::make('description')
+                    ->columnSpan('full'),
+            ]),
+        Step::make('Visibility')
+            ->description('Control who can view it')
+            ->schema([
+                Toggle::make('is_visible')
+                    ->label('Visible to customers.')
+                    ->default(true),
+            ]),
+    ];
+}
+```
+
+此外，如果你通过模态框中新建记录，只需定义 `steps()` 数组并传入 `Step` 对象:
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->steps([
+        // ...
+    ])
+```
+
+现在，你可以访问新建页面，查看在操作中查看向导了！编辑页仍然可以使用资源类中定义的表单。
+
+如果你想要允许自由导航，使所有步骤都可以跳过，重写 `hasSkippableSteps()` 方法：
+
+```php
+public function hasSkippableSteps(): bool
+{
+      return true;
+}
+```
+
+此外，如果你通过模态框中新建记录：
+
+```php
+use Filament\Pages\Actions\CreateAction;
+
+CreateAction::make()
+    ->steps([
+        // ...
+    ])
+    ->skippableSteps()
+```
+
+### 资源表单和向导中共用字段
+
+如果你想减少资源表单和向导步骤之间的重复工作量，可以为表单字段提取出公共的静态资源方法，这样就能简单地从中找到资源或者向导需要字段实例：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Resources\Resource;
+
+class CategoryResource extends Resource
+{
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                static::getNameFormField(),
+                static::getSlugFormField(),
+                // ...
+            ]);
+    }
+    
+    public static function getNameFormField(): Forms\Components\TextInput
+    {
+        return TextInput::make('name')
+            ->required()
+            ->reactive()
+            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)));
+    }
+    
+    public static function getSlugFormField(): Forms\Components\TextInput
+    {
+        return TextInput::make('slug')
+            ->disabled()
+            ->required()
+            ->unique(Category::class, 'slug', fn ($record) => $record);
+    }
+}
+```
+
+```php
+use App\Filament\Resources\CategoryResource;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateCategory extends CreateRecord
+{
+    use CreateRecord\Concerns\HasWizard;
+    
+    protected static string $resource = CategoryResource::class;
+
+    protected function getSteps(): array
+    {
+        return [
+            Step::make('Name')
+                ->description('Give the category a clear and unique name')
+                ->schema([
+                    CategoryResource::getNameFormField(),
+                    CategoryResource::getSlugFormField(),
+                ]),
+            // ...
+        ];
+    }
+}
+```
+
+## 自定义视图
+
+要进一步自定义，你可以覆盖页面类的静态 `$view` 属性：
+
+```php
+protected static string $view = 'filament.resources.users.pages.create-user';
+```

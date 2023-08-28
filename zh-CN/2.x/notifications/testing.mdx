@@ -1,0 +1,65 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/notifications/docs/06-testing.md"
+title: 测试
+---
+
+所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。当然，你也可以使用 PHPUnit。
+
+## Session 通知
+
+使用 `assertNotified()` 辅助函数，断言通知是否已经用 session 发送：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('sends a notification', function () {
+    livewire(CreatePost::class)
+        ->assertNotified();
+});
+```
+
+```php
+use Filament\Notifications\Notification
+
+it('sends a notification', function () {
+    Notification::assertNotified();
+});
+```
+
+```php
+use function Filament\Notifications\Testing\assertNotified;
+
+it('sends a notification', function () {
+    assertNotified();
+});
+```
+
+你可以传入可选的通知标题测试：
+
+```php
+use Filament\Notifications\Notification;
+use function Pest\Livewire\livewire;
+
+it('sends a notification', function () {
+    livewire(CreatePost::class)
+        ->assertNotified('Unable to create post');
+});
+```
+
+Or test if the exact notification was sent:
+
+```php
+use Filament\Notifications\Notification;
+use function Pest\Livewire\livewire;
+
+it('sends a notification', function () {
+    livewire(CreatePost::class)
+        ->assertNotified(
+            Notification::make()
+                ->danger(),
+                ->title('Unable to create post')
+                ->body('Something went wrong.'),
+        );
+});
+```

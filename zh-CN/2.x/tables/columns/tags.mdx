@@ -1,0 +1,38 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/06-tags.md"
+title: 标签字段
+---
+
+标签字段渲染从数组中获取的标签列表：
+
+```php
+use Filament\Tables\Columns\TagsColumn;
+
+TagsColumn::make('tags')
+```
+
+确保在模型属性中添加了 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)。
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    protected $casts = [
+        'tags' => 'array',
+    ];
+
+    // ...
+}
+```
+
+## 使用分隔符
+
+除了使用数组，你也可以使用分隔的字符串。在 `separator()` 方法中传入分隔符，就可以使用：
+
+```php
+use Filament\Tables\Columns\TagsColumn;
+
+TagsColumn::make('tags')->separator(',')
+```

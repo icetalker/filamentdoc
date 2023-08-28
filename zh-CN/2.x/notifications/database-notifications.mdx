@@ -1,0 +1,155 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/notifications/docs/03-database-notifications.md"
+title: 数据库通知
+---
+
+> 请确保此包已经[安装](installation)了 - 并将 `@livewire('notifications')` 插入到 Blade 布局文件中。
+
+你同时必须添加 [Laravel 通知表](https://laravel.com/docs/notifications#database-prerequisites)到数据库中：
+
+```bash
+php artisan notifications:table
+```
+
+> 如果你用的是 PostgreSQL，请将 migration 中的 `data` 字段设置为 `json`：`$table->json('data')`。
+
+> 如果你的 `User` 模型使用 UUID，请确保 `notifiable` 列使用 `uuidMorphs()`: `$table->uuidMorphs('notifiable')`.
+
+首先，你必须[发布配置文件](installation#发布配置文件)：
+
+在配置文件中，有一个 `database` 键。要启用通知：
+
+```php
+'database' => [
+    'enabled' => true,
+    // ...
+],
+```
+
+数据库通知会在模态框中渲染。要打开这一模态框，你必须在视图中有一个“触发”按钮。在应用中创建新的触发按钮组件，比如在 `/resources/views/notifications/database-notifications-trigger.blade.php` 文件中：
+
+```blade
+<button type="button">
+    Notifications ({{ $unreadNotificationsCount }} unread)
+</button>
+```
+
+`$unreadNotificationsCount` 是一个自动传入视图的变量，它提供了用户未读通知的实时数量。
+
+在配置文件中，指向新的触发视图：
+
+```php
+'database' => [
+    'enabled' => true,
+    'trigger' => 'notifications.database-notifications-trigger',
+    // ...
+],
+```
+
+然后，只需将 `@livewire('notifications')` 组件移动到你希望渲染数据库通知触发按钮的HTML中的相应位置。现在应该可以看到触发按钮了，点击按钮就能打开数据库通知模态框。
+
+## 发送通知
+
+有多种方法可用于发送广播通知，取决于哪一种更适合你。
+
+你可以使用fluent API:
+
+```php
+use Filament\Notifications\Notification;
+
+$recipient = auth()->user();
+
+Notification::make()
+    ->title('Saved successfully')
+    ->sendToDatabase($recipient);
+```
+
+或者，使用 `notify()` 方法：
+
+```php
+use Filament\Notifications\Notification;
+
+$recipient = auth()->user();
+
+$recipient->notify(
+    Notification::make()
+        ->title('Saved successfully')
+        ->toDatabase(),
+)
+```
+
+此外，可使用传统 [Laravel 通知类](https://laravel.com/docs/notifications#generating-notifications)返回通知给 `toBroadcast()` 方法：
+
+```php
+use App\Models\User;
+use Filament\Notifications\Notification;
+
+public function toDatabase(User $notifiable): array
+{
+    return Notification::make()
+        ->title('Saved successfully')
+        ->getDatabaseMessage();
+}
+```
+
+## 接收通知
+
+如果不进行配置，只会在页面首次加载时收到数据库通知。
+
+### 轮询
+
+轮询是定期向服务器发送请求，检查是否有新通知的操作。此方法安装简单，不过不是可扩展的方案因为它会增加服务器压力。
+
+默认情况下，配置文件每 30 秒发起一次轮询：
+
+```php
+'database' => [
+    'enabled' => true,
+    'polling_interval' => '30s',
+    // ...
+],
+```
+
+你可以完全禁用轮询：
+
+```php
+'database' => [
+    'enabled' => true,
+    'polling_interval' => null,
+    // ...
+],
+```
+
+### Echo
+
+此外，也可以本地集成 [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation)。请确保已经安装了 Echo， 以及[服务端 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
+
+一旦安装了 websocket，在发送数据库通知后，你可以发起 `DatabaseNotificationsSent` 事件，使用户立即获取新的通知：
+
+```php
+use Filament\Notifications\Events\DatabaseNotificationsSent;
+use Filament\Notifications\Notification;
+
+$recipient = auth()->user();
+
+Notification::make()
+    ->title('Saved successfully')
+    ->sendToDatabase($recipient);
+    
+event(new DatabaseNotificationsSent($recipient));
+```
+
+## 打开通知模态框
+
+除了上述渲染触发按钮，你也可以通过派发(dispatch) `open-modal` 浏览器事件，在任何地方中打开通知模态框：
+
+```blade
+<button
+    x-data="{}"
+    x-on:click="$dispatch('open-modal', { id: 'database-notifications' })"
+    type="button"
+>
+    Notifications
+</button>
+```

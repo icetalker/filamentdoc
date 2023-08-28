@@ -1,0 +1,267 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/05-navigation.md"
+title: 导航
+description: 开发者可以自定义导航菜单，包括添加徽章、进行分组、排序、自定义图标、激活图标等多种功能。
+---
+
+## 开始
+
+默认情况下，Filament 会为每一个 [资源类](resources) 和 [自定义页面](pages) 注册导航菜单。这些类中包含一些你可以重写的静态属性和静态方法，用以配置导航菜单和显示顺序：
+
+```php
+protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+protected static ?string $navigationLabel = 'Custom Navigation Label';
+
+protected static ?int $navigationSort = 3;
+
+```
+
+`$navigationIcon` 属性支持任何形式的 Blade 组件名，会传送一套格式化的类作为参数。默认安装了[Blade Heroicons V1](https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1) 图标库，因此你可以开箱即用使用任何 [Heroicon v1](https://v1.heroicons.com) 的图标名。除此之外，你也可以创建你自己自定义的 ICON 组件或者安装其他图标库。
+
+## 导航菜单徽章
+
+要在导航菜单中添加徽章，可以使用 `getNavigaionBadge()` 方法，返回徽章内容：
+
+```php
+protected static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+```
+
+如果徽章值通过 `getNavigationBadge()` 返回，默认会使用 Tailwind 的 primary 颜色显示。可以在 `getNavigationBadgeColor()` 方法中返回 `danger`、`warning`、`success` 或 `secondary`，来根据情况自定义徽章颜色。
+
+```php
+protected static function getNavigationBadgeColor(): ?string
+{
+    return static::getModel()::count() > 10 ? 'warning' : 'primary';
+}
+```
+
+## 导航菜单分组
+
+你可以通过指定[资源类resources](resources) 和 [自定义页面Pages](pages)的 `$navigationGroup` 属性对导航菜单项进行分组：
+
+```php
+protected static ?string $navigationGroup = 'Settings';
+```
+
+在同一个导航分组中的所有菜单项会被集中到同一个分组标签下显示，比如本例的 "Settings"。未分组的菜单项会被保留在侧边栏顶部。
+
+### 自定义导航分组
+
+你可以在服务提供者的 `boot()` 方法中调用 `Filament::registerNavigationGroups()`，并按顺序传入 `NavigationGroup`，自定义导航分组：
+
+```php
+use Filament\Facades\Filament;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        Filament::serving(function () {
+            Filament::registerNavigationGroups([
+                NavigationGroup::make()
+                     ->label('Shop')
+                     ->icon('heroicon-s-shopping-cart'),
+                NavigationGroup::make()
+                    ->label('Blog')
+                    ->icon('heroicon-s-pencil'),
+                NavigationGroup::make()
+                    ->label('Settings')
+                    ->icon('heroicon-s-cog')
+                    ->collapsed(),
+            ]);
+        });
+    }
+}
+```
+
+此例中，我们为分组传入了自定义图片 `icon()`，使其中一个默认折叠 `collapsed()`。
+
+### 对导航分组进行排序
+
+使用 `registerNavigationGroups()`，为侧边栏中的导航分组定义新的排序。如果你只要对分组重新排序，而不去定义整个 `NavigationGroup` 对象，你可以按照新的顺序传入分组标签：
+
+```php
+use Filament\Facades\Filament;
+
+Filament::registerNavigationGroups([
+    'Shop',
+    'Blog',
+    'Settings',
+]);
+```
+
+## 激活图标
+
+你可以使用 `$activeNavigationIcon` 属性，为激活的菜单项分配图标：
+
+```php
+protected static ?string $activeNavigationIcon = 'heroicon-s-document-text';
+```
+
+此外，重写 `getActiveNavigationIcon()` 也可以：
+
+```php
+protected static function getActiveNavigationIcon(): string
+{
+    return 'heroicon-s-document-text';
+}
+```
+
+## 注册自定义导航菜单项
+
+你可以在服务提供者 `boot()` 方法中调用 `Filament::registerNavigationItems()`，注册自定义导航菜单：
+
+```php
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationItem;
+
+Filament::serving(function () {
+    Filament::registerNavigationItems([
+        NavigationItem::make('Analytics')
+            ->url('https://filament.pirsch.io', shouldOpenInNewTab: true)
+            ->icon('heroicon-o-presentation-chart-line')
+            ->group('Reports')
+            ->sort(3),
+    ]);
+});
+```
+
+## 条件性隐藏导航菜单项
+
+你也可以使用 `visible()` 或 `hidden()` 方法，传入条件，条件性隐藏导航项：
+
+```php
+use Filament\Navigation\NavigationItem;
+
+NavigationItem::make('Analytics')
+    ->visible(auth()->user()->can('view-analytics'))
+    // or
+    ->hidden(! auth()->user()->can('view-analytics')),
+```
+
+### 禁用资源或者页面的导航菜单项
+
+如果你要阻止你的资源或者页面在导航中显示，你可以使用:
+
+```php
+protected static bool $shouldRegisterNavigation = false;
+```
+
+## 导航自定义进阶
+
+可以在 `ServiceProvider` 中的 `boot()` 方法中调用 `Filament::navigation()` 方法：
+
+```php
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationBuilder;
+
+Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
+    return $builder;
+});
+```
+
+如果你添加了这个回调函数，Filament 默认的自动导航会被禁用，你的侧边栏会被清空。之所以这样设计，是为了让你对导航有完全的控制权。
+
+要注册导航菜单，只需调用 `items()` 方法：
+
+```php
+use App\Filament\Pages\Settings;
+use App\Filament\Resources\UserResource;
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationItem;
+
+Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
+    return $builder->items([
+        NavigationItem::make('Dashboard')
+            ->icon('heroicon-o-home')
+            ->activeIcon('heroicon-s-home')
+            ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.dashboard'))
+            ->url(route('filament.pages.dashboard')),
+        ...UserResource::getNavigationItems(),
+        ...Settings::getNavigationItems(),
+    ]);
+});
+```
+
+如果你想要注册导航分组，你可以调用 `groups()` 方法：
+
+```php
+use App\Filament\Pages\HomePageSettings;
+use App\Filament\Resources\CategoryResource;
+use App\Filament\Resources\PageResource;
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
+
+Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
+    return $builder
+        ->groups([
+            NavigationGroup::make('Website')
+                ->items([
+                    ...PageResource::getNavigationItems(),
+                    ...CategoryResource::getNavigationItems(),
+                    ...HomePageSettings::getNavigationItems(),
+                ]),
+        ]);
+});
+```
+
+## 自定义用户菜单
+
+用户菜单在后台布局的右上角，可以自定义。
+
+要在用户菜单中注册新项目，你要在服务提供者中:
+
+```php
+use Filament\Facades\Filament;
+use Filament\Navigation\UserMenuItem;
+
+Filament::serving(function () {
+    Filament::registerUserMenuItems([
+        UserMenuItem::make()
+            ->label('Settings')
+            ->url(route('filament.pages.settings'))
+            ->icon('heroicon-s-cog'),
+        // ...
+    ]);
+});
+```
+
+### 自定义账户链接
+
+要在用户菜单顶部自定义用户账户链接，用 `account` 作为键名注册新的项目:
+
+```php
+use Filament\Facades\Filament;
+use Filament\Navigation\UserMenuItem;
+
+Filament::serving(function () {
+    Filament::registerUserMenuItems([
+        'account' => UserMenuItem::make()->url(route('filament.pages.account')),
+        // ...
+    ]);
+});
+```
+
+### 自定义退出登录链接
+
+要在用户菜单的尾部自定义用户退出链接，用 `logout` 作为数组键名注册新的项目:
+
+```php
+use Filament\Facades\Filament;
+use Filament\Navigation\UserMenuItem;
+
+Filament::serving(function () {
+    Filament::registerUserMenuItems([
+        // ...
+        'logout' => UserMenuItem::make()->label('Log out'),
+    ]);
+});
+```

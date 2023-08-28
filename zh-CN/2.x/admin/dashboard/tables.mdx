@@ -1,0 +1,49 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/04-dashboard/04-tables.md"
+title: 表格插件
+description: Filament 自带"表格"插件模板，可以无需自己编写视图文件显示数据表。
+---
+
+Filament 自带"表格"插件模板，可以无需编写自定义视图文件显示数据表。
+
+以下命令用来创建表格插件:
+
+```bash
+php artisan make:filament-widget LatestOrders --table
+```
+
+然后更新 `getTableQuery()` 和 `getTableColumns()` 方法，返回你需要显示的数据查询结果以及你要显示的字段：
+
+```php
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Order;
+use Closure;
+use Filament\Tables;
+use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
+
+class LatestOrders extends BaseWidget
+{
+    protected function getTableQuery(): Builder
+    {
+        return Order::query()->latest()->limit(10);
+    }
+
+    protected function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('id'),
+            Tables\Columns\TextColumn::make('customer.name')
+                ->label('Customer'),
+        ];
+    }
+}
+```
+
+现在，你可以在控制面板上查看插件了。
+
+表格插件支持所有[表格构造器](../../tables)的特性，包括[过滤器](../../tables/filters)和[操作](../../tables/actions)等等。

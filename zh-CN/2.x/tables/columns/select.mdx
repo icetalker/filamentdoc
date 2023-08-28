@@ -1,0 +1,52 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/08-select.md"
+title: 下拉列表字段
+---
+
+下拉菜单字段允许你在表格中渲染下拉列表，可用于在不打开新页面或模态框的情况下更新数据库记录：
+
+你必须在字段中传入选项：
+
+```php
+use Filament\Tables\Columns\SelectColumn;
+
+SelectColumn::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+## 验证
+
+你可以以数组形式传入[Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)验证输入：
+
+```php
+use Filament\Tables\Columns\SelectColumn;
+
+SelectColumn::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->rules(['required'])
+```
+
+## 禁用占位符选择
+
+你可以使用 `disablePlaceholderSelection()` 方法防止占位符被选中：
+
+```php
+use Filament\Tables\Columns\SelectColumn;
+
+SelectColumn::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->disablePlaceholderSelection()
+```

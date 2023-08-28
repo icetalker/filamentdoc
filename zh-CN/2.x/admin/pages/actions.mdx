@@ -1,0 +1,264 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/03-pages/02-actions.md"
+title: 操作
+description: Filament 允许开发者在页面中添加操作按钮，关联操作行为。
+---
+
+## 开始
+
+操作(Actions) 是展示在页面头部的按钮，允许用户在页面中运行 Livewire 方法或者访问 URL。
+
+使用 `getActions()` 方法，可以在页面中定义操作。
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')->action('openSettingsModal'),
+    ];
+}
+
+public function openSettingsModal(): void
+{
+    $this->dispatchBrowserEvent('open-settings-modal');
+}
+```
+
+操作按钮的标签是基于操作名称生成。你可以使用 `label()` 方法重写：
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')
+            ->label('Settings')
+            ->action('openSettingsModal'),
+    ];
+}
+```
+
+你也可以使用 `url()` 方法然让按钮打开一个 URL 链接：
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')
+            ->label('Settings')
+            ->url(route('settings')),
+    ];
+}
+```
+
+操作有颜色 `color()` 方法。默认为 `primary`，你也可以使用 `secondary`, `success`, `warning` 或者 `danger`:
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')->color('secondary'),
+    ];
+}
+```
+
+你可以使用 `size()` 方法自定义按钮的大小，默认为 `md`，你可以改成 `sm` 或者 `lg`：
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')->size('lg'),
+    ];
+}
+```
+
+操作按钮也可以使用 `icon()` 方法，传入任何 Blade 组件名。默认情况下，安装了 [Blade Heroicons V1](https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1)，因此你可以开箱即用使用 [Heroicon V1](https://v1.heroicons.com) 中的图标。同时，你也可以创建你自己定义的icon组件或者安装其他图标库。
+
+```php
+use Filament\Pages\Actions\Action;
+
+protected function getActions(): array
+{
+    return [
+        Action::make('settings')->icon('heroicon-s-cog'),
+    ];
+}
+```
+
+## 模态框
+
+操作(Action)可能在运行前要确认或者生成信息，你可以在操作执行之前打开模态框来实现。
+
+### 确认模态框
+
+你可以使用 `requiresConfirmation()` 方法要求操作执行前进行确认操作。这个功能对于破坏性操作，比如删除记录，尤其有用。
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('delete')
+    ->action(fn () => $this->record->delete())
+    ->requiresConfirmation()
+```
+
+>  注意: 当设置了 `url()` 来代替 `action()` 后，确认模态框将不可用。因此，你应该在 `action()` 使用回调函数进行URL重定向。
+
+### 自定义表单
+
+你也可以在模态框中渲染表单，用以在操作运行前从用户侧收集额外信息。
+
+你可以使用[表单构造器](/docs/forms/fields)中的组件，创建自定义模态框表格。表单中的数据可以通过 `action()` 回调函数的 `$data` 参数获取：
+
+```php
+use App\Models\User;
+use Filament\Forms;
+use Filament\Pages\Actions\Action;
+
+Action::make('updateAuthor')
+    ->action(function (array $data): void {
+        $this->record->author()->associate($data['authorId']);
+        $this->record->save();
+    })
+    ->form([
+        Forms\Components\Select::make('authorId')
+            ->label('Author')
+            ->options(User::query()->pluck('name', 'id'))
+            ->required(),
+    ])
+```
+
+#### 填入默认数据
+
+使用 `mountUsing()` 方法，你可以在表单中填入默认数据：
+
+```php
+use App\Models\User;
+use Filament\Forms;
+use Filament\Pages\Actions\Action;
+
+Action::make('updateAuthor')
+    ->mountUsing(fn (Forms\ComponentContainer $form) => $form->fill([
+        'authorId' => $this->record->author->id,
+    ]))
+    ->action(function (array $data): void {
+        $this->record->author()->associate($data['authorId']);
+        $this->record->save();
+    })
+    ->form([
+        Forms\Components\Select::make('authorId')
+            ->label('Author')
+            ->options(User::query()->pluck('name', 'id'))
+            ->required(),
+    ])
+```
+
+### 设置模态框标题, 副标题以及按钮标签
+
+你可以自定义模态框标题(heading)、副标题(subheading)以及按钮标签
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('delete')
+    ->action(fn () => $this->record->delete())
+    ->requiresConfirmation()
+    ->modalHeading('Delete posts')
+    ->modalSubheading('Are you sure you\'d like to delete these posts? This cannot be undone.')
+    ->modalButton('Yes, delete them')
+```
+
+### 自定义内容
+
+你可以自定义模态框中要渲染的内容，你可以在 `modalContent()` 方法中传入 Blade 视图指定自定义内容： 
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('advance')
+    ->action(fn () => $this->record->advance())
+    ->modalContent(view('filament.pages.actions.advance'))
+```
+
+默认情况下，自定义内容展示在模态框表单上面，不过你也可以使用 `modalFooter()` 方法将内容添加到表单下面：
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('advance')
+    ->action(fn () => $this->record->advance())
+    ->modalFooter(view('filament.pages.actions.advance'))
+```
+
+### 条件性隐藏模态框
+
+当转回到默认操作时，你可能需要条件性展示模态框，用以确认。可以使用 `modalHidden()` 达成该目标：
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('create')
+    ->action('create')
+    ->modalHidden(fn (): bool => $this->role !== 'admin')
+    ->modalContent(view('filament.pages.actions.create'))
+```
+
+## 分组
+
+你可以使用 `ActionGroup` 对象，将多个 Action 聚合到一个下拉按钮中：
+
+```php
+use Filament\Pages\Actions;
+
+protected function getActions(): array
+{
+    return [
+        Actions\ActionGroup::make([
+            Actions\ViewAction::make(),
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
+        ]),
+    ];
+}
+```
+
+## 按键绑定
+
+你可以将快捷键绑定到操作。这里使用和[Mousetrap](https://craig.is/killing/mice)的按键编码：
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('save')
+    ->action(fn () => $this->save())
+    ->keyBindings(['command+s', 'ctrl+s'])
+```
+
+## 刷新表单数据
+
+如果你在 Edit 或 View 资源页中使用操作，你可以使用 `refreshFormData()` 方法在主表单中刷新数据： 
+
+```php
+use Filament\Pages\Actions\Action;
+
+Action::make('approve')
+    ->action(function () {
+        $this->record->approve();
+
+        $this->refreshFormData([
+            'status',
+        ]);
+    })
+```
+
+该方法接收一个模型属性组成的数组，这些模型属性是你想在表单中刷新的数据。

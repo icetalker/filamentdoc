@@ -1,0 +1,297 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/02-listing-records.md"
+title: 列表展示页
+keywords: [filament,listing records]
+description: Filament 后台面板中集成了Filament 表格构造器，开发者可以在资源管理器中使用其相关功能，用表格展示列表数据。
+---
+
+## 表格字段
+
+`$table->columns()` 方法用来定义表格中的[字段](../../tables/columns)。他是一个 column 对象的数组，按照展示的顺序在表格中排序。
+
+可用的字段包括:
+
+- [Text column](../../tables/columns/text)
+- [Image column](../../tables/columns/image)
+- [Icon column](../../tables/columns/icon)
+- [Badge column](../../tables/columns/badge)
+
+要查看全部可用的表格[字段](../../tables/columns)，请查阅[表格构造器文档](../../tables/columns)。
+
+你也可以创建自己的完全[自定义表格字段](../../tables/columns/custom).
+
+### 设置默认排序字段
+
+如果数据列是 `sortable()` 可排序的，你可以使用 `$table->defaultSort()` 方法指定其为默认排序字段:
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('name')->sortable(),
+            // ...
+        ])
+        ->defaultSort('name');
+}
+```
+
+## 过滤器
+
+[过滤器](../../tables/filters)预定义了查询范围，用于在表格中过滤数据。`$table->filters()` 方法用于注册这些过滤器。
+
+### 将过滤器显示在表格内容的上面或下面
+
+如果想在表格内容的上面启用过滤器，代替原有弹窗方式，你可以使用：
+
+```php
+use Filament\Tables\Filters\Layout;
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->filters(
+            [
+                // ...
+            ],
+            layout: Layout::AboveContent,
+        );
+}
+```
+
+如果想在表格内容的下面启用过滤器，代替原有弹窗方式，你可以使用：
+
+```php
+use Filament\Tables\Filters\Layout;
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->filters(
+            [
+                // ...
+            ],
+            layout: Layout::BelowContent,
+        );
+}
+```
+
+要在表格内容上面的折叠面板中渲染过滤器，可以这样：
+
+```php
+use Filament\Tables\Filters\Layout;
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->filters(
+            [
+                // ...
+            ],
+            layout: Layout::AboveContentCollapsible,
+        );
+}
+```
+
+## 操作
+
+[操作Actions](../../tables/actions#单一操作)是在表格的每一行末尾进行渲染的按钮，用户可以借以在表格中实现任务。要了解怎么创建操作，请查看[操作文档](../../tables/actions#单一操作)。
+
+要在表格中添加操作，使用 `$table->actions()` 方法：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->actions([
+            //...
+            Tables\Actions\Action::make('activate')
+                ->action(fn (Post $record) => $record->activate())
+                ->requiresConfirmation()
+                ->color('success'),
+        ]);
+}
+```
+
+### 操作分组
+
+你可以使用 `ActionGroup` 对象，将多个表格操作分组归入一个下拉按钮中：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->actions([
+            Tables\Actions\ActionGroup::make([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ]),
+        ]);
+}
+```
+
+## 批量操作
+
+[批量操作](../../tables/actions#批量操作) 是表格头部渲染的下拉按钮。当选中表格记录前的复选框时显现。让用户可以在表格中一次性操作多条记录执行任务。要了解怎么实现批量操作，请查看[操作文档](../../tables/actions#单一操作)。
+
+要在“批量删除”按钮之前添加批量操作，可以使用  `$table->prependBulkActions()` 方法：
+
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+use Illuminate\Database\Eloquent\Collection;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->prependBulkActions([
+            Tables\Actions\BulkAction::make('activate')
+                ->action(fn (Collection $records) => $records->each->activate())
+                ->requiresConfirmation()
+                ->color('success')
+                ->icon('heroicon-o-check'),
+        ]);
+}
+```
+
+### 记录选择框位置
+
+默认情况下，记录的复选框在行首渲染。你可以将其移到行尾：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables\Actions\RecordCheckboxPosition;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->recordCheckboxPosition(RecordCheckboxPosition::AfterCells)
+        ->columns([
+            // ...
+        ])
+        ->bulkActions([
+            // ...
+        ]);
+}
+```
+
+## 排序记录
+
+你可以使用 `reorderable()` 方法，让用户可以在表格中使用拖拽重新排序记录：
+
+```php
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        // ...
+        ->reorderable('sort');
+}
+```
+
+如果你在模型中使用了批量赋值保护，你需要将 `sort` 属性也添加到 `$fillable` 数组中。
+
+当表格可重新排序，表格中会有一个新的按钮来开关重新排序。排序模式下，分页功能会被禁用，让你可以在不同页面间移动记录。
+
+`reorderable()` 方法中传入用来保存排序的字段名。比如像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) 使用 `order_column` 作为排序字段，你可以将其传入 `reorderable()` 中：
+
+```php
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        // ...
+        ->reorderable('order_column');
+}
+```
+
+## 轮询内容
+
+使用 `poll()` 方法，你可以轮询表格内容使之在指定的时间间隔内刷新内容：
+
+```php
+use Filament\Resources\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        // ...
+        ->poll('10s');
+}
+```
+
+## 授权
+
+关于授权，Filament 会监听在所有应用中注册过的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
+
+如果模型政策中的 `viewAny()` 返回的是 `true`，用户可以访问列表页。 
+
+如果 `deleteAny()` 方法返回 `true`，用户可以批量删除记录。Filament 使用 `deleteAny()` 方法因为通过迭代检查 `delete()` 策略性能不是很好。
+
+## 自定义Eloquent查询
+
+虽然你可以[为整个资源自定义Eloquent查询](getting-started#自定义Eloquent查询)，你可能还会想对列表页表格做一些特定的修改。在页面类中重写 `getTableQuery()` 方法，可以实现：
+
+```php
+protected function getTableQuery(): Builder
+{
+    return parent::getTableQuery()->withoutGlobalScopes();
+}
+```
+
+## 自定义查询字符串
+
+表格搜索、过滤、排序和其他状态属性以查询字符串的形式存在 URL 中。因为 Filament 内部使用 Livewire，该行为可以通过重写资源列表页的 `$queryString` 属性来修改。比如你可以使用 `as` 通过[查询字符串别名](https://laravel-livewire.com/docs/2.x/query-string#query-string-aliases)，来重命名一些属性：
+
+```php
+protected $queryString = [
+    'isTableReordering' => ['except' => false],
+    'tableFilters' => ['as' => 'filters'], // `tableFilters` is now replaced with `filters` in the query string
+    'tableSortColumn' => ['except' => ''],
+    'tableSortDirection' => ['except' => ''],
+    'tableSearchQuery' => ['except' => '', 'as' => 'search'], // `tableSearchQuery` is now replaced with `search` in the query string
+];
+```
+
+## 自定义视图
+
+要进一步自定义，你可以覆盖页面类的静态 `$view` 属性：
+
+```php
+protected static string $view = 'filament.resources.users.pages.list-users';
+```

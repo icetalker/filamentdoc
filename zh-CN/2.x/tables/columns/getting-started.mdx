@@ -1,0 +1,397 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/01-getting-started.md"
+title: 开始
+---
+
+表格字段(Column)类可以在 `Filament\Tables\Columns` 命令空间中找到。
+
+你可以在 Livewire 组件中使用表格字段，将其放到 `getTableColumns()` 方法中：
+
+```php
+protected function getTableColumns(): array
+{
+    return [
+        // ...
+    ];
+}
+```
+
+如果你使用后台面板的资源或者关系管理器，你必须将它们放在 `$table->columns()` 方法中:
+
+```php
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ]);
+}
+```
+
+可以使用静态 `make()` 方法，传入字段名创建表格字段。字段列名应该对应于模型的字段或者访问器。你可以使用"点语法"获取关联模型的字段。
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+TextColumn::make('author.name')
+```
+
+## 可用表格字段
+
+Filament 自带两种类型字段 - 静态的和可编辑的。
+
+静态字段展示数据给用户：
+
+- [Text column](text)
+- [Icon column](icon)
+- [Image column](image)
+- [Badge column](badge)
+- [Tags column](tags)
+- [Color column](color)
+
+可编辑字段允许用户在不离开当前表格的情况下，更新数据库数据：
+
+- [Select column](select)
+- [Toggle column](toggle)
+- [Text input column](text-input)
+- [Checkbox column](checkbox)
+
+你也可以[创建自定义字段](custom)。
+
+## 设置标签
+
+默认情况下，显示在表格表头的列字段标签，是由字段名生成的。你也可以使用 `label()` 方法自定义：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->label('Post title')
+```
+
+此外，你也可以使用 `translateLabel()` 方法自动翻译标签：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->translateLabel() // Equivalent to `label(__('Title'))
+```
+
+## 排序
+
+表格字段可以通过点击字段标签进行排序的。你必须使用 `sortable()` 方法使之可排序：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->sortable()
+```
+
+如果你使用访问器字段，你可以传入一个需要排序的数据库字段数组到 `sortable()` 中：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('full_name')->sortable(['first_name', 'last_name'])
+```
+
+你可以使用回调函数自定义怎样使用 Eloquent 查询进行排序：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('full_name')
+    ->sortable(query: function (Builder $query, string $direction): Builder {
+        return $query
+            ->orderBy('last_name', $direction)
+            ->orderBy('first_name', $direction);
+    })
+```
+
+如果一个字段是 `sortable()` 可排序的，你可以使用 `getDefaultTableSortColumn()` 和 `getDefaultTableSortDirection()` 方法对其进行默认排序：
+
+```php
+protected function getDefaultTableSortColumn(): ?string
+{
+    return 'full_name';
+}
+
+protected function getDefaultTableSortDirection(): ?string
+{
+    return 'asc';
+}
+```
+
+### 在 session 中持久化排序
+
+要将排序持久化到用户的session中，请在 Livwire 组件上重写 `shouldPersistTableSortInSession()` 方法：
+
+```php
+protected function shouldPersistTableSortInSession(): bool
+{
+    return true;
+}
+```
+
+## 搜索
+
+使用表格的右上角的文本输入框，可以搜索表格字段。要让字段可搜索，需要使用 `searchable()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->searchable()
+```
+
+如果你使用了访问器字段，你可以传入数据库字段数组到 `searchable()` 中:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('full_name')->searchable(['first_name', 'last_name'])
+```
+
+你可以使用回调函数自定义如何使用 Eloquent 查询：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('full_name')
+    ->searchable(query: function (Builder $query, string $search): Builder {
+        return $query
+            ->where('first_name', 'like', "%{$search}%")
+            ->where('last_name', 'like', "%{$search}%");
+    })
+```
+
+### 单列搜索
+
+使用 `isIndividual` 参数，你可以启用按列搜索：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->searchable(isIndividual: true)
+```
+
+如果使用 `isIndividual` 参数，你仍然可以使用整个表格的全局搜索输入框搜索该列。
+
+要在保留单独搜索功能的同时，禁用全局搜索，你需要设置 `isGlobal` 参数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->searchable(isIndividual: true, isGlobal: false)
+```
+
+你可以选择在查询字符串中持久化搜索：
+
+```php
+protected $queryString = [
+    // ...
+    'tableColumnSearchQueries',
+];
+```
+
+### 在Session中持久化搜索
+
+要在用户Session中持久化表格或单列搜索，可以在Livewire组件中重写 `shouldPersistTableSearchInSession()` 或 `shouldPersistTableColumnSearchInSession()` 方法：
+
+```php
+protected function shouldPersistTableSearchInSession(): bool
+{
+    return true;
+}
+
+protected function shouldPersistTableColumnSearchInSession(): bool
+{
+    return true;
+}
+```
+
+## 单元格操作及URL
+
+当点击单元格时，你可以执行一个"操作(action)"，或者打开一个网址。
+
+### 执行操作
+
+你可以使用 `action()` 方法并传入一个回调函数或 Livewire 方法名作为参数执行一个操作。方法接收一个 `$record` 参数用于自定义操作对应的行为：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->action(function (Post $record): void {
+        $this->dispatchBrowserEvent('open-post-edit-modal', [
+            'post' => $record->getKey(),
+        ]);
+    })
+```
+
+#### 操作模态框
+
+你可以在 `action()` 方法中传入 `Action` 对象，打开[操作模态框](actions#模态框)
+
+```php
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->action(
+        Action::make('select')
+            ->requiresConfirmation()
+            ->action(function (Post $record): void {
+                $this->dispatchBrowserEvent('select-post', [
+                    'post' => $record->getKey(),
+                ]);
+            }),
+    )
+```
+
+传入 `action()` 方法的 Action 对象名称必须是唯一的，用来与表格中的其他Action操作进行区分。 
+
+### 打开URL
+
+你可以使用 `url()` 方法并传入一个回调函数或者静态URL作为参数来打开URL。回调函数接收一个 `$record` 参数可用于自定义URL：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->url(fn (Post $record): string => route('posts.edit', ['post' => $record]))
+```
+
+你可以选择在新的标签页中打开URL：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->url(fn (Post $record): string => route('posts.edit', ['post' => $record]))
+    ->openUrlInNewTab()
+```
+
+## 设置默认值
+
+你可以使用 `default` 方法，为带有 `null` 状态的字段设置一个默认值：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')->default('Untitled')
+```
+
+## 隐藏字段
+
+如果想哟条件性地隐藏表格字段，你可以根据自己喜好选择使用 `hidden()` 和 `visible()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('role')->hidden(! auth()->user()->isAdmin())
+// or
+TextColumn::make('role')->visible(auth()->user()->isAdmin())
+```
+
+### 切换表格字段可见度
+
+用户自己可以在表格中隐藏或者显示表格字段。使用 `toggleable()` 方法，可以让表格字段可切换可见性：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('id')->toggleable()
+```
+
+默认情况下，toggleable 的字段是可见的。要将其隐藏：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('id')->toggleable(isToggledHiddenByDefault: true)
+```
+
+## 计算状态
+
+有时你需要计算字段的状态，而不是直接从数据库中直接读取。
+
+在 `getStateUsing()` 方法中传入一个回调函数，你可以基于记录 `$record` 返回该字段的状态：
+
+```php
+Tables\Columns\TextColumn::make('amount_including_vat')
+    ->getStateUsing(function (Model $record): float {
+        return $record->amount * (1 + $record->vat_rate);
+    })
+```
+
+## Tooltips
+
+> 如果你想要在后面面板之外使用tooltips提示，请先在应用中[安装`@ryangjchandler/alpine-tooltip`](https://github.com/ryangjchandler/alpine-tooltip#installation)，引入[`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。如果你使用[自定义后台主题](/docs/zh-CN/2.x/admin/appearance#创建主题)，你也需要安装[`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。
+
+当你悬浮在单元格时，你可以自定义要显示的tooltip提示:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->tooltip('Title')
+```
+
+此方法接收一个可以读取当前表格记录的闭包作为参数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
+
+TextColumn::make('title')
+    ->tooltip(fn (Model $record): string => "By {$record->author->name}")
+```
+
+## 自定义属性
+
+传入数组到 `extraAttributes()` 中，可以自定义表格字段的HTML：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('slug')->extraAttributes(['class' => 'bg-gray-200'])
+```
+
+这些属性会被并入到该字段每个单元格的外层`<div>`元素中。
+
+## 全局设置
+
+如果你想要全局地调整所有字段的默认行为，你可以在服务提供者的 `boot()` 方法里面调用静态 `configureUsing()` 方法，传入一个闭包作为参数来修改表格字段。比如，你希望所有的字段都是可排序的 [`sortable()`](#排序) 和 可切换的[`toggleable()`](#切换表格字段可见度)，你可以这样做
+
+```php
+use Filament\Tables\Columns\Column;
+
+Column::configureUsing(function (Column $column): void {
+    $column
+        ->toggleable()
+        ->sortable();
+});
+```
+
+另外，你也可以在特定的表格字段中调用这段代码：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::configureUsing(function (TextColumn $column): void {
+    $column
+        ->toggleable()
+        ->sortable();
+});
+```
+
+当然，你仍然可以另外对该字段进行重写覆盖：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('name')->toggleable(false)
+```

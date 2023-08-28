@@ -1,0 +1,54 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/03-pages/03-widgets.md"
+title: 页内插件
+description: Filament 允许用户在页面内添加插件。
+---
+
+Filament 允许你在页面内部的页头之下和页脚之上显示插件[widgets](../dashboard)。
+
+使用 `getHeaderWidgets` 和 `getFooterWidgets()` 方法可以在页面中添加插件。
+
+```php
+use App/Filament/Widgets/StatsOverviewWidget;
+
+protected function getHeaderWidgets(): array
+{
+    return [
+        StatsOverviewWidget::class
+    ];
+}
+```
+
+`getHeaderWidgets` 方法返回显示在页面内容上面的插件数组，`getFooterWidgets()` 方法则显示下面的。
+
+关于如何创建自定义插件，查看[仪表盘](../dashboard)文档。
+
+## 自定义插件网格
+
+你可以修改插件占用的网格数。
+
+重写 `getHeaderWidgetsColumns()` 或者 `getFooterWidgetsColumns()`，使之返回代表网格宽度的数字：
+
+```php
+protected function getHeaderWidgetsColumns(): int | array
+{
+    return 3;
+}
+```
+
+### 响应式插件网格
+
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，调整插件占用的网格数。返回类似如下数组：
+
+```php
+protected function getHeaderWidgetsColumns(): int | array
+{
+    return [
+        'md' => 4,
+        'xl' => 5,
+    ];
+}
+```
+
+可以和[响应式插件宽度](../dashboard/getting-started#响应式插件宽度)搭配使用。

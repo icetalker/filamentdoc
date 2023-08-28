@@ -1,0 +1,230 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/notifications/docs/01-installation.md"
+title: 安装
+description: Filament 后台面板中预装了通知管理器，你也可以在新的 Laravel 项目中安装使用该组件。
+---
+
+## 安装
+
+运行 Filament 有一些特定的要求:
+
+- PHP 8.0+
+- Laravel v8.0+
+- Livewire v2.0+
+
+通知生成器已经在[后台面板 2.x](/docs/zh-CN/2.x/admin)中预装了。不过如果你要在其他应用中使用，你还是需要按照以下安装指示操作。
+
+首先， 使用 Composer 安装通知包:
+
+```bash
+composer require filament/notifications:"^2.0"
+```
+
+## 新的 Laravel 项目
+
+要快速使用通知生成器，你可以使用这些命令安装 [Livewire](https://laravel-livewire.com)，[Alpine.js](https://alpinejs.dev)、[TailwindCSS](https://tailwindcss.com) 和 [Livewire](https://laravel-livewire.com):
+
+```bash
+php artisan notifications:install
+npm install
+npm run dev
+```
+
+> 这些命令会粗暴地重写覆盖你现有的文件，因此我们只推荐在新项目中使用这种方法。
+
+现在你可以开始[发送通知](sending-notifications)了!
+
+![Filament Notifications](https://user-images.githubusercontent.com/44533235/180972526-da7ebb2f-24f6-4cf4-8e4c-d261574384ab.jpg)
+
+## 现有 Laravel 项目
+
+此包使用以下依赖：
+
+- [Alpine.js](https://alpinejs.dev)
+- [Alpine Floating UI](https://github.com/awcodes/alpine-floating-ui)
+- [PostCSS](https://postcss.org/)
+- [Tailwind CSS](https://tailwindcss.com)
+
+可以通过 NPM 进行安装:
+
+```bash
+npm install alpinejs @awcodes/alpine-floating-ui postcss tailwindcss --save-dev
+```
+
+### 配置 Tailwind CSS
+
+要完成Tailwind安装，你必须在项目的根目录中创建 `tailwind.config.js` 文件。最简单的做法是运行 `npx tailwindcss init` 命令。
+
+在 `tailwind.config.js` 中，注册你安装好的插件，然后添加通知生成器要使用的自定义颜色：
+
+```js
+import colors from 'tailwindcss/colors' // [tl! focus:start]
+
+export default {
+    content: [
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php', // [tl! focus]
+    ],
+    theme: {
+        extend: {
+            colors: { // [tl! focus:start]
+                danger: colors.rose,
+                primary: colors.blue,
+                success: colors.green,
+                warning: colors.yellow,
+            }, // [tl! focus:end]
+        },
+    },
+}
+```
+
+当然，你也可以指定你自己定义的 `primary`, `success`, `warning` 及 `danger` 颜色，这会替换掉原有的颜色。
+
+### 打包资源
+
+新的 Laravel 项目默认使用 Vite 打包资源。不过，你仍然可以使用 Laravel Mix。
+
+#### Vite
+
+如果你使用的是 Vite, 你应该通过NPM手动安装 [Autoprefixer](https://github.com/postcss/autoprefixer)：
+
+```bash
+npm install autoprefixer --save-dev
+```
+
+在项目的根目录中新建 `postcss.config.js` 文件，以插件形式注册 Tailwind CSS 和 Autoprefixer:
+
+```js
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+```
+
+你也可以更新 `vite.config.js`，使页面在 Livewire 组件或自定义表格字段更新后自动刷新：
+
+```js
+import { defineConfig } from 'vite';
+import laravel, { refreshPaths } from 'laravel-vite-plugin'; // [tl! focus]
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+            ],
+            refresh: [ // [tl! focus:start]
+                ...refreshPaths,
+                'app/Http/Livewire/**',
+            ], // [tl! focus:end]
+        }),
+    ],
+});
+```
+
+#### Laravel Mix
+
+在 `webpack.mix.js` 文件中，以 PostCSS 插件的形式注册 Tailwind CSS:
+
+```js
+const mix = require('laravel-mix')
+
+mix.js('resources/js/app.js', 'public/js')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('tailwindcss'), // [tl! focus]
+    ])
+```
+
+### 配置样式
+
+在 `/resources/css/app.css` 文件中，引入 [TailwindCSS](https://tailwindcss.com):
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+### 配置脚本
+
+在 `/resources/js/app.js`文件中，导入 [Alpine.js](https://alpinejs.dev)、`filament/notifications`插件并注册：
+
+```js
+import Alpine from 'alpinejs'
+import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
+import NotificationsAlpinePlugin from '../../vendor/filament/notifications/dist/module.esm'
+
+Alpine.plugin(AlpineFloatingUI)
+Alpine.plugin(NotificationsAlpinePlugin)
+
+window.Alpine = Alpine
+
+Alpine.start()
+```
+
+### 编译资源
+
+使用 `npm run dev` 命令编译新的CSS和JS资源:
+
+### 配置布局
+
+最后，为 Livewire 组件新建 `resources/views/layouts/app.blade.php` 布局文件：
+
+```blade
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+
+        <meta name="application-name" content="{{ config('app.name') }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{{ config('app.name') }}</title>
+
+        <style>[x-cloak] { display: none !important; }</style>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
+        @livewireScripts
+        @stack('scripts')
+    </head>
+
+    <body class="antialiased">
+        {{ $slot }}
+
+        @livewire('notifications')
+    </body>
+</html>
+```
+
+现在你可以[发送通知](sending-notifications)了!
+
+## 发布配置文件
+
+如有需要时，你可以使用这个命令发布此扩展包的配置文件:
+
+```bash
+php artisan vendor:publish --tag=notifications-config
+```
+
+## 升级
+
+要将该软件包升级到最新版本，你必须运行:
+
+```bash
+composer update
+php artisan filament:upgrade
+```
+
+我们推荐将 `filament:upgrade` 添加到 `composer.json` 文件的 `post-update-cmd` 中，使之自动运行：
+
+```json
+"post-update-cmd": [
+    // ...
+    "@php artisan filament:upgrade"
+],
+```

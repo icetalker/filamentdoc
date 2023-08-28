@@ -1,0 +1,294 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/02-text.md"
+title: 文本字段
+---
+
+文本字段展示对应数据库数据中的简单文本：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+```
+
+## 展示描述
+
+描述可被用于在字段内容的上方或者下方渲染额外的文本。
+
+使用 `description()` 方法会在文本内容的下方显示描述：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->description(fn (Post $record): string => $record->description)
+```
+
+默认情况下，描述显示在主文本下方，不过你也可以传入第二个参数将其移动到文本上方：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->description(fn (Post $record): string => $record->description, position: 'above')
+```
+
+## 日期格式
+
+你可以使用 `date()` 和 `dateTime()` 方法，对使用[PHP日期格式串](https://www.php.net/manual/en/datetime.format.php)的值进行格式化:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('created_at')->dateTime()
+```
+
+你可以使用 `since()` 方法用 [Carbon 的 `diffForHumans()`](https://carbon.nesbot.com/docs/#api-humandiff) 格式化字段状态值：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('created_at')->since()
+```
+
+## 货币格式
+
+`money()` 方法让你快速格式化以任何货币格式化金额。此功能内部使用[`akaunting/laravel-money`](https://github.com/akaunting/laravel-money)实现：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('price')->money('eur')
+```
+
+## 限制文本长度
+
+你也可以使用 `limit()` 限制单元格值的长度:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')->limit(50)
+```
+
+你也可以重新使用传入到 `limit()` 的值：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')
+    ->limit(50)
+    ->tooltip(function (TextColumn $column): ?string {
+        $state = $column->getState();
+
+        if (strlen($state) <= $column->getLimit()) {
+            return null;
+        }
+
+        // Only render the tooltip if the column contents exceeds the length limit.
+        return $state;
+    })
+```
+
+## 限制字数
+
+你可以使用 words() 限制单元格字数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')->words(10)
+```
+
+## 内容换行
+
+如果你的字段内容太长，你需要让其换行。可以使用 `wrap()` 方法：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')->wrap()
+```
+
+## 渲染HTML
+
+如果字段值是 HTML，可以使用 `html()` 方法渲染:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')->html()
+```
+
+## Enum格式
+
+你可以使用 `enum()` 方法将一套已知的单元格值进行转换：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('status')->enum([
+    'draft' => 'Draft',
+    'reviewing' => 'Reviewing',
+    'published' => 'Published',
+])
+```
+
+## 展示行号
+
+你可能需要在表格中展示当前行的行号：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+
+TextColumn::make('index')->getStateUsing(
+    static function (stdClass $rowLoop, HasTable $livewire): string {
+        return (string) (
+            $rowLoop->iteration +
+            ($livewire->tableRecordsPerPage * (
+                $livewire->page - 1
+            ))
+        );
+    }
+),
+```
+
+## 自定义格式
+
+你也可以传入一个自定义格式的回调函数作为参数到 `formatStateUsing()` 方法中，回调函数可以接收单元格的状态 `state` 参数，和可选参数 `$record`：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('status')
+    ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
+```
+
+## 如果 cell 为空添加占位符
+
+有时，你想在 cell 值为空时展示占位符：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('updated_at')
+    ->placeholder('Never')
+```
+
+## 自定义颜色
+
+你可以为文本设置颜色，比如 `primary`、`secondary`、`success`、`warning` 或 `danger`:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('status')
+    ->color('primary')
+```
+
+## 添加图标
+
+文本字段也可以添加图标:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->icon('heroicon-s-mail')
+```
+
+使用 `iconPosition()` 设置图标位置:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->icon('heroicon-s-mail')
+    ->iconPosition('after') // `before` or `after`
+```
+
+## 自定义文本字体大小
+
+使用 `size('sm')` 可以让文本字体变小：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->size('sm')
+```
+
+或者 `size('lg')` 使其变大：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('title')
+    ->size('lg')
+```
+
+## 自定义字体粗细
+
+文本字段字体粗细默认是常规字体。不过你可以改为如下选项: `thin`, `extralight`, `light`, `medium`, `semibold`, `bold`, `extrabold` or `black`。
+
+比如，你可以使用 `weight('bold')` 改为粗体：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->weight('medium')
+```
+
+## 自定义字体类型
+
+你可以将字体类型修改为如下选项：`sans`、 `serif` 或 `mono`。
+
+比如，你可以使用 `fontFamily('mono')` 将字体设置为 mono：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('text')
+    ->fontFamily('mono')
+```
+
+## 允许将文本复制到剪切板
+
+你可以将文本设为可复制，这样点击单元格可将文本复制到剪切板，并可以选择指定自定义确认消息和持续时间（以毫秒为单位）。此功能仅在应用程序启用SSL时有效。
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->copyable()
+    ->copyMessage('Email address copied')
+    ->copyMessageDuration(1500)
+```
+
+> Filament 在后台面板中使用 tooltip 展示复制信息。如果你想要在后台面板之外使用复制特性，请确保你的应用中安装了 @ryangjchandler/alpine-tooltip 。
+
+### 自定义复制到剪贴板的文本
+
+使用 `copyableState()` 方法，你可以自定义复制到剪贴板的文本：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('url')
+    ->copyable()
+    ->copyableState(fn (string $state): string => "URL: {$state}")
+```
+
+本函数中，你可以使用 `$record` 函数访问整条记录：
+
+```php
+use App\Models\Post;
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('url')
+    ->copyable()
+    ->copyableState(fn (Post $record): string => "URL: {$record->url}")
+```

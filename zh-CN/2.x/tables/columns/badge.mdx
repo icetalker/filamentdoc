@@ -1,0 +1,166 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/05-badge.md"
+title: Badge字段
+---
+
+徽章字段(Badge Column)使用彩色徽章渲染单元格内容：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->enum([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+## 自定义颜色
+
+徽章可以设置颜色。如 `primary`、`success`、`warning` 或者 `danger`:
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->colors([
+        'primary',
+        'secondary' => 'draft',
+        'warning' => 'reviewing',
+        'success' => 'published',
+        'danger' => 'rejected',
+    ])
+```
+
+你可以使用回调函数激活颜色，回调函数接收单元格状态 `$state` 作为参数：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->colors([
+        'primary',
+        'secondary' => static fn ($state): bool => $state === 'draft',
+        'warning' => static fn ($state): bool => $state === 'reviewing',
+        'success' => static fn ($state): bool => $state === 'published',
+        'danger' => static fn ($state): bool => $state === 'rejected',
+    ])
+```
+
+或者基于 `$record` 或 `$state` 动态计算颜色：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->color(static function ($state): string {
+        if ($state === 'published') {
+            return 'success';
+        }
+        
+        return 'secondary';
+    })
+```
+
+## 添加图标
+
+徽章也可以有图标:
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->icons([
+        'heroicon-o-x',
+        'heroicon-o-document' => 'draft',
+        'heroicon-o-refresh' => 'reviewing',
+        'heroicon-o-truck' => 'published',
+    ])
+```
+
+此外，你可以使用闭包选择性地显示图标：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->icons([
+        'heroicon-o-x',
+        'heroicon-o-document' => static fn ($state): bool => $state === 'draft',
+        'heroicon-o-refresh' => static fn ($state): bool => $state === 'reviewing',
+        'heroicon-o-truck' => static fn ($state): bool => $state === 'published',
+    ])
+```
+
+或者根据 `$record` 或 `$state` 动态计算颜色：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->icon(static function ($state): string {
+        if ($state === 'published') {
+            return 'heroicon-o-truck';
+        }
+        
+        return 'heroicon-o-x';
+    })
+```
+
+可以使用 `iconPosition()` 方法设置图标位置：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('status')
+    ->icons([
+        'heroicon-o-x',
+        'heroicon-o-document' => 'draft',
+        'heroicon-o-refresh' => 'reviewing',
+        'heroicon-o-truck' => 'published',
+    ])
+    ->iconPosition('after') // `before` or `after`
+```
+
+## 格式化文本
+
+[文本字段](text)中的所有格式化选项，同样适用于徽章字段。
+
+## 允许将文本复制到剪切板
+
+你可以让文本可复制。比如点击单元格将文本复制到剪切板，并指定自定义确认消息及持续时间(毫秒)。该特性只有在 开启 SSL 时有效。
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+BadgeColumn::make('email')
+    ->copyable()
+    ->copyMessage('Email address copied')
+    ->copyMessageDuration(1500)
+```
+
+> Filament 在后台面板中使用 tooltip 来展示复制的消息。如果你想在后台面板之外使用可复制的特性，请确保在你的应用中[安装 `@ryangjchandler/alpine-tooltip`](https://github.com/ryangjchandler/alpine-tooltip#installation)。
+
+### 自定义复制到剪贴板的文本
+
+使用 `copyableState()` 方法，你可以自定义复制到剪贴板的文本：
+
+```php
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('name')
+    ->copyable()
+    ->copyableState(fn (string $state): string => "Name: {$state}")
+```
+
+本函数中，你可以使用 `$record` 函数访问整条记录：
+
+```php
+use App\Models\User;
+use Filament\Tables\Columns\BadgeColumn;
+
+BadgeColumn::make('name')
+    ->copyable()
+    ->copyableState(fn (User $record): string => "Name: {$record->name}")
+```

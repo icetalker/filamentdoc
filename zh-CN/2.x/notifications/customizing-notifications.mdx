@@ -1,0 +1,124 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/notifications/docs/05-customizing-notifications.md"
+title: 自定义通知
+description: Filament 通知生成器同时提供了自定义功能，让开发者可以根据自己需要对通知样式、通知视图等进行自定义。
+keywords: [Filament Notification, 通知生成器]
+---
+
+通知样式开箱即用。不过，如果你想使用自己的样式或自定义视图，渲染通知，也有多种选择。
+
+## 通知样式
+
+通知使用了一些专门的CSS类，让你可以载入自己的样式：
+
+- `filament-notifications`
+- `filament-notifications-notification`
+- `filament-notifications-icon`
+- `filament-notifications-title`
+- `filament-notifications-close-button`
+- `filament-notifications-date`
+- `filament-notifications-body`
+- `filament-notifications-actions`
+
+## 自定义通知视图
+
+如果你的自定义不能通过以上的 CSS 类实现，你也可以创建自定义视图渲染通知。要配置通知视图，可以在服务提供者 `boot()` 方法中调用静态 `configureUsing()` 方法，指定使用的视图：
+
+```php
+use Filament\Notifications\Notification;
+
+Notification::configureUsing(function (Notification $notification): void {
+    $notification->view('notifications.notification');
+});
+```
+
+接下来，新建视图，比如此例中的 `resources/views/notifications/notification.blade.php`。该视图应该使用包的基础通知组件，通过 `notification` 属性传入 `$notification` 变量。本例是创建自定义通知视图的最低要求：
+
+```blade
+<x-notifications::notification :notification="$notification">
+    {{-- Notification content --}}
+</x-notifications::notification>
+```
+
+所有通知属性的 Getter 在视图中可用。因此，自定义通知视图可能长这样子：
+
+```blade
+<x-notifications::notification
+    :notification="$notification"
+    class="flex w-80 rounded-lg transition duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:leave-end="opacity-0"
+>
+    <h4>
+        {{ $getTitle() }}
+    </h4>
+    
+    <p>
+        {{ $getDate() }}
+    </p>
+    
+    <p>
+        {{ $getBody() }}
+    </p>
+    
+    <span x-on:click="close">
+        Close
+    </span>
+</x-notifications::notification>
+```
+
+## 自定义通知对象
+
+你的通知中可能需要 `Notification` 类中没有定义的额外功能。如果是这样，你可用创建自己的 `Notification` 类，继承包中的 `Notification` 类。比如，你的通知设计需要 size 属性。
+
+你在 `app/Notifications/Notification.php` 中自定义 `Notification` 类可能包含：
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Filament\Notifications\Notification as BaseNotification;
+
+class Notification extends BaseNotification
+{
+    protected string $size = 'md';
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'size' => $this->getSize(),
+        ];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        return parent::fromArray()->size($data['size']);
+    }
+
+    public function size(string $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+}
+```
+
+下一步，你需要在服务提供者的 `boot()` 方法中将自定义 `Notification` 类绑定到容器中：
+
+```php
+use App\Notifications\Notification;
+use Filament\Notifications\Notification as BaseNotification;
+
+$this->app->bind(BaseNotification::class, Notification::class);
+```
+
+现在你就可以像默认的 `Notification` 那样使用自定义类了。

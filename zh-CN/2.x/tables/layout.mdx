@@ -1,0 +1,400 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/06-layout.md"
+title: 布局
+---
+
+## 传统表格布局的问题
+
+传统表格因响应效果差而臭名昭著。在移动端，当要渲染的内容在水平方向上较长的时候，你所具有的灵活性有限：
+
+- 允许用户水平滚动查看更多表格内容
+- 在较小的设备中隐藏不重要字段
+
+在 Filament 中，这两种方式都能实现。如果内容溢出，表格可以自动滚动，而且你也可以根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)选择展示或者隐藏某些字段。你可以使用 `visibleFrom()` 或  `hiddenFrom()` 方法实现：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('slug')->visibleFrom('md')
+```
+
+这样挺好，不过仍然还是有一个刺眼的问题 - **在移动端，当一行中有较多信息时，用户无法在不滚动的情况下快速查看数据**。
+
+幸运的是，Filament 让你可以在不触碰 HTML 或者 CSS 的情况下，创建响应式、表格式的接口。这些布局让你根据响应式临界点(breakpoint)决定将数据显示在表格行中的哪个位置。
+
+![Layout demo](https://user-images.githubusercontent.com/41773797/191832816-fe2d6e1b-a9b1-4133-b52a-d315705feb8f.png)
+
+## 允许字段在移动端上堆叠
+
+我们来认识一下这个组件 - `Split`:
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar'),
+    TextColumn::make('name'),
+    TextColumn::make('email'),
+])
+```
+
+![Split layout](https://user-images.githubusercontent.com/41773797/191833019-efa1cede-3483-451a-8ee3-7f5405d5cb38.png)
+
+`Split` 组件用于包裹字段，允许字段在移动端堆叠起来。
+
+默认情况下，split 中各字段列一直都是相互之间左右紧挨着排列。不过，你可以使用 `from()` 方法选择这种行为从哪个响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)开始。在此临界点之前，字段会堆叠起来：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar'),
+    TextColumn::make('name'),
+    TextColumn::make('email'),
+])->from('md')
+```
+
+上例中，字段只会在 `md` [临界点](https://tailwindcss.com/docs/responsive-design#overview)以上的设备中水平摊开展示：
+
+![Split layout only on desktop](https://user-images.githubusercontent.com/41773797/191833132-0648cbc8-5d31-45ea-b978-be316ebcf73c.png)
+
+### 防止字段创建空格
+
+像表格字段一样，Split 也会自动调整空格，让每个字段有相应地分开。你可以使用 `grow(false)` 阻止这种调整。这个例子中，我们让头像紧挨着名字字段：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar')->grow(false),
+    TextColumn::make('name'),
+    TextColumn::make('email'),
+])
+```
+
+其他允许 `grow()` 的字段会调整分掉新释放的空格：
+
+![Image column not growing](https://user-images.githubusercontent.com/41773797/191833422-d34035b9-f99d-4711-9a1c-e073b013e5b4.png)
+
+### Stacking within a split
+
+在 Split 内，你也可以将多个字段垂直堆叠起来。这将让你在桌面端可以在较少的数据列中展示更多数据：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar'),
+    TextColumn::make('name'),
+    Stack::make([
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ]),
+])
+```
+
+![Stack within a split](https://user-images.githubusercontent.com/41773797/191833594-3ab5cf7a-e8f3-4662-ab34-1f8ee50c20f4.png)
+
+#### 移动端隐藏stack
+
+类似于字段，你可以根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)隐藏一个stack。使用 `visibleFrom()` 方法：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar'),
+    TextColumn::make('name'),
+    Stack::make([
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ])->visibleFrom('md'),
+])
+```
+
+![Stack hidden on mobile](https://user-images.githubusercontent.com/41773797/191833730-2b2faa7f-5678-4746-9b80-570ae59ad9f5.png)
+
+#### 对齐内容
+
+默认情况下，stack 里的字段向左对齐。你也可以选择居中对齐 `center` 或向右对齐 `right`:
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+Split::make([
+    ImageColumn::make('avatar'),
+    TextColumn::make('name'),
+    Stack::make([
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ])->alignment('right'),
+])
+```
+
+![Stacked content aligned to the right](https://user-images.githubusercontent.com/41773797/191833849-4dc5972a-9f3b-466a-9c13-22ac93ec801c.png)
+
+#### 调节堆叠内容的间距
+
+默认情况下，字段之间的内容没有垂直方向的间距。要添加行距，可以使用 `space()` 方法，该方法接收 `1`、`2` 或 `3`，对应于[Tailwind 间距](https://tailwindcss.com/docs/space)：
+
+```php
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
+
+Stack::make([
+    TextColumn::make('email'),
+    TextColumn::make('phone'),
+])->space(1)
+```
+
+## 使用 Grid 控制字段宽度
+
+有时候，当字段中含有许多内容时，使用 `Split` 会出现不同宽度。这是因为它内部是有 Flexbox 实现的，并且每一行单独控制分配将多少空格分配给内容。
+
+作为替代方案，你可以使用 `Grid` 布局，用 CSS 的Grid布局去控制列宽：
+
+```php
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Tables\Columns\TextColumn;
+
+Grid::make([
+    'lg' => 2,
+])
+    ->schema([
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ])
+```
+
+这些字段在 Grid 内部将会消耗同样的宽度，从 `lg` [breakpoint](https://tailwindcss.com/docs/responsive-design#overview)开始。
+
+你也可以选择以其他临界点自定义 Grid 中的列数：
+
+```php
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
+
+Grid::make([
+    'lg' => 2,
+    '2xl' => 4,
+])
+    ->schema([
+        Stack::make([
+            TextColumn::make('name'),
+            TextColumn::make('job'),
+        ]),
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ])
+```
+
+你甚至可以控制每个组件在各个临界点[breakpoint](https://tailwindcss.com/docs/responsive-design#overview)中所消耗的Grid列数：
+
+```php
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
+
+Grid::make([
+    'lg' => 2,
+    '2xl' => 5,
+])
+    ->schema([
+        Stack::make([
+            TextColumn::make('name'),
+            TextColumn::make('job'),
+        ])->columnSpan([
+            'lg' => 'full',
+            '2xl' => 2,
+        ]),
+        TextColumn::make('email')
+            ->columnSpan([
+                '2xl' => 2,
+            ]),
+        TextColumn::make('phone'),
+    ])
+```
+
+## 可折叠的内容
+
+当你使用像 split 或 stack 这样的字段布局时，你也可以添加可折叠的内容。如果你不想要一次性展示所有表格数据、不过仍然希望用户可以在需要时获取这些数据而不必离开，此功能很有用。
+
+Split 和 Stack 组件可以做成可折叠的 `collapsible()`，同时也有一个专门的 `Panel` 组件提供预制背景色和圆角边，以便将可折叠内容与其他内容区分开来:
+
+```php
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+[
+    Split::make([
+        ImageColumn::make('avatar'),
+        TextColumn::make('name'),
+    ]),
+    Panel::make([
+        Stack::make([
+            TextColumn::make('email'),
+            TextColumn::make('phone'),
+        ]),
+    ])->collapsed(false),
+]
+```
+
+使用 `collapsed(false)` 方法你可以默认展开 Panel:
+
+```php
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\TextColumn;
+
+Panel::make([
+    Stack::make([
+        TextColumn::make('email'),
+        TextColumn::make('phone'),
+    ]),
+])->collapsed(false)
+```
+
+![Collapsible content](https://user-images.githubusercontent.com/41773797/191834045-e423afd4-1ad3-4636-8635-fe9453423555.png)
+
+### 添加折叠动画
+
+如果你不是在后台面板中使用表格，你可能会发现折叠或者打开内容时，并没有动画效果。你可以安装 [Alpine.js Collapse Plugin](https://alpinejs.dev/plugins/collapse) 来启用动画：
+
+```bash
+npm install @alpinejs/collapse --save-dev
+```
+
+然后，在 Javascript 文件中引入 `@alpinejs/collapse` 作为 Alpine.js 的插件：
+
+```js
+import Alpine from 'alpinejs'
+import Collapse from '@alpinejs/collapse'
+
+Alpine.plugin(Collapse)
+```
+
+## 将记录装入网格
+
+有时候，你会发现将数据装入网格比列表展示更为合适。这种情况 Filament 也能应对!
+
+只需在你的 Livewire 组件中定义 `getTableContentGrid()` 方法：
+
+```php
+protected function getTableContentGrid(): ?array
+{
+    return [
+        'md' => 2,
+        'xl' => 3,
+    ];
+}
+```
+
+或者如果你使用的是后台面板资源或关联管理器，你必须定义 `$table->contentGrid()` 方法：
+
+```php
+public static function table(Table $table): Table
+{
+    return $table
+        ->contentGrid([
+            'md' => 2,
+            'xl' => 3,
+        ]);
+}
+```
+
+此例中，这些行会在一个网格(grid)内展示：
+
+- 在移动端，它们只会显示成 1 列。
+- 从 `md` [临界点](https://tailwindcss.com/docs/responsive-design#overview)开始，会显示成 2 列。
+- 从 `xl` [临界点](https://tailwindcss.com/docs/responsive-design#overview)以后，会显示成 3 列。
+
+这些设置时可以完全自定义的，从 `sm` 到 `2xl` 的所有[临界点breakpoint](https://tailwindcss.com/docs/responsive-design#overview) 可以包含 `1` 到 `12` 列。
+
+![Records in a grid](https://user-images.githubusercontent.com/41773797/191834232-df5a73bc-392b-4fff-a4ac-8486f4e76aaf.png)
+
+## 自定义 HTML
+
+你可以使用 `View` 组件将自定义的 HTML 添加到表格中。甚至是可折叠的 `collapsible()`：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\View;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+[
+    Split::make([
+        ImageColumn::make('avatar'),
+        TextColumn::make('name'),
+    ]),
+    View::make('users.table.collapsible-row-content')
+        ->collapsible(),
+]
+```
+
+然后创建 `/resources/views/users/table/collapsible-row-content.blade.php` 文件，并添加 HTML。你可以使用 `$getRecord` 访问表格记录：
+
+```blade
+<p class="px-4 py-3 bg-gray-100 rounded-lg">
+    <span class="font-medium">
+        Email address:
+    </span>
+    
+    <span>
+        {{ $getRecord()->email }}
+    </span>
+</p>
+```
+
+### 嵌入其他组件
+
+你甚至可以传入字段或者其他布局组件到 `components()` 方法中：
+
+```php
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\View;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+
+[
+    Split::make([
+        ImageColumn::make('avatar'),
+        TextColumn::make('name'),
+    ]),
+    View::make('users.table.collapsible-row-content')
+        ->components([
+            TextColumn::make('email'),
+        ])
+        ->collapsible(),
+]
+```
+
+然后，在Blade文件中渲染组件：
+
+```blade
+<div class="px-4 py-3 bg-gray-100 rounded-lg">
+    <x-tables::columns.layout
+        :components="$getComponents()"
+        :record="$getRecord()"
+        :record-key="$recordKey"
+    />
+</div>
+```

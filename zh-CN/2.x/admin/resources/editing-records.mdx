@@ -1,0 +1,406 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/04-editing-records.md"
+title: 编辑记录
+escription: Filament 后台面板集成了Filament 表单构造器，开发者可以在资源管理器中使用表单构造器，快速创建表单、开发记录编辑页面。
+keywords: [Filament Admin, 资源管理器, 编辑记录, 编辑页面 ]
+---
+
+## 填充表单前自定义数据
+
+你可能想要在记录填充到表单前修改数据。你可以通过定义 `mutateFormDataBeforeFill()` 方法去修改 `$data` 数组，在填充到表单前返回修改后的版本：
+
+```php
+protected function mutateFormDataBeforeFill(array $data): array
+{
+    $data['user_id'] = auth()->id();
+
+    return $data;
+}
+```
+
+此外，如果你在模态框操作中编辑记录：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->mutateRecordDataUsing(function (array $data): array {
+        $data['user_id'] = auth()->id();
+
+        return $data;
+    })
+```
+
+## 保存前自定义数据
+
+有时，你需要在最终保存到数据库之前修改表单数据。你可以定义 `mutateFormDataBeforeSave()` 方法，使其接收 `$data` 数组作为参数，并返回修改过的版本：
+
+```php
+protected function mutateFormDataBeforeSave(array $data): array
+{
+    $data['last_edited_by_id'] = auth()->id();
+
+    return $data;
+}
+```
+
+此外，如果你在模态框操作中编辑记录：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->mutateFormDataUsing(function (array $data): array {
+        $data['last_edited_by_id'] = auth()->id();
+
+        return $data;
+    })
+```
+
+## 自定义保存过程
+
+你可以使用 `handleRecordCreation()` 方法调整记录更新方式：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+protected function handleRecordUpdate(Model $record, array $data): Model
+{
+    $record->update($data);
+
+    return $record;
+}
+```
+
+此外，如果你在模态框操作中编辑记录：
+
+```php
+use Filament\Tables\Actions\EditAction;
+use Illuminate\Database\Eloquent\Model;
+
+EditAction::make()
+    ->using(function (Model $record, array $data): Model {
+        $record->update($data);
+
+        return $record;
+    })
+```
+
+## 自定义表单重定向
+
+默认情况下，表单保存后，用户不会被重定向到其他页面。
+
+你可以重写 `getRedirectUrl()` 自定义表单保存后的跳转页面。
+
+比如，表单可以跳转回[列表页](listing-records)：
+
+```php
+protected function getRedirectUrl(): string
+{
+    return $this->getResource()::getUrl('index');
+}
+```
+
+或者[查看页](viewing-records):
+
+```php
+protected function getRedirectUrl(): string
+{
+    return $this->getResource()::getUrl('view', ['record' => $this->record]);
+}
+```
+
+如果你希望重定向到上一页或者首页：
+
+```php
+protected function getRedirectUrl(): string
+{
+    return $this->previousUrl ?? $this->getResource()::getUrl('index');
+}
+```
+
+## 自定义保存通知
+
+当记录更新成功，会派送一个通知给用户，告知操作成功。
+
+要自定义通知标题，在编辑页类中定义 `getSavedNotificationTitle()` 方法:
+
+```php
+protected function getSavedNotificationTitle(): ?string
+{
+    return 'User updated';
+}
+```
+
+另外，如果你通过模态框操作编辑记录:
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->successNotificationTitle('User updated')
+```
+
+你也可以在编辑页类中通过重写 `getSavedNotification()` 方法自定义整个通知：
+
+```php
+use Filament\Notifications\Notification;
+
+protected function getSavedNotification(): ?Notification
+{
+    return Notification::make()
+        ->success()
+        ->title('User updated')
+        ->body('The user has been saved successfully.');
+}
+```
+
+另外，如果你通过模态框操作编辑记录：
+
+```php
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->successNotification(
+       Notification::make()
+            ->success()
+            ->title('User updated')
+            ->body('The user has been saved successfully.'),
+    )
+```
+
+要完全禁用通知，在新建页类的 `getSavedNotification()` 方法中返回 null:
+
+```php
+use Filament\Notifications\Notification;
+
+protected function getSavedNotification(): ?Notification
+{
+    return null;
+}
+```
+
+另外，如果你通过模态框操作编辑记录：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->successNotification(null)
+```
+
+## 生命周期钩子
+
+钩子可用在页面生命周期内的各种节点中执行代码，比如表单数据保存之前。要启用钩子，在页面类中以钩子名新建一个 protected 修饰的方法:
+
+```php
+protected function beforeSave(): void
+{
+    // ...
+}
+```
+
+此例中，`beforeSave()` 方法会在表单数据保存到数据库之前被调用。
+
+编辑页可用的一些钩子有:
+
+```php
+use Filament\Resources\Pages\EditRecord;
+
+class EditUser extends EditRecord
+{
+    // ...
+
+    protected function beforeFill(): void
+    {
+        // 数据库数据填充到表单之前运行
+    }
+
+    protected function afterFill(): void
+    {
+        // 数据库数据填充到表单之后运行
+    }
+
+    protected function beforeValidate(): void
+    {
+        // 保存数据时，表单数据进行验证之前运行
+    }
+
+    protected function afterValidate(): void
+    {
+        // 保存数据时，表单数据验证之后运行
+    }
+
+    protected function beforeSave(): void
+    {
+        // 表单数据保存到数据库之前运行
+    }
+
+    protected function afterSave(): void
+    {
+        // 表单数据保存到数据库之后运行
+    }
+}
+```
+
+此外，如果你在模态框操作中编辑记录：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->beforeFormFilled(function () {
+        // Runs before the form fields are populated from the database.
+    })
+    ->afterFormFilled(function () {
+        // Runs after the form fields are populated from the database.
+    })
+    ->beforeFormValidated(function () {
+        // Runs before the form fields are validated when the form is saved.
+    })
+    ->afterFormValidated(function () {
+        // Runs after the form fields are validated when the form is saved.
+    })
+    ->before(function () {
+        // Runs before the form fields are saved to the database.
+    })
+    ->after(function () {
+        // Runs after the form fields are saved to the database.
+    })
+```
+
+## 停止保存处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个保存处理过程：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+
+protected function beforeSave(): void
+{
+    if (! $this->record->team->subscribed()) {
+        Notification::make()
+            ->warning()
+            ->title('You don\'t have an active subscription!')
+            ->body('Choose a plan to continue.')
+            ->persistent()
+            ->actions([
+                Action::make('subscribe')
+                    ->button()
+                    ->url(route('subscribe'), shouldOpenInNewTab: true),
+            ])
+            ->send();
+    
+        $this->halt();
+    }
+}
+```
+
+此外，如果你是通过模态框操作编辑记录：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->before(function (EditAction $action) {
+        if (! $this->record->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 授权
+
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
+
+如果模型策略的 `update()` 方法中返回的是 `true()`，用户可以访问编辑页。 
+
+同时如果模型策略的 `delete()` 方法中返回的是 `true()`，用户也可以删除记录。 
+
+##  自定义操作
+
+操作(Actions) 是页面上展示的按钮，用于让用户在页面中运行 Livewire 方法或者访问 URL。
+
+在资源页面中，操作通常位于两个位置: 页面的右上角和表单下面。
+
+比如，你可以在编辑页面的"删除"按钮旁边添加新的操作按钮，执行 `impersonate()` Livewire 方法：
+
+```php
+use Filament\Pages\Actions;
+use Filament\Resources\Pages\EditRecord;
+
+class EditUser extends EditRecord
+{
+    // ...
+
+    protected function getActions(): array
+    {
+        return [
+            Actions\Action::make('impersonate')->action('impersonate'),
+            Actions\DeleteAction::make(),
+        ];
+    }
+
+    public function impersonate(): void
+    {
+        // ...
+    }
+}
+```
+
+或者，在表单"保存"按钮后添加新按钮:
+
+```php
+use Filament\Pages\Actions\Action;
+use Filament\Resources\Pages\EditRecord;
+
+class EditUser extends EditRecord
+{
+    // ...
+
+    protected function getFormActions(): array
+    {
+        return array_merge(parent::getFormActions(), [
+            Action::make('close')->action('saveAndClose'),
+        ]);
+    }
+
+    public function saveAndClose(): void
+    {
+        // ...
+    }
+}
+```
+
+查看所有的操作 API，请访问[页面](../pages/actions)。
+
+## 自定义视图
+
+要进一步自定义，你可以覆盖页面类的静态 `$view` 属性：
+
+```php
+protected static string $view = 'filament.resources.users.pages.edit-user';
+```

@@ -1,0 +1,690 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/forms/docs/02-getting-started.md"
+title: 开始
+description: 开发者可以使用各种预定义的表单类组件以及相关的接口方法，优雅而高效地构建表单，并与数据库模型等进行交互。
+keywords: [Filament Form, Form Builder, 表单构造器]
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Kab21689E5A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## 准备 Livewire 组件
+
+实现 `HasForms` 接口，使用 `InteractsWithForms` trait:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms // [tl! focus]
+{
+    use Forms\Concerns\InteractsWithForms; // [tl! focus]
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+在 Livewire 组件视图中，渲染表单:
+
+```blade
+<form wire:submit.prevent="submit">
+    {{ $this->form }}
+    
+    <button type="submit">
+        Submit
+    </button>
+</form>
+```
+
+最后，将[表单字段控件](fields)和[布局组件](layout)添加到 `getFormSchema()` 方法中:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $title;
+    public $content;
+    
+    public function mount(): void
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    }
+    
+    protected function getFormSchema(): array // [tl! focus:start]
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            // ...
+        ];
+    } // [tl! focus:end]
+    
+    public function submit(): void
+    {
+        // ...
+    }
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+在浏览器中访问 Livewire 组件，你就能看到 `getFormSchema()` 方法中的表单组件。
+
+![](https://user-images.githubusercontent.com/41773797/147614478-5b40c645-107e-40ac-ba41-f0feb99dd480.png)
+
+## 初始化表单
+
+当 Livewire 组件被加载时，你就必须初始化表单。这个过程由 `fill()` 表单方法实现，通常是在 Livewire 组件的 `mount()`方法调用。
+
+要让这些字段加载数据，应该在 Livewire 组件上给他们添加一个相应的属性名，正如普通的 Livewire 组件一般。 
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class CreatePost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public $title = '';
+    public $content = '';
+    
+    public function mount(): void // [tl! focus:start]
+    {
+        $this->form->fill();
+    } // [tl! focus:end]
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')
+                ->default('Status Update') // [tl! focus]
+                ->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+        ];
+    }
+    
+    public function render(): View
+    {
+        return view('create-post');
+    }
+}
+```
+
+你可以[使用 `afterStateHydrated()` 方法](advanced#数据脱水)自定义表单填充后的操作。
+
+## 表单数据填充
+
+要填充表单数据，须在表单上调用 `fill()` 方法，传入一个数组作为参数以供填充:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $title;
+    public $content;
+    
+    public function mount(): void // [tl! focus:start]
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    } // [tl! focus:end]
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+        ];
+    }
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+## 从表单获取数据
+
+要在数组中获取所有表单数据，需要在表单中调用 `getState()` 方法。
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class CreatePost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public $title = '';
+    public $content = '';
+    
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+        ];
+    }
+    
+    public function create(): void // [tl! focus:start]
+    {
+        Post::create($this->form->getState());
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('create-post');
+    }
+}
+```
+
+当 `getState()` 运行时:
+
+1) 先进行[表单验证](validation)，如果出现错误，就不会提交表单。
+2) 所有等待上传的文件都会被永久保存在文件系统中。
+3) 如果定义了[关联字段](#关联字段)，就会被保存。
+
+> 你可以[使用 `dehydrateStateUsing()` 方法](advanced#数据脱水)，对已经脱水的数据进行转换。
+
+## 注册模型
+
+你可以给表单注册一个模型。表单构造器可以用这个模型解锁DX特性。如：
+- 当使用像 `exists` 和 `unique` 这样的数据库验证规则时，会自动检索数据库名
+- 当使用像 `Select`、`Repeater`、`SpatieMediaLibraryFileUpload`、或 `SpatieTagsInput` 这样的字段控件时，保存表单时会自动将关联同时附加到模型中。
+
+使用 `getFormModel()` 将模型实例作为参数到表单中:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $title;
+    public $content;
+    public $tags;
+    
+    public function mount(): void
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\SpatieTagsInput::make('tags'),
+        ];
+    }
+    
+    protected function getFormModel(): Post // [tl! focus:start]
+    {
+        return $this->post;
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+此外，使用 `model()` 方法，你也可以将模型实例作为参数，传入到需要它的表单字段控件之中：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $title;
+    public $content;
+    public $tags;
+    
+    public function mount(): void
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\SpatieTagsInput::make('tags')->model($this->post), // [tl! focus]
+        ];
+    }
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+现在你可以使用[关联字段](#关联字段)了；
+
+### 注册模型类
+
+某些情况下，在表单提交之前模型实例不可用。比如，新建 post 的表单：在提交表单之前，post模型的实例不会被传到表单里。
+
+你可以通过注册模型类代替，取得如前面注册模型的一些特性：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class CreatePost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public $title = '';
+    public $content = '';
+    public $categories = [];
+    
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')
+                ->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\Select::make('categories')
+                ->multiple()
+                ->relationship('categories', 'name'),
+        ];
+    }
+    
+    protected function getFormModel(): string // [tl! focus:start]
+    {
+        return Post::class;
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('create-post');
+    }
+}
+```
+
+现在你可以使用[关联字段](#关联字段)了。
+
+## 关联字段
+
+有一些字段，如 `Select`、`Repeater`、`SpatieMediaLibraryFileUpload` 或 `SpatieTagsInput` 可以与模型关联交互。
+
+比如，`Select` 可用于添加多条记录到 `BelongstoMany` 关联模型中。当[注册模型](#注册模型)到表单或者组件时，这些关联字段也会[在调用 `getState()`时](#从表单获取数据) 自动被保存到关联的透视表中：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $title;
+    public $content;
+    public $categories;
+    
+    public function mount(): void
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')
+                ->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\Select::make('categories')
+                ->multiple()
+                ->relationship('categories', 'name'),
+        ];
+    }
+    
+    protected function getFormModel(): Post // [tl! focus:start]
+    {
+        return $this->post;
+    }
+    
+    public function save(): void
+    {
+        $this->post->update(
+            $this->form->getState(),
+        );
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+### 手动保存关联字段
+
+某些情况下，在表单提交之前模型实例不可用。比如，在新建 post 的表单中，提交表单前post的实例不会被传到表单form里。这种情况下，你需要[传模型类](#注册模型类)代替，不过，关联字段就需要随后手动进行保存了。
+
+这种情况下，你可以在实例创建后在表单上调用 `model()` 和 `saveRelationships()` 方法:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
+use Livewire\Component;
+
+class CreatePost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public $title = '';
+    public $content = '';
+    public $tags = [];
+    
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\SpatieTagsInput::make('tags'),
+        ];
+    }
+    
+    protected function getFormModel(): string
+    {
+        return Post::class;
+    }
+    
+    public function create(): void
+    {
+        $post = Post::create($this->form->getState());
+        
+        $this->form->model($post)->saveRelationships(); // [tl! focus]
+    }
+    
+    public function render(): View
+    {
+        return view('create-post');
+    }
+}
+```
+
+### 字段隐藏时保存关联数据
+
+默认情况下，关联只会在字段可见的情况下保存。比如，假设你有一个 `Repeater` 字段，只在特定条件下可见；这种情况下，当组件隐藏时，关联不会被保存。
+
+如果你在字段隐藏时仍然想要保存关联数据，这样可能会带来意料之外的行为。要使关联数据强制保存，你可以在表单组件中调用 `saveRelationshipsWhenHidden()` 方法：
+
+```php
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+
+SpatieMediaLibraryFileUpload::make('attachments')
+    ->visible(fn (Closure $get): bool => $get('has_attachments'))
+    ->saveRelationshipsWhenHidden();
+```
+
+## 使用多重表单
+
+默认情况下，每个 Livewire 组件中 `InteractsWithForm` trait 只处理一个表单。要实现多重表单，你可以重写 `getForms()` 方法让他返回多个表单，并让每个表单都有一个唯一的表单名:
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Author;
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Author $author;
+    public Post $post;
+    
+    public $title;
+    public $content;
+    
+    public $name;
+    public $email;
+    
+    public function mount(): void
+    {
+        $this->postForm->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+        
+        $this->authorForm->fill([
+            'name' => $this->author->name,
+            'email' => $this->author->email,
+        ]);
+    }
+    
+    protected function getPostFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+        ];
+    }
+    
+    protected function getAuthorFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('email')->email()->required(),
+        ];
+    }
+    
+    public function savePost(): void
+    {
+        $this->post->update(
+            $this->postForm->getState(),
+        );
+    }
+    
+    public function saveAuthor(): void
+    {
+        $this->author->update(
+            $this->authorForm->getState(),
+        );
+    }
+    
+    protected function getForms(): array // [tl! focus:start]
+    {
+        return [
+            'postForm' => $this->makeForm()
+                ->schema($this->getPostFormSchema())
+                ->model($this->post),
+            'authorForm' => $this->makeForm()
+                ->schema($this->getAuthorFormSchema())
+                ->model($this->author),
+        ];
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+## 将表单数据纳入数组属性
+
+你可以在 Livewire 组件上将所有表单数据归入到一个类型为数组的属性中。这样你就可以不必为每个字段定义新属性：
+
+```php
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Post;
+use Filament\Forms;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class EditPost extends Component implements Forms\Contracts\HasForms
+{
+    use Forms\Concerns\InteractsWithForms;
+    
+    public Post $post;
+    
+    public $data; // [tl! focus]
+    
+    public function mount(): void
+    {
+        $this->form->fill([
+            'title' => $this->post->title,
+            'content' => $this->post->content,
+        ]);
+    }
+    
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            Forms\Components\SpatieTagsInput::make('tags'),
+        ];
+    }
+    
+    protected function getFormModel(): Post
+    {
+        return $this->post;
+    }
+    
+    protected function getFormStatePath(): string // [tl! focus:start]
+    {
+        return 'data';
+    } // [tl! focus:end]
+    
+    public function render(): View
+    {
+        return view('edit-post');
+    }
+}
+```
+
+此例中，所有表单数据都会被存到 `$data` 数组中。

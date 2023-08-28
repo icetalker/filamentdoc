@@ -1,0 +1,13 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/11-checkbox.md"
+title: 复选框字段
+---
+
+复选框字段允许你在表格中渲染复选框，可用于在不打开新页面或模态框的情况下更新数据库记录：
+
+```php
+use Filament\Tables\Columns\CheckboxColumn;
+
+CheckboxColumn::make('is_admin')
+```

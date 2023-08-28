@@ -1,0 +1,329 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/forms/docs/06-advanced.md"
+title: 高级
+description: Filament 表单构造器同时提供了高阶的操作接口
+keywords: [Filament Form, Form Builder, 表单构造器, 进阶教程]
+---
+
+## 使用闭包自定义
+
+所有的[表单字段](fields)和[布局组件](layout)的配置方法可接收闭包作为参数代替硬编码值：
+
+```php
+use App\Models\User;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+
+DatePicker::make('date_of_birth')
+    ->displayFormat(function () {
+        if (auth()->user()->country_id === 'us') {
+            return 'm/d/Y'
+        } else {
+            return 'd/m/Y'
+        }
+    })
+
+Select::make('userId')
+    ->options(function () {
+        return User::all()->pluck('name', 'id');
+    })
+
+TextInput::make('middle_name')
+    ->required(function () {
+        return auth()->user()->hasMiddleName();
+    })
+```
+
+这便解锁了很多自定义的可能。
+
+这个包也可以注入许多实用工具，可在闭包内作为参数使用。
+
+如果你需要访问当前组件的状态(值)，请定义 `$state` 参数：
+
+```php
+function ($state) {
+    // ...
+}
+```
+
+如果你需要获取当前组件的实例，请定义 `$component` 参数：
+
+```php
+use Filament\Forms\Components\Component;
+
+function (Component $component) {
+    // ...
+}
+```
+
+如果你需要获取当前的 Livewire 组件实例，请定义 `$livewire` 参数：
+
+```php
+use Livewire\Component as Livewire;
+
+function (Livewire $livewire) {
+    // ...
+}
+```
+
+如果你已经定义了表单或者组件的 Eloquent 模型实例，请定义 `$record` 参数：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+function (?Model $record) {
+    // ...
+}
+```
+
+如果你想在回调函数内检索另一个字段的值，请使用闭包参数 `$get`： 
+
+```php
+use Closure;
+
+function (Closure $get) {
+    $email = $get('email'); // Store the value of the `email` field in the `$email` variable.
+    //...
+}
+```
+
+类似于 `$set`，你也可以使用闭包参数 `$set` 在回调函数内设置另外一个字段的值：
+
+```php
+use Closure;
+
+function (Closure $set) {
+    $set('title', 'Blog Post'); // Set the `title` field to `Blog Post`.
+    //...
+}
+```
+
+如果你在为后台面板资源或关联管理器创建表单，并且你想要检查表单是否 `create`, `edit` 或 `view`，请使用 `$context` 参数：
+
+```php
+function (string $context) {
+    // ...
+}
+```
+
+> 如果没有使用后台面板，你也可以在你的 Livewire 组件中定义 `getFormContext()` 方法，设置表单的context。
+
+闭包在底层使用 Laravel 的 `app()->call()`，因此你可以同时使用多个参数而不用关心参数顺序：
+
+```php
+use Closure;
+use Livewire\Component as Livewire;
+
+function (Livewire $livewire, Closure $get, Closure $set) {
+    // ...
+}
+```
+
+### 字段更新时重载表单
+
+默认情况下，表单只会在验证后或者提交时重载。你可以在某一字段上使用 `reactive()` 方法，当该字段的值修改后，表单在会重载：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('title')->reactive()
+```
+
+一个适合的用例是，比如你根据标题字段自动生成 slug:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GNsk5z7-PEs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## 依赖字段/组件
+
+你可以使用在[使用闭包自定义区域](#使用闭包自定义)中描述的技术，创建完全依赖字段和组件，通过表单中其他字段的值来进行自定义控制。
+
+比如，你可以创建一个依赖[下拉列表](fields#下拉列表):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/W_eNyimRi3w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+有时，你可能需要根据字段的值条件性地隐藏表单组件。你可以使用 `hidden()` 方法：
+
+```php
+use Closure;
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('newPassword')
+    ->password()
+    ->reactive()
+
+TextInput::make('newPasswordConfirmation')
+    ->password()
+    ->hidden(fn (Closure $get) => $get('newPassword') !== null)
+```
+
+你所依赖的那一个字段应该是 `reactive()` 的，这样 Livewire 组件才会在数据更新时重载。
+
+## 字段生命周期
+
+### 数据注水
+
+数据注水(Hydration)是指表单填充数据的过程。当你调用[表单填充`fill()`方法](getting-started#表单数据填充)时运行。你可以在数据注水后使用 `afterStateHydrated()` 方法自定义做些什么操作。
+
+此例中，`name` 字段将会总是以首字母大写填充：
+
+```php
+use Closure;
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+    ->afterStateHydrated(function (TextInput $component, $state) {
+        $component->state(ucwords($state));
+    })
+```
+
+### 更新
+
+你可以使用 `afterStateUpdated()` 自定义字段更新后的行为。
+
+此例中, `slug` 字段会根据 `title` 字段的slug版本自动更新：
+
+```php
+use Closure;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Str;
+
+TextInput::make('title')
+    ->reactive()
+    ->afterStateUpdated(function (Closure $set, $state) {
+        $set('slug', Str::slug($state));
+    })
+TextInput::make('slug')
+```
+
+### 数据脱水
+
+脱水(Dehydration)是从表单字段中获取数据，并进行转换的过程。当调用[表单 `getState()` 方法](getting-started#从表单获取数据)时运行。通过从 `dehydrateStateUsing()` 回调函数中返回转换后的状态值，你可以自定义表单来的数据如何脱水。
+
+本例中，`name` 字段会被脱水转换成首字母大写的名字。
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->dehydrateStateUsing(fn ($state) => ucwords($state))
+```
+
+你也可以传入 `false` 参数到 `dehydrated()` 方法中，防止字段被一起脱水。
+
+本例中，`passwordConfirmation` 字段不会显示在 `getData()` 返回的数组中：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('passwordConfirmation')
+    ->password()
+    ->dehydrated(false)
+```
+
+## 使用表单事件
+
+表单可以派发和监听事件，让前端和后端交互。
+
+事件可以在组件视图中派发，然后由组件类监听。
+
+### 分发事件
+
+调用 `dispatchFormEvent()` Livewire 方法并传入事件名称，可以派发表单事件：
+
+```blade
+<button wire:click="dispatchFormEvent('save')">
+    Save
+</button>
+```
+
+通常，你需要为特定的组件类分发事件。假若如此，你应该用组件名作为事件的前缀，并传送组件的state path作为第二个参数：
+
+```blade
+<button wire:click="dispatchFormEvent('repeater::createItem', '{{ $getStatePath() }}')">
+    Add item
+</button>
+```
+
+你也可以传送其他参数给事件：
+
+```blade
+<button wire:click="dispatchFormEvent('repeater::deleteItem', '{{ $getStatePath() }}', '{{ $uuid }}')">
+    Delete item
+</button>
+```
+
+### 监听事件
+
+当组件 `setUp()` 时，你可以调用 `registerListeners()` 方法注册表单事件的监听器：
+
+```php
+use Filament\Forms\Components\Component;
+
+protected function setUp(): void
+{
+    parent::setUp();
+
+    $this->registerListeners([
+        'save' => [
+            function (Component $component): void {
+                // ...
+            },
+        ],
+    ]);
+}
+```
+
+如果你的事件是组件指定的，你需要确保组件没有被禁用，以及组件的state path匹配事件的第二个参数：
+
+```php
+use Filament\Forms\Components\Component;
+
+protected function setUp(): void
+{
+    parent::setUp();
+
+    $this->registerListeners([
+        'repeater::createItem' => [
+            function (Component $component, string $statePath): void {
+                if ($component->isDisabled()) {
+                    return;
+                }
+
+                if ($statePath !== $component->getStatePath()) {
+                    return;
+                }
+
+                // ...
+            },
+        ],
+    ]);
+}
+```
+
+另外，你也可以从事件中读取其他参数：
+
+```php
+use Filament\Forms\Components\Component;
+
+protected function setUp(): void
+{
+    parent::setUp();
+
+    $this->registerListeners([
+        'repeater::deleteItem' => [
+            function (Component $component, string $statePath, string $uuidToDelete): void {
+                if ($component->isDisabled()) {
+                    return;
+                }
+
+                if ($statePath !== $component->getStatePath()) {
+                    return;
+                }
+
+                // Delete item with UUID `$uuidToDelete`
+            },
+        ],
+    ]);
+}
+```

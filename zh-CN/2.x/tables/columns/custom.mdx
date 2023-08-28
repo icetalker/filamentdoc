@@ -1,0 +1,58 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/03-columns/12-custom.md"
+title: 自定义字段
+---
+
+## 视图字段
+
+你可以使用 `view()` 方法为一个单元格渲染自定义视图：
+
+```php
+use Filament\Tables\Columns\ViewColumn;
+
+ViewColumn::make('status')->view('filament.tables.columns.status-switcher')
+```
+
+在视图内部，你可以使用 `$getState()` 方法检索单元格的状态：
+
+```blade
+<div>
+    {{ $getState() }}
+</div>
+```
+
+你也可以使用 `$getRecord()` 获取整个 Eloquent 记录。
+
+## 自定义类
+
+你可以创建自己的自定义表格字段类和单元格视图，在跨项目中复用，甚至可以作为插件发布到社区。
+
+> 如果你只是下需要创建一个只用一次的简单的自定义表格字段，你可以使用[视图字段(View Column)](#视图字段)对任何自定义Blade文件进行渲染。
+
+你可以使用以下命令，创建一个自定义表格字段和视图：
+
+```bash
+php artisan make:table-column StatusSwitcher
+```
+
+这将会创建以下的表格字段类：
+
+```php
+use Filament\Tables\Columns\Column;
+
+class StatusSwitcher extends Column
+{
+    protected string $view = 'filament.tables.columns.status-switcher';
+}
+```
+
+在视图内部，你可以使用 `$getState()` 方法检索单元格的状态：
+
+```blade
+<div>
+    {{ $getState() }}
+</div>
+```
+
+你也可以使用 `$getRecord()` 获取整个 Eloquent 记录。

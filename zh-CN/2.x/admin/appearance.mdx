@@ -1,0 +1,331 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/08-appearance.md"
+title: 外观
+description: Filament 提供了一系列接口，为开发者提供了修改外观、自定义主题的可能。
+---
+
+## 修改品牌 Logo
+
+默认情况下，Filament 会在后台面板中使用你的应用名作为品牌 Logo。
+
+你也可以创建 `resources/views/vendor/filament/components/brand.blade.php` 文件，用来自定义 logo:
+
+```blade
+<img src="{{ asset('/images/logo.svg') }}" alt="Logo" class="h-10">
+```
+
+## 暗黑模式
+
+Filament 默认只包含明亮主题。但是，你也可以在[配置文件](installation#发布配置文件)中使用 `dark_mode` 设置，让用户可以自由切换到暗黑模式：
+
+```php
+'dark_mode' => true,
+```
+
+当暗黑模式启用，后台面板会自动遵守系统的暗黑/明亮模式偏好。你也可以通过用户的下拉菜单按钮永久切换模式。
+
+如果你使用[自定义主题](#创建主题)，请确保你的 `tailwind.config.js` 文件有 `darkMode: 'class'`设置。
+
+> 请注意：在生产环境中启用暗黑模式之前，请完整测试你的后台面板 - 特别是第三方插件，因它们可能还未被测试到位。
+
+当用户切换暗黑/明亮模式时，一个被称为 **dark-mode-toggled** 的浏览器事件被派发了。你可以对其进行监听：
+
+```html
+<div
+    x-data="{ mode: 'light' }"
+    x-on:dark-mode-toggled.window="mode = $event.detail"
+>
+    <span x-show="mode === 'light'">
+        Light mode
+    </span>
+
+    <span x-show="mode === 'dark'">
+        Dark mode
+    </span>
+</div>
+```
+
+## 可折叠侧边栏
+
+默认情况下，侧边栏只在移动端可折叠。你也可以让他在桌面端可折叠。
+
+你先需要[发布配置文件](installation#发布配置文件)，才能使用这个特性。
+
+在配置文件 `config/filament.php` 中，将 `layouts.sidebar.is_collapsible_on_desktop` 设置为 `true`:
+
+```php
+'layout' => [
+    'sidebar' => [
+        'is_collapsible_on_desktop' => true,
+    ],
+],
+```
+
+## 非粘性顶部栏
+
+默认情况下，顶部导航栏固定在页面顶部。
+
+你可以将下面样式添加到主题或者注册新的样式，使之可以滚动滑出视图之外：
+
+```css
+.filament-main-topbar {
+    position: relative;
+}
+```
+
+## 创建主题
+
+Filament 允许你通过编译自定义的样式表，替换默认样式，来改变UI中所使用字体和颜色方案。这个自定义的样式表叫做"主题"。
+
+主题使用[Tailwind CSS](https://tailwindcss.com)、Tailwind Typography 插件、[Autoprefixer](https://github.com/postcss/autoprefixer) 和 [Tippy.js](https://atomiks.github.io/tippyjs/)。你可以通过 NPM 安装它们：
+
+```bash
+npm install tailwindcss @tailwindcss/forms @tailwindcss/typography autoprefixer tippy.js --save-dev
+```
+
+要安装 Tailwind，你要在项目的根目录中创建 `tailwind.config.js` 文件。最简单的做法是运行 `npx tailwindcss init`。
+
+在 `tailwind.config.js` 中，注册你安装好的插件，添加表单构造器使用的自定义颜色：
+
+```js
+import colors from 'tailwindcss/colors' // [tl! focus:start]
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography' // [tl! focus:end]
+
+export default {
+    content: [
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php', // [tl! focus]
+    ],
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: { // [tl! focus:start]
+                danger: colors.rose,
+                primary: colors.blue,
+                success: colors.green,
+                warning: colors.yellow,
+            }, // [tl! focus:end]
+        },
+    },
+    plugins: [
+        forms, // [tl! focus:start]
+        typography, // [tl! focus:end]
+    ],
+}
+```
+
+你可以指定自己的颜色，使之在整个后台面板中使用。
+
+如果你使用 Vite 来编译资源，请在 `vite.config.js` 文件中，注册 `filament.css` 主题文件：
+
+```js
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                // ...
+                'resources/css/filament.css',
+            ],
+            // ...
+        }),
+    ],
+})
+```
+
+然后将 Tailwind 添加到 `postcss.config.js` 文件中：
+
+```js
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+```
+
+如果你使用的是 Mix 编译, 在 `webpack.mix.js` 文件中，以 PostCSS 插件的形式注册 Tailwind CSS:
+
+```js
+const mix = require('laravel-mix')
+
+mix.postCss('resources/css/filament.css', 'public/css', [
+    require('tailwindcss'), // [tl! focus]
+])
+```
+
+在 `/resources/css/filament.css` 文件中，引入Filament vendor CSS:
+
+```css
+@import '../../vendor/filament/filament/resources/css/app.css';
+```
+
+现在，你可以在服务提供者的 `boot()` 方法中注册主题文件：
+
+```php
+use Filament\Facades\Filament;
+use Illuminate\Foundation\Vite;
+
+Filament::serving(function () {
+    // Using Vite
+    Filament::registerViteTheme('resources/css/filament.css');
+
+    // Using Laravel Mix
+    Filament::registerTheme(
+        mix('css/filament.css'),
+    );
+});
+```
+
+### 加载Google字体
+
+如果你在 `tailwind.config.js` 中指定了自定义的字体，你可能需要通过 Google 字体将其引入。
+
+要获取该特性，你需要[发布配置文件](installation#发布配置文件)。
+
+将 `google_fonts` 配置项设置为要加载的新的 Google 字体 URL:
+
+```php
+'google_fonts' => 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap',
+```
+
+## 调整最大内容宽度
+
+Filament 暴露了一个配置项，允许用户调整所有页面的最大内容宽度。
+
+要使用这个特性，你必须先[发布配置文件](installation#发布配置文件)。
+
+在 `config/filament.php` 中，将 `layouts.max_content_width` 设置成 `xl` 到 `7xl` 之间的值，或者没有最大宽度的 `full` :
+
+```php
+'layout' => [
+    'max_content_width' => 'full',
+],
+```
+
+默认值为 `7xl`.
+
+你可以使用 `$maxContentWidth` 属性，重写后台面板指定页面的最大内容宽度。
+
+```php
+protected ?string $maxContentWidth = 'full';
+```
+
+## 引入前端资源
+
+你可以在服务提供者的 `boot()` 方法中使用  `registerScripts()` 和 `registerStyles()` 方法，来注册你自己的 Javascript 脚本或者 CSS 样式。
+
+```php
+use Filament\Facades\Filament;
+
+Filament::registerScripts([
+    asset('js/my-script.js'),
+]);
+
+Filament::registerStyles([
+    'https://unpkg.com/tippy.js@6/dist/tippy.css',
+    asset('css/my-styles.css'),
+]);
+```
+
+你也可以传 `true` 作为 `registerScripte()` 的参数，让这个脚本在 Filament 核心 Javascript 文件前加载。这对注册来自于 CDN 中的 Alpine.js 插件很有用：
+
+```php
+Filament::registerScripts([
+    'https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@0.x.x/dist/cdn.min.js',
+], true);
+```
+
+## 自定义meta标签
+
+你可以将自定义标签(如 `<meta>` 和 `<link>` )添加到 header 中，使用如下代码：
+
+```php
+use Filament\Facades\Filament;
+use Illuminate\Support\HtmlString;
+
+Filament::pushMeta([
+    new HtmlString('<link rel="manifest" href="/site.webmanifest" />'),
+]);
+```
+
+## 通知位置
+
+Filament 允许自定义通知的显示位置。
+
+在 `config/filament.php` 文件中，将 `layouts.notifications.alignment` 设置为 `left`、`center` 或 `right` 中的任意值，将 `layouts.notifications.vertical_alignment` 设置为 `top`、`center` 或者 `bottom` 中的任意值:
+
+```php
+'layout' => [
+    'notifications' => [
+        'vertical_alignment' => 'top'
+        'alignment' => 'center',
+    ],
+],
+```
+
+## 渲染钩子
+
+Filament 允许你在后台面板布局的诸多结点中渲染 Blade 模板内容。这对于整合像 [`wire-elements/modal`](https://github.com/wire-elements/modal)这样的包很有用。
+
+这里有一个例子，在服务提供者中整合了[`wire-elements/modal`](https://github.com/wire-elements/modal)：
+
+```php
+use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Blade;
+
+Filament::registerRenderHook(
+    'body.start',
+    fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
+);
+```
+
+你也可以在文件中渲染视图内容:
+
+```php
+use Filament\Facades\Filament;
+use Illuminate\Contracts\View\View;
+
+Filament::registerRenderHook(
+    'body.start',
+    fn (): View => view('impersonation-banner'),
+);
+```
+
+可用的钩子包括:
+
+- `body.start` - 在 `<body>` 之后
+- `body.end` - 在 `</body>` 之前
+- `head.start` - 在 `<head>` 之后
+- `head.end` - 在 `</head>` 之前
+- `content.start` - 在页面内容之前
+- `content.end` - 在页面内容之后
+- `footer.before` - footer 之前
+- `footer.start` - footer 内容开始位置(footer 中间)
+- `footer.end` - footer 内容的结束位置(footer 中间)
+- `sidebar.start` - 在 [sidebar](navigation) 内容之前
+- `sidebar.end` - 在 [sidebar](navigation) 内容之后
+- `scripts.start` - 在脚本定义之前
+- `scripts.end` - 在脚本之后
+- `styles.start` - 在样式定义之前
+- `styles.end` - 在样式定义之后
+- `global-search.start` - 在 [全局搜索](resources#全局搜索)输入框之前
+- `global-search.end` - 在 [全局搜索](resources#全局搜索)输入框之后
+- `user-menu.start` - [用户菜单](navigation#自定义用户菜单)输入框前
+- `user-menu.end` - [用户菜单](navigation#自定义用户菜单)输入框后
+- `user-menu.account.before` - [用户菜单](navigation#自定义用户菜单)账号项之前
+- `user-menu.account.after` - [用户菜单](navigation#自定义用户菜单)账号项之后
+- `page.header-widgets.start` - 页面头部 widget 之前
+- `page.header-widgets.end` - 页面头部 widget 之后
+- `page.footer-widgets.start` - 页面尾部 widget 之前
+- `page.footer-widgets.end` - 页面尾部 widget 之后
+- `page.actions.start` - 在页面 action 之前
+- `page.actions.end` - 在页面 action 之后
+- `resource.pages.list-records.table.start` - 在资源表格之前
+- `resource.pages.list-records.table.end` - 在资源表格之后
+- `resource.relation-manager.start` - 在关联管理器表格之前
+- `resource.relation-manager.end` - 在关联管理器表格之后

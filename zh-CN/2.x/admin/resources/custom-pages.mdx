@@ -1,0 +1,35 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/10-custom-pages.md"
+title: 自定义页面
+---
+
+Filament 允许你为你的资源创建完全自定义的页面。要创建新页面，你可以使用: 
+
+```bash
+php artisan make:filament-page SortUsers --resource=UserResource --type=custom
+```
+
+这一命令将创建两个文件 - 在资源目录的 `/Pages` 文件夹中新建一个页面类，在资源视图目录的 `/pages` 文件夹中创建一个新的视图(view)文件。
+
+你必须在资源的静态方法 `getPages()` 中为自定义页面注册路由:
+
+```php
+public static function getPages(): array
+{
+    return [
+        // ...
+        'sort' => Pages\SortUsers::route('/sort'),
+    ];
+}
+```
+
+请注意，该方法中注册页面的顺序很重要 - 在硬编码前定义的通配符路由会优先匹配。
+
+路由路径下定义的所有[参数](https://laravel.com/docs/routing#route-parameters)，在页面类都是可用的。和 [Livewire](https://laravel-livewire.com/docs/rendering-components#route-params) 中的路由参数采用相同的方式。
+
+要为资源路由生成一个URL，你可以调用页面类的静态 `getUrl()` 方法：
+
+```php
+UserResource::getUrl('sort');
+```

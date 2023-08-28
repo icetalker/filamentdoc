@@ -1,0 +1,617 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/forms/docs/04-layout.md"
+title: 布局
+description: Filament 提供了一系列接口方法，使开发者可以根据需要对表单组件进行自定义布局。
+keywords: [Filament Form, Form Builder, 表单构造器, 布局控件]
+---
+
+## 开始
+
+布局组件类可在 `Filament\Form\Components` 命名空间里找到。
+
+布局组件存放于表单 schema 中，和[表单字段](fields)一起。
+
+如果你在 Livewire 组件中使用布局组件，你可以将它们放在 `getFormSchema()` 方法中：
+
+```php
+protected function getFormSchema(): array
+{
+    return [
+        // ...
+    ];
+}
+```
+
+如果你在后台面板的资源或者关联管理器中使用，你必须将他们放在 `$form->schema()` 方法中：
+
+```php
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            // ...
+        ]);
+}
+```
+
+组件可以使用静态 `make()` 方法创建。通常，你随后可以定义子组件内部显示的 `schema()`：
+
+```php
+use Filament\Forms\Components\Grid;
+
+Grid::make()
+    ->schema([
+        // ...
+    ])
+```
+
+### 列数
+
+你可以使用 `columns()` 方法，在每个布局组件内部创建多个列。
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()->columns(2)
+```
+
+> 更多关于创建高级、自适应的列布局信息，请移步[网格区域](#网格)。所有该区域的列选项同样对其他布局组件有效。
+
+#### 控制字段宽度
+
+你可以指定组件在父级网格中占据的列宽数：
+
+```php
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+
+Grid::make(3)
+    ->schema([
+        TextInput::make('name')
+            ->columnSpan(2),
+        // ...
+    ])
+```
+
+你也可以使用 `columnSpan('full')` 指定列宽为父级网格的全宽，无论其有多少列宽：
+
+```php
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+
+Grid::make(3)
+    ->schema([
+        TextInput::make('name')
+            ->columnSpan('full'),
+        // ...
+    ])
+```
+
+另外，你也可以定义组件在不同临界点占用多少列宽：
+
+```php
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\TextInput;
+
+Grid::make([
+    'default' => 1,
+    'sm' => 3,
+    'xl' => 6,
+    '2xl' => 8,
+])
+    ->schema([
+        TextInput::make('name')
+            ->columnSpan([
+                'sm' => 2,
+                'xl' => 3,
+                '2xl' => 4,
+            ]),
+        // ...
+    ])
+```
+
+### 设置ID
+
+你可以使用 `id()` 方法为组件定义ID：
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()->id('main-card')
+```
+
+### 自定义属性
+
+HTML组件可以进一步自定义，通过传入一个数组到 `extraAttributes()`:
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()->extraAttributes(['class' => 'bg-gray-50'])
+```
+
+### 全局设置
+
+如果你想要全局修改组件的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的卡片组件默认为[2列](#列数)，你可以这样做：
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::configureUsing(function (Card $card): void {
+    $card->columns(2);
+});
+```
+
+当然，你仍然可以对每个字段单独进行重写：
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()->columns(1)
+```
+
+### 保存数据到关联模型
+
+使用 `relationship()` 方法，你可以加载或者保存布局组件的内容到 `HasOne`、`BelongsTo` 或 `MorphOne` 的关联模型中：
+
+```php
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+
+Fieldset::make('Metadata')
+    ->relationship('metadata')
+    ->schema([
+        TextInput::make('title'),
+        Textarea::make('description'),
+        FileUpload::make('image'),
+    ])
+```
+
+此例中，`title`、`description` 和 `image` 会自动从 `metadata` 关联模型中加载，当表单提交时会被再次保存。如果 `metadata` 记录不存在，就自动生成。
+
+> 要启用这个功能，**你必须按照[关系型字段](getting-started#field-relationships)设置的指示**。如果你使用了[后台面板](/docs/zh-CN/2.X/admin)，可以跳过此步。
+
+## 网格
+
+通常，表单字段以单列的形式堆叠在其他字段之上。要做调整，你可以使用网格(Grid)组件:
+
+```php
+use Filament\Forms\Components\Grid;
+
+Grid::make()
+    ->schema([
+        // ...
+    ])
+```
+
+默认情况下，网格组件会产生一个两列的网格适应[Tailwind的`md`或更高的临界点](https://tailwindcss.com/docs/responsive-design#overview)。
+
+你可以这样传入数字指定网格 md 临界点的列宽数：
+
+```php
+use Filament\Forms\Components\Grid;
+
+Grid::make(3)
+    ->schema([
+        // ...
+    ])
+```
+
+要以不同[临界点](https://tailwindcss.com/docs/responsive-design#overview)中自定义网格中的列数，你可以传入一个临界点和列数组成的数组:
+
+```php
+use Filament\Forms\Components\Grid;
+
+Grid::make([
+    'default' => 1,
+    'sm' => 2,
+    'md' => 3,
+    'lg' => 4,
+    'xl' => 6,
+    '2xl' => 8,
+])
+    ->schema([
+        // ...
+    ])
+```
+
+由于 Tailwind 是移动端优先，如果你忽略临界点，它就会使用它下面那个：
+
+```php
+use Filament\Forms\Components\Grid;
+
+Grid::make([
+    'sm' => 2,
+    'xl' => 6,
+])
+    ->schema([
+        // ...
+    ])
+```
+
+## 字段集
+
+你可以对字段进行分组归入字段集中。每个字段集(Fieldset)默认都有一个标签、一条边线、和一个两栏的网格：
+
+```php
+use Filament\Forms\Components\Fieldset;
+
+Fieldset::make('Label')
+    ->schema([
+        // ...
+    ])
+```
+
+你可以使用 `columns()` 方法自定义字段集里的[网格](#网格):
+
+```php
+use Filament\Forms\Components\Fieldset;
+
+Fieldset::make('Label')
+    ->schema([
+        // ...
+    ])
+    ->columns(3)
+```
+
+## 标签页
+
+有些表格比较长、比较复杂。你可以使用标签页(Tabs)来减少组件一次性可见的数量：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Heading')
+    ->tabs([
+        Tabs\Tab::make('Label 1')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Label 2')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Label 3')
+            ->schema([
+                // ...
+            ]),
+    ])
+```
+
+默认情况下会打开第一个标签页。使用 `activeTab()` 方法可以改变默认打开的标签页：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Heading')
+    ->tabs([
+        Tabs\Tab::make('Label 1')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Label 2')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Label 3')
+            ->schema([
+                // ...
+            ]),
+    ])
+    ->activeTab(2)
+```
+
+使用 `icon()` 和 `badge()` 方法，可以为标签页设置图标和徽章：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Heading')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->icon('heroicon-o-bell') // [tl! focus:start]
+            ->badge('39') // [tl! focus:end]
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+图标可以使用 `iconPosition()` 和 `iconColor()` 方法进行修改：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Heading')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->icon('heroicon-o-bell')
+            ->iconPosition('after') // `before` or `after` [tl! focus:end]
+            ->iconColor('success') // `danger`, `primary`, `success`, `warning` or `secondary` [tl! focus:end]
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+## Wizard
+
+类似于[标签页](#标签页)，你可能想要使用多步骤的表单向导(Wizard)，减少组件的一次性的可见数量。这对于表单中有明显时间先后顺序的处理步骤，尤其有用。
+
+```php
+use Filament\Forms\Components\Wizard;
+
+Wizard::make([
+    Wizard\Step::make('Order')
+        ->schema([
+            // ...
+        ]),
+    Wizard\Step::make('Delivery')
+        ->schema([
+            // ...
+        ]),
+    Wizard\Step::make('Billing')
+        ->schema([
+            // ...
+        ]),
+])
+```
+
+> 对于后台面板[资源创建页](../admin/resources/creating-records#wizards)及表格[操作](../tables/actions#wizards)，如果你需要添加 wizard 向导卡，我们提供了不同的安装说明。遵照该文档能够确保将表单提交只在最后一步可用。
+
+每一步都必须有一个标签。你也可以添加描述(description)提供额外信息：
+
+```php
+use Filament\Forms\Components\Wizard;
+
+Wizard\Step::make('Order')
+    ->description('Review your basket')
+    ->schema([
+        // ...
+    ]),
+```
+
+步骤也可以有图标，图标可以是任何的 Blade 图标组件：
+
+```php
+use Filament\Forms\Components\Wizard;
+
+Wizard\Step::make('Order')
+    ->icon('heroicon-o-shopping-bag')
+    ->schema([
+        // ...
+    ]),
+```
+
+你可以使用 `submitAction()` 方法，渲染最后一步的提交按钮的 HTML 或者向导尾部的视图。这便提供了更为清晰的用户界面，而不必在向导的每一步底下都展示提交按钮：
+
+```php
+use Filament\Forms\Components\Wizard;
+use Illuminate\Support\HtmlString;
+
+Wizard::make([
+    // ...
+])->submitAction(view('order-form.submit-button'))
+
+Wizard::make([
+    // ...
+])->submitAction(new HtmlString('<button type="submit">Submit</button>'))
+```
+
+你可以使用 `startOnStep()` 方法载入指定的步骤：
+
+```php
+use Filament\Forms\Components\Wizard;
+
+Wizard::make([
+    // ...
+])->startOnStep(2)
+```
+
+如果你想允许自由导航，使所有步骤都可以跳过，重写 `hskippable()` 方法：
+
+```php
+use Filament\Forms\Components\Wizard;
+
+Wizard::make([
+    // ...
+])->skippable()
+```
+
+## 分区
+
+你可能将字段分成不同区域，每个分区由一个标题和描述。可以使用分区(Section)组件实现这个功能：
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->description('Description')
+    ->schema([
+        // ...
+    ])
+```
+
+你可以使用 `columns()` 方法在分区内快速创建[网格](#网格):
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->schema([
+        // ...
+    ])
+    ->columns(2)
+```
+
+你可以使用 `aside()` 让标题和描述左对齐，并使卡片内表单组件向右对齐：
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->description('Description')
+    ->aside()
+    ->schema([
+        // ...
+    ])
+```
+
+分区可以在长表单中选择性隐藏内容，可设为可折叠的 `collapsible()`:
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->schema([
+        // ...
+    ])
+    ->collapsible()
+```
+
+分区可以设为默认已折叠的，`collapsed()`：
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->schema([
+        // ...
+    ])
+    ->collapsed()
+```
+
+嵌套分区时，你可以使用更为紧凑的样式：
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Heading')
+    ->schema([
+        // ...
+    ])
+    ->compact()
+```
+
+## 占位符
+
+占位符可在表单中用于渲染仅限文本的字段。占位符由一个 `content()` 方法，用户不可修改。
+
+> **注:** 所有字段都需要一个唯一的名称。这也适用于占位符！
+
+```php
+use Filament\Forms\Components\Placeholder;
+
+Placeholder::make('Label')
+    ->content('Content, displayed underneath the label')
+```
+
+你甚至可以在占位符中渲染HTML内容：
+
+```php
+use Filament\Forms\Components\Placeholder;
+use Illuminate\Support\HtmlString;
+
+Placeholder::make('Documentation')
+    ->content(new HtmlString('<a href="https://filamentphp.com/docs">filamentphp.com</a>'))
+```
+
+## 卡片
+
+卡片(Card)组件可用于渲染卡片内的表单组件：
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()
+    ->schema([
+        // ...
+    ])
+```
+
+你可以使用 `columns()` 在卡片内快速创建[网格](#网格)：
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()
+    ->schema([
+        // ...
+    ])
+    ->columns(2)
+```
+
+## 行内标签
+
+你可以使用 inlineLabel() 方法，使表单标签和字段在各自列中相互对齐。这适用于所有组件，每个字段内部都会有一个行内标签。
+
+```php
+use Filament\Forms\Components\Card;
+
+Card::make()
+    ->schema([
+        // ...
+    ])
+    ->inlineLabel()
+```
+
+## 视图组件
+
+除了[创建自定义布局组件](#创建自定义布局组件)，你也可以在不用新建PHP类的情况下，新建视图组件。
+
+```php
+use Filament\Forms\Components\View;
+
+View::make('filament.forms.components.wizard')
+```
+
+在视图中，你可以使用 `$getChildComponentContainer()` 闭包渲染组件的 `schema()` 。
+
+```blade
+<div>
+    {{ $getChildComponentContainer() }}
+</div>
+```
+
+## 创建自定义布局组件
+
+你可以创建自定义的组件类和视图，在应用中复用甚至是以插件形式发布到社区。
+
+> 如果你只是需要创建一次性使用的简单自定义字段，你可以使用[视图组件](#视图组件)来渲染自定义模板文件。
+
+要创建自定义的组件类和视图，你可以使用以下命令：
+
+```bash
+php artisan make:form-layout Wizard
+```
+
+此命令会新建如下布局组件类：
+
+```php
+use Filament\Forms\Components\Component;
+
+class Wizard extends Component
+{
+    protected string $view = 'filament.forms.components.wizard';
+    
+    public static function make(): static
+    {
+        return new static();
+    }
+}
+```
+
+在视图文件内，你可以使用 `$getChildComponentContainer()` 闭包来渲染组件的 `schema()` ：
+
+```blade
+<div>
+    {{ $getChildComponentContainer() }}
+</div>
+```

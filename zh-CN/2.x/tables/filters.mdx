@@ -1,0 +1,361 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/04-filters.md"
+title: 过滤器
+description: 过滤器(Filters) 让你可以以某种方式筛选Eloquent查询的数据
+keywords: [filter, 过滤器]
+---
+
+## 开始
+
+过滤器(Filters) 让你可以以某种方式筛选 Eloquent 查询的数据，减少表格中的记录数。
+
+如果你在 Livewire 组件中使用过滤器，请将其放在 `getTableFilters()` 方法中：
+
+```php
+protected function getTableFilters(): array
+{
+    return [
+        // ...
+    ];
+}
+```
+
+如果你在后台面板的资源或者关系管理器中使用，将它们放在 `$table->filters()` 方法中：
+
+```php
+public static function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ]);
+}
+```
+
+过滤器使用静态方法 `make()` 并传入过滤器名称创建。过滤器名称应该是唯一的。然后你应该传一个回调函数作为参数到 `query()` 方法中，该回调函数使用过滤器的查询范围：
+
+```php
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+Filter::make('is_featured')
+    ->query(fn (Builder $query): Builder => $query->where('is_featured', true))
+```
+
+### 设置标签
+
+默认情况下，显示在过滤器表单中的过滤器标签，是由过滤器名生成。你可以使用 `label()` 标签自定义：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')->label('Featured')
+```
+
+此外，你也可以使用 `translateLabel()` 方法自动翻译标签：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')->translateLabel() // Equivalent to `label(__('Is featured'))`
+```
+
+### 使用开关按钮(Toggle)代替复选框
+
+默认情况下，过滤器使用复选框(Checkbox)控制过滤行为。你可以使用 `toggle()` 方法切换到开关按钮:
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')->toggle()
+```
+
+### 默认过滤器
+
+你可以使用 `default()` 方法，将过滤器设为默认启用：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')->label('Featured')->default()
+```
+
+## 过滤表单
+
+默认情况下，过滤器有两种状态：可用和禁用。当过滤器启用时，会启用查询。如果禁用则相反。它通过复选框进行控制。不过有些过滤器可能要求额外的数据输入去进一步限制查询结果。你可以使用自定义过滤表单来收集这些数据。
+
+### 下拉列表过滤器
+
+下拉列表过滤器让你快速创建一个过滤器，允许用户通过下拉选项使用表格过滤器。比如，状态过滤器可能会提供一些状态选项让用户选择，过滤表格数据：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+下拉列表过滤器不需要自定义 `query` 方法。用于定义查询范围的字段名是过滤器的名称。要自定义查询字段名，你可以使用 `column()` 方法：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->column('status_id')
+```
+
+### 多选下拉列表过滤器
+
+允许用户通过选择多个选项来使用表格过滤器。比如，状态过滤器可能会提供一些状态选项让用户选择，过滤表格数据：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->multiple()
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+#### 关联下拉列表过滤器
+
+选项框过滤器也能够基于 `BelongsTo` 关联自动填充数据。比如，你表格有使用了 `name` 字段的 `author` 关联，你可以使用 `relationship()` 过滤属于该作者的记录：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('author')->relationship('author', 'name')
+```
+
+使用 `relationship()` 方法的第三个参数，你可以自定义检索选项的数据库查询：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
+SelectFilter::make('author')
+    ->relationship('author', 'name', fn (Builder $query) => $query->withTrashed())
+```
+
+### 三元过滤器
+
+三元过滤器(Ternary Filter)让你可以快速创建有三个状态的过滤器 - 通常为 true、false 和 blank。要过滤 `is_admin` 字段为 `true` 或 `false`，你可以使用三元过滤器：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('is_admin')
+```
+
+另一种通用的模式是可空值的字段。比如，使用 `email_verified_at` 字段来过滤验证和未验证用户时，未验证用户该字段值通常为空。你可以使用 `nullable()` 方法来适用这一逻辑：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('email_verified_at')
+    ->nullable()
+```
+
+用来限定查询范围的字段名就是过滤器的名称。要自定义查询字段，你可以使用 `column()` 方法：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('verified')
+    ->nullable()
+    ->column('status_id')
+```
+
+你也可以使用 `queries()` 方法为三元过滤器的每一个状态自定义查询：
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('trashed')
+    ->placeholder('Without trashed records')
+    ->trueLabel('With trashed records')
+    ->falseLabel('Only trashed records')
+    ->queries(
+        true: fn (Builder $query) => $query->withTrashed(),
+        false: fn (Builder $query) => $query->onlyTrashed(),
+        blank: fn (Builder $query) => $query->withoutTrashed(),
+    )
+```
+
+### 自定义过滤器表单
+
+你可以使用[表单构造器](/docs/zh-CN/2.x/forms/fields)的组件来创建自定义过滤器表单。自定义过滤器表单里的数据可以在 `query()` 回调函数中的 `$data` 数组中获取:
+
+```php
+use Filament\Forms;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+Filter::make('created_at')
+    ->form([
+        Forms\Components\DatePicker::make('created_from'),
+        Forms\Components\DatePicker::make('created_until'),
+    ])
+    ->query(function (Builder $query, array $data): Builder {
+        return $query
+            ->when(
+                $data['created_from'],
+                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+            )
+            ->when(
+                $data['created_until'],
+                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+            );
+    })
+```
+
+### 设置默认值
+
+如果你想要设置过滤器的默认值，可在表单组件中使用 `default()` 方法：
+
+```php
+use Filament\Forms;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+Filter::make('created_at')
+    ->form([
+        Forms\Components\DatePicker::make('created_from'),
+        Forms\Components\DatePicker::make('created_until')->default(now()),
+    ])
+```
+
+## 激活指示器
+
+当过滤器激活时，会在表格内容的上面显示一个指示器，指示表格查询已经进行了筛选。
+
+默认情况下，过滤器的标签被用作指示器。你可以对其进行重写：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('is_admin')
+    ->label('Administrators only?')
+    ->indicator('Administrators')
+```
+
+### 自定义指示器
+
+有些指示器比较复杂，你可以使用 `indicateUsing()` 自定义展示哪一个指示器。
+
+比如，你有一个自定义的日期过滤器，你可以创建一个自定义的指示器来格式化选中的日期：
+
+```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\Filter;
+
+Filter::make('created_at')
+    ->form([DatePicker::make('date')])
+    // ...
+    ->indicateUsing(function (array $data): ?string {
+        if (! $data['date']) {
+            return null;
+        }
+
+        return 'Created at ' . Carbon::parse($data['date'])->toFormattedDateString();
+    })
+```
+
+通过返回数组，你甚至可以一次渲染多个指示器。如果你有多个字段关联多个指示器，应该使用字段名作为数组的键，确保过滤器删除时能正确重置对应字段：
+
+```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\Filter;
+
+Filter::make('created_at')
+    ->form([
+        DatePicker::make('from'),
+        DatePicker::make('until'),
+    ])
+    // ...
+    ->indicateUsing(function (array $data): array {
+        $indicators = [];
+
+        if ($data['from'] ?? null) {
+            $indicators['from'] = 'Created from ' . Carbon::parse($data['from'])->toFormattedDateString();
+        }
+
+        if ($data['until'] ?? null) {
+            $indicators['until'] = 'Created until ' . Carbon::parse($data['until'])->toFormattedDateString();
+        }
+
+        return $indicators;
+    })
+```
+
+## 外观
+
+默认情况下，过滤器以1列宽小弹窗显示在表格的右边。
+
+要调整过滤器可能占据的列宽，你可以使用 `getTableFiltersFormColumns()` 方法：
+
+```php
+protected function getTableFiltersFormColumns(): int
+{
+    return 3;
+}
+```
+
+添加列数到过滤器会自动增加弹窗宽度。要自定义弹窗宽度，你可以使用 `getTableFiltersFormWidth()` 方法，指定 `xs` 到 `7xl` 之间的宽度值：
+
+```php
+protected function getTableFiltersFormWidth(): string
+{
+    return '4xl';
+}
+```
+
+## 在表格内容上面显示过滤器
+
+如果想在表格内容的顶部启用过滤器，代替弹窗方式，你可以使用：
+
+```php
+use Filament\Tables\Filters\Layout;
+
+protected function getTableFiltersLayout(): ?string
+{
+    return Layout::AboveContent;
+}
+```
+
+如果想在表格内容的底部启用过滤器，代替弹窗方式，你可以使用：
+
+```php
+use Filament\Tables\Filters\Layout;
+
+protected function getTableFiltersLayout(): ?string
+{
+    return Layout::BelowContent;
+}
+```
+
+
+## 在Session中持久化过滤器
+
+要在用户 Session 中持久化表格过滤器，请使用 `shouldPersistTableFiltersInSession()` 方法：
+
+```php
+protected function shouldPersistTableFiltersInSession(): bool
+{
+    return true;
+}
+```

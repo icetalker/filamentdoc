@@ -1,0 +1,94 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/08-global-search.md"
+title: 全局搜索
+description: 全局搜索允许你在后台面板的任何地方搜索所有的资源记录
+---
+
+全局搜索允许你在后台面板的任何地方搜索所有的资源记录。
+
+## Title
+
+要在模型中启用全局搜索，你必须先为资源[设置一个title属性](#设置title属性)：
+
+```php
+protected static ?string $recordTitleAttribute = 'title';帮
+```
+
+这一属性用于搜索记录的标题。
+
+**Note:** 你的资源中需要有编辑页或查看页，以便全局搜索结果可以链接到对应页面，否则不会返回该资源的结果。
+
+你可以重写 `getGlobalSearchResultTitle()` 方法进一步自定义title：
+
+```php
+public static function getGlobalSearchResultTitle(Model $record): string
+{
+    return $record->name;
+}
+```
+
+## 多字段搜索
+
+如果你想要在资源中搜索多个字段，你可以重写 `getGloballySearchableAttributes()` 方法。“点语法”让你可以在内部搜索关联:
+
+```php
+public static function getGloballySearchableAttributes(): array
+{
+    return ['title', 'slug', 'author.name', 'category.name'];
+}
+```
+
+## 详情
+
+搜索结果可以在标题的下面显示“详情(Details)”，让用户获取更多记录信息。要启用此特性，你必须重写 `getGlobalSearchResultDetails()` 方法：
+
+```php
+public static function getGlobalSearchResultDetails(Model $record): array
+{
+    return [
+        'Author' => $record->author->name,
+        'Category' => $record->category->name,
+    ];
+}
+```
+
+此例中，记录的分类和作者会显示在搜索结果的标题下面。不过，`category` 和 `author` 关联是通过懒加载实现，会导致性能不佳。想要[积极加载](https://laravel.com/docs/eloquent-relationships#eager-loading)这些关联，必须重写 `getGlobalSearchEloquentQuery()` 方法：
+
+```php
+protected static function getGlobalSearchEloquentQuery(): Builder
+{
+    return parent::getGlobalSearchEloquentQuery()->with(['author', 'category']);
+}
+```
+
+## URL
+
+全局搜索结果会链接到资源的[编辑页](editing-records)，或在用户没有[编辑权限](editing-records#授权)的时候链接到[查看页]。要自定义，可以重写 `getGlobalSearchResultUrl()`，返回你希望的路由：
+
+```php
+public static function getGlobalSearchResultUrl(Model $record): string
+{
+    return UserResource::getUrl('edit', ['record' => $record]);
+}
+```
+
+## 操作
+
+全局搜索支持渲染操作按钮或链接，籍此打开一个网址或者发起一个Livewire事件。操作默认会被渲染成链接，不过你也可以使用 `button()` 方法将其渲染成按钮。
+
+操作可以按如下方式定义：
+
+```php
+use Filament\GlobalSearch\Actions\Action;
+
+public static function getGlobalSearchResultActions(Model $record): array
+{
+    return [
+        Action::make('edit')
+            ->iconButton()
+            ->icon('heroicon-s-pencil')
+            ->url(static::getUrl('edit', ['record' => $record])),
+    ];
+}
+```

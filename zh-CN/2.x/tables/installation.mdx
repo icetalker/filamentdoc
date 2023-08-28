@@ -1,0 +1,259 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/tables/docs/01-installation.md"
+title: 安装
+description: Filament Table Builder 即表格构造器，用于将数据库中的字段按照开发者要求以表格形式展示。默认情况下，Filament Admin(即后台面板)中已经预装了该软件包。当然你也可以在非后台面板中单独进行安装使用。
+keywords: [Filament Table, Table Builder, 表格构造器, 安装教程]
+---
+
+## 要求
+
+运行 Filament 有一些特定的要求:
+
+- PHP 8.0+
+- Laravel v8.0+
+- Livewire v2.0+
+
+表格构造器已经在[后台面板 2.x](/docs/zh-CN/2.x/admin)中预装了。不过如果你要在其他应用中使用，你还是需要按照以下安装指示操作。
+
+首先, 使用 Composer 安装表格构造器:
+
+```bash
+composer require filament/tables:"^2.0"
+```
+
+## 新的 Laravel 项目
+
+要快速使用表格构造器，你可以使用这些命令安装 [Livewire](https://laravel-livewire.com)、[Alpine.js](https://alpinejs.dev)和[TailwindCSS](https://tailwindcss.com):
+
+```bash
+php artisan tables:install
+npm install
+npm run dev
+```
+
+> 这些命令会粗暴地重写覆盖你现有的文件，因此我们只推荐在新项目中使用这种方法。
+
+现在可以开始[构建表格](getting-started)了!
+
+## 已有的 Laravel 项目
+
+此扩展包使用如下依赖：
+
+- [Alpine.js](https://alpinejs.dev)
+- [Alpine.js Focus Plugin](https://alpinejs.dev/plugins/focus)
+- [PostCSS](https://postcss.org/)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Tailwind CSS Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
+- [Tailwind CSS Typography plugin](https://tailwindcss.com/docs/typography-plugin)
+
+你可以通过 NPM 命令安装这些依赖包：
+
+```bash
+npm install alpinejs @alpinejs/focus postcss tailwindcss @tailwindcss/forms @tailwindcss/typography --save-dev
+```
+
+### 配置 Tailwind CSS
+
+要完成Tailwind安装，你必须在项目的根目录中创建 `tailwind.config.js` 文件。最简单的做法是运行 `npx tailwindcss init` 命令。
+
+在 `tailwind.config.js` 中，注册你安装好的插件，然后添加表格构造器要使用的自定义颜色：
+
+```js
+import colors from 'tailwindcss/colors' // [tl! focus:start]
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography' // [tl! focus:end]
+
+export default {
+    content: [
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php', // [tl! focus]
+    ],
+    theme: {
+        extend: {
+            colors: { // [tl! focus:start]
+                danger: colors.rose,
+                primary: colors.blue,
+                success: colors.green,
+                warning: colors.yellow,
+            }, // [tl! focus:end]
+        },
+    },
+    plugins: [
+        forms, // [tl! focus:start]
+        typography, // [tl! focus:end]
+    ],
+}
+```
+
+当然，你也可以指定你自己定义的 `primary`, `success`, `warning` 及 `danger` 颜色，这会替换掉原有的颜色。
+
+### 打包资源
+
+新的 Laravel 项目默认使用 Vite 打包资源。不过，你仍然可以使用 Laravel Mix。
+
+#### Vite
+
+如果你使用 Vite, 你应该通过NPM手动安装 [Autoprefixer](https://github.com/postcss/autoprefixer)：
+
+```bash
+npm install autoprefixer --save-dev
+```
+
+在项目的根目录中新建 `postcss.config.js` 文件，以插件形式注册 Tailwind CSS 和 Autoprefixer:
+
+```js
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+```
+
+你也可以更新 `vite.config.js`，使得页面在 Livewire 组件或自定义表格字段更新后自动刷新：
+
+```js
+import { defineConfig } from 'vite';
+import laravel, { refreshPaths } from 'laravel-vite-plugin'; // [tl! focus]
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+            ],
+            refresh: [ // [tl! focus:start]
+                ...refreshPaths,
+                'app/Http/Livewire/**',
+                'app/Tables/Columns/**',
+            ], // [tl! focus:end]
+        }),
+    ],
+});
+```
+
+#### Laravel Mix
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XslPKxtMR70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+在 `webpack.mix.js` 文件中，以 PostCSS 插件的形式注册 Tailwind CSS:
+
+```js
+const mix = require('laravel-mix')
+
+mix.js('resources/js/app.js', 'public/js')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('tailwindcss'), // [tl! focus]
+    ])
+```
+
+### 配置样式
+
+在 `/resources/css/app.css` 文件中，引入 `filament/forms` vendor CSS 和 [TailwindCSS](https://tailwindcss.com):
+
+```css
+@import '../../vendor/filament/forms/dist/module.esm.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+### 配置脚本
+
+在`/resources/js/app.js` 文件中，引入 [Alpine.js](https://alpinejs.dev)、 `@alpinejs/focus`、 `filament/forms` 和  `filament/notifications`插件，并注册：
+
+```js
+import Alpine from 'alpinejs'
+import Focus from '@alpinejs/focus'
+import FormsAlpinePlugin from '../../vendor/filament/forms/dist/module.esm'
+import NotificationsAlpinePlugin from '../../vendor/filament/notifications/dist/module.esm'
+
+Alpine.plugin(Focus)
+Alpine.plugin(FormsAlpinePlugin)
+Alpine.plugin(NotificationsAlpinePlugin)
+
+window.Alpine = Alpine
+
+Alpine.start()
+```
+
+### 编译资源
+
+使用 `npm run dev` 命令编译新的CSS和JS资源:
+
+### 配置布局
+
+最后，为 Livewire 组件新建 `resources/views/layouts/app.blade.php` 布局文件：
+
+```blade
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+
+        <meta name="application-name" content="{{ config('app.name') }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{{ config('app.name') }}</title>
+
+        <style>[x-cloak] { display: none !important; }</style>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
+        @livewireScripts
+        @stack('scripts')
+    </head>
+
+    <body class="antialiased">
+        {{ $slot }}
+
+        @livewire('notifications')
+    </body>
+</html>
+```
+
+现在可以开始[构建表格](getting-started)了!
+
+## 发布配置文件
+
+如有需要时，你可以使用这个命令发布此扩展包的配置文件:
+
+```bash
+php artisan vendor:publish --tag=tables-config
+```
+
+## 发布翻译文件
+
+如果有需要翻译此扩展包，你可以使用此命令发布语言文件：
+
+```bash
+php artisan vendor:publish --tag=tables-translations
+```
+
+由于此包依赖于其他 Filament 包，你也可以发布这些语言文件：
+
+```bash
+php artisan vendor:publish --tag=filament-forms-translations
+php artisan vendor:publish --tag=filament-support-translations
+```
+
+## 升级向导
+
+要将该软件包升级到最新版本，你必须运行:
+
+```bash
+composer update
+php artisan filament:upgrade
+```
+
+我们推荐将 `filament:upgrade` 添加到 `composer.json` 文件的 `post-update-cmd` 中，使之自动运行：
+
+```json
+"post-update-cmd": [
+    // ...
+    "@php artisan filament:upgrade"
+],
+```

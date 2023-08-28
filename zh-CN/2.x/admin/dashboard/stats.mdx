@@ -1,0 +1,139 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/04-dashboard/02-stats.md"
+title: 统计插件
+---
+
+## 开始
+
+Filament 自带"统计概览"插件模板，可以无需自己编写视图文件显示不同的统计结果。
+
+以下命令用来创建插件:
+
+```bash
+php artisan make:filament-widget StatsOverview --stats-overview
+```
+
+然后在 `getCards()` 方法中返回 `Card` 实例:
+
+```php
+<?php
+
+namespace App\Filament\Widgets;
+
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Card;
+
+class StatsOverviewWidget extends BaseWidget
+{
+    protected function getCards(): array
+    {
+        return [
+            Card::make('Unique views', '192.1k'),
+            Card::make('Bounce rate', '21%'),
+            Card::make('Average time on page', '3:12'),
+        ];
+    }
+}
+```
+
+现在你可以在控制面板上查看插件了。
+
+## 卡片描述及图标
+
+你可以添加 `description()` 方法，提供额外信息，也可随带 `descriptionIcon()`。
+
+```php
+protected function getCards(): array
+{
+    return [
+        Card::make('Unique views', '192.1k')
+            ->description('32k increase')
+            ->descriptionIcon('heroicon-s-trending-up'),
+        Card::make('Bounce rate', '21%')
+            ->description('7% increase')
+            ->descriptionIcon('heroicon-s-trending-down'),
+        Card::make('Average time on page', '3:12')
+            ->description('3% increase')
+            ->descriptionIcon('heroicon-s-trending-up'),
+    ];
+}
+```
+
+## 卡片颜色
+
+你也可以通过 `color()` (`primary`, `success`, `warning` 或 `danger`) 指定卡片颜色：
+
+```php
+protected function getCards(): array
+{
+    return [
+        Card::make('Unique views', '192.1k')
+            ->description('32k increase')
+            ->descriptionIcon('heroicon-s-trending-up')
+            ->color('success'),
+        Card::make('Bounce rate', '21%')
+            ->description('7% increase')
+            ->descriptionIcon('heroicon-s-trending-down')
+            ->color('danger'),
+        Card::make('Average time on page', '3:12')
+            ->description('3% increase')
+            ->descriptionIcon('heroicon-s-trending-up')
+            ->color('success'),
+    ];
+}
+```
+
+## 另外的HTML属性
+
+使用 `extraAttributes()` 方法，你可以将额外的 HTML 属性传入卡片中：
+You may also pass extra HTML attributes to cards using `extraAttributes()`:
+
+```php
+protected function getCards(): array
+{
+    return [
+        Card::make('Processed', '192.1k')
+            ->color('success')
+            ->extraAttributes([
+                'class' => 'cursor-pointer',
+                'wire:click' => '$emitUp("setStatusFilter", "processed")',
+            ]),
+        // ...
+    ];
+}
+```
+
+## 卡片图表
+
+你也可以添加或者链式调用 `chart()` 到每个卡片，提供历史数据。`chart()` 方法接收一组要绘制的点形成的数组：
+
+```php
+protected function getCards(): array
+{
+    return [
+        Card::make('Unique views', '192.1k')
+            ->description('32k increase')
+            ->descriptionIcon('heroicon-s-trending-up')
+            ->chart([7, 2, 10, 3, 15, 4, 17])
+            ->color('success'),
+        // ...
+    ];
+}
+```
+
+## 实时更新 (轮询)
+
+统计概览插件默认每5秒钟刷新一次数据。
+
+你可以通过重写类上的 `$pollingInterval` 属性自定义间隔时间:
+
+```php
+protected static ?string $pollingInterval = '10s';
+```
+
+此外，你也可以完全禁用轮询:
+
+```php
+protected static ?string $pollingInterval = null;
+```

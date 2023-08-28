@@ -1,0 +1,56 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/notifications/docs/04-broadcast-notifications.md"
+title: 广播通知
+---
+
+> 请确保此包已经[安装](installation)了 - 并将 `@livewire('notifications')` 插入到 Blade 布局文件中。
+
+默认情况下，Filament 通过 Laravel session 发送闪存通知。假如你希望通知实时“广播”给用户，可以用于在队列任务完成处理后从队列任务中发送临时成功消息。
+
+可使用 [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation)进行本地集成。确保已经安装了 Echo， 以及[服务端 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
+
+## 发送通知
+
+有多种方法可用于发送广播通知，取决于哪一种更适合你。
+
+你可以使用 fluent API:
+
+```php
+use Filament\Notifications\Notification;
+
+$recipient = auth()->user();
+
+Notification::make()
+    ->title('Saved successfully')
+    ->broadcast($recipient);
+```
+
+或者，使用 `notify()` 方法：
+
+```php
+use Filament\Notifications\Notification;
+
+$recipient = auth()->user();
+
+$recipient->notify(
+    Notification::make()
+        ->title('Saved successfully')
+        ->toBroadcast(),
+)
+```
+
+此外，也可以使用传统 [Laravel 通知类](https://laravel.com/docs/notifications#generating-notifications)返回通知给 `toBroadcast()` 方法：
+
+```php
+use App\Models\User;
+use Filament\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+
+public function toBroadcast(User $notifiable): BroadcastMessage
+{
+    return Notification::make()
+        ->title('Saved successfully')
+        ->getBroadcastMessage();
+}
+```

@@ -1,0 +1,584 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/10-testing.md"
+title: 测试
+description: Filament 后台面板可以使用 Livewire 测试函数进行测试。
+---
+
+所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。
+
+由于后台面板的所有页面都是 Livewire 组件，我们始终都在使用 Livewire 测试函数。 如果你之前从未测试过 Livewire 组件，请阅读 Livewire 文档下的[这一向导](https://laravel-livewire.com/docs/testing)。
+
+## 开始
+
+确保你在测试案例(`TestCase`)中有权限访问后台面板:
+
+```php
+protected function setUp(): void
+{
+    parent::setUp();
+
+    $this->actingAs(User::factory()->create());
+}
+```
+
+## 资源
+
+### 页面
+
+#### 列表
+
+##### 路由 & 渲染
+
+要确保 `PostResource` 的列表页渲染成功，需生成页面 URL、发送请求到该 URL 并检查是否成功：
+
+```php
+it('can render page', function () {
+    $this->get(PostResource::getUrl('index'))->assertSuccessful();
+});
+```
+
+##### 表格
+
+Filament 内含一系列辅助函数用来测试表格。表格测试全指南可查阅[表格构造器文档](../tables/testing)。
+
+要使用表格[测试辅助函数](../tables/testing)，在持有该表格的资源列表类中使用断言：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can list posts', function () {
+    $posts = Post::factory()->count(10)->create();
+
+    livewire(PostResource\Pages\ListPosts::class)
+        ->assertCanSeeTableRecords($posts);
+});
+```
+
+#### 新建
+
+##### 路由 & 渲染
+
+检查 `PostResource` 的新建页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功。
+
+```php
+it('can render page', function () {
+    $this->get(PostResource::getUrl('create'))->assertSuccessful();
+});
+```
+
+##### 新建
+
+你可以通过设置(`set()`)表单的每个属性，然后断言数据库是否包含这一记录，检查数据是否成功保存到数据库:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can create', function () {
+    $newData = Post::factory()->make();
+
+    livewire(PostResource\Pages\CreatePost::class)
+        ->fillForm([
+            'author_id' => $newData->author->getKey(),
+            'content' => $newData->content,
+            'tags' => $newData->tags,
+            'title' => $newData->title,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
+
+    $this->assertDatabaseHas(Post::class, [
+        'author_id' => $newData->author->getKey(),
+        'content' => $newData->content,
+        'tags' => json_encode($newData->tags),
+        'title' => $newData->title,
+    ]);
+});
+```
+
+##### 验证
+
+使用 `assertHasFormErrors()` 检查表单中的数据验证是否正确：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can validate input', function () {
+    $newData = Post::factory()->make();
+
+    livewire(PostResource\Pages\CreatePost::class)
+        ->fillForm([
+            'title' => null,
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['title' => 'required']);
+});
+```
+
+#### 编辑
+
+##### 路由 & 渲染
+
+检查 `PostResource` 的编辑页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功：
+
+```php
+it('can render page', function () {
+    $this->get(PostResource::getUrl('edit', [
+        'record' => Post::factory()->create(),
+    ]))->assertSuccessful();
+});
+```
+
+##### 填充已有数据
+
+检测当前表单是否正确填充了数据库的数据，你可以使用 `assertFormSet()` 断言表单中的数据是否匹配数据库记录： 
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can retrieve data', function () {
+    $post = Post::factory()->create();
+
+    livewire(PostResource\Pages\EditPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->assertFormSet([
+            'author_id' => $post->author->getKey(),
+            'content' => $post->content,
+            'tags' => $post->tags,
+            'title' => $post->title,
+        ]);
+});
+```
+
+##### 保存
+
+你可以在 `fillForm()` 使用表单数据，检查数据是否正确存入数据库，并断言数据库中是否包含匹配的记录：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can save', function () {
+    $post = Post::factory()->create();
+    $newData = Post::factory()->make();
+
+    livewire(PostResource\Pages\EditPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->fillForm([
+            'author_id' => $newData->author->getKey(),
+            'content' => $newData->content,
+            'tags' => $newData->tags,
+            'title' => $newData->title,
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($post->refresh())
+        ->author_id->toBe($newData->author->getKey())
+        ->content->toBe($newData->content)
+        ->tags->toBe($newData->tags)
+        ->title->toBe($newData->title);
+});
+```
+
+##### 验证
+
+使用 `assertHasFormErrors()` 检测表单中的数据是否被正确验证:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can validate input', function () {
+    $post = Post::factory()->create();
+    $newData = Post::factory()->make();
+
+    livewire(PostResource\Pages\EditPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->fillForm([
+            'title' => null,
+        ])
+        ->call('save')
+        ->assertHasFormErrors(['title' => 'required']);
+});
+```
+
+##### 删除
+
+你可以使用 `callPageAction()` 测试 `DeleteAction`:
+
+```php
+use Filament\Pages\Actions\DeleteAction;
+use function Pest\Livewire\livewire;
+
+it('can delete', function () {
+    $post = Post::factory()->create();
+
+    livewire(PostResource\Pages\EditPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->callPageAction(DeleteAction::class);
+
+    $this->assertModelMissing($post);
+});
+```
+
+你可以使用 `assertPageActionHidden()` 断言 `DeleteAction` 对特定用户隐藏：
+
+```php
+use Filament\Pages\Actions\DeleteAction;
+use function Pest\Livewire\livewire;
+
+it('can not delete', function () {
+    $post = Post::factory()->create();
+
+    livewire(PostResource\Pages\EditPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->assertPageActionHidden(DeleteAction::class);
+});
+```
+
+#### 查看
+
+##### 路由 & 渲染
+
+检查 `PostResource` 的查看页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功：
+
+```php
+it('can render page', function () {
+    $this->get(PostResource::getUrl('view', [
+        'record' => Post::factory()->create(),
+    ]))->assertSuccessful();
+});
+```
+
+##### 填充已有数据
+
+检测当前表单是否正确填充了数据库的数据，你可以使用 `assertFormSet()` 断言表单中的数据是否匹配数据库记录：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can retrieve data', function () {
+    $post = Post::factory()->create();
+
+    livewire(PostResource\Pages\ViewPost::class, [
+        'record' => $post->getKey(),
+    ])
+        ->assertFormSet([
+            'author_id' => $post->author->getKey(),
+            'content' => $post->content,
+            'tags' => $post->tags,
+            'title' => $post->title,
+        ]);
+});
+```
+
+### 关联管理器
+
+##### 渲染
+
+要检测关联管理器是否渲染成功，挂载 Livewire 组件：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can render relation manager', function () {
+    $category = Category::factory()
+        ->has(Post::factory()->count(10))
+        ->create();
+
+    livewire(CategoryResource\RelationManagers\PostsRelationManager::class, [
+        'ownerRecord' => $category,
+    ])
+        ->assertSuccessful();
+});
+```
+
+##### 表格
+
+Filament 内含一系列辅助函数用于测试表格。表格测试全指南可查阅[表格构造器文档](../tables/testing)。
+
+要使用表格[测试辅助函数](../tables/testing)，在持有该表格的关联管理器类中使用断言：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can list posts', function () {
+    $category = Category::factory()
+        ->has(Post::factory()->count(10))
+        ->create();
+
+    livewire(CategoryResource\RelationManagers\PostsRelationManager::class, [
+        'ownerRecord' => $category,
+    ])
+        ->assertCanSeeTableRecords($category->posts);
+});
+```
+
+## 页面操作
+
+### 调用操作
+
+你可以在 `callPageAction()` 中传入操作名或类调用[页面操作](pages/actions):
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can send invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->callPageAction('send');
+
+    expect($invoice->refresh())
+        ->isSent()->toBeTrue();
+});
+```
+
+使用 `data` 参数，将数组数据传入操作：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can send invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->callPageAction('send', data: [
+            'email' => $email = fake()->email(),
+        ])
+        ->assertHasNoPageActionErrors();
+
+    expect($invoice->refresh())
+        ->isSent()->toBeTrue()
+        ->recipient_email->toBe($email);
+});
+```
+
+If you ever need to only set a page action's data without immediately calling it, you can use `setPageActionData()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can send invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->mountPageAction('send')
+        ->setPageActionData('send', data: [
+            'email' => $email = fake()->email(),
+        ])
+});
+```
+
+### Execution
+
+To check if an action has been halted, you can use `assertPageActionHalted()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('stops sending if invoice has no email address', function () {
+    $invoice = Invoice::factory(['email' => null])->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->callPageAction('send')
+        ->assertPageActionHalted('send');
+});
+```
+
+### Errors
+
+`assertHasNoPageActionErrors()` 用于断言提交操作表单时没有出现验证错误。
+
+要断言数据出现验证错误，像在 Livewire 中使用 `assertHasErrors()` 一样，使用 `assertHasPageActionErrors()`。
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can validate invoice recipient email', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->callPageAction('send', data: [
+            'email' => Str::random(),
+        ])
+        ->assertHasPageActionErrors(['email' => ['email']]);
+});
+```
+
+### Pre-filled data
+
+使用 `assertPageActionDataSet()` 断言页面操作是否预装了数据：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can send invoices to the primary contact by default', function () {
+    $invoice = Invoice::factory()->create();
+    $recipientEmail = $invoice->company->primaryContact->email;
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->mountPageAction('send')
+        ->assertPageActionDataSet([
+            'email' => $recipientEmail,
+        ])
+        ->callMountedPageAction()
+        ->assertHasNoPageActionErrors();
+        
+    expect($invoice->refresh())
+        ->isSent()->toBeTrue()
+        ->recipient_email->toBe($recipientEmail);
+});
+```
+
+### Action State
+
+To ensure that an action exists or doesn't in a table, you can use the `assertPageActionExists()` or  `assertPageActionDoesNotExist()` method:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can send but not unsend invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionExists('send')
+        ->assertPageActionDoesNotExist('unsend');
+});
+```
+
+使用 `assertPageActionHidden()` 或 `assertPageActionVisible()` 断言页面操作是否对用户隐藏。
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can not send invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionHidden('send')
+        ->assertPageActionVisible('print');
+});
+```
+
+To ensure a page action is enabled or disabled for a user, you can use the `assertPageActionEnabled()` or `assertPageActionDisabled()` methods:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can only print a sent invoice', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionDisabled('send')
+        ->assertPageActionEnabled('print');
+});
+```
+
+To ensure sets of actions exist in the correct order, you can use `assertPageActionsExistInOrder()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('can not send invoices', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionsExistInOrder(['send', 'export']);
+});
+```
+
+### Button appearance
+
+To ensure an action has the correct label, you can use `assertPageActionHasLabel()` and `assertPageActionDoesNotHaveLabel()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('send action has correct label', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionHasLabel('send', 'Email Invoice')
+        ->assertPageActionDoesNotHaveLabel('send', 'Send');
+});
+```
+
+To ensure an action's button is showing the correct icon, you can use `assertPageActionHasIcon()` or `assertPageActionDoesNotHaveIcon()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('when enabled the send button has correct icon', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionEnabled('send')
+        ->assertPageActionHasIcon('send', 'envelope-open')
+        ->assertPageActionDoesNotHaveIcon('send', 'envelope');
+});
+```
+
+To ensure an action's button is displaying the right color, you can use `assertPageActionHasColor()` or `assertPageActionDoesNotHaveColor()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('actions display proper colors', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionHasColor('delete', 'danger')
+        ->assertPageActionDoesNotHaveColor('print', 'danger');
+});
+```
+
+### URL
+
+To ensure an action has the correct URL, you can use `assertPageActionHasUrl()`, `assertPageActionDoesNotHaveUrl()`, `assertPageActionShouldOpenUrlInNewTab()`, and `assertPageActionShouldNotOpenUrlInNewTab()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('links to the correct Filament sites', function () {
+    $invoice = Invoice::factory()->create();
+
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])
+        ->assertPageActionHasUrl('filament', 'https://filamentphp.com/')
+        ->assertPageActionDoesNotHaveUrl('filament', 'https://github.com/filamentphp/filament')
+        ->assertPageActionShouldOpenUrlInNewTab('filament')
+        ->assertPageActionShouldNotOpenUrlInNewTab('github');
+});
+```

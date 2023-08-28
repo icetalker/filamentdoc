@@ -1,0 +1,308 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/09-plugins.md"
+title: 扩展插件开发
+description: 插件可用于扩展 Filament 的默认行为，并创建可以在多个应用中复用的模块。
+---
+
+扩展插件可用于扩展 Filament 的默认行为，创建多个应用中都可复用的模块。
+
+要创建一个新的插件，需要继承 Filament 提供的 `Filament\PluginServiceProvider` 类:
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+    
+    // ...
+}
+```
+
+`PluginServiceProvider` 继承了 [Laravel 扩展包工具](https://github.com/spatie/laravel-package-tools)提供的服务提供者，因此所有后者 `configurePackage()` 可用的选项在此处也是可用。
+
+插件(Plugin) 必须有唯一的name属性。
+
+## 注册插件
+
+### 应用插件
+
+如果你为一个特定应用开发了一个插件，你必须在 `config/app.php` 文件中注册新的服务提供者:
+
+```php
+return [
+
+    'providers' => [
+        // ...
+        \App\Providers\ExampleServiceProvider::class,
+    ]
+
+];
+```
+
+Laravel 会在启动时加载你的服务提供者，你的插件会被初始化。
+
+### 分发插件
+
+就像普通的 Laravel 扩展包，你应该将你的服务提供者的全限定类名到 `composer.json` 文件的 `extra.laravel.provider` 数组中：
+
+```json
+{
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vendor\\Package\\ExampleServiceProvider"
+            ]
+        }
+    }
+}
+```
+
+这能确保你的服务提供者在包安装后由 Laravel 自动加载。
+
+## 资源类
+
+要注册自定义的资源类，将全限定类名添加到服务提供者的 `$resources` 属性数组中:
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Vendor\Package\Resources\CustomResource;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $resources = [
+        CustomResource::class,
+    ];
+
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+Filament 会自动注册这个 `Resource`，保证 Livewire 能找到他。
+
+## 页面
+
+要去注册自定义页面，将全限定类名添加到服务提供者的 `$pages` 属性数组中:
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Vendor\Package\Pages\CustomPage;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $pages = [
+        CustomPage::class,
+    ];
+    
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+Filament 会自动注册这个 `Page`，确保 Livewire 能找到他。
+
+## 页内插件
+
+要去注册自定义页内插件(Widgets)，将全限定类名添加到服务提供者的 `$widgets` 属性数组中:
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Vendor\Package\Widgers\CustomWidget;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $widgets = [
+        CustomWidget::class,
+    ];
+
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+Filament 会自动注册这个 `Widget`，保证 Livewire 找到他。
+
+## 前端资源
+
+Filament 插件也可以注册他自己的前端资源。这些资源会被所有 Filament 相关的页面引入，允许你使用自己的 CSS 和 JavaScript。
+
+### CSS样式表
+
+要去注册自定义页面，将全限定类名添加到服务提供者的 `$styles` 属性数组中。你应该使用唯一名称作为键名，指向样式表的URL 作为值。
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $styles = [
+        'my-package-styles' => __DIR__ . '/../dist/app.css',
+    ];
+
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+#### Tailwind CSS
+
+如果你使用了 Filament 核心中未使用的 Tailwind 类，你需要编译自己的 Tailwind CSS 文件并将其捆绑到插件。按照对应的 Tailwind 指南设置，不过请忽略 `@tailwind base`，因为用户自定义主题时这一语句会重写基础样式。
+
+编译后，你的 Tailwind 样式中可能会保函 Filament 核心中已有的类。请使用 [awcodes/filament-plugin-purge](https://github.com/awcodes/filament-plugin-purge) 将这些类排除(Purge)，对其瘦身。
+
+### Script脚本
+
+要去注册自定义页面，将全限定类名添加到服务提供者的 `$scripts` 属性数组中。你应该使用唯一名称作为键名，指向脚本的URL作为值。这些脚本会被添加到 Filament 核心脚本之后。
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $scripts = [
+        'my-package-scripts' => __DIR__ . '/../dist/app.js',
+    ];
+
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+要在 Filament 核心脚本之前添加，请使用 `$beforeCoreScripts` 属性。如果你想钩入到 Alpine 事件中，这是很有用的。
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    protected array $beforeCoreScripts = [
+        'my-package-scripts' => __DIR__ . '/../dist/app.js',
+    ];
+    
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+}
+```
+
+### 为前端提供数据
+
+在创建插件时，你可能会发现需要在客户端获取一些由服务端生成的数据。
+
+你可以在服务提供者中使用 `getScriptData()` 方法，返回一个字符串作为键名和值、可以转换成 JSON 数组：
+
+```php
+use Filament\PluginServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+    
+    protected function getScriptData(): array
+    {
+        return [
+            'userId' => Auth::id(),
+        ];
+    }
+}
+```
+
+现在你可以在脚本中获取数据:
+
+```blade
+<script>
+    console.log(window.filamentData.userId)
+</script>
+```
+
+## 用户菜单
+
+要在你的插件中注册[用户菜单项](navigation#自定义用户菜单)，在服务提供者的 `getUserMenuItems()` 方法中返回值:
+
+```php
+use Filament\PluginServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Vendor\Package\Pages\CustomPage;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+    
+    protected function getUserMenuItems(): array
+    {
+        return [
+            UserMenuItem::make()
+                ->label('Settings')
+                ->url(route('filament.pages.settings'))
+                ->icon('heroicon-s-cog'),
+        ];
+    }
+}
+```
+
+Filament 会自动注册你的 `Page` , 确保 Livewire 找到它。
+
+## 命令, 视图, 翻译, 迁移及其他
+
+由于`PluginServiceProvider`继承了 [Laravel 扩展包工具](https://github.com/spatie/laravel-package-tools)的服务提供者, 你可以使用[`configurePackage` 方法](https://github.com/spatie/laravel-package-tools#usage)来注册 [commands](https://github.com/spatie/laravel-package-tools#registering-commands), [views](https://github.com/spatie/laravel-package-tools#working-with-views), [translations](https://github.com/spatie/laravel-package-tools#working-with-translations), [migrations](https://github.com/spatie/laravel-package-tools#working-with-migrations) 等等。
+
+## ServingFilament 事件
+
+如果你依赖于 Filament 的 `boot()` 方法定义的数据或者通过 `Filament::serving()` 传输的数据，你可以为 `Filament\Events\ServingFilament` 事件注册监听者(listeners):
+
+```php
+use Filament\Events\ServingFilament;
+use Filament\PluginServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Spatie\LaravelPackageTools\Package;
+
+class ExampleServiceProvider extends PluginServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
+        $package->name('your-package-name');
+    }
+    
+    public function packageConfiguring(Package $package): void
+    {
+        Event::listen(ServingFilament::class, [$this, 'registerStuff']);
+    }
+
+    protected function registerStuff(ServingFilament $event): void
+    {
+        // ...
+    }
+}
+
+```

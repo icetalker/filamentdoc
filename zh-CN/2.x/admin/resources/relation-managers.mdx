@@ -1,0 +1,763 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/07-relation-managers.md"
+title: 关联管理器
+desccription: 在 Filament 中，关联管理器(Relation managers)允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除、附加和取消附加、关联和取消关联相关记录。
+keywords: [Relation Manager, 关联管理器]
+---
+
+## 开始
+
+在 Filament 中，“关联管理器(Relation managers)” 允许管理员可以在不离开资源编辑页面的情况下，展示列表、新建、编辑、删除、附加和取消附加、关联和取消关联相关记录。资源类包含了一个静态的 `getRelations()` 方法，用于为资源注册关联管理器。
+
+要新建关联管理器，你可以使用 `make:filament-relation-manager` 命令:
+
+```bash
+php artisan make:filament-relation-manager CategoryResource posts title
+```
+
+- `CategoryResource` 是对应父级模型的资源类名。
+- `posts` 是你想要管理的关联名。
+- `title` 是用来识别 posts 唯一性的属性名。
+
+这个命令将会创建 `CategoryResource/RelationManagers/PostsRelationManager.php` 文件。它包含了一个类，让你可以为你的关联管理器定义[表单](getting-started#表单)和[表格](getting-started#表格)：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('title')->required(),
+            Forms\Components\MarkdownEditor::make('content'),
+            // ...
+        ]);
+}
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('title'),
+            // ...
+        ]);
+}
+```
+
+你必须在资源的 `getRelations()` 方法中注册这些新的模型关联管理器：
+
+```php
+public static function getRelations(): array
+{
+    return [
+        RelationManagers\PostsRelationManager::class,
+    ];
+}
+```
+
+对于使用非常规命名规范的关联，你可以在关联管理器中使用 `$inverseRelationship` 属性中：
+
+```php
+protected static ?string $inverseRelationship = 'section'; // 反转关联的模型是 `Category`，所以一般情况下这里是 `category` 而非 `section`。 
+```
+
+如果关联管理器中定义了表格和表单，可以通过操作(action)访问[编辑页](editing-records)或者[查看页](viewing-records)。
+
+### 处理软删除
+
+默认情况下，你不能在关联管理器中和已删除的数据进行交互。如果你想要在关联管理器中添加恢复数据、强制删除和过滤垃圾数据等功能，可以在生成关联管理器的时候使用 `--soft-deletes` 标志：
+
+```bash
+php artisan make:filament-relation-manager CategoryResource posts title --soft-deletes
+```
+
+你可以在[此处](#删除记录)查看更多关于软删除的内容。
+
+## 记录列表
+
+相关记录会在一个表格中展示。整个关联管理器都是基于这个表格，包括[新建](#新建记录)、[编辑](#编辑记录)、[附加/分离记录](#附加和分离记录)、[关联/取消关联](#关联和取消关联记录)和删除记录等操作。
+
+按照[列表页](listing-records)中的文档，你可以在关联管理器类中使用所有的自定义功能：
+
+- [表格字段](listing-records#表格字段)
+- [过滤器](listing-records#过滤器)
+- [操作](listing-records#操作)
+- [批量操作](listing-records#批量操作)
+
+此外，你也可以使用[表格构造器](../../tables)的其他所有特性。
+
+### 使用中间属性展示列表
+
+对于 `BelongsToMany` 和 `MorphToMany` 关联(relationship)，你也可以添加中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，而且你想要将 `role` 中间属性添加到表格，你可以：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('name'),
+            Tables\Columns\TextColumn::make('role'),
+        ]);
+}
+```
+
+请确保所有的中间属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。 
+
+## 创建记录
+
+### 使用中间属性新建记录
+
+对于 `BelongsToMany` 和 `MorphToMany` 关联(relationship)，你也可以添加中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，你想要在新建表单中添加关联属性，你可以：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Tables;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('role')->required(),
+            // ...
+        ]);
+}
+```
+
+请确保所有的中间属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。
+
+### 保存前自定义数据
+
+有时，你可能需要在最终存入数据库前修改表单数据。此时可以使用 `mutateFromDataUsing()` 方法，该方法接收一个 `$data` 数组，返回修改后的数据:
+
+```php
+use Filament\Tables\Actions\CreateAction;
+
+CreateAction::make()
+    ->mutateFormDataUsing(function (array $data): array {
+        $data['user_id'] = auth()->id();
+    
+        return $data;
+    })
+```
+
+### 自定义新建处理过程
+
+你可以使用 `using()` 方法微调记录的创建过程：
+
+```php
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Contracts\HasRelationshipTable;
+use Illuminate\Database\Eloquent\Model;
+
+CreateAction::make()
+    ->using(function (HasRelationshipTable $livewire, array $data): Model {
+        return $livewire->getRelationship()->create($data);
+    })
+```
+
+### 自定义保存通知
+
+当记录成功创建，会发送通知给用户，告知操作成功。
+
+要自定义通知内容：
+
+```php
+use Filament\Tables\Actions\CreateAction;
+
+CreateAction::make()
+    ->successNotificationTitle('User registered')
+```
+
+要完全禁用通知:
+
+```php
+use Filament\Tables\Actions\CreateAction;
+
+CreateAction::make()
+    ->successNotification(null)
+```
+
+### 生命周期钩子
+
+钩子可用于操作生命周期的各个结点中执行代码。
+
+```php
+use Filament\Tables\Actions\CreateAction;
+
+CreateAction::make()
+    ->beforeFormFilled(function () {
+        // Runs before the form fields are populated with their default values.
+    })
+    ->afterFormFilled(function () {
+        // Runs after the form fields are populated with their default values.
+    })
+    ->beforeFormValidated(function () {
+        // Runs before the form fields are validated when the form is submitted.
+    })
+    ->afterFormValidated(function () {
+        // Runs after the form fields are validated when the form is submitted.
+    })
+    ->before(function () {
+        // Runs before the form fields are saved to the database.
+    })
+    ->after(function () {
+        // Runs after the form fields are saved to the database.
+    })
+```
+
+### 停止新建处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个新建处理过程：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\CreateAction;
+
+CreateAction::make()
+    ->before(function (CreateAction $action, RelationManager $livewire) {
+        if (! $livewire->ownerRecord->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消所有操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 编辑记录
+
+### 使用中间属性编辑记录
+
+对于 `BelongsToMany` 和 `MorphToMany` 关联(relationship)，你也可以编辑中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，你想要在编辑表单中添加关联属性，你可以：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Tables;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('role')->required(),
+            // ...
+        ]);
+}
+```
+
+请确保所有的中间(pivot)属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。 
+
+### 表单填充前自定义数据
+
+你可能需要在数据填充到表单之前修改数据。你可以使用 `mutateRecordDataUsing()` 方法修改 `$data` 数组，在填充到表单之前返回修改后的数据：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->mutateRecordDataUsing(function (array $data): array {
+        $data['user_id'] = auth()->id();
+    
+        return $data;
+    })
+```
+
+### 保存前自定义数据
+
+有时，你可能希望在保存到数据库之前修改表单数据。可以使用 `mutateFormDataUsing()` 方法，该方法解释 `$data` 作为数组，返回修改后的版本：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->mutateFormDataUsing(function (array $data): array {
+        $data['last_edited_by_id'] = auth()->id();
+    
+        return $data;
+    })
+```
+
+### 自定义保存处理过程
+
+你可以使用 `using()` 方法微调记录的更新过程：
+
+```php
+use Filament\Tables\Actions\EditAction;
+use Illuminate\Database\Eloquent\Model;
+
+EditAction::make()
+    ->using(function (Model $record, array $data): Model {
+        $record->update($data);
+
+        return $record;
+    })
+```
+
+### 自定义保存通知
+
+当记录成功更新，会发送通知给用户，告知操作成功。
+
+要自定义通知内容：
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->successNotificationTitle('User updated')
+```
+
+如果要完全禁用通知:
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->successNotification(null)
+```
+
+### 生命周期钩子
+
+钩子可以在操作生命周期的各个结点用于执行代码。
+
+```php
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->beforeFormFilled(function () {
+        // Runs before the form fields are populated from the database.
+    })
+    ->afterFormFilled(function () {
+        // Runs after the form fields are populated from the database.
+    })
+    ->beforeFormValidated(function () {
+        // Runs before the form fields are validated when the form is saved.
+    })
+    ->afterFormValidated(function () {
+        // Runs after the form fields are validated when the form is saved.
+    })
+    ->before(function () {
+        // Runs before the form fields are saved to the database.
+    })
+    ->after(function () {
+        // Runs after the form fields are saved to the database.
+    })
+```
+
+### 中断保存处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个保存处理过程：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\EditAction;
+
+EditAction::make()
+    ->before(function (EditAction $action, RelationManager $livewire) {
+        if (! $livewire->ownerRecord->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 附加和分离记录
+
+Filament 可以为 `BelongsToMany` 和 `MorphToMany` 关联(relationship)附加和分离记录。
+
+在生成关联管理器时，你可以传入 `--attach` 标志，用来在表格中同时添加 `AttachAction`, `DetachAction` 和 `DetachBulkAction` :
+
+```bash
+php artisan make:filament-relation-manager CategoryResource posts title --attach
+```
+
+此外，如果你已经生成了资源，你可以在 `$table` 数组中添加这些 Action:
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->headerActions([
+            // ...
+            Tables\Actions\AttachAction::make(),
+        ])
+        ->actions([
+            // ...
+            Tables\Actions\DetachAction::make(),
+        ])
+        ->bulkActions([
+            // ...
+            Tables\Actions\DetachBulkAction::make(),
+        ]);
+}
+```
+
+### 预加载关联模态框下拉列表选项
+
+默认情况下，当你搜索记录附加时，选项会通过 AJAX 从数据库中加载。如果你希望表单加载时就直接预载这些选项，你可以使用 `AttachAction` 的 `preloadRecordSelect()` 方法:
+
+```php
+use Filament\Tables\Actions\AttachAction;
+
+AttachAction::make()->preloadRecordSelect()
+```
+
+### 使用中间属性附加记录
+
+当你使用 `附加(Attach)` 按钮来附加记录时，你可能希望使用自定义表单来将中间属性添加到关联中：
+
+```php
+use Filament\Forms;
+use Filament\Tables\Actions\AttachAction;
+
+AttachAction::make()
+    ->form(fn (AttachAction $action): array => [
+        $action->getRecordSelect(),
+        Forms\Components\TextInput::make('role')->required(),
+    ])
+```
+
+本例中，`$action->getRecordSelect()` 输出了下拉列表，用来选择记录附加。`role` 的文本输入被保存到中间表的 `role` 字段中。
+
+请确保所有中间表的字段都在 关联 *和* 反向关联 的 `withPivot` 方法中罗列出来。
+
+### 限制选项范围
+
+你可能想要对 `AttachAction` 中可用的选项进行限制：
+
+```php
+use Filament\Tables\Actions\AttachAction;
+use Illuminate\Database\Eloquent\Builder;
+
+AttachAction::make()
+    ->recordSelectOptionsQuery(fn (Builder $query) => $query->whereBelongsTo(auth()->user())
+```
+
+### 处理重复数据
+
+默认情况下，你不能多次附加同一个记录。要使之可行，你需要先在中间表设置一个主键 `id` 字段。
+
+同时，要确保 关联 *和* 反向关联 的 `withPivot()` 方法中使用了 `id` 属性。
+
+最后，在关联管理器中添加 `$allowsDuplicates` 属性：
+
+```php
+protected bool $allowsDuplicates = true;
+```
+
+## 关联和取消关联记录
+
+Filament 可以为 `HasMany` 和 `MorphMany` 关系(relationship)关联和取消关联记录。
+
+在生成关联管理器时，你可以传入 `--associate` 标志，将 `AssociateAction`, `DissociateAction` 和 `DissociateBulkAction` 同时添加到表格中：
+
+```bash
+php artisan make:filament-relation-manager CategoryResource posts title --associate
+```
+
+此外，如果你已经生成了资源，你可以在 `$table` 数组中添加这些 Action:
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->headerActions([
+            // ...
+            Tables\Actions\AssociateAction::make(),
+        ])
+        ->actions([
+            // ...
+            Tables\Actions\DissociateAction::make(),
+        ])
+        ->bulkActions([
+            // ...
+            Tables\Actions\DissociateBulkAction::make(),
+        ]);
+}
+```
+
+### 预加载关联模态框下拉列表选项
+
+默认情况下，由于你通过搜索记录关联，会通过 AJAX 从数据库中加载选项。如果你希望在表单加载时就预加载这些选项，可以使用 `AssociateAction` 的 `preloadRecordSelect()` 方法：
+
+```php
+use Filament\Tables\Actions\AssociateAction;
+
+AssociateAction::make()->preloadRecordSelect()
+```
+
+### 限制选项范围
+
+你可能想要对 `AssociateAction` 中可用的选项进行限制：
+
+```php
+use Filament\Tables\Actions\AssociateAction;
+use Illuminate\Database\Eloquent\Builder;
+
+AssociateAction::make()
+    ->recordSelectOptionsQuery(fn (Builder $query) => $query->whereBelongsTo(auth()->user())
+```
+
+## 查看记录
+
+在生成关联管理器时，可以输入 `--view` 标志，同时在表格中添加 `ViewAction`:
+
+```bash
+php artisan make:filament-relation-manager CategoryResource posts title --view
+```
+
+此外，如果你已经生成了关联管理器，可以将 `ViewAction` 添加到 `$table->actions()` 数组中：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->actions([
+            Tables\Actions\ViewAction::make(),
+            // ...
+        ]);
+}
+```
+
+## 删除记录
+
+默认情况下，你不能在关联管理器中操作已删除记录。如果你想在关联管理器中添加恢复，强制删除和过滤废弃删除记录这样的功能，请在生成关联管理器时使用 --soft-deletes 标志:
+
+```php
+php artisan make:filament-relation-manager CategoryResource posts title --soft-deletes
+```
+
+另外，你可以在现有关联管理器中添加软删除功能：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->filters([
+            Tables\Filters\TrashedFilter::make(),
+            // ...
+        ])
+        ->actions([
+            Tables\Actions\DeleteAction::make(),
+            Tables\Actions\ForceDeleteAction::make(),
+            Tables\Actions\RestoreAction::make(),
+            // ...
+        ])
+        ->bulkActions([
+            Tables\Actions\DeleteBulkAction::make(),
+            Tables\Actions\ForceDeleteBulkAction::make(),
+            Tables\Actions\RestoreBulkAction::make(),
+            // ...
+        ]);
+}
+
+protected function getTableQuery(): Builder
+{
+    return parent::getTableQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
+}
+```
+
+### 生命周期钩子
+
+你可以使用 `before()` 和 `after()` 方法，在记录删除前后执行代码：
+
+```php
+use Filament\Tables\Actions\DeleteAction;
+
+DeleteAction::make()
+    ->before(function () {
+        // ...
+    })
+    ->after(function () {
+        // ...
+    })
+```
+
+### 中断删除处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个删除处理过程：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\DeleteAction;
+
+DeleteAction::make()
+    ->before(function (DeleteAction $action, RelationManager $livewire) {
+        if (! $livewire->ownerRecord->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 访问所有者记录
+
+关联管理器是 Livewire 组件。首次加载时，所有者记录(主资源模型的 Eloquent 记录)会被载入到一个 public 的 $ownerRecord 属性中。因此，你可以这样访问所有者记录：
+
+```php
+$this->ownerRecord
+```
+
+不过，在 `form()` 或 `table()` 这样的静态方法中，访问不到 $this。因此，你可以使用回调函数访问 $livewire 实例：
+
+```php
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\Select::make('store_id')
+                ->options(function (RelationManager $livewire): array {
+                    return $livewire->ownerRecord->stores()
+                        ->pluck('name', 'id')
+                        ->toArray();
+                }),
+            // ...
+        ]);
+}
+```
+
+Filament 中的所有方法都能接收一个回调，用于访问 `$livewire->ownerRecord`。
+
+## 关联管理器分组
+
+你可以将关联管理器分组到一个标签页中。在 `RelationGroup` 对象中带上标签包裹多个关联管理器可以实现分组：
+
+```php
+use Filament\Resources\RelationManagers\RelationGroup;
+
+public static function getRelations(): array
+{
+    return [
+        // ...
+        RelationGroup::make('Contacts', [
+            RelationManagers\IndividualsRelationManager::class,
+            RelationManagers\OrganizationsRelationManager::class,
+        ]),
+        // ...
+    ];
+}
+```
+
+## 条件性可见
+
+默认情况下，如果相关模型策略的 `viewAny()` 方法返回的是 `true`，关联管理器将为可见。
+
+你可以使用 `canViewForRecord()` 方法，决定关联管理器是否应该让特定的所有者记录可见：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+public static function canViewForRecord(Model $ownerRecord): bool
+{
+    return $ownerRecord->status === Status::Draft
+}
+```
+
+## 将资源表单移动到标签页
+
+在编辑或者查看页面类中，重写 `hasCombinedRelationManagerTabsWithForm()` 方法:
+
+```php
+public function hasCombinedRelationManagerTabsWithForm(): bool
+{
+    return true;
+}
+```

@@ -1,0 +1,528 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/forms/docs/05-validation.md"
+title: 表单验证
+description: Filament 为表单验证提供了一系列便捷的操作接口
+keywords: [Filament Form, Form Builder, 表单构造器, 表单验证]
+---
+
+## 开始
+
+验证规则可以添加到所有[表单字段](fields)中。
+
+Filament 包含了一些[专用验证方法](#可用验证规则)，不过你也可用使用所有[Laravel验证规则](#其他规则)，包括[自定义验证规则](#自定义规则)。
+
+> 请注意，有些验证规则只依赖于字段名，因此通过 `->rule()`/`->rules()` 传参并不会起作用。请尽可能使用专用验证规则。
+
+## 可用验证规则
+
+### Active URL
+
+字段值必须经过PHP函数 `dns_get_record()` 验证返回有效的 A 或 AAAA 记录。(即具有A记录的网址)[参考Laravel文档](https://laravel.com/docs/validation#rule-active-url)
+
+```php
+Field::make('name')->activeUrl()
+```
+
+### After (date)
+
+字段值必须在给定日期之后。[参考Laravel文档](https://laravel.com/docs/validation#rule-after)
+
+```php
+Field::make('startDate')->after('tomorrow')
+```
+
+另外，你也可以传其他字段名作比较：
+
+```php
+Field::make('startDate')
+Field::make('endDate')->after('startDate')
+```
+
+### After or equal to (date)
+
+字段值必须晚于或者等于给定日期。[参考Laravel文档](https://laravel.com/docs/validation#rule-after-or-equal)
+
+```php
+Field::make('startDate')->afterOrEqual('tomorrow')
+```
+
+另外，你也可以传其他字段名作比较：
+
+```php
+Field::make('startDate')
+Field::make('endDate')->afterOrEqual('startDate')
+```
+
+### Alpha
+
+字段值必须全部由英文字母组成。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha)
+
+```php
+Field::make('name')->alpha()
+```
+
+### Alpha Dash
+
+字段值可以包含英文字母、数字、中横线(-)或下划线(_)。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha-dash)
+
+```php
+Field::make('name')->alphaDash()
+```
+
+### Alpha Numeric
+
+字段值必须是英文字母或数字组成。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha-num)
+
+```php
+Field::make('name')->alphaNum()
+```
+
+### ASCII
+
+字段值必须是 7位 ASCII 字符。[参考Laravel文档](https://laravel.com/docs/10.x/validation#rule-ascii)
+
+```php
+Field::make('name')->ascii()
+```
+
+### Before (date)
+
+字段值必须在给定日期之前。[参考Laravel文档](https://laravel.com/docs/validation#rule-before)
+
+```php
+Field::make('startDate')->before('first day of next month')
+```
+
+另外，你也可以传入其他字段名作比较：
+
+```php
+Field::make('startDate')->before('endDate')
+Field::make('endDate')
+```
+
+### Before or equal to (date)
+
+字段值必须早于或者等于给定日期。[参考Laravel文档](https://laravel.com/docs/validation#rule-before-or-equal)
+
+```php
+Field::make('startDate')->beforeOrEqual('end of this month')
+```
+
+另外，你可以传入其他字段名用作比较：
+
+```php
+Field::make('startDate')->beforeOrEqual('endDate')
+Field::make('endDate')
+```
+
+### Confirmed
+
+字段值必须与字段 {field}_confirmation 匹配。[参考Laravel文档](https://laravel.com/docs/validation#rule-confirmed)
+
+```php
+Field::make('password')->confirmed()
+Field::make('password_confirmation')
+```
+
+### Different
+
+字段值必须与另一个字段的之不同。[参考Laravel文档](https://laravel.com/docs/validation#rule-different)
+
+```php
+Field::make('backupEmail')->different('email')
+```
+
+### Doesnt Start With
+
+字段值不能以给定的其中一个值开头。[参考Laravel文档](https://laravel.com/docs/validation#rule-doesnt-start-with)
+
+```php
+Field::make('name')->doesntStartWith(['admin'])
+```
+
+### Doesnt End With
+
+字段值不能以给定的其中一个值结尾。 [参考Laravel文档](https://laravel.com/docs/validation#rule-doesnt-end-with)
+
+```php
+Field::make('name')->doesntEndWith(['admin'])
+```
+
+### Ends With
+
+字段值必须以给定的其中一个值开头。[参考Laravel文档](https://laravel.com/docs/validation#rule-ends-with)
+
+```php
+Field::make('name')->endsWith(['bot'])
+```
+
+### Enum
+
+给定的字段必须是一个有效的 Enum 值。[参考Laravel文档](https://laravel.com/docs/validation#rule-enum)
+
+```php
+Field::make('status')->enum(MyStatus::class)
+```
+
+### Exists
+
+字段值必须在数据库中存在。[参考Laravel文档](https://laravel.com/docs/validation#rule-exists)
+
+```php
+Field::make('invitation')->exists()
+```
+
+默认情况下，如果表单注册了模型(getting-started#注册模型)，就会搜索表单模型。你也可以指定一个自定义的表格名或者模型：
+
+```php
+use App\Models\Invitation;
+
+Field::make('invitation')->exists(table: Invitation::class)
+```
+
+默认情况下，表单字段名会被用作搜索字段。你也可以指定一个自定义搜索字段：
+
+```php
+Field::make('invitation')->exists(column: 'id')
+```
+
+你可以传入[闭包](advanced#使用闭包自定义)到 `callback` 参数中，自定义规则：
+
+```php
+use Illuminate\Validation\Rules\Exists;
+
+Field::make('invitation')
+    ->exists(callback: function (Exists $rule) {
+        return $rule->where('is_active', 1);
+    })
+```
+
+### Filled
+
+当字段存在时，字段值不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-filled)
+
+```php
+Field::make('name')->filled()
+```
+
+### Greater than
+
+验证的字段值必须比另一个字段的值大。[参考Laravel文档](https://laravel.com/docs/validation#rule-gt)
+
+```php
+Field::make('newNumber')->gt('oldNumber')
+```
+
+### Greater than or equal to
+
+验证的字段值必须大于或等于给定字段的值。[参考Laravel文档](https://laravel.com/docs/validation#rule-gte)
+
+```php
+Field::make('newNumber')->gte('oldNumber')
+```
+
+### In
+
+验证字段必须包含在给定的值列表中。[参考Laravel文档](https://laravel.com/docs/validation#rule-in)
+
+```php
+Field::make('status')->in(['pending', 'completed'])
+```
+
+### Ip Address
+
+字段值必须是 IP 地址。[参考Laravel文档](https://laravel.com/docs/validation#rule-ip)
+
+```php
+Field::make('ip_address')->ip()
+Field::make('ip_address')->ipv4()
+Field::make('ip_address')->ipv6()
+```
+
+### JSON
+
+字段值必须是有效的 JSON 字符串。[参考Laravel文档](https://laravel.com/docs/validation#rule-json)
+
+```php
+Field::make('ip_address')->json()
+```
+
+### Less than
+
+验证的字段值必须比另一个字段的值小。[参考Laravel文档](https://laravel.com/docs/validation#rule-lt)
+
+```php
+Field::make('newNumber')->lt('oldNumber')
+```
+
+### Less than or equal to
+
+验证的字段值必须大于或等于给定字段的值。[参考Laravel文档](https://laravel.com/docs/validation#rule-lte)
+
+```php
+Field::make('newNumber')->lte('oldNumber')
+```
+
+### Mac Address
+
+字段值必须是 MAC 地址。[参考Laravel文档](https://laravel.com/docs/validation#rule-mac)
+
+```php
+Field::make('mac_address')->macAddress()
+```
+
+### Multiple Of
+
+字段值必须是给定值的倍数。[参考Laravel文档](https://laravel.com/docs/validation#multiple-of)
+
+```php
+Field::make('number')->multipleOf(2)
+```
+
+### Not In
+
+验证字段不包含在给定的值列表中 [参考Laravel文档](https://laravel.com/docs/validation#rule-not-in)
+
+```php
+Field::make('status')->notIn(['cancelled', 'rejected'])
+```
+
+### Not Regex
+
+字段值必须不能匹配给定的正则表达式。[参考Laravel文档](https://laravel.com/docs/validation#rule-not-regex)
+
+```php
+Field::make('email')->notRegex('/^.+$/i')
+```
+
+### Nullable
+
+字段值可以为空。如果没有使用 `required` 规则，这个规则会被默认使用。[参考Laravel文档](https://laravel.com/docs/validation#rule-nullable)
+
+```php
+Field::make('name')->nullable()
+```
+
+### Prohibited
+
+字段值必须是空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required)
+
+```php
+Field::make('name')->prohibited()
+```
+
+### Required
+
+字段值不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required)
+
+```php
+Field::make('name')->required()
+```
+
+### Required If
+
+The field value must not be empty _only if_ the other specified field has any of the given values. [See the Laravel documentation.](https://laravel.com/docs/validation#rule-required-if)
+
+```php
+Field::make('name')->requiredIf('field', 'value')
+```
+
+### Required Unless
+
+The field value must not be empty _unless_ the other specified field has any of the given values. [See the Laravel documentation.](https://laravel.com/docs/validation#rule-required-unless)
+
+```php
+Field::make('name')->requiredUnless('field', 'value')
+```
+
+### Required With
+
+其他指定的任一字段不为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-with)
+
+```php
+Field::make('name')->requiredWith('field,another_field')
+```
+
+### Required With All
+
+只有当其他指定的字段都不为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-with-all)
+
+```php
+Field::make('name')->requiredWithAll('field,another_field')
+```
+
+### Required Without
+
+只有当其他指定的任一字段为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-without)
+
+```php
+Field::make('name')->requiredWithout('field,another_field')
+```
+
+### Required Without All
+
+只有当其他指定的字段都为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-without-all)
+
+```php
+Field::make('name')->requiredWithoutAll('field,another_field')
+```
+
+### Regex
+
+字段值必须匹配给定的正则表达式。[参考Laravel文档](https://laravel.com/docs/validation#rule-regex)
+
+```php
+Field::make('email')->regex('/^.+@.+$/i')
+```
+
+### Same
+
+字段值必须与另一个给定字段的值一致。[参考Laravel文档](https://laravel.com/docs/validation#rule-same)
+
+```php
+Field::make('password')->same('passwordConfirmation')
+```
+
+### Starts With
+
+字段值必须以其中一个给定值开始。[参考Laravel文档](https://laravel.com/docs/validation#rule-starts-with)
+
+```php
+Field::make('name')->startsWith(['a'])
+```
+
+### String
+
+字段值必须是字符串。[参考Laravel文档](https://laravel.com/docs/validation#rule-string)
+
+```php
+Field::make('name')->string()
+```
+
+### Unique
+
+字段值必须在数据库中不存在。[参考Laravel文档](https://laravel.com/docs/validation#rule-unique)
+
+```php
+Field::make('email')->unique()
+```
+
+默认情况下，如果表单已经[注册了模型](getting-started#注册模型)，就会去搜索表单模型。你也可以指定自定义的表格名或者模型以供搜索：
+
+```php
+use App\Models\User;
+
+Field::make('email')->unique(table: User::class)
+```
+
+默认情况下，表单字段名会被用作搜索字段。你也可以指定一个自定义搜索字段：
+
+```php
+Field::make('email')->unique(column: 'email_address')
+```
+
+有时，你想在唯一性(unique)验证时忽略一个给定的模型。比如，"更新个人资料"表单包含了名字、邮箱和地址。你可能会要验证邮箱地址是否唯一。不过，如果用户只修改了名字并未修改邮箱字段，你并不希望因为用户的邮箱地址已经存在而抛出验证错误。
+
+```php
+Field::make('email')->unique(ignorable: $ignoredUser)
+```
+
+如果你使用了[后台面板](/docs/admin)，你可以传入[闭包](advanced#使用闭包自定义)给 `ignorable` 参数忽略当前记录：
+
+```php
+Field::make('email')->unique(ignorable: fn (?Model $record): ?Model => $record)
+```
+
+你可以传入[闭包](advanced#使用闭包自定义)给 `callback` 参数，进一步自定义规则：
+
+```php
+use Illuminate\Validation\Rules\Unique;
+
+Field::make('email')
+    ->unique(callback: function (Unique $rule) {
+        return $rule->where('is_active', 1);
+    })
+```
+
+### UUID
+
+字段必须是有效的UUID。[参考Laravel文档](https://laravel.com/docs/validation#rule-uuid)
+
+```php
+Field::make('identifer')->uuid()
+```
+
+## 其他规则
+
+你可以使用 `rules()` 方法添加其他验证规则：
+
+```php
+TextInput::make('slug')->rules(['alpha_dash'])
+```
+
+验证规则的完整清单可以在[Laravel文档](https://laravel.com/docs/validation#available-validation-rules)中查看。
+
+## 自定义规则
+
+你可以使用[Laravel](https://laravel.com/docs/validation#custom-validation-rules)的自定义规则：
+
+```php
+TextInput::make('slug')->rules([new Uppercase()])
+```
+
+你也可以使用[闭包规则](https://laravel.com/docs/validation#using-closures)
+
+```php
+TextInput::make('slug')->rules([
+    function () {
+        return function (string $attribute, $value, Closure $fail) {
+            if ($value === 'foo') {
+                $fail("The {$attribute} is invalid.");
+            }
+        };
+    },
+])
+```
+
+### 验证属性
+
+如果字段验证失败，错误消息中会引用标签名。可以使用 `validationAttribute()` 方法自定义错误消息使用的标签名：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')->validationAttribute('full name')
+```
+
+## 发送验证通知
+
+如果你想在验证失败时发送通知，可以在 Livewire 组件中使用 `onValidationError()` 方法：
+
+```php
+use Filament\Notifications\Notification;
+use Illuminate\Validation\ValidationException;
+
+protected function onValidationError(ValidationException $exception): void
+{
+    Notification::make()
+        ->title($exception->getMessage())
+        ->danger()
+        ->send();
+}
+```
+
+另外，如果你使用了后台面板并且希望在所有页面中都使用该行为，请在 `AppServiceProvider` 的 `boot()` 方法内添加：
+
+```php
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Illuminate\Validation\ValidationException;
+
+Page::$reportValidationErrorUsing = function (ValidationException $exception) {
+    Notification::make()
+        ->title($exception->getMessage())
+        ->danger()
+        ->send();
+};
+```

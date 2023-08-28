@@ -1,0 +1,164 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/02-resources/06-deleting-records.md"
+title: 删除记录
+description: Filament 为删除记录提供了一系列操作接口
+keywords: [资源管理器, Filament 删除记录]
+---
+
+## 处理软删除
+
+## 创建软删除资源
+
+默认情况下，你不能在后台面板中操作已删除的记录。如果你要在资源中添加恢复数据，强制删除和过滤废弃数据功能，请在生成资源时使用 `--soft-deletes` 标志:
+
+```bash
+php artisan make:filament-resource Customer --soft-deletes
+```
+
+## 在现有资源中添加软删除功能
+
+此外，你也可以在现有的资源中添加软删除功能。
+
+首先，更新资源：
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->filters([
+            Tables\Filters\TrashedFilter::make(),
+            // ...
+        ])
+        ->actions([
+            // You may add these actions to your table if you're using a simple
+            // resource, or you just want to be able to delete records without
+            // leaving the table.
+            Tables\Actions\DeleteAction::make(),
+            Tables\Actions\ForceDeleteAction::make(),
+            Tables\Actions\RestoreAction::make(),
+            // ...
+        ])
+        ->bulkActions([
+            Tables\Actions\DeleteBulkAction::make(),
+            Tables\Actions\ForceDeleteBulkAction::make(),
+            Tables\Actions\RestoreBulkAction::make(),
+            // ...
+        ]);
+}
+
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
+}
+```
+
+接下来，更新编辑页面类：
+
+```php
+use Filament\Pages\Actions;
+
+protected function getActions(): array
+{
+    return [
+        Actions\DeleteAction::make(),
+        Actions\ForceDeleteAction::make(),
+        Actions\RestoreAction::make(),
+        // ...
+    ];
+}
+```
+
+## 在列表页中删除记录
+
+默认情况下，你可以在表格中批量删除记录。如果你想删除单条记录，可以使用 `DeleteAction`:
+
+```php
+use Filament\Resources\Table;
+use Filament\Tables;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->actions([
+            // ...
+            Tables\Actions\DeleteAction::make(),
+        ]);
+}
+```
+
+## 生命周期
+
+你可以使用 `before()` 和 `after()` 方法在删除记录之前/之后执行代码：
+
+```php
+DeleteAction::make()
+    ->before(function () {
+        // ...
+    })
+    ->after(function () {
+        // ...
+    })
+```
+
+## 停止删除处理过程
+
+你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个删除处理过程：
+
+```php
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+
+DeleteAction::make()
+    ->before(function (DeleteAction $action) {
+        if (! $this->record->team->subscribed()) {
+            Notification::make()
+                ->warning()
+                ->title('You don\'t have an active subscription!')
+                ->body('Choose a plan to continue.')
+                ->persistent()
+                ->actions([
+                    Action::make('subscribe')
+                        ->button()
+                        ->url(route('subscribe'), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        
+            $action->halt();
+        }
+    })
+```
+
+如果你想同时关闭操作模态框，你也可以用 `cancel()` 取消操作，而不必 `halt()`：
+
+```php
+$action->cancel();
+```
+
+## 授权
+
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
+
+如果模型策略的 `delete()` 方法中返回的是 `true`，用户可以访问删除记录。 
+
+同时如果模型策略的 `deleteAny()` 方法中返回的是 `true`，用户可以批量删除记录。Filament 之所以使用 `deleteAny()` 方法时因为多次迭代检查 `delete()` 方法性能不高。
+
+### 授权软删除
+
+`forceDelete()` 策略方法用于防止单条软删除记录被强制删除。`forceDeleteAny()` 用于防止记录被批量强制删除。
+
+`restore()` 方法用于防止恢复软删除数据。`restoreAny()` 用于防止数据被批量恢复。
