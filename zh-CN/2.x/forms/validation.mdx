@@ -10,7 +10,7 @@ keywords: [Filament Form, Form Builder, 表单构造器, 表单验证]
 
 验证规则可以添加到所有[表单字段](fields)中。
 
-Filament 包含了一些[专用验证方法](#可用验证规则)，不过你也可用使用所有[Laravel验证规则](#其他规则)，包括[自定义验证规则](#自定义规则)。
+Filament 包含了一些[专用验证方法](#可用验证规则)，不过你也可用使用所有 [Laravel 验证规则](#其他规则)，包括[自定义验证规则](#自定义规则)。
 
 > 请注意，有些验证规则只依赖于字段名，因此通过 `->rule()`/`->rules()` 传参并不会起作用。请尽可能使用专用验证规则。
 
@@ -118,7 +118,7 @@ Field::make('endDate')
 
 ### Confirmed
 
-字段值必须与字段 {field}_confirmation 匹配。[参考Laravel文档](https://laravel.com/docs/validation#rule-confirmed)
+字段值必须与字段 `{field}_confirmation` 匹配。[参考Laravel文档](https://laravel.com/docs/validation#rule-confirmed)
 
 ```php
 Field::make('password')->confirmed()

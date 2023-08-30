@@ -1,20 +1,20 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/widgets/docs/02-stats-overview.md"
-title: Stats overview widgets
+title: 统计概览 Widget
 ---
 
-## Overview
+## 概述
 
-Filament comes with a "stats overview" widget template, which you can use to display a number of different stats in a single widget, without needing to write a custom view.
+Filament 自带一个 "统计概览" Widget 模板，用来在单个 Widget 中展示许多不同状态，而无需编写自定义视图。
 
-Start by creating a widget with the command:
+使用以下命令创建 Widget:
 
 ```bash
 php artisan make:filament-widget StatsOverview --stats-overview
 ```
 
-Then return `Stat` instances from the `getStats()` method:
+然后在 `getStats()` 返回 `Stat` 实例：
 
 ```php
 <?php
@@ -37,11 +37,11 @@ class StatsOverview extends BaseWidget
 }
 ```
 
-Now, check out your widget in the dashboard.
+现在，你可以到仪表盘上去查看 Widget 了。
 
-## Adding a description and icon to a stat
+## 添加描述及图标
 
-You may add a `description()` to provide additional information, along with a `descriptionIcon()`:
+你可以使用 `description()` 方法提供额外的描述信息，同时也可以通过 `descriptionIcon()` 添加描述图标：
 
 ```php
 protected function getStats(): array
@@ -60,9 +60,9 @@ protected function getStats(): array
 }
 ```
 
-## Changing the color of the stat
+## 修改 Stat 颜色
 
-You may also give stats a `color()` (`danger`, `gray`, `info`, `primary`, `success` or `warning`):
+你也可以通过 `color()` (`danger`、`gray`、`info`、`primary`、`success` 或 `warning`) 指定 Stat 颜色：
 
 ```php
 protected function getStats(): array
@@ -84,9 +84,9 @@ protected function getStats(): array
 }
 ```
 
-## Adding extra HTML attributes to a stat
+## 添加额外 HTML 属性到 Stat
 
-You may also pass extra HTML attributes to stats using `extraAttributes()`:
+使用 `extraAttributes()` 方法，你可以将额外的 HTML 属性传入 Stat 中：
 
 ```php
 protected function getStats(): array
@@ -103,9 +103,9 @@ protected function getStats(): array
 }
 ```
 
-## Adding a chart to a stat
+## 添加图表到 Stat
 
-You may also add or chain a `chart()` to each stat to provide historical data. The `chart()` method accepts an array of data points to plot:
+你也可以添加或者链式调用 `chart()` 到每个 Stat，以提供历史数据。`chart()` 方法接收一组要绘制的点形成的数组：
 
 ```php
 protected function getStats(): array
@@ -121,27 +121,27 @@ protected function getStats(): array
 }
 ```
 
-## Live updating stats (polling)
+## 实时更新统计数据(轮询)
 
-By default, stats overview widgets refresh their data every 5 seconds.
+默认情况下，统计概述 Widget 每 5 秒钟刷新一次数据。
 
-To customize this, you may override the `$pollingInterval` property on the class to a new interval:
+你可以通过重写类上的 `$pollingInterval` 属性自定义间隔时间:
 
 ```php
 protected static ?string $pollingInterval = '10s';
 ```
 
-Alternatively, you may disable polling altogether:
+或者，也可以完全禁用轮询：
 
 ```php
 protected static ?string $pollingInterval = null;
 ```
 
-## Disabling lazy loading
+## 禁用懒加载
 
-By default, widgets are lazy-loaded. This means that they will only be loaded when they are visible on the page.
+默认情况下，Widget 使用懒加载。这意味着只有当它们在页面中可见时才会加载。
 
-To disable this behavior, you may override the `$isLazy` property on the widget class:
+要禁用该行为，你可以在 Widget 类中重写 `$isLazy` 属性：
 
 ```php
 protected static bool $isLazy = true;

@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/09-blade-components/02-modal.md"
-title: Modal Blade component
+title: Modal Blade 组件
 ---
 
-## Overview
+## 概述
 
-The modal component is able to open a dialog window or slide-over with any content:
+模态框组件可以打开包括任何内容的对话框或者 SlideOver：
 
 ```blade
 <x-filament::modal>
@@ -20,9 +20,9 @@ The modal component is able to open a dialog window or slide-over with any conte
 </x-filament::modal>
 ```
 
-## Controlling a modal from JavaScript
+## 用 JavaScript 控制模态框
 
-You can use the `trigger` slot to render a button that opens the modal. However, this is not required. You have complete control over when the modal opens and closes through JavaScript. First, give the modal an ID so that you can reference it:
+你可以使用 `trigger` 插槽来渲染按钮打开模态框。不过，这不是必须的。你可以通过 JavaScript 完全控制何时打开或者关闭模态框。首先，给模态框一个 ID， 这样你才能引用：
 
 ```blade
 <x-filament::modal id="edit-user">
@@ -30,21 +30,21 @@ You can use the `trigger` slot to render a button that opens the modal. However,
 </x-filament::modal>
 ```
 
-Now, you can dispatch an `open-modal` or `close-modal` browser event, passing the modal's ID, which will open or close the modal. For example, from a Livewire component:
+现在，你可以传入模态框 ID 派发一个 `open-modal` 或者 `close-modal` 的浏览器事件，用以打开或者关闭模态框。比如，在 Livewire 组件中：
 
 ```php
 $this->dispatch('open-modal', id: 'edit-user');
 ```
 
-Or from Alpine.js:
+或者 Alpine.js 中：
 
 ```php
 $dispatch('open-modal', { id: 'edit-user' })
 ```
 
-## Adding a heading to a modal
+## 添加模态框标题
 
-You can add a heading to a modal by using the `heading` slot:
+你可以使用 `heading` 插槽为模态框添加标题：
 
 ```blade
 <x-filament::modal>
@@ -56,9 +56,9 @@ You can add a heading to a modal by using the `heading` slot:
 </x-filament::modal>
 ```
 
-## Adding a description to a modal
+## 添加模态框描述
 
-You can add a description, below the heading, to a modal by using the `description` slot:
+你可以使用 `description` 插槽在标题下面为模态框添加描述：
 
 ```blade
 <x-filament::modal>
@@ -74,9 +74,9 @@ You can add a description, below the heading, to a modal by using the `descripti
 </x-filament::modal>
 ```
 
-## Adding an icon to a modal
+## 添加模态框图标
 
-You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a modal by using the `icon` attribute:
+使用 `icon` 属性，你可以为模态框添加[图标]https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```blade
 <x-filament::modal icon="heroicon-o-information-circle">
@@ -88,7 +88,7 @@ You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a mo
 </x-filament::modal>
 ```
 
-By default, the color of an icon is "primary". You can change it to be `danger`, `gray`, `info`, `success` or `warning` by using the `icon-color` attribute:
+默认情况下，图标的颜色是"primary"。你可以使用 `icon-color` 将其修改为 `danger`、`gray`、`info`、`success` 或 `warning`：
 
 ```blade
 <x-filament::modal
@@ -103,9 +103,9 @@ By default, the color of an icon is "primary". You can change it to be `danger`,
 </x-filament::modal>
 ```
 
-## Adding a footer to a modal
+## 为模态框添加 footer
 
-You can add a footer to a modal by using the `footer` slot:
+你可以使用 `footer` 插槽为模态框添加 footer：
 
 ```blade
 <x-filament::modal>
@@ -117,7 +117,7 @@ You can add a footer to a modal by using the `footer` slot:
 </x-filament::modal>
 ```
 
-Alternatively, you can add actions into the footer by using the `footerActions` slot:
+此外，你可以使用 `footerActions` 插件在 footer 中加入 Action：
 
 ```blade
 <x-filament::modal>
@@ -129,9 +129,9 @@ Alternatively, you can add actions into the footer by using the `footerActions` 
 </x-filament::modal>
 ```
 
-## Changing the modal's alignment
+## 修改模态框对齐方式
 
-By default, modal content will be aligned to the start, or centered if the modal is `xs` or `sm` in [width](#changing-the-modal-width). If you wish to change the alignment of content in a modal, you can use the `alignment` attribute and pass it `start` or `center`:
+默认情况下，模态框内容会被对齐到起始位置，或者如果模态框[宽度](#修改模态框宽度)是 `xs` 或 `sm` 则居中对齐。如果你想改变模态框中内容的对齐方式，你可以使用 `alignment` 属性并传入 `start` 或者 `center`：
 
 ```blade
 <x-filament::modal alignment="center">
@@ -139,9 +139,9 @@ By default, modal content will be aligned to the start, or centered if the modal
 </x-filament::modal>
 ```
 
-## Using a slide-over instead of a modal
+## 使用 Slide-Over 代替模态框
 
-You can open a "slide-over" dialog instead of a modal by using the `slide-over` attribute:
+你可以使用 `slide-over` 属性将模态框替换成 "slide-over" 对话框：
 
 ```blade
 <x-filament::modal slide-over>
@@ -149,9 +149,9 @@ You can open a "slide-over" dialog instead of a modal by using the `slide-over` 
 </x-filament::modal>
 ```
 
-## Making the modal header sticky
+## 模态框粘性 header
 
-The header of a modal scrolls out of view with the modal content when it overflows the modal size. However, slide-overs have a sticky modal that's always visible. You may control this behavior using the `sticky-header` attribute:
+如果模态框中的内容超出模态框大小，模态框的头部会随着视图滚出视图。不过， Slide-Over 有一个总是可见的 header。你可以使用 `sticky-header` 属性控制该行为：
 
 ```blade
 <x-filament::modal sticky-header>
@@ -163,9 +163,9 @@ The header of a modal scrolls out of view with the modal content when it overflo
 </x-filament::modal>
 ```
 
-## Making the modal footer sticky
+## 模态框粘性 footer
 
-The footer of a modal is rendered inline after the content by default. Slide-overs, however, have a sticky footer that always shows when scrolling the content. You may enable this for a modal too using the `sticky-footer` attribute:
+默认情况下，模态框的 footer 在内容之后行内渲染。而 Slider-Over 有一个内容滚动时，总是显示的粘性 footer。你可以使用 `sticky-footer` 属性也为模态框启用粘性 footer：
 
 ```blade
 <x-filament::modal sticky-footer>
@@ -177,9 +177,9 @@ The footer of a modal is rendered inline after the content by default. Slide-ove
 </x-filament::modal>
 ```
 
-## Changing the modal width
+## 修改模态框宽度
 
-You can change the width of the modal by using the `width` attribute. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, and `screen`:
+你可以使用 `width` 属性修改模态框宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。这些选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl`、`7xl` 和 `screen`：
 
 ```blade
 <x-filament::modal width="5xl">
@@ -187,9 +187,9 @@ You can change the width of the modal by using the `width` attribute. Options co
 </x-filament::modal>
 ```
 
-## Closing the modal by clicking away
+## 通过 Click Away 关闭模态框
 
-By default, when you click away from a modal, it will close itself. If you wish to disable this behavior for a specific action, you can use the `close-by-clicking-away` attribute:
+默认情况下，当你点击模态框外面时，模态框会自己关闭。如果你想禁用该行为，你可以使用 `close-by-clicking-away` 属性：
 
 ```blade
 <x-filament::modal :close-by-clicking-away="false">
@@ -197,9 +197,9 @@ By default, when you click away from a modal, it will close itself. If you wish 
 </x-filament::modal>
 ```
 
-## Hiding the modal close button
+## 隐藏模态框关闭按钮
 
-By default, modals have a close button in the top right corner. You can remove the close button from the modal by using the `close-button` attribute:
+默认情况下，模态框在右上角有一个关闭按钮。你可以使用 `close-button` 属性将该关闭按钮从模态框中移除：
 
 ```blade
 <x-filament::modal :close-button="false">

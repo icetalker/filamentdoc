@@ -5,13 +5,14 @@ title: Actions
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Filament's infolists can use [Actions](../actions). They are buttons that can be added to any infolist component. Also, you can [render anonymous sets of actions](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component) on their own, that are not attached to a particular infolist component.
+Filament's infolists can use [actions](../actions). They are buttons that can be added to any infolist component. Also, you can [render anonymous sets of actions](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component) on their own, that are not attached to a particular infolist component.
+Filament 的信息列表可以使用[Action](../actions)。Action 是可以添加到任何信息列表组件的按钮。同时，你也可以独立地[渲染匿名 Action 集](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component)，而不必附到特定的信息列表组件。
 
 ## Defining a infolist component action
 
-Action objects inside an infolist component are instances of `Filament/Infolists/Components/Actions/Action`. You must pass a unique name to the action's `make()` method, which is used to identify it amongst others internally within Filament. You can [customize the trigger button](../actions/trigger-button) of an action, and even [open a modal](../actions/modals) with little effort:
+Action objects inside a infolist component are instances of `Filament/Infolists/Components/Actions/Action`. You must pass a unique name to the action's `make()` method, which is used to identify it amongst others internally within Filament. You can [customize the trigger button](../actions/trigger-button) of an action, and even [open a modal](../actions/modals) with little effort:
 
 ```php
 use App\Actions\ResetStars;
@@ -56,7 +57,7 @@ TextEntry::make('cost')
 
 #### Passing multiple affix actions to a entry
 
-You may pass multiple affix actions to an entry by passing them in an array to either `prefixActions()` or `suffixActions()`. Either method can be used, or both at once, Filament will render all the registered actions in order:
+You may pass multiple affix actions to a entry by passing them in an array to either `prefixActions()` or `suffixActions()`. Either method can be used, or both at once, Filament will render all the registered actions in order:
 
 ```php
 use Filament\Infolists\Components\Actions\Action;
@@ -75,7 +76,7 @@ TextEntry::make('cost')
     ])
 ```
 
-### Adding a hint action to an entry
+### Adding a hint action to a entry
 
 All entries support "hint actions", which are rendered aside the entry's [hint](entries/getting-started#adding-a-hint-next-to-the-label). To add a hint action to a entry, you may pass it to `hintAction()`:
 
@@ -197,30 +198,28 @@ Actions::make([
 
 #### Controlling the horizontal alignment of independent infolist actions
 
-Independent infolist actions are aligned to the start of the component by default. You may change this by passing `Alignment::Center` or `Alignment::End` to `alignment()`:
+Independent infolist actions are aligned to the start of the component by default. You may change this by passing `center` or `end` to `alignment()`:
 
 ```php
 use Filament\Infolists\Components\Actions;
-use Filament\Support\Enums\Alignment;
 
 Actions::make([
     // ...
-])->alignment(Alignment::Center),
+])->alignment('center'),
 ```
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/horizontally-aligned-center" alt="Anonymous actions horizontally aligned to the center" version="3.x" />
 
 #### Controlling the vertical alignment of independent infolist actions
 
-Independent infolist actions are vertically aligned to the start of the component by default. You may change this by passing `Alignment::Center` or `Alignment::End` to `verticalAlignment()`:
+Independent infolist actions are vertically aligned to the start of the component by default. You may change this by passing `center` or `end` to `verticalAlignment()`:
 
 ```php
 use Filament\Infolists\Components\Actions;
-use Filament\Support\Enums\VerticalAlignment;
 
 Actions::make([
     // ...
-])->verticalAlignment(VerticalAlignment::End),
+])->verticalAlignment('end'),
 ```
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/vertically-aligned-end" alt="Anonymous actions vertically aligned to the end" version="3.x" />

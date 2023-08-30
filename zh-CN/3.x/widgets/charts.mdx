@@ -1,24 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/widgets/docs/03-charts.md"
-title: Chart widgets
+title: 图表 Widget
 ---
 
-## Overview
+## 概述
 
-Filament comes with many "chart" widget templates, which you can use to display real-time, interactive charts.
+Filament 带有许多图表 Widget 模板，可用来展示实时、交互式图表。
 
-Start by creating a widget with the command:
+使用如下命令创建 Widget:
 
 ```bash
 php artisan make:filament-widget BlogPostsChart --chart
 ```
 
-There is a single `ChartWidget` class that is extended for all charts. The type of chart is set by the `getType()` method. In this example, that method returns the string `'line'`.
+有一个 `ChartWidget` 类用于所有图表继承。图表的类型由 `getType()` 方法设置。本例中，该方法返回字符串 `'line'`。
 
-The `protected static ?string $heading` variable is used to set the heading that describes the chart. If you need to set the heading dynamically, you can override the `getHeading()` method.
+`protected static ?string $heading` 变量用于设置描述该图表的标题。如果你想设置动态标题，你可以重写 `getHeading()` 方法。
 
-The `getData()` method is used to return an array of datasets and labels. Each dataset is a labeled array of points to plot on the chart, and each label is a string. This structure is identical to the [Chart.js](https://www.chartjs.org/docs) library, which Filament uses to render charts. You may use the [Chart.js documentation](https://www.chartjs.org/docs) to fully understand the possibilities to return from `getData()`, based on the chart type.
+`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集都是一个用来绘制到图表的点构成的标签化数组，每个标签都是一个字符串。Filament 用来渲染图表的这种数据结构，与 [Chart.js](https://www.chartjs.org/docs) 库是一致的。你可以借助 [Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
 
 ```php
 <?php
@@ -51,30 +51,30 @@ class BlogPostsChart extends ChartWidget
 }
 ```
 
-Now, check out your widget in the dashboard.
+现在，你可以到仪表盘上查看该 Widget 了。
 
-## Available chart types
+## 可用图表类型
 
-Below is a list of available chart widget classes which you may extend, and their corresponding [Chart.js](https://www.chartjs.org/docs) documentation page, for inspiration on what to return from `getData()`:
+以下是你可以继承的图表 Widget 类清单，以及他们对应的 [Chart.js](https://www.chartjs.org/docs) 文档页面，从中你可以了解 `getData()` 应该怎么返回哪些值。
 
-- `Filament\Widgets\BarChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bar)
-- `Filament\Widgets\BubbleChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bubble)
-- `Filament\Widgets\DoughnutChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\LineChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/line)
-- `Filament\Widgets\PieChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/polar)
-- `Filament\Widgets\RadarChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/radar)
-- `Filament\Widgets\ScatterChartWidget` - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/scatter)
+- `Filament\Widgets\BarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bar)
+- `Filament\Widgets\BubbleChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bubble)
+- `Filament\Widgets\DoughnutChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\LineChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/line)
+- `Filament\Widgets\PieChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/polar)
+- `Filament\Widgets\RadarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/radar)
+- `Filament\Widgets\ScatterChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/scatter)
 
-## Customizing the chart color
+## 自定义图表颜色
 
-You can customize the color of the chart data by setting the `$color` property to either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+你可以将 `$color` 属性设置成 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`，自定义图表数据的颜色：
 
 ```php
 protected static string $color = 'info';
 ```
 
-If you're looking to customize the color further, or use multiple colors across multiple datasets, you can still make use of Chart.js's [color options](https://www.chartjs.org/docs/latest/general/colors.html) in the data:
+如果你要进一步自定义颜色，或者在多个数据集中使用多种颜色，你仍然可以在数据中使用 Chart.js 的[颜色选项](https://www.chartjs.org/docs/latest/general/colors.html)：
 
 ```php
 protected function getData(): array
@@ -93,11 +93,11 @@ protected function getData(): array
 }
 ```
 
-## Generating chart data from an Eloquent model
+## 从 Eloquent 模型中生成图表数据
 
-To generate chart data from an Eloquent model, Filament recommends that you install the `flowframe/laravel-trend` package. You can view the [documentation](https://github.com/Flowframe/laravel-trend).
+要想从 Eloquent 模型中生成图表数据，Filament 推荐你安装 `flowframe/laravel-trend` 包。查看其[文档](https://github.com/Flowframe/laravel-trend)。
 
-Here is an example of generating chart data from a model using the `laravel-trend` package:
+以下是使用 `laravel-trend` 包从模型中生成图表数据的一个示例：
 
 ```php
 use Flowframe\Trend\Trend;
@@ -125,17 +125,17 @@ protected function getData(): array
 }
 ```
 
-## Filtering chart data
+## 过滤图表数据
 
-You can set up chart filters to change the data shown on chart. Commonly, this is used to change the time period that chart data is rendered for.
+你可以安装图表过滤器，用以调整图表上显示的数据。通常用来调整图表数据渲染的时间周期：
 
-To set a default filter value, set the `$filter` property:
+要设置过滤器的默认值，使用 `$filter` 属性：
 
 ```php
 public ?string $filter = 'today';
 ```
 
-Then, define the `getFilters()` method to return an array of values and labels for your filter:
+然后，定义 `getFilters()` 方法，返回一个值和标签组成的数组给过滤器：
 
 ```php
 protected function getFilters(): ?array
@@ -149,7 +149,7 @@ protected function getFilters(): ?array
 }
 ```
 
-You can use the active filter value within your `getData()` method:
+你可以在 `getData()` 方法内使用当前活跃的过滤值：
 
 ```php
 protected function getData(): array
@@ -160,33 +160,33 @@ protected function getData(): array
 }
 ```
 
-## Live updating chart data (polling)
+## 实时更新图表数据(轮询)
 
-By default, chart widgets refresh their data every 5 seconds.
+图表 Widget 默认每 5 秒钟刷新一次数据。
 
-To customize this, you may override the `$pollingInterval` property on the class to a new interval:
+你可以通过重写类上的 `$pollingInterval` 属性自定义间隔时间:
 
 ```php
 protected static ?string $pollingInterval = '10s';
 ```
 
-Alternatively, you may disable polling altogether:
+或者，也可以完全禁用轮询：
 
 ```php
 protected static ?string $pollingInterval = null;
 ```
 
-## Setting a maximum chart height
+## 设置图表最大高度
 
-You may place a maximum height on the chart to ensure that it doesn't get too big, using the `$maxHeight` property:
+使用 `$maxHeight` 属性，你可以在图表上设置一个最大高度，以避免其变得太大：
 
 ```php
 protected static ?string $maxHeight = '300px';
 ```
 
-## Setting chart configuration options
+## 设置图表配置项
 
-You may specify an `$options` variable on the chart class to control the many configuration options that the Chart.js library provides. For instance, you could turn off the [legend](https://www.chartjs.org/docs/latest/configuration/legend.html) for `LineChartWidget` class:
+你可以在图表类中指定 `$options` 属性，用以控制 Chart.js 库提供的多个配置项。比如，你想让 `LineChartWidget` 类关闭 [legend](https://www.chartjs.org/docs/latest/configuration/legend.html)。
 
 ```php
 protected static ?array $options = [
@@ -198,7 +198,7 @@ protected static ?array $options = [
 ];
 ```
 
-Alternatively, you can override the `getOptions()` method to return a dynamic array of options:
+此外，你可以重写 `getOptions()` 方法，返回选项的动态数组：
 
 ```php
 protected function getOptions(): array
@@ -213,7 +213,7 @@ protected function getOptions(): array
 }
 ```
 
-These PHP arrays will get transformed into JSON objects when the chart is rendered. If you want to return raw JavaScript from this method instead, you can return a `RawJs` object. This is useful if you want to use a JavaScript callback function, for example:
+这些 PHP 数组会在图表渲染时转换成 JSON 对象。如果你想在该方法中返回原始 JavaScript，你可以返回 `RawJs` 对象。如果你想使用 JavaScript 回调函数，这就很有用。比如：
 
 ```php
 use Filament\Support\RawJs;
@@ -234,9 +234,9 @@ protected function getOptions(): RawJs
 }
 ```
 
-## Adding a description
+## 添加描述
 
-You may add a description, below the heading of the chart, using the `getDescription()` method:
+使用 `getDescription()` 方法，你可以在图表的标题下面添加描述：
 
 ```php
 public function getDescription(): ?string
@@ -245,11 +245,11 @@ public function getDescription(): ?string
 }
 ```
 
-## Disabling lazy loading
+## 禁用懒加载
 
-By default, widgets are lazy-loaded. This means that they will only be loaded when they are visible on the page.
+默认情况下，Widget 使用懒加载。这意味着只有当它们在页面中可见时才会加载。
 
-To disable this behavior, you may override the `$isLazy` property on the widget class:
+要禁用该行为，你可以在 Widget 类中重写 `$isLazy` 属性：
 
 ```php
 protected static bool $isLazy = true;

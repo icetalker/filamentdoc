@@ -1,29 +1,28 @@
 ---
 layout: "@layouts/BaseLayout.astro"
-githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/04-layout/06-split.md"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/04-layout/07-split.md"
 title: Split
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The `Split` component allows you to define layouts with flexible widths, using flexbox.
+`Split` 组件允许你通过 flex 使用灵活的宽度定义布局。
 
 ```php
-use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Card;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Support\Enums\FontWeight;
 
 Split::make([
-    Section::make([
+    Card::make([
         TextEntry::make('title')
-            ->weight(FontWeight::Bold),
+            ->weight('bold'),
         TextEntry::make('content')
             ->markdown()
             ->prose(),
     ])->grow(),
-    Section::make([
+    Card::make([
         TextEntry::make('created_at')
             ->dateTime(),
         TextEntry::make('published_at')
@@ -32,8 +31,8 @@ Split::make([
 ])->from('md')
 ```
 
-In this example, the first section will `grow()` to consume available vertical space, without affecting the amount of space needed to render the second section. This creates a sidebar effect.
+本例中，第一个卡片将会增长（`grow()`）去消费可用的垂直空间，而不影响第二个卡片中需要渲染的空间数量。这会创建了一个侧边栏效果。 
 
-The `from()` method is used to control the [Tailwind breakpoint](https://tailwindcss.com/docs/responsive-design#overview) (`sm`, `md`, `lg`, `xl`, `2xl`) at which the split layout should be used. In this example, the split layout will be used on medium devices and larger. On smaller devices, the sections will stack on top of each other.
+`form()` 方法用来控制 Split 布局的 [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview) (`sm`, `md`, `lg`, `xl`, `2xl`)。本例中，Split 布局会用于 medium 以上的设备。在比值更小的设备中，卡片会互相堆叠。
 
 <AutoScreenshot name="infolists/layout/split/simple" alt="Split" version="3.x" />

@@ -1,20 +1,20 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/05-customizing-notifications.md"
-title: Customizing notifications
+title: 自定义通知
 ---
 
-## Overview
+## 概述
 
-Notifications come fully styled out of the box. However, if you want to apply your own styling or use a custom view to render notifications, there are multiple options.
+通知开箱即用，样式齐全。不过如果你想使用自己的样式或者自定义视图去渲染通知，也有多种选项。
 
-## Styling notifications
+## 通知样式
 
-Notifications have dedicated CSS classes you can hook into to apply your own styling. Open the inspector in your browser to find out which classes you need to target.
+通知有一些专有 CSS 类，用于将你自己的样式应用到其中。你可以打开浏览器开发者工具，查找发现哪些类是你需要的。
 
-## Using a custom notification view
+## 使用自定义通知视图
 
-If your desired customization can't be achieved using the CSS classes above, you can create a custom view to render the notification. To configure the notification view, call the static `configureUsing()` method inside a service provider's `boot()` method and specify the view to use:
+如果你的自定义不能通过上述的 CSS 类实现，你也可以创建自定义视图渲染通知。要配置通知视图，可以在服务提供者 `boot()` 方法中调用静态 `configureUsing()` 方法，指定要使用的视图：
 
 ```php
 use Filament\Notifications\Notification;
@@ -24,7 +24,7 @@ Notification::configureUsing(function (Notification $notification): void {
 });
 ```
 
-Next, create the view, in this example `resources/views/notifications/notification.blade.php`. The view should use the package's base notification component for the notification functionality and pass the available `$notification` variable through the `notification` attribute. This is the bare minimum required to create your own notification view:
+接下来，新建视图文件，比如此例中的 `resources/views/notifications/notification.blade.php`。该视图应该使用该包的基础通知组件以使用通知功能，并通过 `notification` 属性传递 `$notification` 变量。本例是创建自定义通知视图的最低要求：
 
 ```blade
 <x-filament-notifications::notification :notification="$notification">
@@ -32,7 +32,7 @@ Next, create the view, in this example `resources/views/notifications/notificati
 </x-filament-notifications::notification>
 ```
 
-Getters for all notification properties will be available in the view. So, a custom notification view might look like this:
+所有通知属性的 Getter 在视图中可用。因此，自定义通知视图可能长这样子：
 
 ```blade
 <x-filament-notifications::notification
@@ -59,11 +59,11 @@ Getters for all notification properties will be available in the view. So, a cus
 </x-filament-notifications::notification>
 ```
 
-## Using a custom notification object
+## 使用自定义通知对象
 
-Maybe your notifications require additional functionality that's not defined in the package's `Notification` class. Then you can create your own `Notification` class, which extends the package's `Notification` class. For example, your notification design might need a size property.
+你的通知中可能需要该包的 `Notification` 类中没有定义的额外功能。如果是这样，你可用创建自己的 `Notification` 类，继承包中的 `Notification` 类。比如，你的通知设计需要 size 属性。
 
-Your custom `Notification` class in `app/Notifications/Notification.php` might contain:
+你在 `app/Notifications/Notification.php` 中自定义的 `Notification` 类可能包含：
 
 ```php
 <?php
@@ -103,7 +103,7 @@ class Notification extends BaseNotification
 }
 ```
 
-Next, you should bind your custom `Notification` class into the container inside a service provider's `boot()` method:
+下一步，你需要在服务提供者的 `boot()` 方法中将自定义 `Notification` 类绑定到容器中：
 
 ```php
 use App\Notifications\Notification;
@@ -112,4 +112,4 @@ use Filament\Notifications\Notification as BaseNotification;
 $this->app->bind(BaseNotification::class, Notification::class);
 ```
 
-You can now use your custom `Notification` class in the same way as you would with the default `Notification` object.
+现在你就可以像默认的 `Notification` 对象那样使用该自定义类了。

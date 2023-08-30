@@ -1,16 +1,16 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/06-testing.md"
-title: Testing
+title: 测试
 ---
 
-## Overview
+## 概述
 
 All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to PHPUnit.
 
-## Testing session notifications
+## 测试 session 通知
 
-To check if a notification was sent using the session, use the `assertNotified()` helper:
+要检查通知是否通过 Session 发送，请使用 `assertNotified()` 辅助函数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -37,7 +37,7 @@ it('sends a notification', function () {
 });
 ```
 
-You may optionally pass a notification title to test for:
+可选地，你可以传入一个通知标题去测试：
 
 ```php
 use Filament\Notifications\Notification;
@@ -49,7 +49,7 @@ it('sends a notification', function () {
 });
 ```
 
-Or test if the exact notification was sent:
+或者测试某个特定通知是否准确发送:
 
 ```php
 use Filament\Notifications\Notification;

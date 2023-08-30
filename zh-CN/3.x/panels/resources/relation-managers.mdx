@@ -1,40 +1,40 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/07-relation-managers.md"
-title: Managing relationships
+title: 管理关联
 ---
 
-## Choosing the right tool for the job
+## 选择合适的工具
 
-Filament provides many ways to manage relationships in the app. Which feature you should use depends on the type of relationship you are managing, and which UI you are looking for.
+Filament 提供了许多方法用来在应用中管理关联。该使用哪个特性取决于你管理的关联类型，以及你想要使用哪种 UI。
 
-### Relation managers - interactive tables underneath your resource forms
+### 关联管理器 - 资源表单下的交互式表格
 
-> These are compatible with `HasMany`, `HasManyThrough`, `BelongsToMany`, `MorphMany` and `MorphToMany` relationships.
+> 兼容 `HasMany`、`HasManyThrough`、`BelongsToMany`、`MorphMany` 和 `MorphToMany` 关联。
 
-[Relation managers](#creating-a-relation-manager) are interactive tables that allow administrators to list, create, attach, associate, edit, detach, dissociate and delete related records without leaving the resource's Edit or View page.
+[关联管理器](#创建关联管理器)是一个允许管理员在不离开资源编辑页或者查看页的情况下，罗列、创建、编辑、删除、关联和取消关联相关记录的交互式表格。
 
-### Select & checkbox list - choose from existing records or create a new one
+### Select & checkbox list - 从现有记录中选择或创建新记录
 
-> These are compatible with `BelongsTo`, `MorphTo` and `BelongsToMany` relationships.
+> 兼容 `BelongsTo`、`MorphTo` 和 `BelongsToMany` 关联。
 
-Using a [select](../../forms/fields/select#integrating-with-an-eloquent-relationship), users will be able to choose from a list of existing records. You may also [add a button that allows you to create a new record inside a modal](../../forms/fields/select#creating-new-records), without leaving the page.
+使用 [select](../../forms/fields/select#集成-eloquent-关联)，用户可以从现有记录列表中选择。你也可以[添加按钮，使之能让你在模态框中添加新记录](../../forms/fields/select#创建新记录)，而不必离开当前页面。
 
-When using a `BelongsToMany` relationship with a select, you'll be able to select multiple options, not just one. Records will be automatically added to your pivot table when you submit the form. If you wish, you can swap out the multi-select dropdown with a simple [checkbox list](../../forms/fields/checkbox-list#integrating-with-an-eloquent-relationship). Both components work in the same way.
+当在 Select 中使用 `BelongsToMany` 关联时，你将可以选中多个选项。记录会在你提交表单时，自动添加到透视表中。如果需要，你可以将多选下拉列表换成简单的[复选项列表](../../forms/fields/checkbox-list#集成-eloquent-关联)。两个组件的工作原理是一样的。
 
-### Repeaters - CRUD multiple related records inside the owner's form
+### Repeaters - 在所有者的表单内 CRUD 多个关联记录
 
-> These are compatible with `HasMany` and `MorphMany` relationships.
+> 兼容 `HasMany` 和 `MorphMany` 关联。
 
-[Repeaters](../../forms/fields/repeater#integrating-with-an-eloquent-relationship) are standard form components, which can render a repeatable set of fields infinitely. They can be hooked up to a relationship, so records are automatically read, created, updated, and deleted from the related table. They live inside the main form schema, and can be used inside resource pages, as well as nesting within action modals.
+[Repeaters](../../forms/fields/repeater#集成-eloquent-关联)是标准的表单组件，可以无限地渲染一套可重复的字段。它们可以和一个关联挂钩，这样记录旧可以从关联表中自动读取、创建、更新及删除。它们位于主表单 schema 的内部，可用在资源页的内部。也可以嵌套在 Action 模态框中。
 
-From a UX perspective, this solution is only suitable if your related model only has a few fields. Otherwise, the form can get very long.
+以用户体验来说，该方案只适用于关联模型的字段有限。否则，表单可能会十分长。
 
-### Layout form components - saving form fields to a single relationship
+### 布局表单组件 - 将表单字段保存到单个关联中
 
-> These are compatible with `BelongsTo`, `HasOne` and `MorphOne` relationships.
+> 兼容 `BelongsTo`、`HasOne` 和 `MorphOne` 关联。
 
-All layout form components ([Grid](../../forms/layout/grid#grid-component), [Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset), [Section](../../forms/layout/section), etc.) have a `relationship()` method. When you use this, all fields within that layout are saved to the related model instead of the owner's model:
+所有的布局组件([Grid](../../forms/layout/grid#grid-component)、[Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset)、[Section](../../forms/layout/section) 等)都有一个 `relationship()` 方法。使用该方法时，在该布局内的所有字段会被保存到关联模型中，而非所有者的模型： 
 
 ```php
 use Filament\Forms\Components\Fieldset;
@@ -51,21 +51,21 @@ Fieldset::make('Metadata')
     ])
 ```
 
-In this example, the `title`, `description` and `image` are automatically loaded from the `metadata` relationship, and saved again when the form is submitted. If the `metadata` record does not exist, it is automatically created.
+本例中，`title`、`description` 和 `image` 会自动从 `metadata` 关联中加载，并且在表单提交时保存。如果 `metadata` 记录不存在，则会自动创建。
 
-## Creating a relation manager
+## 创建关联管理器
 
-To create a relation manager, you can use the `make:filament-relation-manager` command:
+你可以使用 `make:filament-relation-manager` 命令，创建关联管理器：
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title
 ```
 
-- `CategoryResource` is the name of the resource class for the owner (parent) model.
-- `posts` is the name of the relationship you want to manage.
-- `title` is the name of the attribute that will be used to identify posts.
+- `CategoryResource` 是(父级)模型的资源类名。
+- `posts` 是你要管理的关联的名称。
+- `title` 是用来识别 post 的属性名。
 
-This will create a `CategoryResource/RelationManagers/PostsRelationManager.php` file. This contains a class where you are able to define a [form](getting-started#resource-forms) and [table](getting-started#resource-tables) for your relation manager:
+这个命令将会创建 `CategoryResource/RelationManagers/PostsRelationManager.php` 文件。它包含了一个类，让你可以为关联管理器定义[表单](getting-started#资源表单)和[表格](getting-started#资源表格)：
 
 ```php
 use Filament\Forms;
@@ -92,7 +92,7 @@ public function table(Table $table): Table
 }
 ```
 
-You must register the new relation manager in your resource's `getRelations()` method:
+你必须在资源的 `getRelations()` 方法中注册这些新关联管理器：
 
 ```php
 public static function getRelations(): array
@@ -103,11 +103,11 @@ public static function getRelations(): array
 }
 ```
 
-Once a table and form have been defined for the relation manager, visit the [Edit](editing-records) or [View](viewing-records) page of your resource to see it in action.
+当完成资源管理器的表格和表单定义后，可以访问资源的[编辑页](editing-records)或[查看页](viewing-records)，在 Action 中查看。
 
-### Unconventional inverse relationship names
+### 非常规反转关联名
 
-For inverse relationships that do not follow Laravel's naming guidelines, you may wish to use the `inverseRelationship()` method on the table:
+对于那些未遵循 Laravel 命名规范的反转关联，你可以在表格中使用 `$inverseRelationship()` 方法：
 
 ```php
 use Filament\Tables;
@@ -124,25 +124,28 @@ public function table(Table $table): Table
 }
 ```
 
-### Handling soft deletes
+### 处理软删除
 
-By default, you will not be able to interact with deleted records in the relation manager. If you'd like to add functionality to restore, force delete and filter trashed records in your relation manager, use the `--soft-deletes` flag when generating the relation manager:
+默认情况下，你不能在关联管理器中和已删除的数据进行交互。如果你想要在关联管理器中添加恢复数据、强制删除和过滤垃圾数据等功能，可以在生成关联管理器的时候使用 `--soft-deletes` 标志：
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title --soft-deletes
 ```
 
-You can find out more about soft deleting [here](#deleting-records).
+查看更多软删除的相关内容，请点击[此处](#删除关联记录)。
 
-## Listing related records
+## 展示关联记录
 
-Related records will be listed in a table. The entire relation manager is based around this table, which contains actions to [create](#creating-related-records), [edit](#editing-related-records), [attach / detach](#attaching-and-detaching-records), [associate / dissociate](#associating-and-dissociating-records), and delete records.
+关联记录会在一个表格中展示。整个关联管理器都是基于这个表格，包括[新建](#新建记录)、[编辑](#编辑记录)、[附加/分离记录](#附加和分离记录)、[关联/取消关联](#关联和取消关联记录)和删除记录等操作(Action)。
 
-You may use any features of the [Table Builder](../../tables) to customize relation managers.
+按照[列表页](listing-records)中的文档，你可以在关联管理器类中使用所有的自定义功能：
 
+此外，你也可以使用[表格构造器](../../tables)的其他所有特性，来自定义关联管理器。
+
+### 使用中间属性展示列表
 ### Listing with pivot attributes
 
-For `BelongsToMany` and `MorphToMany` relationships, you may also add pivot table attributes. For example, if you have a `TeamsRelationManager` for your `UserResource`, and you want to add the `role` pivot attribute to the table, you can use:
+对于 `BelongsToMany` 和 `MorphToMany` 关联，你也可以添加中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，而且你想要将 `role` 中间属性添加到表中，你可以：
 
 ```php
 use Filament\Tables;
@@ -157,40 +160,13 @@ public function table(Table $table): Table
 }
 ```
 
-Please ensure that any pivot attributes are listed in the `withPivot()` method of the relationship *and* inverse relationship.
+请确保所有的中间属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。 
 
-## Creating related records
+## 创建关联记录
 
-### Creating with pivot attributes
+### 使用中间属性新建记录
 
-For `BelongsToMany` and `MorphToMany` relationships, you may also add pivot table attributes. For example, if you have a `TeamsRelationManager` for your `UserResource`, and you want to add the `role` pivot attribute to the create form, you can use:
-
-```php
-use Filament\Forms;
-use Filament\Forms\Form;
-
-public function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Forms\Components\TextInput::make('name')->required(),
-            Forms\Components\TextInput::make('role')->required(),
-            // ...
-        ]);
-}
-```
-
-Please ensure that any pivot attributes are listed in the `withPivot()` method of the relationship *and* inverse relationship.
-
-### Customizing the `CreateAction`
-
-To learn how to customize the `CreateAction`, including mutating the form data, changing the notification, and adding lifecycle hooks, please see the [Actions documentation](../../actions/prebuilt-actions/create).
-
-## Editing related records
-
-### Editing with pivot attributes
-
-For `BelongsToMany` and `MorphToMany` relationships, you may also edit pivot table attributes. For example, if you have a `TeamsRelationManager` for your `UserResource`, and you want to add the `role` pivot attribute to the edit form, you can use:
+对于 `BelongsToMany` 和 `MorphToMany` 关联，你也可以添加中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，你想要在新建表单中添加 `role` 中间属性，你可以使用：
 
 ```php
 use Filament\Forms;
@@ -207,23 +183,50 @@ public function form(Form $form): Form
 }
 ```
 
-Please ensure that any pivot attributes are listed in the `withPivot()` method of the relationship *and* inverse relationship.
+请确保所有的中间属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。 
 
-### Customizing the `EditAction`
+### 自定义 `CreateAction`
 
-To learn how to customize the `EditAction`, including mutating the form data, changing the notification, and adding lifecycle hooks, please see the [Actions documentation](../../actions/prebuilt-actions/edit).
+要了解如何自定义 `CreateAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/create)。
 
-## Attaching and detaching records
+## 编辑关联记录
 
-Filament is able to attach and detach records for `BelongsToMany` and `MorphToMany` relationships.
+### 使用中间属性编辑
 
-When generating your relation manager, you may pass the `--attach` flag to also add `AttachAction`, `DetachAction` and `DetachBulkAction` to the table:
+对于 `BelongsToMany` 和 `MorphToMany` 关联，你也可以编辑中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，你想要在编辑表单中添加 `role` 中间属性，你可以：
+
+```php
+use Filament\Forms;
+use Filament\Forms\Form;
+
+public function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('role')->required(),
+            // ...
+        ]);
+}
+```
+
+请确保所有的中间属性都在关联*和*反向关联的 `withPivot()` 方法中罗列出来。 
+
+### 自定义 `EditAction`
+
+要了解如何自定义 `EditAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/edit)。
+
+## 附加和分离记录
+
+Filament 可以为 `BelongsToMany` 和 `MorphToMany` 关联附加和分离记录。
+
+在生成关联管理器时，你可以传入 `--attach` 标志，用来在表格中添加 `AttachAction`, `DetachAction` 和 `DetachBulkAction` :
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title --attach
 ```
 
-Alternatively, if you've already generated your resource, you can just add the actions to the `$table` arrays:
+此外，如果你的资源已经生成，你也可以将 `$table` 数组添加到 actions 中：
 
 ```php
 use Filament\Tables;
@@ -251,10 +254,9 @@ public function table(Table $table): Table
         ]);
 }
 ```
+### 预加载附加模态框的下拉列表选项
 
-### Preloading the attachment modal select options
-
-By default, as you search for a record to attach, options will load from the database via AJAX. If you wish to preload these options when the form is first loaded instead, you can use the `preloadRecordSelect()` method of `AttachAction`:
+默认情况下，当你搜索记录进行附加时，选项会通过 AJAX 从数据库中加载。如果你希望表单加载时就直接预载这些选项，你可以使用 `AttachAction` 的 `preloadRecordSelect()` 方法:
 
 ```php
 use Filament\Tables\Actions\AttachAction;
@@ -263,9 +265,9 @@ AttachAction::make()
     ->preloadRecordSelect()
 ```
 
-### Attaching with pivot attributes
+### 使用中间属性附加记录
 
-When you attach record with the `Attach` button, you may wish to define a custom form to add pivot attributes to the relationship:
+当你使用 `附加(Attach)` 按钮来附加记录时，你可能希望使用自定义表单来将中间属性添加到关联中：
 
 ```php
 use Filament\Forms;
@@ -278,13 +280,13 @@ AttachAction::make()
     ])
 ```
 
-In this example, `$action->getRecordSelect()` returns the select field to pick the record to attach. The `role` text input is then saved to the pivot table's `role` column.
+本例中，`$action->getRecordSelect()` 返回下拉列表字段，用以选择记录附加。`role` 文本输入框被保存到中间表的 `role` 字段中。
 
-Please ensure that any pivot attributes are listed in the `withPivot()` method of the relationship *and* inverse relationship.
+请确保所有中间表的字段都在 关联 *和* 反向关联 的 `withPivot` 方法中罗列出来。
 
-### Scoping the options to attach
+### 设置附加选项的范围
 
-You may want to scope the options available to `AttachAction`:
+你可能想要对 `AttachAction` 中可用的选项进行限制：
 
 ```php
 use Filament\Tables\Actions\AttachAction;
@@ -294,9 +296,9 @@ AttachAction::make()
     ->recordSelectOptionsQuery(fn (Builder $query) => $query->whereBelongsTo(auth()->user())
 ```
 
-### Searching the options to attach across multiple columns
+### 通过多个字段搜索选项
 
-By default, the options available to `AttachAction` will be searched in the `recordTitleAttribute()` of the table. If you wish to search across multiple columns, you can use the `recordSelectSearchColumns()` method:
+默认情况下，`AttachAction` 的可用选项会在表格的 `recordTitleAttribute()` 中搜索。如果你想搜索多个字段，你可以使用 `recordSelectSearchColumns()` 方法：
 
 ```php
 use Filament\Tables\Actions\AttachAction;
@@ -305,9 +307,9 @@ AttachAction::make()
     ->recordSelectSearchColumns(['title', 'description'])
 ```
 
-### Customizing the select field in the attached modal
+### 自定义附加模态框的 Select 字段
 
-You may customize the select field object that is used during attachment by passing a function to the `recordSelect()` method:
+你可以传入一个函数到 `recordSelect()` 方法，自定义附加之中使用的 Select 字段对象：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -319,29 +321,29 @@ AttachAction::make()
     )
 ```
 
-### Handling duplicates
+### 处理重复数据
 
-By default, you will not be allowed to attach a record more than once. This is because you must also set up a primary `id` column on the pivot table for this feature to work.
+默认情况下，你不能多次附加同一个记录。要使之可行，你需要先在中间表设置一个主键 `id` 字段。
 
-Please ensure that the `id` attribute is listed in the `withPivot()` method of the relationship *and* inverse relationship.
+同时，要确保 关联 *和* 反向关联 的 `withPivot()` 方法中使用了 `id` 属性。
 
-Finally, add the `$allowsDuplicates` property to the relation manager:
+最后，请在关联管理器中添加 `$allowsDuplicates` 属性：
 
 ```php
 protected bool $allowsDuplicates = true;
 ```
 
-## Associating and dissociating records
+## 关联和取消关联记录
 
-Filament is able to associate and dissociate records for `HasMany` and `MorphMany` relationships.
+Filament 可以为 `HasMany` 和 `MorphMany` 关系关联和取消关联记录。
 
-When generating your relation manager, you may pass the `--associate` flag to also add `AssociateAction`, `DissociateAction` and `DissociateBulkAction` to the table:
+在生成关联管理器时，你可以传入 `--associate` 标志，这样就能将 `AssociateAction`、`DissociateAction` 和 `DissociateBulkAction` 同时添加到表格中：
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title --associate
 ```
 
-Alternatively, if you've already generated your resource, you can just add the actions to the `$table` arrays:
+此外，如果你已经生成了资源，你也可以将这些 actions 添加到 `$table` 数组中：
 
 ```php
 use Filament\Tables;
@@ -370,9 +372,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Preloading the associate modal select options
+### 预加载关联模态框的 Select 选项
 
-By default, as you search for a record to associate, options will load from the database via AJAX. If you wish to preload these options when the form is first loaded instead, you can use the `preloadRecordSelect()` method of `AssociateAction`:
+默认情况下，由于你通过搜索记录关联，选项会通过 AJAX 从数据库中加载。如果你希望在表单加载时就预加载这些选项，可以使用 `AssociateAction` 的 `preloadRecordSelect()` 方法：
 
 ```php
 use Filament\Tables\Actions\AssociateAction;
@@ -381,9 +383,9 @@ AssociateAction::make()
     ->preloadRecordSelect()
 ```
 
-### Scoping the options to associate
+### 设置选项范围以供关联
 
-You may want to scope the options available to `AssociateAction`:
+你可能想要对 `AssociateAction` 中可用的选项进行限制：
 
 ```php
 use Filament\Tables\Actions\AssociateAction;
@@ -393,9 +395,9 @@ AssociateAction::make()
     ->recordSelectOptionsQuery(fn (Builder $query) => $query->whereBelongsTo(auth()->user())
 ```
 
-### Searching the options to associate across multiple columns
+### 通过多个字段搜索关联选项
 
-By default, the options available to `AssociateAction` will be searched in the `recordTitleAttribute()` of the table. If you wish to search across multiple columns, you can use the `recordSelectSearchColumns()` method:
+默认情况下，`AssociateAction` 的可用选项会在表格的 `recordTitleAttribute()` 中搜索。如果你想搜索多个字段，你可以使用 `recordSelectSearchColumns()` 方法：
 
 ```php
 use Filament\Tables\Actions\AssociateAction;
@@ -404,9 +406,9 @@ AssociateAction::make()
     ->recordSelectSearchColumns(['title', 'description'])
 ```
 
-### Customizing the select field in the associate modal
+### 自定义关联模态框的 Select 字段
 
-You may customize the select field object that is used during association by passing a function to the `recordSelect()` method:
+你可以传入一个函数到 `recordSelect()` 方法，自定义关联期间使用的 Select 字段对象：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -418,15 +420,15 @@ AssociateAction::make()
     )
 ```
 
-## Viewing related records
+## 查看关联记录
 
-When generating your relation manager, you may pass the `--view` flag to also add a `ViewAction` to the table:
+生成关联管理器时，你可以使用 `--view` 标记，同时将 `ViewAction` 添加到表格中：
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title --view
 ```
 
-Alternatively, if you've already generated your relation manager, you can just add the `ViewAction` to the `$table->actions()` array:
+此外，如果你已经生成了关联管理器，可以将 `ViewAction` 添加到 `$table->actions()` 数组中：
 
 ```php
 use Filament\Tables;
@@ -445,15 +447,15 @@ public function table(Table $table): Table
 }
 ```
 
-## Deleting related records
+## 删除关联记录
 
-By default, you will not be able to interact with deleted records in the relation manager. If you'd like to add functionality to restore, force delete and filter trashed records in your relation manager, use the `--soft-deletes` flag when generating the relation manager:
+默认情况下，你不能在关联管理器中和已删除的记录交互。如果你想在关联管理器中添加恢复，强制删除和过滤废弃删除记录这样的功能，请在生成关联管理器时使用 --soft-deletes 标志:
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title --soft-deletes
 ```
 
-Alternatively, you may add soft deleting functionality to an existing relation manager:
+另外，你可以在现有关联管理器中添加软删除功能：
 
 ```php
 use Filament\Tables;
@@ -491,19 +493,19 @@ public function table(Table $table): Table
 }
 ```
 
-### Customizing the `DeleteAction`
+### 自定义 `DeleteAction`
 
-To learn how to customize the `DeleteAction`, including changing the notification and adding lifecycle hooks, please see the [Actions documentation](../../actions/prebuilt-actions/delete).
+要学会如何自定义 `DeleteAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/delete)。
 
-## Accessing the relationship's owner record
+## 访问关联拥有者的记录
 
-Relation managers are Livewire components. When they are first loaded, the owner record (the Eloquent record which serves as a parent - the main resource model) is mounted in a public `$ownerRecord` property. Thus, you may access the owner record using:
+关联管理器是 Livewire 组件。当它们首次加载时，拥有者的记录(作为父级模型——即主资源模型——的 Eloquent 记录)在公用的 `$ownerRecord` 属性上挂载。因此，你可以这样访问拥有者记录：
 
 ```php
 $this->ownerRecord
 ```
 
-However, in you're inside a `static` method like `form()` or `table()`, `$this` isn't accessible. So, you may [use a callback](../../forms/advanced#form-component-utility-injection) to access the `$livewire` instance:
+不过，在静态方法，如 `form()` 或 `table()` 中，无法访问 `$this`。因此，你可以[使用回调函数](../../forms/advanced#form-component-utility-injection)获取 `$livewire` 示例：
 
 ```php
 use Filament\Forms;
@@ -525,11 +527,11 @@ public function form(Form $form): Form
 }
 ```
 
-All methods in Filament accept a callback which you can access `$livewire->ownerRecord` in.
+Filament 中的所有方法都接收回调，你可以借此访问 `$livewire->ownerRecord`：
 
-## Grouping relation managers
+## 关联管理器分组
 
-You may choose to group relation managers together into one tab. To do this, you may wrap multiple managers in a `RelationGroup` object, with a label:
+你可以将关联管理器分组到一个标签页中。在 `RelationGroup` 对象中带上标签包裹多个关联管理器可以实现分组：
 
 ```php
 use Filament\Resources\RelationManagers\RelationGroup;
@@ -547,11 +549,11 @@ public static function getRelations(): array
 }
 ```
 
-## Conditionally showing relation managers
+## 条件性显示关联管理器
 
-By default, relation managers will be visible if the `viewAny()` method for the related model policy returns `true`.
+默认情况下，如果关联模型策略的 `viewAny()` 方法返回的是 `true`，关联管理器将为可见。
 
-You may use the `canViewForRecord()` method to determine if the relation manager should be visible for a specific owner record and page:
+你可以使用 `canViewForRecord()` 方法，决定关联管理器是否应该让特定的所有者记录及页面可见：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -562,9 +564,9 @@ public static function canViewForRecord(Model $ownerRecord, string $pageClass): 
 }
 ```
 
-## Combining the relation manager tabs with the form
+## 将关联管理器选项卡与资源表单结合
 
-On the Edit or View page class, override the `hasCombinedRelationManagerTabsWithContent()` method:
+在编辑或者查看页类中，重写 `hasCombinedRelationManagerTabsWithForm()` 方法:
 
 ```php
 public function hasCombinedRelationManagerTabsWithContent(): bool
@@ -573,9 +575,9 @@ public function hasCombinedRelationManagerTabsWithContent(): bool
 }
 ```
 
-## Sharing a resource's form and table with a relation manager
+## 在关联管理器中共享资源表单及表格
 
-You may decide that you want a resource's form and table to be identical to a relation manager's, and subsequently want to reuse the code you previously wrote. This is easy, by calling the `form()` and `table()` methods of the resource from the relation manager:
+您可能决定希望资源表单及表格与关系管理器的表单及表格相同，然后希望重用以前编写的代码。这很容易，只需在关联管理器中调用资源的 `form()` 和 `table()` 方法：
 
 ```php
 use App\Filament\Resources\Blog\PostResource;
@@ -593,9 +595,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Hiding a shared form component on the relation manager
+### 在关联管理器中隐藏共享表单组件
 
-If you're sharing a form component from the resource with the relation manager, you may want to hide it on the relation manager. This is especially useful if you want to hide a `Select` field for the owner record in the relation manager, since Filament will handle this for you anyway. To do this, you may use the `hiddenOn()` method, passing the name of the relation manager:
+如果你在资源中与关联管理器共享一个表单组件，而希望在关联管理器隐藏该组件。当你想在关联管理器中隐藏一个用于所有者记录的 `Select` 字段时，这一功能特别有用；因为 Filament 无论如何都会对此进行处理。为此，你可以使用 `hiddenOn()` 方法，传入关联管理器的名称：
 
 ```php
 use App\Filament\Resources\Blog\PostResource\RelationManagers\CommentsRelationManager;
@@ -606,9 +608,9 @@ Select::make('post_id')
     ->hiddenOn(CommentsRelationManager::class)
 ```
 
-### Hiding a shared table column on the relation manager
+### 在关联管理器中隐藏共享表格列
 
-If you're sharing a table column from the resource with the relation manager, you may want to hide it on the relation manager. This is especially useful if you want to hide a column for the owner record in the relation manager, since this is not appropriate when the owner record is already listed above the relation manager. To do this, you may use the `hiddenOn()` method, passing the name of the relation manager:
+如果你在资源中与关联管理器共享一个表格字段，而希望在关联管理器隐藏将其隐藏。当你想在关联管理器中隐藏一个关联所有者记录的字段时，这一功能特别有用；因为所有者记录已经在关联管理器上方罗列出来了。为此，你可以使用 `hiddenOn()` 方法，传入关联管理器的名称：
 
 ```php
 use App\Filament\Resources\Blog\PostResource\RelationManagers\CommentsRelationManager;
@@ -618,9 +620,9 @@ TextColumn::make('post.title')
     ->hiddenOn(CommentsRelationManager::class)
 ```
 
-### Hiding a shared table filter on the relation manager
+### 在关联管理器中隐藏共享表格过滤器
 
-If you're sharing a table filter from the resource with the relation manager, you may want to hide it on the relation manager. This is especially useful if you want to hide a filter for the owner record in the relation manager, since this is not appropriate when the table is already filtered by the owner record. To do this, you may use the `hiddenOn()` method, passing the name of the relation manager:
+如果你在资源中与关联管理器共享一个表格过滤器，而希望在关联管理器隐藏该过滤器。当你想在关联管理器中隐藏一个用于所有者记录的过滤器时，这一功能特别有用；因为该表格已经按照所有者记录进行过滤了。为此，你可以使用 `hiddenOn()` 方法，传入关联管理器的名称：
 
 ```php
 use App\Filament\Resources\Blog\PostResource\RelationManagers\CommentsRelationManager;
@@ -631,9 +633,9 @@ SelectFilter::make('post')
     ->hiddenOn(CommentsRelationManager::class)
 ```
 
-### Overriding shared configuration on the relation manager
+### 在关联管理器中重写共享配置
 
-Any configuration that you make inside the resource can be overwritten on the relation manager. For example, if you wanted to disable pagination on the relation manager's inherited table but not the resource itself:
+你在资源中的任何配置都可以在关联管理器上重写。比如，如果你想在关联管理上禁用继承的表格上的分页，而不是在资源本身上禁用：
 
 ```php
 use App\Filament\Resources\Blog\PostResource;
@@ -646,7 +648,7 @@ public function table(Table $table): Table
 }
 ```
 
-It is probably also useful to provide extra configuration on the relation manager if you wanted to add a header action to [create](#creating-related-records), [attach](#attaching-and-detaching-records), or [associate](#associating-and-dissociating-records) records in the relation manager:
+如果你想添加头部 Action 在关联管理器中[添加](#创建关联记录)、[附加](#附加和分离记录)或者[关联](#关联和取消关联记录)记录，在资源管理器上提供额外的配置或许有用：
 
 ```php
 use App\Filament\Resources\Blog\PostResource;
@@ -663,9 +665,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Customizing the relation manager Eloquent query
+## 自定义关联管理器 Eloquent 查询
 
-You can apply your own query constraints or [model scopes](https://laravel.com/docs/eloquent#query-scopes) that affect the entire relation manager. To do this, you can pass a function to the `modifyQueryUsing()` method of the table, inside which you can customize the query:
+你可以使用自己的查询约束或者影响整个关联管理器的[模型范围](https://laravel.com/docs/eloquent#query-scopes)。为此，你需要传入一个函数到表格的 `modifyQueryUsing()` 方法中，在函数中你可以自定义查询：
 
 ```php
 use Filament\Tables;
@@ -681,19 +683,19 @@ public function table(Table $table): Table
 }
 ```
 
-## Customizing the relation manager record title
+## 自定义关联管理器的记录标题
 
-The relation manager uses the concept of a "record title attribute" to determine which attribute of the related model should be used to identify it. When creating a relation manager, this attribute is passed as the third argument to the `make:filament-relation-manager` command:
+关联管理器使用"记录标题属性"的概念去决定关联模型应该使用哪个属性进行识别、创建关联管理器时，该属性是 `make:filament-relation-manager` 命令的第三个参数：
 
 ```bash
 php artisan make:filament-relation-manager CategoryResource posts title
 ```
 
-In this example, the `title` attribute of the `Post` model will be used to identify a post in the relation manager.
+上例中，`Post` 模型的 `title` 属性将被用于在关联管理器中识别一个 post。
 
-This is mainly used by the action classes. For instance, when you [attach](#attaching-and-detaching-records) or [associate](#associating-and-dissociating-records) a record, the titles will be listed in the select field. When you [edit](#editing-related-records), [view](#viewing-related-records) or [delete](#deleting-related-records) a record, the title will be used in the header of the modal.
+这主要用在 Action 类中。比如，当你[附加记录](#附加和分离记录)或者[关联记录](#关联和取消关联记录)时，该标题会在 Select 字段中展示。当你[编辑](#编辑关联记录)、[查看](#查看关联记录)或者[删除](#删除关联记录)时，该标题会被用作模态框的标题。
 
-In some cases, you may want to concatenate multiple attributes together to form a title. You can do this by replacing the `recordTitleAttribute()` configuration method with `recordTitle()`, passing a function that transforms a model into a title:
+某些情况下，你可能想要使用多个属性来组成一个标题。你可以使用 `recordTitle()` 替换 `recordTitleAttribute()` 配置方法，并传入一个函数将模型转换成标题：
 
 ```php
 use App\Models\Post;
@@ -709,7 +711,7 @@ public function table(Table $table): Table
 }
 ```
 
-If you're using `recordTitle()`, and you have an [associate action](#associating-and-dissociating-records) or [attach action](#attaching-and-detaching-records), you will also want to specify search columns for those actions:
+如果你使用 `recordTitle()`，而且有[关联 Action](#关联和取消关联记录) 或者[附加 Action](#附加和分离记录)，你可能也想为这些 Action 指定搜索字段：
 
 ```php
 use Filament\Tables\Actions\AssociateAction;
@@ -722,9 +724,9 @@ AttachAction::make()
     ->recordSelectSearchColumns(['title', 'id'])
 ```
 
-## Read-only mode
+## 只读模式
 
-Relation managers are usually displayed on either the Edit or View page of a resource. On the View page, Filament will automatically hide all actions that modify the relationship, such as create, edit, and delete. However, you can disable this behaviour, by overriding the `isReadOnly()` method on the relation manager class to return `false` all the time:
+资源管理器通常在资源的编辑页或查看页中展示。在查看页中，Filament 会自动隐藏所有用于修改关联的 Action，比如创建、编辑及删除。不过你可以重写资源管理器的 `isReadOnly()` 方法使之返回 `false`，来禁用该行为：
 
 ```php
 public function isReadOnly(): bool
@@ -733,9 +735,9 @@ public function isReadOnly(): bool
 }
 ```
 
-## Passing properties to relation managers
+## 传递属性到关联管理器
 
-When registering a relation manager in a resource, you can use the `make()` method to pass an array of [Livewire properties](https://livewire.laravel.com/docs/properties) to it:
+在资源中注册关联管理器时，你可以使用 `make()` 方法，传递一个 [Livewire 属性](https://livewire.laravel.com/docs/properties)数组到关联管理器中：
 
 ```php
 use App\Filament\Resources\Blog\PostResource\RelationManagers\CommentsRelationManager;
@@ -750,7 +752,7 @@ public static function getRelations(): array
 }
 ```
 
-This array of properties gets mapped to [public Livewire properties](https://livewire.laravel.com/docs/properties) on the relation manager class:
+该属性数组与关联管理器类中的[公用 Livewire 属性](https://livewire.laravel.com/docs/properties)映射：
 
 ```php
 use Filament\Resources\RelationManagers\RelationManager;
@@ -763,4 +765,4 @@ class CommentsRelationManager extends RelationManager
 }
 ```
 
-Now, you can access the `status` in the relation manager class using `$this->status`.
+现在，你可以 `$this->status` 在关联管理器中访问 `status`。

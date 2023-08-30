@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/04-colors.md"
-title: Colors
+title: 颜色
 ---
 
-## Overview
+## 概述
 
-Filament uses CSS variables to define its color palette. These CSS variables are mapped to Tailwind classes in the preset file that you load when installing Filament.
+Filament 使用 CSS 变量来定义其调色板。这些 CSS 变量映射到安装 Filament 时加载的预设文件中的 Tailwind 类。
 
-## Customizing the default colors
+## 自定义默认颜色
 
-From a service provider's `boot()` method, or middleware, you can call the `FilamentColor::register()` method, which you can use to customize which colors Filament uses for UI elements.
+在服务提供者的 `boot()` 方法、或者中间件中，你可以调用 `FilamentColor::register()` 方法，用来自定义 Filament UI 元素使用的颜色。
 
-There are 7 default colors that are used throughout Filament that you are able to customize:
+Filament 有 7 种默认颜色可供您自定义：
 
 ```php
 use Filament\Support\Colors\Color;
@@ -28,11 +28,11 @@ FilamentColor::register([
 ]);
 ```
 
-The `Color` class contains every [Tailwind CSS color](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) to choose from.
+`Color` 类包含了所有 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) 供选取。
 
-## Using a non-Tailwind color
+## 使用非 Tailwind 颜色
 
-You can use custom colors that are not included in the [Tailwind CSS color](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) palette by passing an array of color shades from `50` to `900` in RGB format:
+你也可以使用 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference)中不包含的自定义颜色，方法是以 RGB 格式传入一个从 `50` 到 `900` 色调数组：
 
 ```php
 use Filament\Support\Facades\FilamentColor;
@@ -54,9 +54,9 @@ FilamentColor::register([
 ]);
 ```
 
-### Generating a custom color from a hex code
+### 从 16 进制代码中生成自定义颜色
 
-You can use the `Color::hex()` method to generate a custom color palette from a hex code:
+你可以使用 `Color::hex()` 方法，从 16 进制代码中生成自定义颜色：
 
 ```php
 use Filament\Support\Colors\Color;
@@ -67,9 +67,9 @@ FilamentColor::register([
 ]);
 ```
 
-### Generating a custom color from an RGB value
+### 从 RGB 值生成自定义颜色
 
-You can use the `Color::rgb()` method to generate a custom color palette from an RGB value:
+你可以使用 `Color::rgb()` 方法，从 RGB 值中生成自定义颜色：
 
 ```php
 use Filament\Support\Colors\Color;
@@ -80,9 +80,9 @@ FilamentColor::register([
 ]);
 ```
 
-## Registering extra colors
+## 注册其他颜色
 
-You can register extra colors that you can use throughout Filament:
+你也可以注册其他颜色，在整个 Filament 中使用：
 
 ```php
 use Filament\Support\Colors\Color;
@@ -93,4 +93,4 @@ FilamentColor::register([
 ]);
 ```
 
-Now, you can use this color anywhere you would normally add `primary`, `danger`, etc.
+现在，你可以在任何通常会添加 `primary`、`danger` 等的地方使用该颜色。

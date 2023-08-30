@@ -1,30 +1,30 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/14-upgrade-guide.md"
-title: Upgrading from v2.x
+title: 从 v2.x 升级
 ---
 
-> If you see anything missing from this guide, please do not hesitate to [make a pull request](https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/14-upgrade-guide.md) to our repository! Any help is appreciated!
+> 如果你发现本指南中有任何遗落，请[发起 PR](https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/14-upgrade-guide.md) 到官方仓库！
 
-## New requirements
+## 新的要求
 
 - Laravel v10.0+
 - Livewire v3.0+
 
-Please upgrade Filament before upgrading to Livewire v3. Instructions on how to upgrade Livewire can be found [here](https://livewire.laravel.com/docs/upgrading).
+请在将 Livewire 升级到 v3 前先升级 Filament。如何升级 Livewire 请查看[此处](https://livewire.laravel.com/docs/upgrading)。
 
-> **Livewire v3 is still in beta!**<br />
+> **Livewire v3 is 仍处于 Beta 测试阶段！**<br />
 > Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
 
-## Upgrading automatically
+## 自动升级
 
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
+由于 Livewire v3 仍处于 Beta 测试阶段，请在 `composer.jison` 中将 `minimum-stability` 设置为 `dev`：
 
 ```json
 "minimum-stability": "dev",
 ```
 
-The easiest way to upgrade your app is to run the automated upgrade script. This script will automatically upgrade your application to the latest version of Filament and make changes to your code, which handles most breaking changes.
+升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
 
 ```bash
 composer require filament/upgrade:"^3.0-stable" -W --dev
@@ -32,135 +32,133 @@ composer require filament/upgrade:"^3.0-stable" -W --dev
 vendor/bin/filament-v3
 ```
 
-Make sure to carefully follow the instructions, and review the changes made by the script. You may need to make some manual changes to your code afterwards, but the script should handle most of the repetitive work for you.
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，但脚本应该已经为您处理了大部分重复工作。
 
-A new `app/Providers/Filament/*PanelProvider.php` file will be created, and the configuration from your old `config/filament.php` file should be copied. Since this is a [Laravel service provider](https://laravel.com/docs/providers), it needs to be registered in `config/app.php`. Filament will attempt to do this for you, but if you get an error while trying to access your panel, then this process has probably failed. You can manually register the service provider by adding it to the `providers` array.
+此时，创建了一个新文件 `app/Providers/Filament/*PanelProvider.php`，旧的 `config/filament.php` 配置文件中的配置项复制过去。由于新配置文件是[Laravel 服务提供者](https://laravel.com/docs/providers)，需要将其注册到 `config/app.php` 中。Filament 回尝试为你进行注册，不过如果你访问面板出错了，那么可能这一个过程失败了。你可以将其添加到 `providers` 数组手动注册。
 
-Finally, you must run `php artisan filament:install` to finalize the Filament v3 installation. This command must be run for all new Filament projects.
+最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
 
-You can now `composer remove filament/upgrade` as you don't need it anymore.
+然后，你可以运行 `composer remove filament/upgrade`，因为你不再需要它了。
 
-> Some plugins you're using may not be available in v3 just yet. You could temporarily remove them from your `composer.json` file until they've been upgraded, replace them with a similar plugins that are v3-compatible, wait for the plugins to be upgraded before upgrading your app, or even write PRs to help the authors upgrade them.
+> 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
 
-## Upgrading manually
+## 手动升级
 
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
+由于 Livewire v3 仍处于 Beta 测试阶段，请在 `composer.json` 中将 `minimal-stability` 设置为 `dev`：
 
 ```json
 "minimum-stability": "dev",
 ```
 
-### High-impact changes
+### 高影响更新
 
-#### Panel provider instead of the config file
+#### 面板提供者替换配置文件
 
-The Filament v2 config file grew pretty big, and now it is incredibly small. Most of the configuration is now done in a service provider, which provides a cleaner API, more type safety, IDE autocomplete support, and [the ability to create multiple panels in your app](configuration#introducing-panels). We call these special configuration service providers **"panel providers"**.
+Filament v2 配置文件变得相当大，现在却非常小。现在，大多数配置都是在服务提供商者完成的，该服务提供者提供了更干净的 API、更安全的类型、IDE 自动补全支持，以及[在应用中创建多个面板的能力](configuration#introducing-panels)。我们将这些特殊配置服务提供者**称为"面板提供者(panel provider)" **。
 
-Before you can create the new panel provider, make sure that you've got Filament v3 installed with Composer. Then, run the following command:
+在创建面板提供者之前，请确保你使用 Composer 安装了 Filament v3。然后，运行以下命令：
 
 ```bash
 php artisan filament:install --panels
 ```
 
-A new `app/Providers/Filament/AdminPanelProvider.php` file will be created, ready for you to transfer over your old configuration from the `config/filament.php` file. Since this is a [Laravel service provider](https://laravel.com/docs/providers), it needs to be registered in `config/app.php`. Filament will attempt to do this for you, but if you get an error while trying to access your panel, then this process has probably failed. You can manually register the service provider by adding it to the `providers` array.
+新文件 `app/Providers/Filament/AdminPanelProvider.php` 将被创建，然后就可以将旧的配置从 `config/filament.php` 文件中转移过去。由于新配置文件是[Laravel 服务提供者](https://laravel.com/docs/providers)，需要将其注册到 `config/app.php` 中。Filament 回尝试为你进行注册，不过如果你访问面板出错了，那么可能这一个过程失败了。你可以将其添加到 `providers` 数组手动注册。
 
-Most configuration transfer is very self-explanatory, but if you get stuck, please refer to the [configuration documentation](configuration).
+大多数配置的转移都是不言自明的，但如果您遇到问题，请参阅[配置文档](configuration)。
 
-This will especially affect configuration done via the `Filament::serving()` method, which was used for theme customization, navigation and menu registration. Consult the [configuration](configuration), [navigation](navigation) and [themes](themes) documentation sections.
-
-Finally, you can run the following command to replace the old config file with the shiny new one:
+最后，运行如下命令将旧的配置文件替换成新配置文件：
 
 ```bash
 php artisan vendor:publish --tag=filament-config --force
 ```
 
-#### `FILAMENT_FILESYSTEM_DRIVER` .env variable
+#### `FILAMENT_FILESYSTEM_DRIVER` .env 变量
 
-The `FILAMENT_FILESYSTEM_DRIVER` .env variable has been renamed to `FILAMENT_FILESYSTEM_DISK`. This is to make it more consistent with Laravel, as Laravel v9 introduced this change as well. Please ensure that you update your .env files accordingly, and don't forget production!
+`FILAMENT_FILESYSTEM_DRIVER` .env 环境变量被重命名为 `FILAMENT_FILESYSTEM_DISK`。这个更新是为了使之与 Laravel 更加一致，因为 Laravel 9 也引入了这一更新。请确保相应地更新 .env 文件，同时别忘记更新生产环境！
 
-#### Resource and relation manager imports
+#### 资源和关联管理器的引入
 
-Some classes that are imported in resources and relation managers have moved:
+在资源和关系管理器中导入的某些类已移动：
 
-- `Filament\Resources\Form` has moved to `Filament\Forms\Form`
-- `Filament\Resources\Table` has moved to `Filament\Tables\Table`
+- `Filament\Resources\Form` 已移动到 `Filament\Forms\Form`
+- `Filament\Resources\Table` 已移动到 `Filament\Tables\Table`
 
-#### Method signature changes
+#### 方法签名变化
 
-User model (with `FilamentUser` interface):
+User 模型(实现 `FilamentUser` 接口)：
 
-- `canAccessFilament()` has been renamed to `canAccessPanel()` and has a new `\Filament\Panel $panel` parameter
+- `canAccessFilament()` 已被重命名为 `canAccessPanel()` 并且有了一个新的 `\Filament\Panel $panel` 参数
 
-Resource classes:
+资源类：
 
 - `applyGlobalSearchAttributeConstraint()` now has a `string $search` parameter before `$searchAttributes()` instead of `$searchQuery` after
 - `getGlobalSearchEloquentQuery()` is public
 - `getGlobalSearchResults()`has a `$search` parameter instead of `$searchQuery`
 - `getRouteBaseName()` has a new `?string $panel` parameter
 
-Resource classes and all page classes, including resource pages, custom pages, settings pages, and dashboard pages:
+资源类和所有页面类，包括资源页面、自定义页面、设置页面和仪表盘页面：
 
-- `getActiveNavigationIcon()` is public
-- `getNavigationBadge()` is public
-- `getNavigationBadgeColor()` is public
-- `getNavigationGroup()` is public
-- `getNavigationIcon()` is public
-- `getNavigationLabel()` is public
-- `getNavigationSort()` is public
-- `getNavigationUrl()` is public
-- `shouldRegisterNavigation()` is public
+- `getActiveNavigationIcon()` 是 public
+- `getNavigationBadge()` 是 public
+- `getNavigationBadgeColor()` 是 public
+- `getNavigationGroup()` 是 public
+- `getNavigationIcon()` 是 public
+- `getNavigationLabel()` 是 public
+- `getNavigationSort()` 是 public
+- `getNavigationUrl()` 是 public
+- `shouldRegisterNavigation()` 是 public
 
-All page classes, including resource pages, custom pages, settings pages, and custom dashboard pages:
+所有页面类，包括资源页、自定义页、设置页及自定义仪表盘页面：
 
-- `getBreadcrumbs()` is public
-- `getFooterWidgetsColumns()` is public
-- `getHeader()` is public
-- `getHeaderWidgetsColumns()` is public
-- `getHeading()` is public
-- `getRouteName()` has a new `?string $panel` parameter
-- `getSubheading()` is public
-- `getTitle()` is public
-- `getVisibleFooterWidgets()` is public
-- `getVisibleHeaderWidgets()` is public
+- `getBreadcrumbs()` 为 public
+- `getFooterWidgetsColumns()` 为 public
+- `getHeader()` 为 public
+- `getHeaderWidgetsColumns()` 为 public
+- `getHeading()` 为 public
+- `getRouteName()` 有一个新的 `?string $panel` 参数
+- `getSubheading()` 为 public
+- `getTitle()` 为 public
+- `getVisibleFooterWidgets()` 为 public
+- `getVisibleHeaderWidgets()` 为 public
 
-List and Manage resource pages:
+资源列表页及管理页：
 
-- `table()` is public
+- `table()` 为 public
 
-Create resource pages:
+资源创建页：
 
-- `canCreateAnother()` is public
+- `canCreateAnother()` 为 public
 
-Edit and View resource pages:
+资源编辑及查看页：
 
-- `getFormTabLabel()` is now `getContentTabLabel()`
+- `getFormTabLabel()` 现在为 `getContentTabLabel()`
 
-Relation managers:
+管理管理器：
 
-- `form()` is no longer static
+- `form()` 不再是静态
 - `getInverseRelationshipName()`
-- `table()` is no longer static
+- `table()` 不再是静态
 
-Custom dashboard pages:
+自定义仪表盘页：
 
-- `getDashboard()` is public
-- `getWidgets()` is public
+- `getDashboard()` 为 public
+- `getWidgets()` 为 public
 
-#### Property signature changes
+#### 属性签名变化
 
-Resource classes and all page classes, including resource pages, custom pages, settings pages, and dashboard pages:
+资源类及所有页面类，包括资源页、自定义页面、设置页及仪表盘页：
 
-- `$middlewares` is now `$routeMiddleware`
+- `$middlewares` 现在改成 `$routeMiddleware`
 
-#### Heroicons have been updated to v2
+#### Heroicons 已经升级为 v2
 
-The Heroicons library has been updated to v2. This means that any icons you use in your app may have changed names. You can find a list of changes [here](https://github.com/tailwindlabs/heroicons/releases/tag/v2.0.0).
+Heroicons 库已经升级到了 v2。也就是说你应用中使用的任何图标都已经改名了。你可以[点击此处](https://github.com/tailwindlabs/heroicons/releases/tag/v2.0.0)查看更新列表。
 
-### Medium-impact changes
+### 中等影响更新
 
-#### Date-time pickers
+#### 日期时间选择器
 
-The date-time picker form field now uses the browser's native date picker by default. It usually has a better UX than the old date picker, but you may notice features missing, bad browser compatibility, or behavioural bugs. If you want to revert to the old date picker, you can use the `native(false)` method:
+日期时间选择器表单字段现在使用了浏览器默认的本机日期选择器。它通常比旧的日期选择器有更好的用户体验，但你可能会注意到功能缺失、浏览器兼容性差或行为错误。如果要恢复到旧的日期选择器，可以使用 `native(false)` 方法：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -169,52 +167,52 @@ DateTimePicker::make('published_at')
     ->native(false)
 ```
 
-#### Secondary color
+#### Secondary 颜色
 
-Filament v2 had a `secondary` color for many components which was gray. All references to `secondary` should be replaced with `gray` to preserve the same appearance. This frees `secondary` to be registered to a new custom color of your choice.
+Filament v2 的 `secondary` 在许多组件中是灰色。所有 `secondary` 的引用都应该替换成 `gray`，以保持相同的外观。这一更新释放了 `secondary` 使之可以注册成你需要的自定义颜色。
 
-#### `$get` and `$set` closure parameters
+#### `$get` 和 `$set` 闭包参数
 
-In the Form Builder package, `$get` and `$set` parameters now use a type of either `\Filament\Forms\Get` or `\Filament\Forms\Set` instead of `\Closure`. This allows for better IDE autocomplete support of each function's parameters.
+表单构造器中，`$get` 和 `$set` 参数现在使用了 `\Filament\Forms\Get` 或 `\Filament\Forms\Set` 类型，而不再是 `\Closure` 类型。这使得每个函数的 IDE 自动补全支持更加良好。 
 
-An easy way to upgrade your code quickly is to find and replace:
+快速升级此类代码的一个简单的方法是，查找和替换：
 
-- `Closure $get` to `\Filament\Forms\Get $get`
-- `Closure $set` to `\Filament\Forms\Set $set`
+- `Closure $get` 替换为 `\Filament\Forms\Get $get`
+- `Closure $set` 替换为 `\Filament\Forms\Set $set`
 
-#### Blade icon components have been disabled
+#### Blade 图标组件已被禁用
 
-During v2, we noticed performance issues with Blade icon components. We've decided to disable them by default in v3, so we only use the [`@svg()` syntax](https://github.com/blade-ui-kit/blade-icons#directive) for rendering icons.
+在 v2 中，我们注意到 Blade 图标组件的性能问题。我们决定在 v3 中默认禁用它，因此，我们只使用 [`@svg()` 语法](https://github.com/blade-ui-kit/blade-icons#directive)来渲染图标。
 
-A side effect of this change is that all custom icons that you use must now be [registered in a set](https://github.com/blade-ui-kit/blade-icons#defining-sets). We no longer allow arbitrary Blade components to be used as custom icons.
+这一变更的副作用是，你所使用的所有自定义图标都必须[注册成套](https://github.com/blade-ui-kit/blade-icons#defining-sets)。我们不再允许将任意的 Blade 组件用作自定义图标。
 
-#### Logo customization
+#### Logo 自定义
 
-In v2, you can customize the logo of the admin panel using a `/resources/views/vendor/filament/components/brand.blade.php` file. In v3, this has been moved to `/resources/views/vendor/filament-panels/components/logo.blade.php`.
+在 v2 中，你可以使用 `/resources/views/vendor/filament/components/brand.blade.php` 文件自定义面板的 Logo。在 v3 中，这个文件被重命名为 `/resources/views/vendor/filament-panels/components/logo.blade.php`。
 
-#### Plugins
+#### 插件
 
-Filament v3 has a new universal plugin system that breaches the constraints of the admin panel. Learn how to build v3 plugins [here](plugins).
+Filament v3 有了一个新的通用插件系统，它打破了面板的约束。学习如何创建 v3 插件，点击[此处](plugins)。
 
-### Low-impact changes
+### 低影响变化
 
-#### Default actions and type-specific relation manager classes
+#### 默认 Action 及类型指定的关联管理器类
 
-> If you started the Filament project after v2.13, you can skip this section. Since then, new resources and relation managers have been generated with the new syntax.
+> 如果你在 v2.13 之后开始接触 Filament 项目，可以跳过此部分。从那之后，新的资源和关联管理器已经使用新语法生成。
 
-Since v2.13, resources and relation managers now define actions within the `table()` method instead of them being assumed by default.
+自 v2.13 起，资源和关联管理器在 `table()` 方法中定义 Action，而不再默认情况下假定 resources and relation managers now define actions within the `table()` method instead of them being assumed by default.
 
-When using simple resources, remove the `CanCreateRecords`, `CanDeleteRecords`, `CanEditRecords`, and `CanViewRecords` traits from the Manage page.
+使用简单资源时，请在管理页面中删除 `CanCreateRecords`、`CanDeleteRecords`、`CanEditRecords` 及 `CanViewRecords` trait。
 
-We also deprecated type-specific relation manager classes. Any classes extending `BelongsToManyRelationManager`, `HasManyRelationManager`, `HasManyThroughRelationManager`, `MorphManyRelationManager`, or `MorphToManyRelationManager` should now extend `\Filament\Resources\RelationManagers\RelationManager`. You can also remove the `CanAssociateRecords`, `CanAttachRecords`, `CanCreateRecords`, `CanDeleteRecords`, `CanDetachRecords`, `CanDisassociateRecords`, `CanEditRecords`, and `CanViewRecords` traits from relation managers.
+类型指定管理管理同时被弃用了。任何继承 `BelongsToManyRelationManager`、`HasManyRelationManager`、`HasManyThroughRelationManager`、`MorphManyRelationManager` 或 `MorphToManyRelationManager` 的类，现在应该继承 `\Filament\Resources\RelationManagers\RelationManager`。你也可以从关联管理器中删除 `CanAssociateRecords`、`CanAttachRecords`、`CanCreateRecords`、`CanDeleteRecords`、`CanDetachRecords`、`CanDisassociateRecords`、`CanEditRecords` 及 `CanViewRecords` trait。
 
-To learn more about v2.13 changes, read our [blog post](https://filamentphp.com/blog/v2130-admin-resources).
+要了解更多 v2.13 的更新，查阅[此博文](changes-to-admin-panel-resources-in-v2130)。
 
-#### Blade components
+#### Blade 组件
 
-Some Blade components have been moved to different namespaces:
+有一些 Blade 组件移动到了新的命名空间中：
 
-- `<x-filament::page>` is now `<x-filament-panels::page>`
-- `<x-filament::widget>` is now `<x-filament-widgets::widget>`
+- `<x-filament::page>` 现在改为 `<x-filament-panels::page>`
+- `<x-filament::widget>` 现在改为 `<x-filament-widgets::widget>`
 
-However, aliases have been set up so that you don't need to change your code.
+不过，也同时设置了别名，以便你不用修改代码。

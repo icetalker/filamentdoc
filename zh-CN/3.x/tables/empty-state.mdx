@@ -1,19 +1,19 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/09-empty-state.md"
-title: Empty state
+title: 空状态
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The table's "empty state" is rendered when there are no rows in the table.
+表格的"空状态"在表格中没有记录时渲染。
 
 <AutoScreenshot name="tables/empty-state" alt="Table with empty state" version="3.x" />
 
-## Setting the empty state heading
+## 设置空状态标题
 
-To customize the heading of the empty state, use the `emptyStateHeading()` method:
+使用 `emptyStateHeading()` 方法可以自定义空状态标题：
 
 ```php
 use Filament\Tables\Table;
@@ -27,9 +27,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/empty-state-heading" alt="Table with customized empty state heading" version="3.x" />
 
-## Setting the empty state description
+## 设置空状态描述
 
-To customize the description of the empty state, use the `emptyStateDescription()` method:
+使用 `emptyStateDescription()` 可以自定义空状态的描述：
 
 ```php
 use Filament\Tables\Table;
@@ -43,9 +43,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/empty-state-description" alt="Table with empty state description" version="3.x" />
 
-## Setting the empty state icon
+## 设置空状态图表
 
-To customize the [icon](https://blade-ui-kit.com/blade-icons?set=1#search) of the empty state, use the `emptyStateIcon()` method:
+使用 `emptyStateIcon()` 方法，可以自定义空状态的[Icon](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Tables\Table;
@@ -59,9 +59,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/empty-state-icon" alt="Table with customized empty state icon" version="3.x" />
 
-## Adding empty state actions
+## 添加空状态 Action
 
-You can add [Actions](actions) to the empty state to prompt users to take action. Pass these to the `emptyStateActions()` method:
+你可以将 [Action)(actions) 添加到空状态，以提示用户采取行动。传递 Action 到 `emptyStateActions()` 方法中：
 
 ```php
 use Filament\Tables\Actions\Action;
@@ -82,9 +82,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/empty-state-actions" alt="Table with empty state actions" version="3.x" />
 
-## Using a custom empty state view
+## 使用自定义空状态视图
 
-You may use a completely custom empty state view by passing it to the `emptyState()` method:
+你可以使用完全自定义的空状态视图，将其传入 `emptyState()` 方法中：
 
 ```php
 use Filament\Tables\Actions\Action;

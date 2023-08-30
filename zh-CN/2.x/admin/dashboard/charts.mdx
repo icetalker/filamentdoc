@@ -19,7 +19,7 @@ php artisan make:filament-widget BlogPostsChart --chart
 
 `getHeading()` 方法用来返回图表的标题。
 
-`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集的是一个标签化数组用来绘制图表的point，标签为字符串。Filament 用来渲染图表的这种数据结构，与[Chart.js](https://www.chartjs.org/docs)图表库是一致的。你可以借助[Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
+`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集都是一个标签化数组用来绘制图表的point，标签为字符串。Filament 用来渲染图表的这种数据结构，与[Chart.js](https://www.chartjs.org/docs)图表库是一致的。你可以借助[Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
 
 ```php
 <?php
@@ -50,7 +50,7 @@ class BlogPostsChart extends LineChartWidget
 }
 ```
 
-现在，你可以在控制面板上查看插件了。
+现在，你可以在仪表盘上查看插件了。
 
 ## 可用图表类型
 
@@ -65,7 +65,7 @@ class BlogPostsChart extends LineChartWidget
 - `Filament\Widgets\RadarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/radar)
 - `Filament\Widgets\ScatterChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/scatter)
 
-## 从Eloquent模型中生成图表数据
+## 从 Eloquent 模型中生成图表数据
 
 要想从 Eloquent 模型中生成数据，Filament 推荐你安装 `flowframe/laravel-trend` 包。查看文档请到[Flowframe 网站](https://docs.flowfra.me/docs/laravel-trend/installation-and-setup)。
 

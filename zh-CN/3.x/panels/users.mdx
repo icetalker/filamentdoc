@@ -1,16 +1,16 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/08-users.md"
-title: Users
+title: 用户
 ---
 
-## Overview
+## 概述
 
-By default, all `App\Models\User`s can access Filament locally. To allow them to access Filament in production, you must take a few extra steps to ensure that only the correct users have access to the app.
+默认情况下，所有的 `App\Models\User` 用户可以在本地环境中访问 Filament。但如果要在生产环境中同样允许用户访问，需要一些额外的操作来确保授权的用户才能访问面板。
 
-## Authorizing access to the panel
+## 授权访问面板
 
-To set up your `App\Models\User` to access Filament in non-local environments, you must implement the `FilamentUser` contract:
+要让非本地环境的 `App\Models\User` 用户获取访问权限，你需要实现 `FilamentUser` 合约接口:
 
 ```php
 <?php
@@ -32,11 +32,11 @@ class User extends Authenticatable implements FilamentUser
 }
 ```
 
-The `canAccessPanel()` method returns `true` or `false` depending on whether the user is allowed to access the `$panel`. In this example, we check if the user's email ends with `@yourdomain.com` and if they have verified their email address.
+`canAccessPanel()` 方法返回 `true` 还是 `false`，取决于用户是否被授权允许访问该面板 `$panel`。本例中会检查用户的邮箱后缀是否为 `@yourdomain.com` 以及用户是否验证过该邮箱。 
 
-## Setting up user avatars
+## 设置头像
 
-Out of the box, Filament uses [ui-avatars.com](https://ui-avatars.com) to generate avatars based on a user's name. However, if you user model has an `avatar_url` attribute, that will be used instead. To customize how Filament gets a user's avatar URL, you can implement the `HasAvatar` contract:
+Filament 使用可开箱即用的[ui-avatars.com](https://ui-avatars.com) 生成基于用户名的头像。你也可以实现 `HasAvatar` 合约接口，自定义用户头像 URL：
 
 ```php
 <?php
@@ -58,13 +58,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 }
 ```
 
-The `getFilamentAvatarUrl()` method is used to retrieve the avatar of the current user. If `null` is returned from this method, Filament will fall back to [ui-avatars.com](https://ui-avatars.com).
+`getFilamentAvatarUrl()` 方法用于获取当前用户的头像。如果这个方法返回 `null`，Filament 会转向[ui-avatars.com](https://ui-avatars.com)。
 
 ### Using a different avatar provider
 
-You can easily swap out [ui-avatars.com](https://ui-avatars.com) for a different service, by creating a new avatar provider.
+你可以创建一个新的头像 Provider 将 [ui-avatars.com](https://ui-avatars.com) 替换成不同的服务.
 
-In this example, we create a new file at `app/Filament/AvatarProviders/BoringAvatarsProvider.php` for [boringavatars.com](https://boringavatars.com). The `get()` method accepts a user model instance and returns an avatar URL for that user:
+本例中，我们为 [boringavatars.com](https://boringavatars.com) 创建了一个新文件 `app/Filament/AvatarProviders/BoringAvatarsProvider.php`。`get()` 方法接收一个用户模型实例并返回该用户的头像 URL:：
 
 ```php
 <?php
@@ -90,7 +90,7 @@ class BoringAvatarsProvider implements Contracts\AvatarProvider
 }
 ```
 
-Now, register this new avatar provider in the [configuration](configuration):
+现在，在[配置文件](configuration)中注册该 Provider：
 
 ```php
 use App\Filament\AvatarProviders\BoringAvatarsProvider;
@@ -104,9 +104,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Configuring the user's name attribute
+## 配置用户 name 属性
 
-By default, Filament will use the `name` attribute of the user to display their name in the app. To change this, you can implement the `HasName` contract:
+默认情况下，Filament 会使用用户的 `name` 属性来展示面板中的名字。想要调整，你可以实现 `HasName` 合约接口：
 
 ```php
 <?php
@@ -128,11 +128,11 @@ class User extends Authenticatable implements FilamentUser, HasName
 }
 ```
 
-The `getFilamentName()` method is used to retrieve the name of the current user.
+`getFilamentName()` 方法用于检索当前用户的名字。
 
-## Authentication features
+## 身份验证功能
 
-You can easily enable authentication features for a panel in the configuration file:
+你可以在配置文件中为面板启用身份验证功能：
 
 ```php
 use Filament\Panel;
@@ -149,11 +149,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the authentication features
+### 自定义身份验证功能
 
-If you'd like to replace these pages with your own, you can pass in any Filament page class to these methods.
+如果你项替换掉这些页面，你看可以在这些方法的中传入任何 Filament 页面。
 
-Most people will be able to make their desired customizations by extending the base page class from the Filament codebase, overriding methods like `form()`, and then passing the new page class in to the configuration:
+大部分人可以通过继承 Filament 代码库的基础页面类，重写 `form()` 这样的方法，并传入新页面类到配置中，来自定义他们的需求：
 
 ```php
 use App\Filament\Pages\Auth\EditProfile;
@@ -167,7 +167,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-In this example, we will customize the profile page. We need to create a new PHP class at `app/Filament/Pages/Auth/EditProfile.php`:
+本例中，我们将自定义 Profile 页面。我们需要创建一个新的 PHP 类 —— `app/Filament/Pages/Auth/EditProfile.php`：
 
 ```php
 <?php
@@ -196,7 +196,7 @@ class EditProfile extends BaseEditProfile
 }
 ```
 
-This class extends the base profile page class from the Filament codebase. Other page classes you could extend include:
+该类继承了 Filament 代码库的基础 Profile 页面类。其他你需要继承的页面包括：
 
 - `Filament\Pages\Auth\Login`
 - `Filament\Pages\Auth\Register`
@@ -204,11 +204,11 @@ This class extends the base profile page class from the Filament codebase. Other
 - `Filament\Pages\Auth\PasswordReset\RequestPasswordReset`
 - `Filament\Pages\Auth\PasswordReset\ResetPassword`
 
-In the `form()` method of the example, we call methods like `getNameFormComponent()` to get the default form components for the page. You can customize these components as required. For all the available customization options, see the base `EditProfile` page class in the Filament codebase - it contains all the methods that you can override to make changes.
+上例的 `form()` 方法中，我们调用了 `getNameFormComponent` 以获取页面的默认表单组件。你可以按需求自定义这些组件。所有可控的自定义选项，请查看 Filament 代码库中的基础 `EditProfile` 页面类 —— 它包含你可以重写修改的所有方法。
 
-### Setting the authentication guard
+### 身份验证保护
 
-To set the authentication guard that Filament uses, you can pass in the guard name to the `authGuard()` configuration method:
+要设置 Filament 使用的 Authentication Guard，你可以将 guard 名传入到 `authGuard()` 配置方法中：
 
 ```php
 use Filament\Panel;
@@ -221,9 +221,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Setting the password broker
+### 设置密码 Broker
 
-To set the password broker that Filament uses, you can pass in the broker name to the `authPasswordBroker()` configuration method:
+要设置 Filament 使用的 Password Broker，你可以将 broker 名传入到 `authPasswordBroker()` 配置方法中：
 
 ```php
 use Filament\Panel;

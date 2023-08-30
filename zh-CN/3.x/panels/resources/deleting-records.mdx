@@ -1,24 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/06-deleting-records.md"
-title: Deleting records
+title: 删除记录
 ---
 
-## Handling soft deletes
+## 处理软删除
 
-## Creating a resource with soft delete
+## 创建软删除资源
 
-By default, you will not be able to interact with deleted records in the app. If you'd like to add functionality to restore, force delete and filter trashed records in your resource, use the `--soft-deletes` flag when generating the resource:
+默认情况下，你不能在应用中操作已删除的记录。如果你想在资源中添加恢复数据，强制删除和过滤废弃数据功能，请在生成资源时使用 `--soft-deletes` 标志:
 
 ```bash
 php artisan make:filament-resource Customer --soft-deletes
 ```
 
-## Adding soft deletes to an existing resource
+## 在现有资源中添加软删除功能
 
-Alternatively, you may add soft deleting functionality to an existing resource.
+此外，你也可以在现有的资源中添加软删除功能。
 
-Firstly, you must update the resource:
+首先，更新资源：
 
 ```php
 use Filament\Tables;
@@ -64,7 +64,7 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-Now, update the Edit page class if you have one:
+接下来，如果有编辑页面类，请对其进行更新：
 
 ```php
 use Filament\Actions;
@@ -80,9 +80,9 @@ protected function getHeaderActions(): array
 }
 ```
 
-## Deleting records on the List page
+## 在列表页中删除记录
 
-By default, you can bulk-delete records in your table. You may also wish to delete single records, using a `DeleteAction`:
+默认情况下，你可以在表格中批量删除记录。如果你想删除单条记录，可以使用 `DeleteAction`:
 
 ```php
 use Filament\Tables;
@@ -101,16 +101,16 @@ public static function table(Table $table): Table
 }
 ```
 
-## Authorization
+## 授权
 
-For authorization, Filament will observe any [model policies](https://laravel.com/docs/authorization#creating-policies) that are registered in your app.
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
 
-Users may delete records if the `delete()` method of the model policy returns `true`.
+如果模型策略的 `delete()` 方法中返回的是 `true`，用户可以访问删除记录。 
 
-They also have the ability to bulk-delete records if the `deleteAny()` method of the policy returns `true`. Filament uses the `deleteAny()` method because iterating through multiple records and checking the `delete()` policy is not very performant.
+同时如果模型策略的 `deleteAny()` 方法中返回的是 `true`，用户可以批量删除记录。Filament 之所以使用 `deleteAny()` 方法时因为多次迭代检查 `delete()` 方法性能不高。
 
-### Authorizing soft deletes
+### 授权软删除
 
-The `forceDelete()` policy method is used to prevent a single soft-deleted record from being force-deleted. `forceDeleteAny()` is used to prevent records from being bulk force-deleted. Filament uses the `forceDeleteAny()` method because iterating through multiple records and checking the `forceDelete()` policy is not very performant.
+`forceDelete()` 策略方法用于防止单条软删除记录被强制删除。`forceDeleteAny()` 用于防止记录被批量强制删除。
 
-The `restore()` policy method is used to prevent a single soft-deleted record from being restored. `restoreAny()` is used to prevent records from being bulk restored. Filament uses the `restoreAny()` method because iterating through multiple records and checking the `restore()` policy is not very performant.
+`restore()` 方法用于防止恢复软删除数据。`restoreAny()` 用于防止数据被批量恢复。

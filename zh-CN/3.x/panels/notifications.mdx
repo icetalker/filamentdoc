@@ -1,14 +1,14 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/07-notifications.md"
-title: Notifications
+title: 通知
 ---
 
-## Overview
+## 概述
 
-The Panel Builder uses the [Notifications](../notifications/sending-notifications) package to send messages to users. Please read the [documentation](../notifications/sending-notifications) to discover how to send notifications easily.
+面板构造器使用 [Notiications](../notifications/sending-notifications) 包，将消息发送给用户。请阅读[文档](../notifications/sending-notification)，查看如何发送通知。
 
-If you'd like to receive [database notifications](../notifications/database-notifications), you can enable them in the [configuration](configuration):
+如果你想要接收[数据库通知](../notifications/database-notifications)，你可以在[配置](configuration)中启用它：
 
 ```php
 use Filament\Panel;
@@ -21,7 +21,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-You may also control database notification [polling](../notifications/database-notifications#polling-for-new-database-notifications):
+你也可以控制数据库通知[轮询](../notifications/database-notifications#新数据库通知轮询):
 
 ```php
 use Filament\Panel;

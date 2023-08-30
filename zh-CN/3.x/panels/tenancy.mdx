@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/10-tenancy.md"
-title: Multi-tenancy
+title: 多租户(Multi-tenancy)
 ---
 
-## Overview
+## 概述
 
-Multi-tenancy is a concept where a single instance of an application serves multiple customers. Each customer has their own data and access rules that prevent them from viewing or modifying each other's data. This is a common pattern in SaaS applications. Users often belong to groups of users (often called teams or organizations). Records are owned by the group, and users can be members of multiple groups. This is suitable for applications where users need to collaborate on data.
+多租户(Multi-tenancy)是一个应用程序的单个实例为多个客户提供服务的概念。每个客户都有自己的数据和访问规则，这些规则禁止他们查看或修改彼此的数据。这是 SaaS 应用程序中的常见模式。用户通常属于用户组(通常称为团队或组织)。记录归群组所有，用户可以是多个群组的成员。这适用于用户需要在数据上进行协作的应用程序。
 
-Multi-tenancy is a very sensitive topic. It's important to understand the security implications of multi-tenancy and how to properly implement it. If implemented partially or incorrectly, data belonging to one tenant may be exposed to another tenant. Filament provides a set of tools to help you implement multi-tenancy in your application, but it is up to you to understand how to use them. Filament does not provide any guarantees about the security of your application. It is your responsibility to ensure that your application is secure. Please see the [security](#tenancy-security) section for more information.
+多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
 
-## Setting up tenancy
+## 设置租户
 
-To set up tenancy, you'll need to specify the "tenant" (like team or organization) model in the [configuration](configuration):
+要设置租户，你需要在[配置](configuration)中指定"租户"(比如-团队team或组织organization)模型:
 
 ```php
 use App\Models\Team;
@@ -26,7 +26,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-You'll also need to tell Filament which tenants a user belongs to. You can do this by implementing the `HasTenants` interface on the `App\Models\User` model:
+你同时需要告诉 Filament 用户属于哪个租户。你可以在 `App\Models\User` 模型上实现 `HasTenants`：
 
 ```php
 <?php
@@ -36,7 +36,6 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
@@ -54,27 +53,20 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->belongsToMany(Team::class);
     }
-
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->teams->contains($tenant);
-    }
 }
 ```
 
-In this example, users belong to many teams, so there is a `teams()` relationship. The `getTenants()` method returns the teams that the user belongs to. Filament uses this to list the tenants that the user has access to.
+上例中，用户属于多个团队，因此它有一个 `teams()` 关联。`getTenants()` 方法返回用户所属的团队。Filament 使用它来罗列出用户有权访问的租户。
 
-For security, you also need to implement the `canAccessTenant()` method of the `HasTenants` interface to prevent users from accessing the data of other tenants by guessing their tenant ID and putting it into the URL.
+你可能希望用户可以[注册新团队](#添加租户注册页面).
 
-You'll also want users to be able to [register new teams](#adding-a-tenant-registration-page).
+## 添加租户注册页面
 
-## Adding a tenant registration page
+注册页面将允许用户创建新租户
 
-A registration page will allow users to create a new tenant.
+登录后访问您的应用时，如果用户还没有租户，他们将被重定向到此页面。
 
-When visiting your app after logging in, users will be redirected to this page if they don't already have a tenant.
-
-To set up a registration page, you'll need to create a new page class that extends `Filament\Pages\Tenancy\RegisterTenant`. This is a full-page Livewire component. You can put this anywhere you want, such as `app/Filament/Pages/Tenancy/RegisterTeam.php`:
+要设置注册页面，您需要创建一个继承 `Filament\Pages\Tenancy\RegisterTenant` 的新页面类。这是一个全页 Livewire 组件。你可以把它放在任何你想要的地方，比如 `app/Fament/Pages/Tenance/RegisterTeam.php`：
 
 ```php
 namespace App\Filament\Pages\Tenancy;
@@ -111,9 +103,9 @@ class RegisterTeam extends RegisterTenant
 }
 ```
 
-You may add any [form components](../forms/getting-started) to the `form()` method, and create the team inside the `handleRegistration()` method.
+你可以将任何[表单组件](../forms/getting-started)添加到 `form()` 方法中，并在 `handleRegistration()` 方法内创建团队。
 
-Now, we need to tell Filament to use this page. We can do this in the [configuration](configuration):
+现在，我们需要告诉 Filament 启用这个页面。我们可以在[配置](configuration)中实现：
 
 ```php
 use App\Filament\Pages\Tenancy\RegisterTeam;
@@ -127,15 +119,15 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the tenant registration page
+### 自定义租户注册页面
 
-You can override any method you want on the base registration page class to make it act as you want. Even the `$view` property can be overridden to use a custom view of your choice.
+您可以覆盖注册页基类上所需的任何方法，使其按您的要求运行。甚至 `$view` 属性也可以被重写以使用您选择的自定义视图。
 
-## Adding a tenant profile page
+## 添加租户简介页面
 
-A profile page will allow users to edit information about the tenant.
+简介也将允许用户编辑租户信息。
 
-To set up a profile page, you'll need to create a new page class that extends `Filament\Pages\Tenancy\EditTenantProfile`. This is a full-page Livewire component. You can put this anywhere you want, such as `app/Filament/Pages/Tenancy/EditTeamProfile.php`:
+要设置简介页，你需要创建一个新的页面类，使之继承 `Filament\Pages\Tenancy\EditTenantProfile`。这是一个全页 Livewire 组件。你可以将其放在任何希望的位置，比如 `app/Filament/Pages/Tenancy/EditTeamProfile.php`：
 
 ```php
 namespace App\Filament\Pages\Tenancy;
@@ -163,9 +155,9 @@ class EditTeamProfile extends EditTenantProfile
 }
 ```
 
-You may add any [form components](../forms/getting-started) to the `form()` method. They will get saved directly to the tenant model.
+你可以添加任何[表单组件](../forms/getting-started)到 `form()` 方法中。它们将直接保存到租户模型中。
 
-Now, we need to tell Filament to use this page. We can do this in the [configuration](configuration):
+现在，我们需要告诉 Filament 去使用该页面。我们可以在[配置](configuration)实现该功能：
 
 ```php
 use App\Filament\Pages\Tenancy\EditTeamProfile;
@@ -179,13 +171,13 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the tenant profile page
+### 自定义租户简介页
 
-You can override any method you want on the base profile page class to make it act as you want. Even the `$view` property can be overridden to use a custom view of your choice.
+您可以重写覆盖简介页基类上所需的任何方法，使其按您的要求运行。甚至 `$view` 属性也可以被重写以使用您选择的自定义视图。
 
-## Accessing the current tenant
+## 访问当前租户
 
-Anywhere in the app, you can access the tenant model for the current request using `Filament::getTenant()`:
+在应用的任何地方，你都可以使用 `Filament::getTenant()` 方法访问当前请求的租户模型：
 
 ```php
 $tenant = Filament::getTenant();
@@ -193,19 +185,19 @@ $tenant = Filament::getTenant();
 
 ## Billing
 
-### Using Laravel Spark
+### 使用 Laravel Spark
 
-Filament provides a billing integration with [Laravel Spark](https://spark.laravel.com). Your users can start subscriptions and manage their billing information.
+Filament 提供 [Laravel Spark](https://spark.laravel.com) 的账单集成。你的用户可以开始定义并管理它们的账单信息。
 
-To install the integration, first [install Spark](https://spark.laravel.com/docs/2.x/installation.html) and configure it for your tenant model.
+要安装该集成，首先[安装 Spark](https://spark.laravel.com/docs/2.x/installation.html) 并为你的租户模型配置它。
 
-Now, you can install the Filament billing provider for Spark using Composer:
+现在，你可以使用 Composer 安装 Filament 的 spark billing provider:
 
 ```bash
 composer require filament/spark-billing-provider
 ```
 
-In the [configuration](configuration), set Spark as the `tenantBillingProvider()`:
+在[配置](configuration)，设置 Spark 为 `tenantBillingProvider()`：
 
 ```php
 use Filament\Billing\Providers\SparkBillingProvider;
@@ -219,11 +211,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Now, you're all good to go! Users can manage their billing by clicking a link in the tenant menu.
+现在，用户可以通过单击租户菜单中的链接来管理他们的账单。
 
-### Requiring a subscription
+### 要求订阅
 
-To require a subscription to use any part of the app, you can use the `requiresTenantSubscription()` configuration method:
+要求订阅，才能使用应用的任何部分，你可以使用 `requiresTenantSubscription()` 的配置方法：
 
 ```php
 use Filament\Panel;
@@ -236,11 +228,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Now, users will be redirected to the billing page if they don't have an active subscription.
+现在，如果用户没有激活订阅，将会被重定向到账单页面。 
 
-#### Requiring a subscription for specific resources and pages
+#### 要求对特定资源或页面进行订阅
 
-Sometimes, you may wish to only require a subscription for certain [resources](resources/getting-started) and [pages](pages) in your app. You can do this by returning `true` from the `isTenantSubscriptionRequired()` method on the resource or page class:
+有时候，你只希望应用中的特定[资源](resources/getting-started)和[页面](pages)需要订阅。你可以在资源或页面类的 `isTenantSubscriptionRequired()` 方法中返回 `true` 来实现该功能。
 
 ```php
 public static function isTenantSubscriptionRequired(Panel $panel): bool
@@ -249,17 +241,17 @@ public static function isTenantSubscriptionRequired(Panel $panel): bool
 }
 ```
 
-If you're using the `requiresTenantSubscription()` configuration method, then you can return `false` from this method to allow access to the resource or page as an exception.
+你如果使用 `requiresTenantSubscription()` 配置方法，那么你可以从该方法中返回 `false` 以允许作为异常访问资源或者页面。
 
-### Writing a custom billing integration
+### 编写自定义账单集成
 
-Billing integrations are quite simple to write. You just need a class that implements the `Filament\Billing\Contracts\Provider` interface. This interface has two methods.
+账单集成很容易编写。你只需实现 `Filament\Billing\Contracts\Provider` 接口。该接口有两个方法。
 
-`getRouteAction()` is used to get the route action that should be run when the user visits the billing page. This could be a callback function, or the name of a controller, or a Livewire component - anything that works when using `Route::get()` in Laravel normally. For example, you could put in a simple redirect to your own billing page using a callback function.
+`getRouteAction` 用在获取用户访问账单页面时需要运行的路由动作。它可以是回调函数、或者控制器名、或者 Livewire 组件 - 任何当使用 `Route::get()` 时可以正常工作的行为。比如，你可以使用回调函数重定向到账单页面。
 
-`getSubscribedMiddleware()` returns the name of a middleware that should be used to check if the tenant has an active subscription. This middleware should redirect the user to the billing page if they don't have an active subscription.
+`getSubscribedMiddleware()` 返回检测租户是否激活订阅的中间件名。如果用户未激活订阅该中间件应该将用户重定向到账单页面。
 
-Here's an example billing provider that uses a callback function for the route action and a middleware for the subscribed middleware:
+以下是账单提供者，它为路由操作使用回调函数、为订阅中间件使用中间件：
 
 ```php
 use App\Http\Middleware\RedirectIfUserNotSubscribed;
@@ -282,11 +274,11 @@ class ExampleBillingProvider implements Provider
 }
 ```
 
-## Customizing the tenant menu
+## 自定义租户菜单
 
-The tenant-switching menu is featured in the sidebar of the admin layout. It's fully customizable.
+租户切换菜单位于后台布局的侧边栏。它完全是可定制的。
 
-To register new items to the tenant menu, you can use the [configuration](configuration):
+要注册新菜单项到租户菜单中，你可以使用[配置](configuration):
 
 ```php
 use Filament\Navigation\MenuItem;
@@ -306,9 +298,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the registration link
+### 自定义注册链接
 
-To customize the registration link on the tenant menu, register a new item with the `register` array key:
+要自定义租户菜单上的注册链接，请使用 `register` 数组键注册一个新的菜单项：
 
 ```php
 use Filament\Navigation\MenuItem;
@@ -325,9 +317,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the billing link
+### 自定义账单链接
 
-To customize the billing link on the tenant menu, register a new item with the `billing` array key:
+要自定义租户菜单上的账单链接，请先使用 `billing` 数组键注册一个新菜单项：
 
 ```php
 use Filament\Navigation\MenuItem;
@@ -344,23 +336,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Conditionally hiding tenant menu items
+## 设置头像
 
-You can also conditionally hide a tenant menu item by using the `visible()` or `hidden()` methods, passing in a condition to check. Passing a function will defer condition evaluation until the menu is actually being rendered:
-
-```php
-use Filament\Navigation\MenuItem;
-
-MenuItem::make()
-    ->label('Settings')
-    ->visible(fn (): bool => auth()->user()->can('manage-team'))
-    // or
-    ->hidden(fn (): bool => ! auth()->user()->can('manage-team'))
-```
-
-## Setting up avatars
-
-Out of the box, Filament uses [ui-avatars.com](https://ui-avatars.com) to generate avatars based on a user's name. However, if you user model has an `avatar_url` attribute, that will be used instead. To customize how Filament gets a user's avatar URL, you can implement the `HasAvatar` contract:
+开箱即用，Filament 使用 [ui-avatars.com](https://ui-avatars.com) 去生成基于用户名的头像。不过，如果你的用户模型中有一个 `avatar_url` 属性，则会使用该属性。要自定义 Filament 如何获取用户头像 URL，你可以实现 `HasAvatar` 契约：
 
 ```php
 <?php
@@ -382,17 +360,17 @@ class Team extends Model implements HasAvatar
 }
 ```
 
-The `getFilamentAvatarUrl()` method is used to retrieve the avatar of the current user. If `null` is returned from this method, Filament will fall back to [ui-avatars.com](https://ui-avatars.com).
+这个 `getFilamentAvatarUrl()` 方法用于检索当前用户的头像。如果该方法返回的是 `null`，那么 Filament 将会回退到 [ui-avatars.com](https://ui-avatars.com)。
 
-You can easily swap out [ui-avatars.com](https://ui-avatars.com) for a different service, by creating a new avatar provider. [You can learn how to do this here.](users#using-a-different-avatar-provider)
+你可以创建新的头像 Provider，将 [ui-avatars.com](https://ui-avatars.com) 替换成其他服务。[点击此处学习如何替换头像服务提供者](users#using-a-different-avatar-provider)
 
-## Configuring the tenant relationships
+## 配置租户关联
 
-When creating and listing records associated with a Tenant, Filament needs access to two Eloquent relationships for each resource - an "ownership" relationship that is defined on the resource model class, and a relationship on the tenant model class. By default, Filament will attempt to guess the names of these relationships based on standard Laravel conventions. For example, if the tenant model is `App\Models\Team`, it will look for a `team()` relationship on the resource model class. And if the resource model class is `App\Models\Post`, it will look for a `posts()` relationship on the tenant model class.
+当创建和展示带有租户的记录时，Filament 需要访问每个资源的两个 Eloquent 关联 - 一个是 "ownship" 关联，它在资源的模型类中定义，以及一个租户模型类上的关联。默认情况下，Filament 会按照标准的 Laravel 规范去尝试猜测这些关联的名称。比如，如果租户模型是 `App\Models\Team`，那它会在资源模型类中寻找 `team()` 关联。如果资源模型是 `App\Models\Post`，它会在租户模型类中查找 `posts()` 关联。
 
-### Customizing the ownership relationship name
+### 自定义 ownership 关联名
 
-You can customize the name of the ownership relationship used across all resources at once, using the `ownershipRelationship` argument on the `tenant()` configuration method. In this example, resource model classes have an `owner` relationship defined:
+你可以在 `tenant()` 配置方法中使用 `ownershipRelationship` 参数，自定义跨所有资源使用的 ownership 的关联名。本例中，资源模型类定义了一个 `owner` 关联：
 
 ```php
 use Filament\Panel;
@@ -405,7 +383,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Alternatively, you can set the `$tenantOwnershipRelationshipName` static property on the resource class, which can then be used to customize the ownership relationship name that is just used for that resource. In this example, the `Post` model class has an `owner` relationship defined:
+此外，你可以在资源类中设置 `$tenantOwnershipRelationshipName` 静态属性，该属性用于自定义该资源的 ownership 关联名。下例中， `Post` 模型类定义了 `owner` 关联：
 
 ```php
 use Filament\Resources\Resource;
@@ -418,24 +396,24 @@ class PostResource extends Resource
 }
 ```
 
-### Customizing the resource relationship name
+### 自定义资源关联名
 
-You can set the `$tenantRelationshipName` static property on the resource class, which can then be used to customize the relationship name that is used to fetch that resource. In this example, the tenant model class has an `blogPosts` relationship defined:
+你可以在资源类中设置 `$tenantRelationshipName` 自定义用于获取该资源的关联名。本例中，租户模型类中定义了一个 `blogPosts` 关联： 
 
 ```php
 use Filament\Resources\Resource;
 
 class PostResource extends Resource
 {
-    protected static ?string $tenantRelationshipName = 'blogPosts';
+    protected static ?string $tenantOwnershipRelationshipName = 'blogPosts';
 
     // ...
 }
 ```
 
-## Configuring the slug attribute
+## 配置 slug 属性
 
-When using a tenant like a team, you might want to add a slug field to the URL rather than the team's ID. You can do that with the `slugAttribute` argument on the `tenant()` configuration method:
+使用像团队这样的租户时，你可能想添加 slug 而不是团队 ID 作为 URL。你可以在 `tenant()` 配置方法中的 `slugAttribute` 参数实现该目的：
 
 ```php
 use Filament\Panel;
@@ -448,9 +426,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Configuring the name attribute
+## 配置 name 属性
 
-By default, Filament will use Filament\Resources\Pages\CreateRecord;use the `name` attribute of the tenant to display its name in the app. To change this, you can implement the `HasName` contract:
+默认情况下，Filament 会使用租户的 `name` 属性在应用中展示其名称。要对此进行修改，可以实现 `HasName` 契约：
 
 ```php
 <?php
@@ -471,11 +449,11 @@ class Team extends Model implements HasName
 }
 ```
 
-The `getFilamentName()` method is used to retrieve the name of the current user.
+`getFilamentName()` 方法用于检索当前用户的名称。
 
-## Setting the current tenant label
+## 设置当前租户标签
 
-Inside the tenant switcher on the sidebar, you may wish to add a small label like "Active team" above the name of the current team. You can do this by implementing the `HasCurrentTenantLabel` method on the tenant model:
+在侧边栏的租户切换器内，你可能想在当前团队名上添加诸如 "Active team" 这样的小标签。你可以在租户模型上实现 `HasCurrentTenantLabel` 契约来实现该功能：
 
 ```php
 <?php
@@ -496,13 +474,13 @@ class Team extends Model implements HasCurrentTenantLabel
 }
 ```
 
-## Setting the default tenant
+## 设置默认租户
 
-When signing in, Filament will redirect the user to the first tenant returned from the `getTenants()` method.
+用户登录后，Filament 会将用户重定向到 `getTenant()` 方法返回的第一个租户。
 
-Sometimes, you might wish to change this. For example, you might store which team was last active, and redirect the user to that team instead.
+有时，你可能希望对此进行修改。比如，你可能会保持哪个团队是最后活跃的，并将用户重定向到那个团队。
 
-To customize this, you can implement the `HasDefaultTenant` contract on the user:
+要自定义该内容，你可以在用户上实现 `HasDefaultTenant` 契约：
 
 ```php
 <?php
@@ -531,9 +509,9 @@ class User extends Model implements FilamentUser, HasDefaultTenant, HasTenants
 }
 ```
 
-## Applying middleware to tenant-aware routes
+## 将中间件应用到 tenant-aware 路由
 
-You can apply extra middleware to all tenant-aware routes by passing an array of middleware classes to the `tenantMiddleware()` method in the [panel configuration file](configuration):
+你可以在[面板配置文件](configuration)中传入一个中间件类数组到 `tenantMiddleware()` 方法，将其他的中间件应用到所有 tenant-aware 路由：
 
 ```php
 use Filament\Panel;
@@ -548,7 +526,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-By default, middleware will be run when the page is first loaded, but not on subsequent Livewire AJAX requests. If you want to run middleware on every request, you can make it persistent by passing `true` as the second argument to the `tenantMiddleware()` method:
+默认情况下， 中间件会在页面首次加载时运行，不过不会在随后的 Livewire AJAX 请求中运行。如果你想在每个请求时都运行中间件，你可以传入 `true` 作为 `tenantMiddleware()` 方法的第二个参数，使之持久化：
 
 ```php
 use Filament\Panel;
@@ -563,40 +541,21 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Adding a tenant route prefix
+## 租户安全
 
-By default the URL structure will put the tenant ID or slug immediately after the panel path. If you wish to prefix it with another URL segment, use the `tenantRoutePrefix()` method:
+理解多租户的安全含义以及如何实现合理地实现是很重要的。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。
 
-```php
-use Filament\Panel;
+以下是 Filament 提供的帮你在应用中实现多租户的一系列特性：
 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->path('admin')
-        ->tenant(Team::class)
-        ->tenantRoutePrefix('team');
-}
-```
+- 自动将资源查询范围确定为当前租户。用于获取资源记录的基本 Eloquent 查询会自动将查询范围确定为当前租户。此查询用于渲染资源的列表表格，也用于在编辑或查看记录时解析当前 URL 中的记录。这意味着，如果用户试图查看不属于当前租户的记录，他们将收到 404 错误。
 
-Before, the URL structure was `/admin/1` for tenant 1. Now, it is `/admin/team/1`.
+- 将新资源记录自动关联到当前租户。
 
-## Tenancy security
+接下来是 Filament 当前不提供的一些特性：
 
-It's important to understand the security implications of multi-tenancy and how to properly implement it. If implemented partially or incorrectly, data belonging to one tenant may be exposed to another tenant. Filament provides a set of tools to help you implement multi-tenancy in your application, but it is up to you to understand how to use them. Filament does not provide any guarantees about the security of your application. It is your responsibility to ensure that your application is secure.
+- 将关系管理器记录的查询范围限定到当前租户。在使用关系管理器时，在绝大多数情况下，查询的范围不需要限定为当前租户，因为它已经在父记录中的限定了查询范围，而父记录本身的查询范围是当前租户。例如，如果 `team` 租户模型有一个 `Author` 资源，并且该资源设置了 `posts` 关联和关系管理器，并且帖子(Post)只属于一个作者(Author)，则无需确定查询范围。这是因为用户无论如何都只能看到属于当前团队(team)的作者(Author)，因此只能看到属于这些作者的帖子。如有需要，你可以[设置 Eloquent 查询范围](resources/relation-managers#customizing-the-relation-manager-eloquent-query)。
 
-Below is a list of features that Filament provides to help you implement multi-tenancy in your application:
-
-- Automatic scoping of resources to the current tenant. The base Eloquent query that is used to fetch records for a resource is automatically scoped to the current tenant. This query is used to render the resource's list table, and is also used to resolve records from the current URL when editing or viewing a record. This means that if a user attempts to view a record that does not belong to the current tenant, they will receive a 404 error.
-
-- Automatic association of new resource records to the current tenant.
-
-And here are the things that Filament does not currently provide:
-
-- Scoping of relation manager records to the current tenant. When using the relation manager, in the vast majority of cases, the query will not need to be scoped to the current tenant, since it is already scoped to the parent record, which is itself scoped to the current tenant. For example, if a `Team` tenant model had an `Author` resource, and that resource had a `posts` relationship and relation manager set up, and posts only belong to one author, there is no need to scope the query. This is because the user will only be able to see authors that belong to the current team anyway, and thus will only be able to see posts that belong to those authors. You can [scope the Eloquent query](resources/relation-managers#customizing-the-relation-manager-eloquent-query) if you wish.
-
-- Form component and filter scoping. When using the `Select`, `CheckboxList` or `Repeater` form components, the `SelectFilter`, or any other similar Filament component which is able to automatically fetch "options" or other data from the database (usually using a `relationship()` method), this data is not scoped. The main reason for this is that these features often don't belong to the Filament Panel Builder package, and have no knowledge that they are being used within that context, and that a tenant even exists. And even if they did have access to the tenant, there is nowhere for the tenant relationship configuration to live. To scope these components, you need to pass in a query function that scopes the query to the current tenant. For example, if you were using the `Select` form component to select an `author` from a relationship, you could do this:
+- 表单组件及过滤器范围。当使用 `Select`、`CheckboxList` 或者 `Repeater` 表单组件，亦或者 `SelectFilter` 或者其他类似的能够自动获取"选项"或数据库数据(通常使用 `relationship()` 方法获取)的 Filament 组件时，这个数据没有限定查询范围。主要原因是，这些功能通常不属于 Filament 面板构建包，它无从得知在那个上下文中的使用及租户的存在。即便它能访问租户，也无从配置租户关联。要限定这些组件的查询范围，你需要传递一个查询范围限定为当前用户的查询函数。比如，如果你使用 `Select` 表单组件从关联中选择 `author`，你可以这样做：
 
 ```php
 use Filament\Facades\Filament;
@@ -611,15 +570,15 @@ Select::make('author_id')
     );
 ```
 
-### Using tenant-aware middleware to apply global scopes
+### 使用 tenant-aware 中间件设置全局查询范围
 
-It might be useful to apply global scopes to your Eloquent models while they are being used in your panel. This would allow you to forget about scoping your queries to the current tenant, and instead have the scoping applied automatically. To do this, you can create a new middleware class like `ApplyTenantScopes`:
+在面板中使用时，设置 Eloquent 模型的全局查询范围可能有用。这能让你忘掉将查询范围为当前租户，而让查询范围自动生效。要实现该功能，你可以创建一个新的中间件类，如 `ApplyTenantScopes`：
 
 ```bash
 php artisan make:middleware ApplyTenantScopes
 ```
 
-Inside the `handle()` method, you can apply any global scopes that you wish:
+在 `handle()` 方法内，你可以设置任何你希望的全局查询范围：
 
 ```php
 use App\Models\Author;
@@ -641,7 +600,7 @@ class ApplyTenantScopes
 }
 ```
 
-You can now [register this middleware](#applying-middleware-to-tenant-aware-routes) for all tenant-aware routes, and ensure that it is used across all Livewire AJAX requests by making it persistent:
+现在，你可以为所有 tenant-aware 路由[注册该中间件](#将中间件应用到-tenant-aware-路由)，并确保在所有 Livewire AJAX 请求时都使用该中间件，使之持久化：
 
 ```php
 use Filament\Panel;

@@ -1,22 +1,22 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/04-broadcast-notifications.md"
-title: Broadcast notifications
+title: 广播通知
 ---
 
-## Overview
+## 概述
 
-> To start, make sure the package is [installed](installation) - `@livewire('notifications')` should be in your Blade layout somewhere.
+> 开始前，请先确保已经[安装](installation)了该包，且 `@livewire('notifications')` 应该嵌入到你的 Blade 模板中。
 
-By default, Filament will send flash notifications via the Laravel session. However, you may wish that your notifications are "broadcast" to a user in real-time, instead. This could be used to send a temporary success notification from a queued job after it has finished processing.
+默认情况下，Filament 通过 Laravel session 发送闪存通知。假如你希望通知实时“广播”给用户，可以用于在队列任务完成处理后从队列任务中发送临时成功消息。
 
-We have a native integration with [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation). Make sure Echo is installed, as well as a [server-side websockets integration](https://laravel.com/docs/broadcasting#server-side-installation) like Pusher.
+可使用 [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation) 进行本地集成。确保已经安装了 Echo， 以及[服务端 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
 
-## Sending broadcast notifications
+## 发送广播通知
 
-There are several ways to send broadcast notifications, depending on which one suits you best.
+有多种方法可用于发送广播通知，取决于哪一种更适合你。
 
-You may use our fluent API:
+你可以s使用我们的 fluent API:
 
 ```php
 use Filament\Notifications\Notification;
@@ -28,7 +28,7 @@ Notification::make()
     ->broadcast($recipient);
 ```
 
-Or, use the `notify()` method:
+或者使用 `notify()` 方法：
 
 ```php
 use Filament\Notifications\Notification;
@@ -42,7 +42,7 @@ $recipient->notify(
 )
 ```
 
-Alternatively, use a traditional [Laravel notification class](https://laravel.com/docs/notifications#generating-notifications) by returning the notification from the `toBroadcast()` method:
+此外，也可以使用传统 [Laravel 通知类](https://laravel.com/docs/notifications#generating-notifications)返回通知给 `toBroadcast()` 方法：
 
 ```php
 use App\Models\User;

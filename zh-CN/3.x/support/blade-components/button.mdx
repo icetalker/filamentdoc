@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/09-blade-components/02-button.md"
-title: Button Blade component
+title: Button Blade 组件
 ---
 
-## Overview
+## 概述
 
-The button component is used to render a clickable button that can perform an action:
+按钮组件用于渲染可以执行 Action 的可点击按钮：
 
 ```blade
 <x-filament::button wire:click="openNewUserModal">
@@ -16,7 +16,7 @@ The button component is used to render a clickable button that can perform an ac
 
 ## Using a button as an anchor link
 
-By default, a button's underlying HTML tag is `<button>`. You can change it to be an `<a>` tag by using the `tag` attribute:
+默认情况下，按钮所依赖的 HTML 标签是 `<button>`。你可以使用 `tag` 属性将其修改为 `<a>` 标签：
 
 ```blade
 <x-filament::button
@@ -27,9 +27,9 @@ By default, a button's underlying HTML tag is `<button>`. You can change it to b
 </x-filament::button>
 ```
 
-## Setting the size of a button
+## 设置按钮大小
 
-By default, the size of a button is "medium". You can make it "extra small", "small", "large" or "extra large" by using the `size` attribute:
+默认情况下， 按钮大小是 "medium"。你可以使用 `size` 属性修改其大小：
 
 ```blade
 <x-filament::button size="xs">
@@ -49,9 +49,9 @@ By default, the size of a button is "medium". You can make it "extra small", "sm
 </x-filament::button>
 ```
 
-## Changing the color of a button
+## 修改按钮颜色
 
-By default, the color of a button is "primary". You can change it to be `danger`, `gray`, `info`, `success` or `warning` by using the `color` attribute:
+默认情况下，按钮颜色是 "primary"。你可以使用 `color` 属性将其修改为 `danger`、`gray`、`info`、`success` 或 `warning`：
 
 ```blade
 <x-filament::button color="danger">
@@ -75,9 +75,9 @@ By default, the color of a button is "primary". You can change it to be `danger`
 </x-filament::button>
 ```
 
-## Adding an icon to a button
+## 按钮中添加图标
 
-You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a button by using the `icon` attribute:
+你可以使用 `icon` 属性将[图标](https://blade-ui-kit.com/blade-icons?set=1#search)添加到按钮中：
 
 ```blade
 <x-filament::button icon="heroicon-m-sparkles">
@@ -85,7 +85,7 @@ You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a bu
 </x-filament::button>
 ```
 
-You can also change the icon's position to be after the text instead of before it, using the `icon-position` attribute:
+你也可以修改使用 `icon-position` 属性修改图标位置，将其放到文本后面，而非前面。
 
 ```blade
 <x-filament::button
@@ -96,9 +96,9 @@ You can also change the icon's position to be after the text instead of before i
 </x-filament::button>
 ```
 
-## Making a button outlined
+## 按钮轮廓
 
-You can make a button use an "outlined" design using the `outlined` attribute:
+你可以使用 `outlined` 属性使按钮应用 "outlined" 轮廓设计：
 
 ```blade
 <x-filament::button outlined>
@@ -106,9 +106,9 @@ You can make a button use an "outlined" design using the `outlined` attribute:
 </x-filament::button>
 ```
 
-## Adding a tooltip to a button
+## 按钮中添加 tooltip 
 
-You can add a tooltip to a button by using the `tooltip` attribute:
+你可以使用 `tooltip` 属性，在按钮中添加 tooltip：
 
 ```blade
 <x-filament::button tooltip="Register a user">
@@ -116,9 +116,9 @@ You can add a tooltip to a button by using the `tooltip` attribute:
 </x-filament::button>
 ```
 
-## Adding a badge to a button
+## 按钮中添加徽章
 
-You can render a [badge](badge) on top of a button by using the `badge` slot:
+使用 `badge` 插槽，你可以在按钮顶部添加[徽章](badge)：
 
 ```blade
 <x-filament::button>
@@ -130,7 +130,7 @@ You can render a [badge](badge) on top of a button by using the `badge` slot:
 </x-filament::button>
 ```
 
-You can [change the color](badge#changing-the-color-of-the-badge) of the badge using the `badge-color` attribute:
+你可以使用 `badge-color` 属性[修改徽章颜色](badge#修改徽章颜色)：
 
 ```blade
 <x-filament::button badge-color="danger">

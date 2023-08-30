@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/09-blade-components/02-badge.md"
-title: Badge Blade component
+title: 徽章组件
 ---
 
-## Overview
+## 概述
 
-The badge component is used to render a small box with some text inside:
+徽章组件用作在文本内部渲染小盒子：
 
 ```blade
 <x-filament::badge>
@@ -14,9 +14,9 @@ The badge component is used to render a small box with some text inside:
 </x-filament::badge>
 ```
 
-## Setting the size of a badge
+## 设置徽章大小
 
-By default, the size of a badge is "medium". You can make it "extra small" or "small" by using the `size` attribute:
+默认情况下，徽章大小为 "medium"。你可以使用 `size` 属性将其设为“超小”或者“小”：
 
 ```blade
 <x-filament::badge size="xs">
@@ -28,9 +28,9 @@ By default, the size of a badge is "medium". You can make it "extra small" or "s
 </x-filament::badge>
 ```
 
-## Changing the color of the badge
+## 改变徽章颜色
 
-By default, the color of a badge is "primary". You can change it to be `danger`, `gray`, `info`, `success` or `warning` by using the `color` attribute:
+默认情况下，徽章颜色为 "primary"。你可以使用 `color` 属性将其修改为 `danger`、`gray`、`info`、`success` 或 `warning`：
 
 ```blade
 <x-filament::badge color="danger">
@@ -54,9 +54,9 @@ By default, the color of a badge is "primary". You can change it to be `danger`,
 </x-filament::badge>
 ```
 
-## Adding an icon to a badge
+## 将图标添加到徽章
 
-You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a badge by using the `icon` attribute:
+你可以使用 `icon` 属性，在徽章中添加[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```blade
 <x-filament::badge icon="heroicon-m-sparkles">
@@ -64,7 +64,7 @@ You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a ba
 </x-filament::badge>
 ```
 
-You can also change the icon's position to be after the text instead of before it, using the `icon-position` attribute:
+你也可以修改使用 `icon-position` 属性修改图标位置，将其放到文本后面，而非前面。
 
 ```blade
 <x-filament::badge

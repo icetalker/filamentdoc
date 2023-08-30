@@ -4,23 +4,23 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/doc
 title: Widgets
 ---
 
-## Overview
+## 概述
 
-Filament allows you to display widgets inside pages, below the header and above the footer.
+Filament 允许你在页面内展示 Widget，置于页头(header)之下或者页脚(footer)之上。 
 
-You can use an existing [dashboard widget](../dashboard), or create one specifically for the resource.
+你可以使用现有的[仪表盘 Widget](../dashboard)，或为资源创建一个专门的插件。
 
-## Creating a resource widget
+## 创建资源 Widget
 
-To get started building a resource widget:
+开始创建一个资源 Widget：
 
 ```bash
 php artisan make:filament-widget CustomerOverview --resource=CustomerResource
 ```
 
-This command will create two files - a widget class in the `app/Filament/Resources/CustomerResource/Widgets` directory, and a view in the `resources/views/filament/resources/customer-resource/widgets` directory.
+此命令会创建两个文件 - 在 `app/Filament/Resources/CustomerResource/Widgets` 目录下创建一个 Widget 类，在 `resources/views/filament/resources/customer-resource/widgets` 目录下生成一个视图文件。
 
-You must register the new widget in your resource's `getWidgets()` method:
+你必须在资源的 `getWidgets()` 方法下注册新 Widget： 
 
 ```php
 public static function getWidgets(): array
@@ -31,11 +31,11 @@ public static function getWidgets(): array
 }
 ```
 
-If you'd like to learn how to build and customize widgets, check out the [Dashboard](../dashboard) documentation section.
+如果你想了解如何创建及自定义 Widget，请查看[仪表盘](../dashboard)文档部分。
 
-## Displaying a widget on a resource page
+## 在资源页中显示 Widget
 
-To display a widget on a resource page, use the `getHeaderWidgets()` or `getFooterWidgets()` methods for that page:
+要在资源页面中展示 Widget，在相应页面中使用 `getHeaderWidgets()` 或者 `getFooterWidgets()` 方法:
 
 ```php
 <?php
@@ -57,13 +57,13 @@ class ListCustomers extends ListRecords
 }
 ```
 
-`getHeaderWidgets()` returns an array of widgets to display above the page content, whereas `getFooterWidgets()` are displayed below.
+`getHeaderWidgets()` 返回要在页面内容上面显示的 Widget 数组，而 `getFooterWidgets()` 则显示在内容之下。
 
-If you'd like to customize the number of grid columns used to arrange widgets, check out the [Pages documentation](../pages#customizing-the-widgets-grid).
+如果你想自定义用于 Widget 的网格列宽，请查阅[页面文档](../pages#自定义-widget-网格)。
 
-## Accessing the current record in the widget
+## 访问 Widget 中的当前记录
 
-If you're using a widget on an [Edit](editing-records) or [View](viewing-records) page, you may access the current record by defining a `$record` property on the widget class:
+如果你在[编辑页](editing-records)或[查看页](viewing-records)中使用 Widget，你可以通过在 Widget 类中定义 `$record` 属性来获取当前的记录：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -71,9 +71,9 @@ use Illuminate\Database\Eloquent\Model;
 public ?Model $record = null;
 ```
 
-## Accessing page table data in the widget
+## 在 Widget 中访问页面表格数据
 
-If you're using a widget on a [List](listing-records) page, you may access the table data by first adding the `ExposesTableToWidgets` trait to the page class:
+如果你在[列表页](listing-records)中使用 Widget，你可以先将 `ExposesTableToWidgets` trait 添加到页面类中访问表格数据：
 
 ```php
 use Filament\Pages\Concerns\ExposesTableToWidgets;
@@ -87,7 +87,7 @@ class ListProducts extends ListRecords
 }
 ```
 
-Now, on the widget class, you must add the `InteractsWithPageTable` trait, and return the name of the page class from the `getTablePage()` method:
+现在，在 Widget 类中，你必须添加 `InteractsWithPageTable` trait，并在 `getTablePage()` 方法中返回页面类的名称：
 
 ```php
 use App\Filament\Resources\ProductResource\Pages\ListProducts;
@@ -107,7 +107,7 @@ class ProductStats extends Widget
 }
 ```
 
-In the widget class, you can now access the Eloquent query builder instance for the table data using the `$this->getPageTableQuery()` method:
+在这个 Widget 中，现在你可以使用 `$this->getPageTableQuery()` 方法访问 Eloquent 查询构造器实例，获取表格数据：
 
 ```php
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -115,7 +115,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 Stat::make('Total Products', $this->getPageTableQuery()->count()),
 ```
 
-Alternatively, you can access a collection of the records on the current page using the `$this->getPageTableRecords()` method:
+此外，你可以使用 `$this->getPageTableRecords()` 方法访问当前页面的记录集合：
 
 ```php
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -123,9 +123,9 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 Stat::make('Total Products', $this->getPageTableRecords()->count()),
 ```
 
-## Passing properties to widgets on resource pages
+## 在资源页中传递属性到 Widget
 
-When registering a widget on a resource page, you can use the `make()` method to pass an array of [Livewire properties](https://livewire.laravel.com/docs/properties) to it:
+当在资源页上注册 Widget 时，你可以使用 `make()` 方法，传入一个 [Livewire 属性](https://livewire.laravel.com/docs/properties)数组到其中：
 
 ```php
 protected function getHeaderWidgets(): array
@@ -138,7 +138,7 @@ protected function getHeaderWidgets(): array
 }
 ```
 
-This array of properties gets mapped to [public Livewire properties](https://livewire.laravel.com/docs/properties) on the widget class:
+该属性数组映射到 Widget 类中的[公共 Livewire 属性](https://livewire.laravel.com/docs/properties)：
 
 ```php
 use Filament\Widgets\Widget;
@@ -151,4 +151,4 @@ class CustomerOverview extends Widget
 }
 ```
 
-Now, you can access the `status` in the widget class using `$this->status`.
+现在，你可以在 Widget 类中使用 `$this->status` 访问该 `status`。

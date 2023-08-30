@@ -1,16 +1,16 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/06-render-hooks.md"
-title: Render hooks
+title: 渲染钩子
 ---
 
-## Overview
+## 概述
 
-Filament allows you to render Blade content at various points in the frameworks views. It's useful for plugins to be able to inject HTML into the framework. Also, since Filament does not recommend publishing the views due to an increased risk of breaking changes, it's also useful for users.
+Filament 允许你在框架视图的多个节点渲染 Blade 模板内容。这使得插件可以注入 HTML 到框架中。同时，由于 Filament 不推荐发布视图因其可能会增加破坏性变更的风险，这也对用户很有用。
 
-## Registering render hooks
+## 注册渲染钩子
 
-To register render hooks, you can call `FilamentView::registerRenderHook()` from a service provider or middleware. The first argument is the name of the render hook, and the second argument is a callback that returns the content to be rendered:
+要注册渲染钩子，你可以在服务提供者或者中间件中调用 `FilamentView::registerRenderHook()`。第一个参数是钩子名称，第二个参数返回要渲染的内容的回调函数：
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -22,7 +22,7 @@ FilamentView::registerRenderHook(
 );
 ```
 
-You could also render view content from a file:
+你也可以在文件中渲染视图内容：
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -34,19 +34,19 @@ FilamentView::registerRenderHook(
 );
 ```
 
-## Available render hooks
+## 可用渲染钩子
 
-### Panel Builder render hooks
+### 面板渲染钩子
 
-- `panels::body.start` - After `<body>`
-- `panels::body.end` - Before `</body>`
-- `panels::content.end` - After page content, inside `<main>`
-- `panels::content.start` - Before page content, inside `<main>`
-- `panels::footer` - Footer of the page
-- `panels::global-search.end` - The end of the [global search](../panels/resources/global-search) container
-- `panels::global-search.start` - The start of the [global search](../panels/resources/global-search) container
-- `panels::head.end` - Before `</head>`
-- `panels::head.start` - After `<head>`
+- `panels::body.start` - `<body>` 之后
+- `panels::body.end` - `</body>` 之前
+- `panels::content.end` - 页面内容之后，在 `<main>` 里面
+- `panels::content.start` - 页面内容之前，在 `<main>` 里
+- `panels::footer` - 页面 footer
+- `panels::global-search.end` - [全局搜索](../panels/resources/global-search) 容器尾部
+- `panels::global-search.start` - [全局搜索](../panels/resources/global-search) 容器开始处
+- `panels::head.end` - `</head>` 之前
+- `panels::head.start` - `<head>` 之后
 - `panels::page.end` - End of the page content container, also [can be scoped](#scoping-render-hooks) to the page or resource class
 - `panels::page.footer-widgets.after` - After the page footer widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
 - `panels::page.footer-widgets.before` - Before the page footer widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
@@ -61,23 +61,23 @@ FilamentView::registerRenderHook(
 - `panels::resource.relation-manager.before` - Before the relation manager table, also [can be scoped](#scoping-render-hooks) to the page or relation manager class
 - `panels::scripts.after` - After scripts are defined
 - `panels::scripts.before` - Before scripts are defined
-- `panels::sidebar.nav.end` - In the [sidebar](../panels/navigation), before `</nav>`
-- `panels::sidebar.nav.start` - In the [sidebar](../panels/navigation), after `<nav>`
+- `panels::sidebar.nav.end` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之前
+- `panels::sidebar.nav.start` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之后
 - `panels::sidebar.footer` - Pinned to the bottom of the sidebar, below the content
 - `panels::styles.after` - After styles are defined
 - `panels::styles.before` - Before styles are defined
-- `panels::tenant-menu.after` - After the [tenant menu](../panels/tenancy#customizing-the-tenant-menu)
-- `panels::tenant-menu.before` - Before the [tenant menu](../panels/tenancy#customizing-the-tenant-menu)
+- `panels::tenant-menu.after` - [租户菜单](../panels/tenancy#自定义租户菜单)之后
+- `panels::tenant-menu.before` - [租户菜单](../panels/tenancy#自定义租户菜单)之前
 - `panels::topbar.end` - End of the topbar container
 - `panels::topbar.start` - Start of the topbar container
-- `panels::user-menu.after` - After the [user menu](../panels/navigation#customizing-the-user-menu)
-- `panels::user-menu.before` - Before the [user menu](../panels/navigation#customizing-the-user-menu)
-- `panels::user-menu.profile.after` - After the profile item in the [user menu](../panels/navigation#customizing-the-user-menu)
-- `panels::user-menu.profile.before` - Before the profile item in the [user menu](../panels/navigation#customizing-the-user-menu)
+- `panels::user-menu.after` - [用户菜单](../panels/navigation#自定义用户菜单)之后
+- `panels::user-menu.before` - [用户菜单](../panels/navigation#自定义用户菜单)之前
+- `panels::user-menu.profile.after` - After the profile item in the [user menu](../panels/navigation#自定义用户菜单)
+- `panels::user-menu.profile.before` - Before the profile item in the [user menu](../panels/navigation#自定义用户菜单)
 
-## Scoping render hooks
+## 渲染钩子作用域
 
-Some render hooks can be given a "scope", which allows them to only be output on a specific page or Livewire component. For instance, you might want to register a render hook for just 1 page. To do that, you can pass the class of the page or component as the second argument to `registerRenderHook()`:
+有些渲染钩子可以限定作用范围，它让你可以只在某个特定页面或者 Livewire 组件中渲染。比如，你可能只想在一个页面中注册钩子。为此，你可以将页面类或者组件作为第二个参数传入到 `registerRenderHook()`：
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -90,7 +90,7 @@ FilamentView::registerRenderHook(
 );
 ```
 
-You can also pass an array of scopes to register the render hook for:
+你也可以传入 scopes 数组:
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -105,7 +105,7 @@ FilamentView::registerRenderHook(
 );
 ```
 
-Some render hooks for the [Panel Builder](#panel-builder-render-hooks) allow you to scope hooks to all pages in a resource:
+有些[面板构造器](#面板渲染钩子)的渲染钩子允许你将钩子作用到资源的所有页面：
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -117,9 +117,9 @@ FilamentView::registerRenderHook(
 );
 ```
 
-### Retrieving the currently active scopes inside the render hook
+### 在渲染钩子中检索当前启用的作用域（scopes）
 
-The `$scopes` are passed to the render hook function, and you can use them to determine which page or component the render hook is being rendered on:
+`$scopes` 变量被传入到渲染钩子函数中，你可以用它来确定在哪个页面或组件中对钩子进行渲染：
 
 ```php
 use Filament\Support\Facades\FilamentView;
@@ -131,21 +131,21 @@ FilamentView::registerRenderHook(
 );
 ```
 
-## Rendering hooks
+## 渲染钩子
 
-Plugin developers might find it useful to expose render hooks to their users. You do not need to register them anywhere, simply output them in Blade like so:
+对插件开发者而言，将渲染钩子暴露给插件用户或许有用。你无需在任何地方注册这些钩子，只需在 Blade 中像这样输出：
 
 ```blade
 {{ \Filament\Support\Facades\FilamentView::renderHook('panels::body.start') }}
 ```
 
-To provide scope your render hook, you can pass it as the second argument to `renderHook()`. For instance, if your hook is inside a Livewire component, you can pass the class of the component using `static::class`:
+要限定你的渲染钩子的作用域，你可以将其作为第二个参数传给 `renderHook()`。比如，如果钩子在 Livewire 组件内部，你可以使用 `static::class` 传递该组件类：
 
 ```blade
 {{ \Filament\Support\Facades\FilamentView::renderHook('panels::page.start', scopes: $this->getRenderHookScopes()) }}
 ```
 
-You can even pass multiple scopes as an array, and all render hooks that match any of the scopes will be rendered:
+你也可以传递多个 scopes 作为数组，所有匹配该 scopes 的渲染钩子都会被渲染：
 
 ```blade
 {{ \Filament\Support\Facades\FilamentView::renderHook('panels::page.start', scopes: [static::class, \App\Filament\Resources\UserResource::class]) }}

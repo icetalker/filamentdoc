@@ -1,84 +1,89 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/widgets/docs/01-installation.md"
-title: Installation
+title: 安装
 ---
 
-**The Widgets package is pre-installed with the [Panel Builder](/docs/panels).** This guide is for using the Widgets package in a custom TALL Stack application (Tailwind, Alpine, Livewire, Laravel).
+**在[面板中](../panels/installation)使用 Widget**？那你可以跳过此安装。本教程适合于在自定义 TALL 栈应用中使用该包的开发者。
 
-## Requirements
+## 要求
 
-Filament requires the following to run:
+运行 Filament 有一些基础要求：
 
 - PHP 8.1+
 - Laravel v10.0+
 - Livewire v3.0+
 
-> **Livewire v3 is still in beta!**<br />
-> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
-
-## Installation
-
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
-
-```json
-"minimum-stability": "dev",
-```
-
-Require the Widgets package using Composer:
+首先，使用 Composer 导入此包：
 
 ```bash
 composer require filament/widgets:"^3.0-stable" -W
 ```
 
-## New Laravel projects
+## 全新 Laravel 项目
 
-To quickly get started with Filament in a new Laravel project, run the following commands to install [Livewire](https://livewire.laravel.com), [Alpine.js](https://alpinejs.dev), and [Tailwind CSS](https://tailwindcss.com):
-
-> Since these commands will overwrite existing files in your application, only run this in a new Laravel project!
+要快速开始使用 Filament，你可以使用如下命令安装 [Livewire](https://laravel-livewire.com)、[Alpine.js](https://alpinejs.dev) 和 [Tailwind CSS](https://tailwindcss.com)。
 
 ```bash
 php artisan filament:install --scaffold --widgets
-
 npm install
-
 npm run dev
 ```
 
-## Existing Laravel projects
+> 这些命令会粗暴地覆盖你应用中现有的文件，因此我们只推荐在新项目中使用该方法。
 
-Run the following command to install the Widgets package assets:
+## 已有的 Laravel 项目
+
+首先，运行以下命令安装该包的资源：
 
 ```bash
 php artisan filament:install --widgets
 ```
 
-### Installing Tailwind CSS
+### 安装 Tailwind CSS
 
-Run the following command to install Tailwind CSS with the Tailwind Forms and Typography plugins:
+首先，使用 npm 安装 Tailwind CSS 及它的 `forms` 和 `typography` 插件：
 
 ```bash
 npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
 ```
 
-Create a new `tailwind.config.js` file and add the Filament `preset` *(includes the Filament color scheme and the required Tailwind plugins)*:
+新建一个 `tailwind.config.js` 文件。确保添加了 Filament 的 `preset`，它配置了颜色和安装的插件： 
 
 ```js
-import preset from './vendor/filament/support/tailwind.config.preset'
+import colors from 'tailwindcss/colors'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
 
 export default {
-    presets: [preset],
     content: [
-        './app/Filament/**/*.php',
-        './resources/views/filament/**/*.blade.php',
+        './resources/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
+    ],
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: {
+                danger: colors.red,
+                info: colors.blue,
+                primary: colors.amber,
+                success: colors.green,
+                warning: colors.amber,
+            },
+        },
+    },
+    plugins: [
+        forms,
+        typography,
     ],
 }
 ```
 
-### Configuring styles
+当然，你也可以指定自定义的 `danger`、`gray`、`info`、`primary`、`success` 及 `warning` 颜色。不过每个颜色必须是 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference)，或者指定所有 50 - 950 变形体 ———— 单个 16 进制码或 RGB 值并不能生效。
 
-Add Tailwind's CSS layers to your `resources/css/app.css`:
+### 配置样式
+
+在 `resources/css/app.css` 中，引入 Tailwind CSS:
 
 ```css
 @tailwind base;
@@ -86,7 +91,7 @@ Add Tailwind's CSS layers to your `resources/css/app.css`:
 @tailwind utilities;
 ```
 
-Create a `postcss.config.js` file in the root of your project and register Tailwind CSS and Autoprefixer as plugins:
+在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS 和 Autoprefixer 注册成插件：
 
 ```js
 export default {
@@ -97,8 +102,7 @@ export default {
 }
 ```
 
-### Automatically refreshing the browser
-You may also want to update your `vite.config.js` file to refresh the page automatically when Livewire components are updated:
+你可能也想更新 `vite.config.js` 文件，以在 Livewire 组件更新后的刷新页面:
 
 ```js
 import { defineConfig } from 'vite'
@@ -117,13 +121,11 @@ export default defineConfig({
 })
 ```
 
-### Compiling assets
+使用 `npm run dev` 编译新的 CSS 和 JS 资源。
 
-Compile your new CSS and Javascript assets using `npm run dev`.
+### 配置布局
 
-### Configuring your layout
-
-Create a new `resources/views/components/layouts/app.blade.php` layout file for Livewire components:
+最后，为 Livewire 组件创建一个新的 `resources/views/components/layouts/app.blade.php` 布局文件：
 
 ```blade
 <!DOCTYPE html>
@@ -156,17 +158,24 @@ Create a new `resources/views/components/layouts/app.blade.php` layout file for 
 </html>
 ```
 
-## Publishing configuration
+## 发布配置
 
-You can publish the package configuration using the following command (optional):
+你可以发布此包的配置，使用如下命令：
 
 ```bash
 php artisan vendor:publish --tag=filament-config
 ```
 
-## Upgrading
+## 升级
 
-Filament automatically upgrades to the latest non-breaking version when you run `composer update`. If you notice that Filament is not upgrading automatically, ensure that the `filament:upgrade` command is present in your `composer.json`:
+要将包更新到最新版本，你需要运行：
+
+```bash
+composer update
+php artisan filament:upgrade
+```
+
+推荐将 `filament:upgrade` 命令添加到 `composer.json` 文件的 `post-autoload-dump` 中，使之自动运行：
 
 ```json
 "post-autoload-dump": [
@@ -175,10 +184,4 @@ Filament automatically upgrades to the latest non-breaking version when you run 
 ],
 ```
 
-If you prefer not to use automatic upgrades, remove the `filament:upgrade` command from your `composer.json` and run the following commands:
-
-```bash
-composer update
-
-php artisan filament:upgrade
-```
+这会在 `filament:install` 执行期间完成，不过请再次确认是否完成。

@@ -6,19 +6,19 @@ title: Adding an infolist to a Livewire component
 
 ## Setting up the Livewire component
 
-First, generate a new Livewire component:
+首先，生成新的 Livewire 组件：
 
 ```bash
 php artisan make:livewire ViewProduct
 ```
 
-Then, render your Livewire component on the page:
+然后，在页面上渲染 Livewire 组件：
 
 ```blade
 @livewire('view-product')
 ```
 
-Alternatively, you can use a full-page Livewire component:
+或者，你可以使用整页 Livewire 组件：
 
 ```php
 use App\Livewire\ViewProduct;
@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('products/{product}', ViewProduct::class);
 ```
 
-You must use the `InteractsWithInfolists` and `InteractsWithForms` traits, and implement the `HasInfolists` and `HasForms` interfaces on your Livewire component class:
+你必须使用 `InteractsWithInfolists` 和 `InteractsWithForms` traits，并在你的 Livewire 组件类中实现 `HasInfolists` 和 `HasForms` 接口：
 
 ```php
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -47,7 +47,7 @@ class ViewProduct extends Component implements HasForms, HasInfolists
 
 ## Adding the infolist
 
-Next, add a method to the Livewire component which accepts an `$infolist` object, modifies it, and returns it:
+在 Livewire 组件中添加一个方法，该方法接收一个 `$infolist` 对象作为参数，对其修改并返回：
 
 ```php
 use Filament\Infolists\Infolist;
@@ -62,17 +62,17 @@ public function productInfolist(Infolist $infolist): Infolist
 }
 ```
 
-Finally, render the infolist in the Livewire component's view:
+最后，在 Livewire 组件视图中渲染信息列表：
 
 ```blade
 {{ $this->productInfolist }}
 ```
 
-## Passing data to the infolist
+## 传送数据到信息列表
 
-You can pass data to the infolist in two ways:
+你可以用两种方式将数据传入到信息列表：
 
-Either pass an Eloquent model instance to the `record()` method of the infolist, to automatically map all the model attributes and relationships to the entries in the infolist's schema:
+可以传入 Eloquent 模型实例到信息列表的 `record()` 方法中，将所有的模型属性和关自动映射到消息列表 Schema 中的条目： 
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -90,7 +90,7 @@ public function productInfolist(Infolist $infolist): Infolist
 }
 ```
 
-Alternatively, you can pass an array of data to the `state()` method of the infolist, to manually map the data to the entries in the infolist's schema:
+也可以传送数据数组到信息列表的 `state()` 方法中，手动将数据映射到信息列表 Schema 中的条目：
 
 ```php
 use Filament\Infolists\Components\TextEntry;

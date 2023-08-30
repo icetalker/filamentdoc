@@ -1,16 +1,16 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/11-security.md"
-title: Security
+title: 安全
 ---
 
-## Protecting model attributes
+## 保护模型属性
 
-Filament will expose all model attributes to JavaScript, except if they are `$hidden` on your model. This is Livewire's behaviour for model binding. We preserve this functionality to facilitate the dynamic addition and removal of form fields after they are initially loaded, while preserving the data they may need.
+Filament 会暴露所有模型属性给 Javascript，除非在模型中使用 `$hidden` 对其隐藏。这是 Livewire 的模型绑定行为。我们保留了这一功能，使得在保留所需数据的同时，可以方便在表单初始化载入后动态增加或删除表单字段。
 
-> While attributes may be visible in JavaScript, only those with a form field are actually editable by the user. This is not an issue with mass assignment.
+> 由于属性在 Javascript 中可见，只有表单中的字段是用户可编辑的。因此对批量赋值而言，这不是个问题。
 
-To remove certain attributes from JavaScript on the Edit and View pages, you may override [the `mutateFormDataBeforeFill()` method](editing-records#customizing-data-before-filling-the-form):
+要在编辑和查看页面中，从 Javascript 中移除特定属性，你可以重写 [`mutateFromDataBeforeFill()` 方法](editing-records#填充表单前自定义数据):
 
 ```php
 protected function mutateFormDataBeforeFill(array $data): array
@@ -21,4 +21,4 @@ protected function mutateFormDataBeforeFill(array $data): array
 }
 ```
 
-In this example, we remove the `is_admin` attribute from JavaScript, as it's not being used by the form.
+上例中，我们从 Javascript 中删除了 `is_admin` 属性，因为表单中没有使用到这一字段。

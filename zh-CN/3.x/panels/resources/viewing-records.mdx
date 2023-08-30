@@ -1,20 +1,20 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/05-viewing-records.md"
-title: Viewing records
+title: 查看记录
 ---
 
-## Creating a resource with a View page
+## 创建带有查看页的资源
 
-To create a new resource with a View page, you can use the `--view` flag:
+要想创建一个带有查看页面的新资源，你可以使用 `--view` 标志：
 
 ```bash
 php artisan make:filament-resource User --view
 ```
 
-## Using an infolist instead of a disabled form
+## 使用信息列表而非禁用的表单
 
-By default, the View page will display a disabled form with the record's data. If you preferred to display the record's data in an "infolist", you can use define an `infolist()` method on the resource class:
+默认情况下，查看页会使用禁用的表单展示记录数据。如果你倾向于在 "infolist" 展示数据，你可以在资源类中定义 `infolist()` 方法：
 
 ```php
 use Filament\Infolists;
@@ -32,19 +32,19 @@ public static function infolist(Infolist $infolist): Infolist
 }
 ```
 
-The `schema()` method is used to define the structure of your infolist. It is an array of [entries](../../infolists/entries/getting-started#available-entries) and [layout components](../../infolists/layout/getting-started#available-layout-components), in the order they should appear in your infolist.
+`schema()` 方法用于定义消息列表的结构。它是一个 [entries](../../infolists/entries/getting-started#available-entries) 和[布局组件](../../infolists/layout/getting-started#available-layout-components)的数组，按照显示的顺序排序。
 
-Check out the Infolists docs for a [guide](../../infolists/getting-started) on how to build infolists with Filament.
+请查阅消息列表文档，查看如何使用 Filament 创建消息列表的[向导](../../infolists/getting-started)。
 
-## Adding a View page to an existing resource
+## 在现有资源上添加查看页
 
-If you want to add a View page to an existing resource, create a new page in your resource's `Pages` directory:
+如果你要添加查看页面到现有的资源上，在资源 `Pages` 目录中创建新页面：
 
 ```bash
 php artisan make:filament-page ViewUser --resource=UserResource --type=ViewRecord
 ```
 
-You must register this new page in your resource's `getPages()` method:
+你必须在资源 `getPages()` 方法中注册这个新页面:
 
 ```php
 public static function getPages(): array
@@ -58,11 +58,11 @@ public static function getPages(): array
 }
 ```
 
-## Viewing records in modals
+## 在模态框中查看数据
 
-If your resource is simple, you may wish to view records in modals rather than on the [View page](viewing-records). If this is the case, you can just [delete the view page](getting-started#deleting-resource-pages).
+如果你的资源是简易资源，你或许更希望通过模态框查看记录，而不是在[查看页](viewing-records)上查看。如果是这种情况，你只需[删除相关查看页面](getting-started#删除资源页)。
 
-If your resource doesn't contain a `ViewAction`, you can add one to the `$table->actions()` array:
+如果你的资源中没有 `ViewAction`， 你可以将其加入到 `$table->actions()` 数组中：
 
 ```php
 use Filament\Tables;
@@ -81,9 +81,9 @@ public static function table(Table $table): Table
 }
 ```
 
-## Customizing data before filling the form
+## 填充表单前自定义数据
 
-You may wish to modify the data from a record before it is filled into the form. To do this, you may define a `mutateFormDataBeforeFill()` method on the View page class to modify the `$data` array, and return the modified version before it is filled into the form:
+你可能想要在记录填充到表单前修改数据。你可以通过定义查看页类的 `mutateFormDataBeforeFill()` 方法去修改 `$data` 数组，并在填充到表单前返回修改后的版本：
 
 ```php
 protected function mutateFormDataBeforeFill(array $data): array
@@ -94,28 +94,28 @@ protected function mutateFormDataBeforeFill(array $data): array
 }
 ```
 
-Alternatively, if you're viewing records in a modal action, check out the [Actions documentation](../../actions/prebuilt-actions/view#customizing-data-before-filling-the-form).
+此外，如果你想在模态框 Action 中查看记录，请查阅 [Action 文档](../../actions/prebuilt-actions/view#填充表单前自定义数据)。
 
-## Authorization
+## 授权
 
-For authorization, Filament will observe any [model policies](https://laravel.com/docs/authorization#creating-policies) that are registered in your app.
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
 
-Users may access the View page if the `view()` method of the model policy returns `true`.
+如果模型策略的 `view()` 方法中返回的是 `true()`，用户可以访问查看页。
 
-## Custom view
+## 自定义视图
 
-For further customization opportunities, you can override the static `$view` property on the page class to a custom view in your app:
+要进一步自定义，你可以重写页面类的静态 `$view` 属性：
 
 ```php
 protected static string $view = 'filament.resources.users.pages.view-user';
 ```
 
-This assumes that you have created a view at `resources/views/filament/resources/users/pages/view-user.blade.php`.
+这假定了你已经创建了一个视图文件 `resources/views/filament/resources/users/pages/list-users.blade.php`。
 
-Here's a basic example of what that view might contain:
+下例是视图可能包含内容的简单示例：
 
 ```blade
-<x-filament-panels::page>
+<x-filament::page>
     @if ($this->hasInfolist())
         {{ $this->infolist }}
     @else
@@ -123,14 +123,14 @@ Here's a basic example of what that view might contain:
     @endif
 
     @if (count($relationManagers = $this->getRelationManagers()))
-        <x-filament-panels::resources.relation-managers
+        <x-filament::resources.relation-managers
             :active-manager="$activeRelationManager"
             :managers="$relationManagers"
             :owner-record="$record"
             :page-class="static::class"
         />
     @endif
-</x-filament-panels::page>
+</x-filament::page>
 ```
 
-To see everything that the default view contains, you can check the `vendor/filament/filament/resources/views/resources/pages/view-record.blade.php` file in your project.
+要查看默认视图中包含的内容，你可以查看项目的 `vendor/filament/filament/resources/views/resources/pages/view-records.blade.php` 文件。

@@ -1,28 +1,28 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/04-pages.md"
-title: Pages
+title: 页面
 ---
 
-## Overview
+## 概述
 
-Filament allows you to create completely custom pages for the app.
+Filament 允许你创建完全自定义的页面。
 
-## Creating a page
+## 新建页面
 
-To create a new page, you can use:
+要创建新页面，你可以使用下面的命令：
 
 ```bash
 php artisan make:filament-page Settings
 ```
 
-This command will create two files - a page class in the `/Pages` directory of the Filament directory, and a view in the `/pages` directory of the Filament views directory.
+该命令会生成两个文件 - 一个位于Filament目录的 `/Pages` 文件夹中的页面类，以及一个位于 Filament 视图目录的 `/pages` 文件夹中的视图文件。
 
-Page classes are all full-page [Livewire](https://livewire.laravel.com) components with a few extra utilities you can use with the panel.
+页面类是全页[Livewire](https://laravel-livewire.com)组件，带有一些你可以在面板中使用的额外功能。
 
-## Conditionally hiding pages in navigation
+## 在导航中条件性隐藏页面
 
-You can prevent pages from appearing in the menu by overriding the `shouldRegisterNavigation()` method in your Page class. This is useful if you want to control which users can see the page in the sidebar.
+你可以通过重写页面类的 `shouldRegisterNavigation()` 方法来隐藏菜单。这对于控制哪些用户可以在侧边栏中查看页面非常有用。
 
 ```php
 public static function shouldRegisterNavigation(): bool
@@ -31,7 +31,7 @@ public static function shouldRegisterNavigation(): bool
 }
 ```
 
-Please be aware that all users will still be able to visit this page through its direct URL, so to fully limit access, you must also check in the `mount()` method of the page:
+请注意，此时所有用户仍然可以直接通过 URL 访问该页面，因此你必须同时检查页面的 `mount()` 方法进行全面限制:
 
 ```php
 public function mount(): void
@@ -40,15 +40,15 @@ public function mount(): void
 }
 ```
 
-## Adding actions to pages
+## 将 Action 添加到页面
 
-Actions are buttons that can perform tasks on the page, or visit a URL. You can read more about their capabilities [here](../actions).
+Action 是可以在页面中执行任务或者访问 URL 的按钮。你可以[点击此处](../actions)查阅更多的内容。
 
-Since all pages are Livewire components, you can [add actions](../actions/adding-an-action-to-a-livewire-component#adding-the-action) anywhere. Pages already have the `InteractsWithActions` trait, `HasActions` interface, and `<x-filament-actions::modals />` Blade component all set up for you.
+因为所有的页面都是 Livewire 组件，你可以在任何地方添加 [Action](../actions/adding-an-action-to-a-livewire-component#添加-action)。页面中已经有了 `InteractsWithActions` trait，`HasActions` 接口以及 `<x-filament-actions::modals />` Blade 组件。
 
-### Header actions
+### 头部 Action
 
-You can also easily add actions to the header of any page, including [resource pages](resources/getting-started). You don't need to worry about adding anything to the Blade, we handle that for you. Just return your actions from the `getHeaderActions()` method of the page class:
+你也可以轻松地在任何页面的头部添加 Action，包括[资源页面]。你不需要操心添加任何内容到 Blade 模板，我们已经帮你处理了。只需在页面类的 `getHeaderActions()` 方法中返回 Action：
 
 ```php
 use Filament\Actions\Action;
@@ -65,9 +65,9 @@ protected function getHeaderActions(): array
 }
 ```
 
-### Refreshing form data
+### 刷新表单数据
 
-If you're using actions on an [Edit](resources/editing-records) or [View](resources/viewing-records) resource page, you can refresh data within the main form using the `refreshFormData()` method:
+如果要在资源的[编辑页](resources/editing-records)或[查看页](resources/viewing-records)中使用 Action，你可以使用 `refreshFormData()` 方法在主表单中刷新数据：
 
 ```php
 use Filament\Actions\Action;
@@ -82,13 +82,13 @@ Action::make('approve')
     })
 ```
 
-This method accepts an array of model attributes that you wish to refresh in the form.
+该方法接收一个你希望在表单中刷新的模型属性数组。
 
-## Adding widgets to pages
+## 添加 Widget 到页面
 
-Filament allows you to display [widgets](dashboard) inside pages, below the header and above the footer.
+Filament 允许你在页面内的 header 之下及 footer 之上展示 [widgets](dashboard)。 i
 
-To add a widget to a page, use the `getHeaderWidgets()` or `getFooterWidgets()` methods:
+使用 `getHeaderWidgets()` 或 `getFooterWidgets()`，可以添加 Widget 到页面：
 
 ```php
 use App\Filament\Widgets\StatsOverviewWidget;
@@ -101,15 +101,15 @@ protected function getHeaderWidgets(): array
 }
 ```
 
-`getHeaderWidgets()` returns an array of widgets to display above the page content, whereas `getFooterWidgets()` are displayed below.
+`getHeaderWidgets` 方法返回显示在页面内容上面的 Widget 数组，`getFooterWidgets()` 方法则显示下面的。
 
-If you'd like to learn how to build and customize widgets, check out the [Dashboard](dashboard) documentation section.
+关于如何创建自定义插件，查看[仪表盘](dashboard)文档。
 
-### Customizing the widgets' grid
+## 自定义 Widget 网格
 
-You may change how many grid columns are used to display widgets.
+你可以修改插件占用的网格数。
 
-You may override the `getHeaderWidgetsColumns()` or `getFooterWidgetsColumns()` methods to return a number of grid columns to use:
+重写 `getHeaderWidgetsColumns()` 或者 `getFooterWidgetsColumns()`，使之返回代表网格宽度的数字：
 
 ```php
 protected function getHeaderWidgetsColumns(): int | array
@@ -118,9 +118,9 @@ protected function getHeaderWidgetsColumns(): int | array
 }
 ```
 
-#### Responsive widgets grid
+### 响应式 Widget 网格
 
-You may wish to change the number of widget grid columns based on the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) of the browser. You can do this using an array that contains the number of columns that should be used at each breakpoint:
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，调整插件占用的网格数。返回类似如下数组：
 
 ```php
 protected function getHeaderWidgetsColumns(): int | array
@@ -132,11 +132,11 @@ protected function getHeaderWidgetsColumns(): int | array
 }
 ```
 
-This pairs well with [responsive widget widths](dashboard#responsive-widget-widths).
+这一功能和[响应式插件宽度](dashboard#响应式-widget-宽度)搭配使用。
 
-#### Passing data to widgets from the page
+#### 从页面中传递数据到 Widget
 
-You may pass data to widgets from the page using the `getWidgetsData()` method:
+你可以使用 `getWidgetsData()` 方法，从页面中传递数据给 Widget：
 
 ```php
 protected function getWidgetsData(): array
@@ -149,15 +149,15 @@ protected function getWidgetsData(): array
 }
 ```
 
-Now, you can define a corresponding public `$stats` array property on the widget class, which will be automatically filled:
+现在，你可以在 Widget 类中定义相应的 public `$stats` 数组属性，它会被自动填充：
 
 ```php
 public $stats = [];
 ```
 
-### Passing properties to widgets on pages
+### 传递属性给页面上的 Widget
 
-When registering a widget on a page, you can use the `make()` method to pass an array of [Livewire properties](https://livewire.laravel.com/docs/properties) to it:
+当在页面上注册 Widget 时，你可以使用 `make()` 方法，并传递 [Livewire 属性](https://livewire.laravel.com/docs/properties)数组给它：
 
 ```php
 use App\Filament\Widgets\StatsOverviewWidget;
@@ -172,7 +172,7 @@ protected function getHeaderWidgets(): array
 }
 ```
 
-This array of properties gets mapped to [public Livewire properties](https://livewire.laravel.com/docs/properties) on the widget class:
+该属性数组被映射到 Widget 类上中的 [public Livewire 属性]：
 
 ```php
 use Filament\Widgets\Widget;
@@ -185,17 +185,17 @@ class StatsOverviewWidget extends Widget
 }
 ```
 
-Now, you can access the `status` in the widget class using `$this->status`.
+现在，你可以使用 `$this->status` 访问 Widget 类中 `status`。 
 
-## Customizing the page title
+## 自定义页面标题
 
-By default, Filament will automatically generate a title for your page based on its name. You may override this by defining a `$title` property on your page class:
+默认情况下，Filament 会基于它的名字为你的页面自动生成标题。你也可以在页面类中重写定义 `$title` 属性：
 
 ```php
 protected static ?string $title = 'Custom Page Title';
 ```
 
-Alternatively, you may return a string from the `getTitle()` method:
+另外，你也可以在 `getTitle()` 方法中返回一个字符串：
 
 ```php
 use Illuminate\Contracts\Support\Htmlable;
@@ -206,15 +206,15 @@ public function getTitle(): string | Htmlable
 }
 ```
 
-## Customizing the page navigation label
+## 自定义页面导航标签
 
-By default, Filament will use the page's [title](#customizing-the-page-title) as its [navigation](navigation) item label. You may override this by defining a `$navigationLabel` property on your page class:
+默认情况下，Filament 使用页面的 [title](#自定义页面标题)作为器[导航](navigation)项标签。你可以在页面类中定义 `$navigationLabel` 属性重写：
 
 ```php
 protected static ?string $navigationLabel = 'Custom Navigation Label';
 ```
 
-Alternatively, you may return a string from the `getNavigationLabel()` method:
+另外，你也可以在 `getNavigationLabel()` 方法中返回一个字符串实现：
 
 ```php
 public static function getNavigationLabel(): string
@@ -223,23 +223,23 @@ public static function getNavigationLabel(): string
 }
 ```
 
-## Customizing the page URL
+## 自定义页面 URL
 
-By default, Filament will automatically generate a URL (slug) for your page based on its name. You may override this by defining a `$slug` property on your page class:
+默认情况下，Filament 会为基于页面的名称为页面生成 URL (slug)。你可以在页面类中定义 `$slug` 属性进行重写：
 
 ```php
 protected static ?string $slug = 'custom-url-slug';
 ```
 
-## Customizing the page heading
+## 自定义页首标题
 
-By default, Filament will use the page's [title](#customizing-the-page-title) as its heading. You may override this by defining a `$heading` property on your page class:
+默认情况下，Filament 会使用页面的 [title](#自定义页面-title) 作为页面的 heading。你可以在页面类中定义 `heading` 属性来重写：
 
 ```php
 protected ?string $heading = 'Custom Page Heading';
 ```
 
-Alternatively, you may return a string from the `getHeading()` method:
+此外，你也可以在 `getHeading()` 方法中返回字符串来实现：
 
 ```php
 public function getHeading(): string
@@ -248,15 +248,15 @@ public function getHeading(): string
 }
 ```
 
-### Adding a page subheading
+### 添加页面子标题
 
-You may also add a subheading to your page by defining a `$subheading` property on your page class:
+你也可以在页面类中定义 `#subheading` 属性为页面添加子标题：
 
 ```php
 protected ?string $subheading = 'Custom Page Subheading';
 ```
 
-Alternatively, you may return a string from the `getSubheading()` method:
+另外，你也可以在 `getSubheading()` 方法中返回字符串来实现该功能：
 
 ```php
 public function getSubheading(): ?string
@@ -265,9 +265,9 @@ public function getSubheading(): ?string
 }
 ```
 
-## Replacing the page header with a custom view
+## 使用自定义视图替换页面 Header
 
-You may replace the default [heading](#customizing-the-page-heading), [subheading](#adding-a-page-subheading) and [actions](#header-actions) with a custom header view for any page. You may return it from the `getHeader()` method:
+你可以使用自定义 Header 视图为任何页面替换默认的[heading](#customizing-the-page-heading)、[subheading](#adding-a-page-subheading) 和 [actions](#header-actions)。你可以在 `getHeader()` 方法中返回该视图：
 
 ```php
 use Illuminate\Contracts\View\View;
@@ -278,11 +278,11 @@ public function getHeader(): ?View
 }
 ```
 
-This example assumes you have a Blade view at `resources/views/filament/settings/custom-header.blade.php`.
+本例假定你有一个 Blade 模板视图位于 `resources/views/filament/settings/custom-header.blade.php`。
 
-## Rendering a custom view in the footer of the page
+## 在页面的底部(footer)中渲染自定义视图
 
-You may also add a footer to any page, below its content. You may return it from the `getFooter()` method:
+你可以在页面内容的下方将添加 footer 到任何页面中。在 `getFooter()` 方法中返回视图：
 
 ```php
 use Illuminate\Contracts\View\View;
@@ -293,14 +293,14 @@ public function getFooter(): ?View
 }
 ```
 
-This example assumes you have a Blade view at `resources/views/filament/settings/custom-footer.blade.php`.
+本例假定你有一个 Blade 模板视图位于 `resources/views/filament/settings/custom-footer.blade.php`。
 
-## Customizing the maximum content width
+## 自定义最大内容宽度
 
-By default, Filament will restrict the width of the content on the page, so it doesn't become too wide on large screens. To change this, you may override the `getMaxContentWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, and `full`. The default is `7xl`:
+默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl`、`7xl` 以及 `full`。默认值为 `7xl`。
 
 ```php
-public function getMaxContentWidth(): ?string
+public function getContentMaxWidth(): ?string
 {
     return 'full';
 }

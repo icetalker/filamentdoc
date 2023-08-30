@@ -1,44 +1,44 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/05-dashboard.md"
-title: Dashboard
+title: 仪表盘
 ---
 
-## Overview
+## 概述
 
-Filament allows you to build dynamic dashboards, comprised of "widgets", very easily.
+Filament 让你可以使用 Widget，创建动态自定义面板。
 
-The following document will explain how to use these widgets to assemble a dashboard using the panel.
+接下来的文档将解释如何使用这些 Widget 来在后台面板中组装仪表盘。
 
-## Available widgets
+## 可用 Widget
 
-Filament ships with these widgets:
+Filament 随带了这些 Widget：
 
-- [Stats overview](../widgets/stats-overview) widgets display any data, often numeric data, as stats in a row.
-- [Chart](../widgets/charts) widgets display numeric data in a visual chart.
-- [Table](#table-widgets) widgets which display a [table](../tables/getting-started) on your dashboard.
+- [统计概览](../widgets/stats-overview)插件可以在卡片内显示任何数据，通常为数值型数据，显示成一行统计数据。
+- [图表](../widgets/charts)插件在一个可视化图标中显示数值型数据。 
+- [表格](#表格-widget)插件可用在仪表盘中显示[表格](../tables/getting-started)。
 
-You may also [create your own custom widgets](#custom-widgets) which can then have a consistent design with Filament's prebuilt widgets.
+你也可以[创建自己自定义插件](#自定义-widget)，使之与 Filament 预制的 Widget 保存一致的设计。
 
-## Sorting widgets
+## Widget 排序
 
-Each widget class contains a `$sort` property that may be used to change its order on the page, relative to other widgets:
+每一个 Widget 类都有一个 `$sort` 属性，可用于改变该插件在页面中相对于其他插件的排序：
 
 ```php
 protected static ?int $sort = 2;
 ```
 
-## Customizing widget width
+## 自定义 Widget 宽度
 
-You may customize the width of a widget using the `$columnSpan` property. You may use a number between 1 and 12 to indicate how many columns the widget should span, or `full` to make it occupy the full width of the page:
+你可以使用 `$columnSpan` 属性自定义 Widget 的宽度。你可以设置为 1 到 12 之间的数字，表明插件占用多少列宽，或者使用 `full` 表示占用全部宽度：
 
 ```php
 protected int | string | array $columnSpan = 'full';
 ```
 
-### Responsive widget widths
+### 响应式 Widget 宽度
 
-You may wish to change the widget width based on the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) of the browser. You can do this using an array that contains the number of columns that the widget should occupy at each breakpoint:
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，修改 Widget 宽度。可以使用包含各个临界点对应数字的数组实现：
 
 ```php
 protected int | string | array $columnSpan = [
@@ -47,29 +47,29 @@ protected int | string | array $columnSpan = [
 ];
 ```
 
-This is especially useful when using a [responsive widgets grid](#responsive-widgets-grid).
+当使用[响应式插件网格](#响应式-widget-网格)时，尤其有用。
 
-## Customizing the widgets' grid
+## 自定义插件网格
 
-You may change how many grid columns are used to display widgets.
+你可以修改有多少网格数被用于展示插件。
 
-Firstly, you must [replace the original Dashboard page](#customizing-the-dashboard-page).
+首先，你必须[替换原来的仪表盘页面](#自定义仪表盘页面)。
 
-Now, in your new `app/Filament/Pages/Dashboard.php` file, you may override the `getColumns()` method to return a number of grid columns to use:
+然后，在新建的 `app/Filament/Pages/Dashboard.php` 文件中，你可以重写 `getColumns()` 方法，来返回占用的网格列数：
 
 ```php
-public function getColumns(): int | string | array
+protected function getColumns(): int | string | array
 {
     return 2;
 }
 ```
 
-### Responsive widgets grid
+### 响应式 Widget 网格
 
-You may wish to change the number of widget grid columns based on the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) of the browser. You can do this using an array that contains the number of columns that should be used at each breakpoint:
+你可能希望根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)，调整 Widget 占用的网格数。返回一个类似如下数组，包含各个临界点对应的列数：
 
 ```php
-public function getColumns(): int | string | array
+protected function getColumns(): int | string | array
 {
     return [
         'md' => 4,
@@ -78,11 +78,11 @@ public function getColumns(): int | string | array
 }
 ```
 
-This pairs well with [responsive widget widths](#responsive-widget-widths).
+可以和[响应式插件宽度](#响应式-widget-宽度)配合使用。
 
-## Conditionally hiding widgets
+## 条件性隐藏插件
 
-You may override the static `canView()` method on widgets to conditionally hide them:
+你可以重写 Widget 的静态 `canView()` 方法，条件性地对其进行隐藏:
 
 ```php
 public static function canView(): bool
@@ -91,29 +91,29 @@ public static function canView(): bool
 }
 ```
 
-## Table widgets
+## 表格 Widget
 
-You may easily add tables to your dashboard. Start by creating a widget with the command:
+添加表格到仪表盘非常简单。通过如下命令创建一个 Widget：
 
 ```bash
 php artisan make:filament-widget LatestOrders --table
 ```
 
-You may now [customize the table](../tables/getting-started) by editing the widget file.
+现在你可以编辑 Widget 文件来[自定义表格](../tables/getting-started)。
 
-## Custom widgets
+## 自定义插件
 
-To get started building a `BlogPostsOverview` widget:
+创建一个名为 `BlogPostsOverview` 的 widget:
 
 ```bash
 php artisan make:filament-widget BlogPostsOverview
 ```
 
-This command will create two files - a widget class in the `/Widgets` directory of the Filament directory, and a view in the `/widgets` directory of the Filament views directory.
+该命令会创建两个文件 - 一个插件类文件位于 Filament 目录下的 `/Widgets` 文件夹中，以及一个位于 Filament 视图目录 `/widgets` 文件夹中的视图文件。
 
-## Disabling the default widgets
+## 禁用默认 Widget
 
-By default, two widgets are displayed on the dashboard. These widgets can be disabled by updating the `widgets()` array of the [configuration](configuration):
+默认情况下，仪表盘上展示了两个 Widget。这些插件可以通过更新[配置](configuration)的 `widgets()` 数组禁用:
 
 ```php
 use Filament\Panel;
@@ -126,9 +126,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Customizing the dashboard page
+## 自定义仪表盘页面
 
-If you want to customize the dashboard class, for example, to [change the number of widget columns](#customizing-widget-width), create a new file at `app/Filament/Pages/Dashboard.php`:
+如果你想要自定义 Dashboard 类，比如[修改 Widget 宽度](#自定义-widget-宽度)，请新建文件 `app/Filament/Pages/Dashboard.php`：
 
 ```php
 <?php
@@ -143,7 +143,7 @@ class Dashboard extends BasePage
 }
 ```
 
-Finally, remove the original `Dashboard` class from [configuration file](configuration):
+最后，在[配置文件](configuration)中移除原本的 `Dashboard` 类：
 
 ```php
 use Filament\Panel;
@@ -156,11 +156,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Creating multiple dashboards
+### 创建多个仪表盘
 
-If you want to create multiple dashboards, you can do so by repeating the process described above. Creating new pages that extend the `Dashboard` class will allow you to create as many dashboards as you need.
+如果你需要创建多个仪表盘，你可以重复上面描述的过程。创建继承 `Dashboard` 类的新页面，你可以根据需要创建多个仪表盘。
 
-You may change the title of the dashboard by overriding the `$title` property:
+你可以重写 `$title` 属性修改仪表盘的标题：
 
 ```php
 protected static ?string $title = 'Finance dashboard';

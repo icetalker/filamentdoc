@@ -1,26 +1,26 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/08-global-search.md"
-title: Global search
+title: 全局搜索
 ---
 
-## Overview
+## 概述
 
-Global search allows you to search across all of your resource records, from anywhere in the app.
+全局搜索允许你在应用的任何地方搜索所有的资源记录。
 
-## Setting global search result titles
+## 设置全局搜索结果标题
 
-To enable global search on your model, you must [set a title attribute](getting-started#record-titles) for your resource:
+要在模型中启用全局搜索，你必须先为资源[设置一个 title 属性](getting-started#记录标题)：
 
 ```php
 protected static ?string $recordTitleAttribute = 'title';
 ```
 
-This attribute is used to retrieve the search result title for that record.
+这一属性用于检索搜索记录结果的标题。
 
-> Your resource needs to have an Edit or View page to allow the global search results to link to a URL, otherwise no results will be returned for this resource.
+> 你的资源中需要有编辑页或查看页，这样全局搜索结果才可以链接到对应页面，否则不会返回该资源的结果。
 
-You may customize the title further by overriding `getGlobalSearchResultTitle()` method:
+你可以重写 `getGlobalSearchResultTitle()` 方法进一步自定义 title：
 
 ```php
 public static function getGlobalSearchResultTitle(Model $record): string
@@ -29,9 +29,9 @@ public static function getGlobalSearchResultTitle(Model $record): string
 }
 ```
 
-## Globally searching across multiple columns
+## 多字段搜索
 
-If you would like to search across multiple columns of your resource, you may override the `getGloballySearchableAttributes()` method. "Dot notation" allows you to search inside relationships:
+如果你想要在资源中搜索多个字段，你可以重写 `getGloballySearchableAttributes()` 方法。“点语法”让你可以搜索关联的内部:
 
 ```php
 public static function getGloballySearchableAttributes(): array
@@ -40,9 +40,9 @@ public static function getGloballySearchableAttributes(): array
 }
 ```
 
-## Adding extra details to global search results
+## 添加额外详情到全局搜索结果
 
-Search results can display "details" below their title, which gives the user more information about the record. To enable this feature, you must override the `getGlobalSearchResultDetails()` method:
+搜索结果可以在标题的下面显示“详情(Details)”，让用户获取更多记录信息。要启用此特性，你必须重写 `getGlobalSearchResultDetails()` 方法：
 
 ```php
 public static function getGlobalSearchResultDetails(Model $record): array
@@ -54,7 +54,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
 }
 ```
 
-In this example, the category and author of the record will be displayed below its title in the search result. However, the `category` and `author` relationships will be lazy-loaded, which will result in poor results performance. To [eager-load](https://laravel.com/docs/eloquent-relationships#eager-loading) these relationships, we must override the `getGlobalSearchEloquentQuery()` method:
+此例中，记录的分类和作者会显示在搜索结果的标题下面。不过，`category` 和 `author` 关联是通过懒加载实现，会导致搜索结果的性能不佳。想要[积极加载](https://laravel.com/docs/eloquent-relationships#eager-loading)这些关联，必须重写 `getGlobalSearchEloquentQuery()` 方法：
 
 ```php
 public static function getGlobalSearchEloquentQuery(): Builder
@@ -63,9 +63,9 @@ public static function getGlobalSearchEloquentQuery(): Builder
 }
 ```
 
-## Customizing global search result URLs
+## 自定义全局搜索结果 URL
 
-Global search results will link to the [Edit page](editing-records) of your resource, or the [View page](viewing-page) if the user does not have [edit permissions](editing-records#authorization). To customize this, you may override the `getGlobalSearchResultUrl()` method and return a route of your choice:
+全局搜索结果会链接到资源的[编辑页](editing-records)，或者在用户没有[编辑权限](editing-records#授权)时链接到[查看页](viewing-page)。你可以重写 `getGlobalSearchResultUrl()` 方法并返回你想使用的路由，进行自定义：
 
 ```php
 public static function getGlobalSearchResultUrl(Model $record): string
@@ -74,11 +74,11 @@ public static function getGlobalSearchResultUrl(Model $record): string
 }
 ```
 
-## Adding actions to global search results
+## 添加 Action 到全局搜索结果
 
-Global search supports actions, which are buttons that render below each search result. They can open a URL or dispatch a Livewire event. 
+全局搜索支持 Action，将其在每个搜索结果中渲染成按钮。籍此可以打开一个网址或者发起一个 Livewire 事件。
 
-Actions can be defined as follows:
+Action 可以定义如下：
 
 ```php
 use Filament\GlobalSearch\Actions\Action;
@@ -92,11 +92,11 @@ public static function getGlobalSearchResultActions(Model $record): array
 }
 ```
 
-You can learn more about how to style action buttons [here](../../actions/trigger-button).
+了解更多 Action 按钮样式请点击[此处](../../actions/trigger-button)。
 
-### Opening URLs from global search actions
+### 全局搜索 Action 中打开 URL
 
-You can open a URL, optionally in a new tab, when clicking on an action:
+当点击 Action 时，你可以打开 URL(可选新标签页)：
 
 ```php
 use Filament\GlobalSearch\Actions\Action;
@@ -105,9 +105,9 @@ Action::make('view')
     ->url(static::getUrl('view', ['record' => $record]), shouldOpenInNewTab: true)
 ```
 
-### Dispatching Livewire events from global search actions
+### 全局搜索 Action 中发送 Livewire 事件
 
-Sometimes you want to execute additional code when a global search result action is clicked. This can be achieved by setting a Livewire event which should be dispatched on clicking the action. You may optionally pass an array of data, which will be available as parameters in the event listener on your Livewire component:
+有时候，你希望在点击全局搜索结果 Action 时，执行额外的代码。通过设置点击 Action 时发送 Livewire 事件，可以达成该效果。你可以传入一个可选的数据数组，这个数组在 Livewire 组件的事件监听者中作为参数使用：
 
 ```php
 use Filament\GlobalSearch\Actions\Action;
@@ -116,19 +116,19 @@ Action::make('quickView')
     ->dispatch('quickView', [$record->id])
 ```
 
-## Limiting the number of global search results
+## 限制全局搜索结果的数量
 
-By default, global search will return up to 50 results per resource. You can customize this on the resource label by overriding the `$globalSearchResultsLimit` property:
+默认情况下，全局搜索每个资源会返回多达 50 个结果。你可以重写资源标签上的 `$globalSearchResultsLimit` 属性对其自定义：
 
 ```php
 protected static int $globalSearchResultsLimit = 20;
 ```
 
-## Disabling global search
+## 禁用全局搜索
 
-As [explained above](#title), global search is automatically enables once you set a title attribute for your resource. Sometimes you may want to specify the title attribute while not enabling global search.
+[如上所述](#标题)，当你为资源设置 title 属性时，全局搜索会自动启用。而有时，你只想指定 title 属性而不想启用全局搜索。
 
-This can be achieved by disabling global search in the [configuration](configuration):
+为此，可以在[配置](configuration)中禁用全局搜索：
 
 ```php
 use Filament\Panel;
@@ -141,9 +141,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Registering global search keybindings
+## 注册全局搜索键盘绑定
 
-The global search field can be opened using keyboard shortcuts. To configure these, pass the `globalSearchKeyBindings()` method to the [configuration](configuration):
+全局搜索字段可以使用键盘快捷键打开。要设置此项，在[配置](configuration)中传入 `globalSearchKeyBindings()` 方法：
 
 ```php
 use Filament\Panel;
@@ -156,9 +156,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Forcing case-insensitive global search
+## 全局搜索强制大小写不敏感
 
-By default, searching will use the sensitivity settings from the database table column. This is to avoid unnecessary performance overhead when searching large datasets that would arise if we were to force insensitivity for all users. However, if your database does not search case-insensitively by default, you can force it to by using the `$isGlobalSearchForcedCaseInsensitive` property:
+默认情况下，搜索会使用数据库列的敏感设置。这是为了在搜索大量数据集的时候，避免非必要的性能开销。不过，如果你的数据库默认不搜索大小写不敏感，你可以使用 `$isGlobalSearchForcedCaseInsensitive` 属性强制它：
 
 ```php
 protected static bool $isGlobalSearchForcedCaseInsensitive = true;

@@ -1,24 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/05-style-customization.md"
-title: Style customization
+title: 自定义样式
 ---
 
-## Overview
+## 概述
 
-Filament uses CSS "hook" classes to allow various HTML elements to be customized using CSS.
+Filament 使用 CSS "钩子" 类，让各种 HTML 元素都可以使用 CSS 定制。
 
-## Discovering hook classes
+## 发现钩子类
 
-We could document all the hook classes across the entire Filament UI, but that would be a lot of work, and probably not very useful to you. Instead, we recommend using your browser's developer tools to inspect the elements you want to customize, and then use the hook classes to target those elements.
+我们可以将整个 Filament UI 的所有钩子类记入文档中，不过那样工作量很大而且对你未必有用。因此，我们推荐使用浏览器的开发者工具去查看你想要自定义的元素，然后使用这些钩子类去锁定目标元素。
 
-All hook classes are prefixed with `fi-`, which is a great way to identify them. They are usually right at the start of the class list, so they are easy to find, but sometimes they may fall further down the list if we have to apply them conditionally with JavaScript or Blade.
+所有的钩子类使用 `fi-` 前缀，很容易识别。通常，在类列表的开头位置，因此，很容易找到；不过有时候会因为条件性使用 JavaScript 或 Blade 应用这些类而使之滑落到列表后面。
 
-If you don't find a hook class you're looking for, try not to hack around it, as it might expose your styling customizations to breaking changes in future releases. Instead, please open a pull request to add the hook class you need. We can help you maintain naming consistency. You probably don't even need to pull down the Filament repository locally for these pull requests, as you can just edit the Blade files directly on GitHub.
+如果你创没有找到你需要的钩子类，尽量不要绕过它，因为它可能会打开你的样式自定义，从而在未来的版本中造成破坏性更改。同时，请发送 PR 去添加你需要的钩子类。我们可以帮你保持命名的一致性。你甚至可能都不需要为了 PR 在本地拉取 Filament 库，因为你可以直接在 GitHub 上编辑该 Blade 文件。
 
-## Applying styles to hook classes
+## 将样式应用到钩子类中
 
-For example, if you want to customize the color of the sidebar, you can inspect the sidebar element in your browser's developer tools, see that it uses the `fi-sidebar`, and then add CSS to your app like this:
+比如，如果你想自定义侧边栏(sidebar)的颜色，你可以在浏览器开发者工具中检查侧边栏元素，发现它使用 `fi-sidebar` 类，然后像这样将 CSS 添加到你的应用中： 
 
 ```css
 .fi-sidebar {
@@ -26,7 +26,7 @@ For example, if you want to customize the color of the sidebar, you can inspect 
 }
 ```
 
-Alternatively, since Filament is built upon Tailwind CSS, you can use their `@apply` directive to apply Tailwind classes to Filament elements:
+此外，因为 Filament 是基于 Tailwind CSS 构建，你可以使用 `@apply` 指令将 Tailwind 类应用到 Filament 元素中：
 
 ```css
 .fi-sidebar {
@@ -34,7 +34,7 @@ Alternatively, since Filament is built upon Tailwind CSS, you can use their `@ap
 }
 ```
 
-Occasionally, you may need to use the `!important` modifier to override existing styles, but please use this sparingly, as it can make your styles difficult to maintain:
+你偶尔可能需要使用 `!important` 修饰符来重写现有的样式，但请谨慎使用，因为这会使您的样式难以维护：
 
 ```css
 .fi-sidebar {
@@ -42,7 +42,7 @@ Occasionally, you may need to use the `!important` modifier to override existing
 }
 ```
 
-You can even apply `!important` to only specific Tailwind classes, which is a little less intrusive, by prefixing the class name with `!`:
+你甚至可以在类名前加上 `!` 前缀将 `!important` 应用到某些特定的 Tailwind 类，虽然有些侵入性：
 
 ```css
 .fi-sidebar {
@@ -50,24 +50,25 @@ You can even apply `!important` to only specific Tailwind classes, which is a li
 }
 ```
 
-## Common hook class abbreviations
+## 常见钩子类缩写
 
-We use a few common abbreviations in our hook classes to keep them short and readable:
+我们在钩子类中使用了一些常用缩写，以保证它们简短和可读性：
 
-- `fi` is short for "Filament"
-- `fi-ac` is used to represent classes used in the Actions package
-- `fi-fo` is used to represent classes used in the Form Builder package
-- `fi-in` is used to represent classes used in the Infolist Builder package
-- `fi-no` is used to represent classes used in the Notifications package
-- `fi-ta` is used to represent classes used in the Table Builder package
-- `fi-wi` is used to represent classes used in the Widgets package
-- `btn` is short for "button"
-- `col` is short for "column"
-- `ctn` is short for "container"
-- `wrp` is short for "wrapper"
+- `fi` 是 "Filament" 的缩写
+- `fi-ac` 用于表示 Actions 包中的类
+- `fi-fo` 用于表示表单构造器(Form Builder)包中的类
+- `fi-in` 用于表示消息列表(Infolist)包中的类
+- `fi-no` 用于表示通知生成器(Notifications)包中的类
+- `fi-ta` 用于表示表格构造器(Table Builder)包中的类
+- `fi-wi` 用于表示页内插件(Widgets)包中的类
+- `btn` 是 "button" 的缩写
+- `col` 是 "column" 的缩写
+- `ctn` 是 "container" 的缩写
+- `wrp` 是 "wrapper" 的缩写
 
-## Publishing Blade views
+## 发布 Blade 视图
 
-You may be tempted to publish the internal Blade views to your application so that you can customize them. We don't recommend this, as it will introduce breaking changes into your application in future updates. Please use the [CSS hook classes](#applying-styles-to-hook-classes) wherever possible.
+您可能会想将内部 Blade 视图发布到应用程序中，以便进行自定义。我们不建议这样做，因为它会在将来的更新中对您的应用程序进行破坏性更改。请尽可能使用[CSS钩子类](#将样式应用到钩子类中)。
 
-If you do decide to publish the Blade views, please lock all Filament packages to a specific version in your `composer.json` file, and then update Filament manually by bumping this number, testing your entire application after each update. This will help you identify breaking changes safely.
+
+如果您确实要发布这类 Blade 视图，请在 `composer.json` 中将所有Filament包锁定到特定版本，然后通过碰撞版本号手动更新Filament，在每次更新后测试整个应用程序。这将帮助您安全地识别破坏性更改。

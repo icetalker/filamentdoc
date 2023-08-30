@@ -1,14 +1,14 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/02-overview.md"
-title: Overview
+title: 概述
 ---
 
-## What is an action?
+## Action 是什么？
 
-"Action" is a word that is used quite a bit within the Laravel community. Traditionally, action PHP classes handle "doing" something in your application's business logic. For instance, logging a user in, sending an email, or creating a new user record in the database.
+"Action" 是 Laravel 社区使用较多的一个词。传统上，PHP 动作类在应用业务逻辑中处理"执行"动作。比如，登录一个用户、发送邮件或者在数据库中创建新用户记录。
 
-In Filament, actions also handle "doing" something in your app. However, they are a bit different from traditional actions. They are designed to be used in the context of a user interface. For instance, you might have a button to delete a client record, which opens a modal to confirm your decision. When the user clicks the "Delete" button in the modal, the client is deleted. This whole workflow is an "action".
+在 Filament 中，Action 也在应用中处理"执行"动作。不过，与传统的 Action 有些不同。它被设计用于用户界面的上下文中。比如，你可能有一个按钮用来删除客户记录，它会打开模态框让你确认删除。当用户点击模态框中的“删除”按钮后，客户就被删除了。这一整个工作流程就是一个 "Action"。
 
 ```php
 Action::make('delete')
@@ -16,7 +16,7 @@ Action::make('delete')
     ->action(fn () => $this->client->delete())
 ```
 
-Actions can also collect extra information from the user. For instance, you might have a button to email a client. When the user clicks the button, a modal opens to collect the email subject and body. When the user clicks the "Send" button in the modal, the email is sent:
+Action 也能从用户那边收集额外信息。比如，你可以有一个按钮去发送邮件给客户。当用户点击按钮时，打开模态框去收集邮件标题和内容。当用户点击模态框中的“发送”按钮后，发送邮件：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -37,76 +37,77 @@ Action::make('sendEmail')
     })
 ```
 
-Usually, actions get executed without redirecting the user away from the page. This is because we extensively use Livewire. However, actions can be much simpler, and don't even need a modal. You can pass a URL to an action, and when the user clicks on the button, they are redirected to that page:
+通常，Action 的执行不会让用户重定向离开当前页面。这是因为我们广泛使用了 Livewire。不过，Action 也可以更简单，甚至不需要模态框。你可以传递一个 URL 给 Action，当用户点击按钮时，他们就会重定向到那个页面：
 
 ```php
 Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
 ```
 
-The entire look of the action's trigger button and the modal is customizable using fluent PHP methods. We provide a sensible and consistent styling for the UI, but all of this is customizable with CSS.
+Action 触发按钮和模态框的整体外观可以使用 Fluent PHP 方法自定义。我们为 UI 提供了一个合理且一致的样式，不过所有这些都可以使用 CSS 自定义。
 
-## Types of action
+## Action 类型
 
-The concept of "actions" is used throughout Filament in many contexts. Some contexts don't support opening modals from actions - they can only open a URL, call a public Livewire method, or dispatch a Livewire event. Additionally, different contexts use different action PHP classes since they provide the developer context-aware data that is appropriate to that use-case.
+Action 概念用在整个 Filament 的许多上下文中。有些情景不支持从 Action 中打开模态框 - 他们只打开 URL、调用公共 Livewire 方法，或者发送 Livewire 事件。
+另外，不同上下文中使用不同的 PHP Action 类，因为它们提供给开发者适合该用例的上下文感知数据。
 
-### Custom Livewire component actions
+### 自定义 Livewire 组件动作
 
-You can add an action to any Livewire component in your app, or even a page in a [panel](../panels/pages).
+你可以在应用内将 Action 到任何 Livewire 组件中，甚至可以添加到[面板](../panels/pages)中的页面。
 
-These actions use the `Filament\Actions\Action` class. They can open a modal if you choose, or even just a URL.
+这些 Action 使用 `Filament\Actions\Action` 类。他们可以根据你的选择，打开模态框或者甚至只是打开 URL。
 
-If you're looking to add an action to a Livewire component, [visit this page](adding-an-action-to-a-livewire-component) in the docs. If you want to add an action to the header of a page in a panel, [visit this page](../panels/pages#header-actions) instead.
+如果你需要添加 Action 到 Livewire 组件，请在文档中[访问该页面](adding-an-action-to-a-livewire-component)。如果，你想在面板的页面头部中添加 Action，请[查阅此页面](../panels/pages#header-actions)。
 
-### Table actions
+### 表格 Action
 
-Filament's tables also use actions. Actions can be added to the end of any table row, or even in the header of a table. For instance, you may want an action to "create" a new record in the header, and then "edit" and "delete" actions on each row. Additionally, actions can be added to any table column, such that each cell in that column is a trigger for your action.
+Filament 表格也使用 Action。Action 可以添加到表格的行尾，或者甚至表格的头部。比如，你可能希望在表格头部添加一个"新建"记录的 Action，然后在每行中添加"编辑"和"删除"动作。另外，Action 可以添加到表格的任何列中，这样那一列的每个单元格都是动作的触发器。
 
-These actions use the `Filament\Tables\Actions\Action` class. They can open a modal if you choose, or even just a URL.
+这些 Action 使用 `Filament\Tables\Actions\Action` 类。他们可以根据你的选择，打开模态框或者甚至只是打开 URL。
 
-If you're looking to add an action to a table in your app, [visit this page](../tables/actions) in the docs.
+如果你想要在应用中将 Action 添加到表格中，在文档中[查看此页面](../tables/actions)。
 
-#### Table bulk actions
+#### 表格批量动作
 
-Tables also support "bulk actions". These can be used when the user selects rows in the table. Traditionally, when rows are selected, a "bulk actions" button appears in the top left corner of the table. When the user clicks this button, they are presented with a dropdown menu of actions to choose from. Bulk actions may also be added to the header of a table, next to other header actions. In this case, bulk action trigger buttons are disabled until the user selects table rows.
+表格也支持"批量动作"。当用户在表中选择多行时，可以使用这一功能。传统上，当选择行时，"批量操作"按钮会出现在表的左上角。当用户单击此按钮时，会向他们显示一个下拉菜单，其中包含可供选择的操作。批量操作也可以添加到表格的头部中，与其他头部操作相邻。在这种情况下，批量操作触发器按钮将被禁用，直到用户选择表行。
 
-These actions use the `Filament\Tables\Actions\BulkAction` class. They can open modals if you choose.
+这些 Action 使用 `Filament\Tables\Actions\BulkAction` 类。他们可以根据你的选择，打开模态框。
 
-If you're looking to add a bulk action to a table in your app, [visit this page](../tables/actions#bulk-actions) in the docs.
+如果你要在应用中添加批量动作到表格中，请查看文档中的[此页](../tables/actions#批量操作)。
 
-### Form component actions
+### 表单组件 Action
 
-Form components can contain actions. A good use case for actions inside form components would be with a select field, and an action button to "create" a new record. When you click on the button, a modal opens to collect the new record's data. When the modal form is submitted, the new record is created in the database, and the select field is filled with the newly created record. Fortunately, [this case is handled for you out of the box](../forms/fields/select#creating-new-records), but it's a good example of how form component actions can be powerful.
+表单组件可以包含 Action。表单组件内部 Action 的一个很好用例是，使用一个 Select 字段和一个"创建"新记录的操作按钮。当您单击按钮时，会打开一个模态来收集新记录的数据。当模态表单提交时，将在数据库中创建新记录，并用新创建的记录填充 Select 字段。幸运的是，[这种情况是开箱即用地处理](../forms/fields/select#创建新纪录)，不过这是一个说明表单组件的 Action 如何强大的好例子。
 
 These actions use the `Filament\Forms\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
 
-If you're looking to add an action to a form component in your app, [visit this page](../forms/actions) in the docs.
+如果你要在应用中将 Action 添加到表单组件中。请查阅文档中的[此页](../forms/actions)。
 
-### Infolist component actions
+### 信息列表组件 Action
 
 Infolist components can contain actions. These use the `Filament\Infolists\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
 
-If you're looking to add an action to an infolist component in your app, [visit this page](../infolists/actions) in the docs.
+如果你要在应用中将 Action 添加到信息列表组件中。请查阅文档中的[此页](../infolists/actions)。
 
-### Notification actions
+### 通知生成器 Action
 
-When you [send notifications](../notifications/sending-notifications), you can add actions. These buttons are rendered below the content of the notification. For example, a notification to alert the user that they have a new message should contain an action button that opens the conversation thread.
+当你[发送通知](../notifications/sending-notifications)，你也可以添加 Action。这些按钮在通知内容的下方渲染。比如，一个提醒用户有新信息的通知，应该包含一个打开对话主题的 Action 按钮。
 
 These actions use the `Filament\Notifications\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
 
-If you're looking to add an action to a notification in your app, [visit this page](../notifications/sending-notifications#adding-actions-to-notifications) in the docs.
+如果你要在应用中将 Action 添加到通知中。请查阅文档中的[此页](../notifications/sending-notifications#添加-actions-到通知)。
 
-### Global search result actions
+### 全局搜索结果 Action
 
-In the Panel Builder, there is a [global search](../panels/resources/global-search) field that allows you to search all resources in your app from one place. When you click on a search result, it leads you to the resource page for that record. However, you may add additional actions below each global search result. For example, you may want both "Edit" and "View" options for a client search result, so the user can quickly edit their profile as well as view it in read-only mode.
+在后台面板中，有一个[全局搜索](../panels/resources/global-search)字段，让你可以在应用的一个地方中搜索所有的资源。不过，你可以在每个全局搜索结果下面添加其他的 Action。比如，你可能想要"编辑"和"查看"客户端搜索结果，这样用户就可以迅速编辑他们的简介以及以只读模式查看记录。 
 
 These actions use the `Filament\GlobalSearch\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
 
-If you're looking to add an action to a global search result in a panel, [visit this page](../panels/resources/global-search#adding-actions-to-global-search-results) in the docs.
+如果你要在面板中将 Action 添加到全局搜索结果中。请查阅文档中的[此页]((../panels/resources/global-search#添加-actions-到全局搜索结果)。
 
-## Prebuilt actions
+## 预制 Action
 
-Filament includes several prebuilt actions that you can add to your app. Their aim is to simplify the most common Eloquent-related actions:
+Filament 包含了多个预制 Action，你可以将这些操作添加到你的应用中。他们的目的是简化最常见的与 Eloquent 相关的行为：
 
 - [Create](prebuilt-actions/create)
 - [Edit](prebuilt-actions/edit)
@@ -116,9 +117,9 @@ Filament includes several prebuilt actions that you can add to your app. Their a
 - [Force-delete](prebuilt-actions/force-delete)
 - [Restore](prebuilt-actions/restore)
 
-## Grouping actions
+## Action 分组
 
-You may group actions together into a dropdown menu by using an `ActionGroup` object. Groups may contain many actions, or other groups:
+你可以使用 `ActionGroup` 对象，将 Action 分组到一个下拉菜单中。分组可以包含多个 Action 或者其他分组：
 
 ```php
 ActionGroup::make([
@@ -128,4 +129,4 @@ ActionGroup::make([
 ])
 ```
 
-To learn about how to group actions, see the [Grouping actions](grouping-actions) page.
+了解更多如何对 Action 进行分组，请查看[Action 分组](grouping-actions)页面。

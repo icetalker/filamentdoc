@@ -1,64 +1,64 @@
 ---
 layout: "@layouts/BaseLayout.astro"
-githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/08-plugins/01-getting-started.md"
-title: Getting started
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/06-plugins/01-getting-started.md"
+title: 开始
 ---
 
-## Overview
+## 概述
 
-While Filament comes with virtually any tool you'll need to build great apps, sometimes you'll need to add your own functionality either for just your app or as redistributable packages that other developers can include in their own apps. This is why Filament offers a plugin system that allows you to extend its functionality.
+虽然 Filament 几乎提供了构建出色应用程序所需的任何工具，但有时你需要添加自己的功能，供自己应用或者作为发行包让其他开发人员也可以在他们的应用程序使用。这就是为什么 Filament 提供了一个插件系统，允许您扩展其功能。
 
-Before we dive in, it's important to understand the different contexts in which plugins can be used. There are two main contexts:
+在我们深入研究之前，了解插件可以使用的不同语境是很重要的。主要有两种情况：
 
-1. **Panel Plugins**: These are plugins that are used with [Panel Builders](/docs/3.x/panels/installation). They are typically used only to add functionality when used inside a Panel or as a complete Panel in and of itself. Examples of this are:
-   1. A plugin that adds specific functionality to the dashboard in the form of Widgets.
-   2. A plugin that adds a set of Resources / functionality to an app like a Blog or User Management feature.
-2. **Standalone Plugins**: These are plugins that are used in any context outside a Panel Builder. Examples of this are:
-   1. A plugin that adds custom fields to be used with the [Form Builders](/docs/3.x/forms/installation/).
-   2. A plugin that adds custom columns or filters to the [Table Builders](/docs/3.x/tables/installation/).
+1. **面板插件(Panel Plugin)**: 指的是用在[后台面板](/docs/zh-CN/3.x/panels/installation)中的插件。它们通常只用来在面板内部添加功能或者作为作为一个面板完整使用。示例：
+   1. 以 Widget 的形式为仪表板添加特定功能的插件。
+   2. 为应用程序添加一套资源/功能(如博客或用户管理功能)的插件。
+2. **独立插件(Standalone Plugins)**: 这些插件可以在面板生成器之外的任何上下文中使用。例如：
+   1. 添加自定义字段，使之能用于[表单构造器](/docs/zh-CN/3.x/forms/installation/)的插件。
+   2. 添加自定义表格列或过滤器，使之能用于[表格构造器](/docs/zh-CN/3.x/forms/installation/)插件。
 
-Although these are two different mental contexts to keep in mind when building plugins, they can be used together inside the same plugin. They do not have to be mutually exclusive.
+尽管在构建插件时需要记住这两种不同的语境，但它们可以在同一插件中一起使用。它们不必相互排斥。
 
-## Important Concepts
+## 重要概念
 
-Before we dive into the specifics of building plugins, there are a few concepts that are important to understand. You should familiarize yourself with the following before building a plugin:
+在我们深入研究构建插件的细节之前，有几个概念需要理解。在构建插件之前，您应该熟悉以下内容：
 
-1. [Laravel Package Development](https://laravel.com/docs/packages)
+1. [Laravel 包开发](https://laravel.com/docs/10.x/packages)
 2. [Spatie Package Tools](https://github.com/spatie/laravel-package-tools)
-3. [Filament Asset Management](/docs/3.x/support/assets)
+3. [Filament 资源管理](/docs/zh-CN/3.x/support/assets)
 
-### The Plugin object
+### Plugin 对象
 
-Filament v3 introduces the concept of a Plugin object that is used to configure the plugin. This object is a simple PHP class that extends the `Filament\Support\Plugin` class. This class is used to configure the plugin and is the main entry point for the plugin. It is also used to register Resources and Icons that might be used by your plugin.
+Filament v3 引入了一个 Plugin 对象，用于配置插件。该对象是一个简单的 PHP 类继承了 `Filament\Support\Plugin` 类。此类用于配置插件，而且是插件的主入口。也用作注册插件中可能使用的资源及图标。
 
-While the plugin object is extremely helpful, it is not required to build a plugin. You can still build plugins without using the plugin object as you can see in the [Building a Panel Plugin](/docs/3.x/support/plugins/build-a-panel-plugin) tutorial.
+虽然 plugin 对象十分有用，创建该对象却不是必须的。你仍然可以不使用 plugin 对象来创建插件，参考[创建面板插件教程](/docs/zh-CN/3.x/support/plugins/build-a-panel-plugin)。
 
 > **Info** 
-> The Plugin object is only used for Panel Providers. Standalone Plugins do not use this object. All configuration for Standalone Plugins should be handled in the plugin's service provider.
+> Plugin 对象只用于 Panel Providers。独立插件不使用该对象。所有独立插件的配置应该在插件的服务提供者中处理。 
 
-### Registering Assets
+### 注册资源
 
-All [asset registration](/docs/3.x/support/assets), including CSS, JS and Alpine Components, should be done through the plugin's service provider in the `packageBooted()` method. This allows Filament to register the assets with the Asset Manager and load them when needed.
+所有的 [资源注册](/docs/zh-CN/3.x/support/assets)，包括 CSS、JS 和 Alpine 组件，应该在插件服务提供者的 `packageBooted()` 方法中实现。它允许 Filament 使用资源管理器注册资源并在需要时加载。
 
-## Creating a Plugin
+## 创建插件
 
-While you can certainly build plugins from scratch, we recommend using the [Filament Plugin Skeleton](https://github.com/filamentphp/plugin-skeleton) to quickly get started. This skeleton includes all the necessary boilerplate to get you up and running quickly.
+虽然你可以从头创建插件，我们建议你使用 [Filament Plugin Skeleton](https://github.com/filamentphp/plugin-skeleton) 来快速开始。这个模板包括所有必要的样板，让你快速启动和运行。
 
-### Usage
+### 使用
 
-To use the skeleton, simply go to the GitHub repo and click the "Use this template" button. This will create a new repo in your account with the skeleton code. After that, you can clone the repo to your machine. Once you have the code on your machine, navigate to the root of the project and run the following command:
+要使用该模板，只需跳转到 GitHub 仓库并单击 "Use this template" 按钮(***当Filament处于v3 Beta时，请确保在使用模板之前切换到3.x分支***)。这将在您的帐户中创建一个带有样板代码的新仓库。之后，您可以将仓库克隆到您的机器上。当你的计算机上有了该代码后，请导航到项目的根目录并运行以下命令：
 
 ```bash
 php ./configure.php
 ```
 
-This will ask you a series of questions to configure the plugin. Once you've answered all the questions, the script will stub out a new plugin for you, and you can begin to build your amazing new extension for Filament.
+这一操作会询问你一系列问题，以配置插件。当你回答完所有问题后，脚本就会为你弹出一个新插件，你就可以开始创建新插件了。
 
-## Upgrading existing plugins
+## 升级现有插件
 
-Since every plugin varies greatly in its scope of use and functionality, there is no one size fits all approaches to upgrading existing plugins. However, one thing to note, that is consistent to all plugins is the deprecation of the `PluginServiceProvider`.
+由于每个插件的使用范围和功能都有很大差异，因此没有一种一刀切的方法来升级现有插件。然而，需要注意的一点是，与所有插件一致的是，`PluginServiceProvider` 被弃用。
 
-In your plugin service provider, you will need to change it to extend the PackageServiceProvider instead. You will also need to add a static `$name` property to the service provider. This property is used to register the plugin with Filament. Here is an example of what your service provider might look like:
+在插件服务提供者中，您需要更改它以继承 PackageServiceProvider。您还需要向服务提供者添加一个静态 `$name` 属性。此属性用于向 Filament 注册插件。以下是您的服务提供商可能的示例：
 
 ```php
 class MyPluginServiceProvider extends PackageServiceProvider
@@ -72,12 +72,12 @@ class MyPluginServiceProvider extends PackageServiceProvider
 }
 ```
 
-### Helpful links
+### 有用链接
 
-Please read this guide in its entirety before upgrading your plugin. It will help you understand the concepts and how to build your plugin.
+在升级插件之前，请完整阅读本指南。它将帮助您理解这些概念以及如何构建插件。
 
-1. [Filament Asset Management](/docs/3.x/support/assets)
-2. [Panel Plugin Development](/docs/3.x/panels/plugins)
-3. [Icon Management](docs/3.x/support/icons)
-4. [Colors Management](docs/3.x/support/colors)
-5. [Stying Customization](docs/3.x/support/style-customization)
+1. [Filament 资源管理](/docs/zh-CN/3.x/support/assets)
+2. [面板插件开发](/docs/zh-CN/3.x/panels/plugins)
+3. [Icon管理](docs/zh-CN/3.x/support/icons)
+4. [颜色管理](docs/zh-CN/3.x/support/colors)
+5. [自定义样式](docs/zh-CN/3.x/support/style-customization)

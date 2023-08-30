@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/02-getting-started.md"
-title: Getting started
+title: 开始
 ---
 
-## Overview
+## 概述
 
-Filament's infolist package allows you to [render a read-only list of data about a particular entity](adding-an-infolist-to-a-livewire-component). It's also used within other Filament packages, such as the [Panel Builder](../panels) for displaying [app resources](../panels/resources/getting-started) and [relation managers](../panels/resources/relation-managers), as well as for [action modals](../actions). Learning the features of the Infolist Builder will be incredibly time-saving when both building your own custom Livewire applications and using Filament's other packages.
+Filament 的 infolist 包允许你[渲染特定实体的只读数据列表](adding-an-infolist-to-a-livewire-component)。它同时用在其他 Filament 包(比如在[后台面板](../panels)中用于展示[应用资源](../panels/resources)及[关联管理器](../panels/resources/relation-managers))。了解信息列表的特性，可以让你在创建自定义 Livewire 应用及使用 Filament 其他包时极致地节省时间。
 
-This guide will walk you through the basics of building infolists with Filament's infolist package. If you're planning to add a new infolist to your own Livewire component, you should [do that first](adding-an-infolist-to-a-livewire-component) and then come back. If you're adding an infolist to an [app resource](../panels/resources/getting-started), or another Filament package, you're ready to go!
+本指南将引导您了解使用 Filament 的信息列表包构建信息列表的基本知识。如果你打算在自己的 Livewire 组件中添加一个新的信息列表，你应该[先添加](adding-an-infolist-to-a-livewire-component)再回来。如果你正在向[应用资源](../panels/resources)或另一个 Filament 包添加信息列表，你就可以开始了！
 
-## Defining entries
+## 定义实体
 
-The first step to building an infolist is to define the entries that will be displayed in the list. You can do this by calling the `entries()` method on an `Infolist` object. This method accepts an array of entry objects.
+创建信息列表的第一步是，定义会在列表中展示的条目。你可以在调用 `Infolist` 对象中 `entries()` 方法实现。该方法接收一个条目(entry)对象数组。
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -25,9 +25,9 @@ $infolist
     ]);
 ```
 
-Each entry is a piece of information that should be displayed in the infolist. The `TextEntry` is used for displaying text, but there are [other entry types available](entries/getting-started#available-entries).
+每个条目都是一条信息，应该显示在信息列表中。`TextEntry` 用于显示文本，但也有[其他可用的条目类型](entries/getting-started#可用条目)。
 
-Infolists within the Panel Builder and other packages usually have 2 columns by default. For custom infolists, you can use the `columns()` method to achieve the same effect:
+后台面板和其他 Filament 包中的信息列表默认通常有 2 列。对于自定义消息列表，你可以使用 `columns()` 方法获得同样的效果：
 
 ```php
 $infolist
@@ -37,7 +37,7 @@ $infolist
     ->columns(2);
 ```
 
-Now, the `content` entry will only consume half of the available width. We can use the `columnSpan()` method to make it span the full width:
+这样， `content` 条目只占用可用宽带的一半。我们可以使用 `columnSpan()` 方法，使之占用整个宽度：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -50,11 +50,11 @@ use Filament\Infolists\Components\TextEntry;
 ]
 ```
 
-You can learn more about columns and spans in the [layout documentation](layout/grid). You can even make them responsive!
+你可以在[布局文档](layout/grid)中了解更多关于列宽和跨度的更多内容。甚至可以做成响应式！
 
-## Using layout components
+## 使用布局组件
 
-The Infolist Builder allows you to use [layout components](layout/getting-started#available-layout-components) inside the schema array to control how entries are displayed. `Section` is a layout component, and it allows you to add a heading and description to a set of entries. It can also allow entries inside it to collapse, which saves space in long infolists.
+信息列表允许你在 schema 数组中使用[布局组件](layout/getting-started#可用布局组件)，以控制条目的展示方式。`Section` 是一个布局组件，它允许你将标题和描述添加到一组条目中。同时也允许折叠其中的条目，在长信息列表中节约空间。
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -74,7 +74,7 @@ use Filament\Infolists\Components\TextEntry;
 ]
 ```
 
-In this example, you can see how the `Section` component has its own `schema()` method. You can use this to nest other entries and layout components inside:
+本例中，你可以看到 `Section` 组件有它自己的 `schema()` 方法。你可以用它在内部嵌套其他条目和布局组件：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -89,11 +89,11 @@ Section::make('Media')
     ])
 ```
 
-This section now contains an [`ImageEntry`](entries/image) and a [`TextEntry`](entries/text). You can learn more about those entries and their functionalities on the respective docs pages.
+此 Section 现在包含一个 [`ImageEntry`](entries/image) 和一个 [`TextEntry`](entries/text)。你可以在相关的文档页面中了解这些 Entry 及它们的功能。
 
-## Next steps with the infolists package
+## 下一步
 
-Now you've finished reading this guide, where to next? Here are some suggestions:
+你已完成了本指南的阅读，下一步呢？以下是一些建议：
 
-- [Explore the available entries to display data in your infolist.](entries/getting-started#available-entries)
-- [Discover how to build complex, responsive layouts without touching CSS.](layout/getting-started)
+- [了解可用条目，在信息列表中展示数据。](entries/getting-started#可用条目)
+- [了解如何在不接触 CSS 的情况下构建复杂、响应式布局。](layout/getting-started)

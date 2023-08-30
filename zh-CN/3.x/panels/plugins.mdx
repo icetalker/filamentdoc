@@ -1,26 +1,26 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/12-plugins.md"
-title: Plugin development
+title: 插件开发
 ---
 
-## Overview
+## 概述
 
-The basis of Filament plugins are Laravel packages. They are installed into your Filament project via Composer, and follow all the standard techniques, like using service providers to register routes, views, and translations. If you're new to Laravel package development, here are some resources that can help you grasp the core concepts:
+Filament 插件的基础是 Laravel 包。它们通过 Composer 安装到 Filament 项目中，并遵循所有标准技术，如使用服务提供商注册路线、视图和翻译。如果你是Laravel软件包开发的新手，这里有一些资源可以帮助你掌握核心概念：
 
-- [The Package Development section of the Laravel docs](https://laravel.com/docs/packages) serves as a great reference guide.
-- [Spatie's Package Training course](https://spatie.be/products/laravel-package-training) is a good instructional video series to teach you the process step by step.
-- [Spatie's Package Tools](https://github.com/spatie/laravel-package-tools) allows you to simplify your service provider classes using a fluent configuration object.
+- [Laravel 文档的包开发章节](https://laravel.com/docs/packages) 是一个很好的参考指南。
+- [Spatie 的包训练教程](https://spatie.be/products/laravel-package-training) 是一个很好的说明视频，一步步教你处理过程。
+- [Spatie'的包工具](https://github.com/spatie/laravel-package-tools) 允许你使用 Fluent 配置对象简化服务提供者类。
 
-Filament plugins build on top of the concepts of Laravel packages and allow you to ship and consume reusable features for any Filament panel. They can be added to each panel one at a time, and are also configurable differently per-panel.
+Filament 插件是基于 Laravel 包的概念构建的，允许您为任何 Filament 面板提供和使用可重复使用的功能。它们可以一次添加到每个面板中，每个面板也可以进行不同的配置。
 
-## Configuring the panel with a plugin class
+## 使用插件类配置面板
 
-A plugin class is used to allow your package to interact with a panel [configuration](configuration) file. It's a simple PHP class that implements the `Plugin` interface. 3 methods are required:
-
-- The `getId()` method returns the unique identifier of the plugin amongst other plugins. Please ensure that it is specific enough to not clash with other plugins that might be used in the same project.
-- The `register()` method allows you to use any [configuration](configuration) option that is available to the panel. This includes registering [resources](resources/getting-started), [pages](pages), [themes](themes), [render hooks](configuration#render-hooks) and more.
-- The `boot()` method is run only when the panel that the plugin is being registered to is actually in-use. It is executed by a middleware class.
+Plugin 插件类允许你的包与面板[配置](configuration) 文件进行互动。它是一个实现 `Plugin` 接口的简单 PHP 类。3 个方法是必须的：
+ 
+- `getId()` 方法返回该插件的唯一标识符。请确保它足够具体，不会与同一项目中可能使用的其他插件发生冲突。
+- `register()` 方法允许你使用面板可用的[配置](configuration)选项。包括注册[资源](resources/getting-started)、[页面](pages)、[主题](themes)、[渲染钩子](configuration#渲染钩子)等到。
+- 只有当面板中注册的插件被实际使用时才会运行。它由中间件类执行。
 
 ```php
 <?php
@@ -59,7 +59,7 @@ class BlogPlugin implements Plugin
 }
 ```
 
-The users of your plugin can add it to a panel by instantiating the plugin class and passing it to the `plugin()` method of the [configuration](configuration):
+插件用户可以通过实例化插件类，并将其传入到[配置](configuration)的 `plugin()` 方法中，来将其加入面板中。
 
 ```php
 use DanHarrin\FilamentBlog\BlogPlugin;
@@ -74,7 +74,7 @@ public function panel(Panel $panel): Panel
 
 ### Fluently instantiating the plugin class
 
-You may want to add a `make()` method to your plugin class to provide a fluent interface for your users to instantiate it. In addition, by using the container (`app()`) to instantiate the plugin object, it can be replaced with a different implementation at runtime:
+你可能想将 `make()` 方法加入到插件类，以提供 Fluent 接口，供用户实例化。另外，使用容器(`app()`)来实例化插件对象，它在运行时使用不同的实现替换。
 
 ```php
 use Filament\Contracts\Plugin;
@@ -90,7 +90,7 @@ class BlogPlugin implements Plugin
 }
 ```
 
-Now, your users can use the `make()` method:
+现在，插件用户就可以使用 `make()` 方法：
 
 ```php
 use DanHarrin\FilamentBlog\BlogPlugin;
@@ -104,9 +104,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Configuring plugins per-panel
+### 按照面板配置插件
 
-You may add other methods to your plugin class, which allow your users to configure it. We suggest that you add both a setter and a getter method for each option you provide. You should use a property to store the preference in the setter and retrieve it again in the getter:
+你可以将其他方法添加到插件类，以允许你的用户对其进行配置。我们建议为你提供每个选项同时添加 setter 和 getter 方法。你可以使用一个属性来存储 setter 中的偏好，并在 getter 对其进行中检索：
 
 ```php
 use DanHarrin\FilamentBlog\Resources\AuthorResource;
@@ -153,13 +153,13 @@ class BlogPlugin implements Plugin
 }
 ```
 
-Additionally, you can use the unique ID of the plugin to access any of its configuration options from outside the plugin class. To do this, pass the ID to the `filament()` method:
+此外，你可以使用插件的唯一 ID，来访问插件类外部的任何配置选项。为此，请将 ID 传入到 `filament()` 方法中： 
 
 ```php
 filament('blog')->hasAuthorResource()
 ```
 
-You may wish to have better type safety and IDE autocompletion when accessing configuration. It's completely up to you how you choose to achieve this, but one idea could be adding a static method to the plugin class to retrieve it:
+你可能希望在访问配置时，获得更好的类型安全及 IDE 补全。具体如何实现完全由你决定，不过其中一个方式是，添加一个静态方法到插件类中来检索它：
 
 ```php
 use Filament\Contracts\Plugin;
@@ -175,17 +175,17 @@ class BlogPlugin implements Plugin
 }
 ```
 
-Now, you can access the plugin configuration using the new static method:
+现在，你可以使用新的静态方法访问插件配置：
 
 ```php
 BlogPlugin::get()->hasAuthorResource()
 ```
 
-## Distributing a panel in a plugin
+## 用插件的方式发布面板
 
-It's very easy to distribute an entire panel in a Laravel package. This way, a user can simply install your plugin and have an entirely new part of their app pre-built.
+以 Laravel 包的方式发布整个面板很简单。通过这种方法，用户可以轻松安装插件并拥有整个预制应用。
 
-When [configuring](configuration) a panel, the configuration class extends the `PanelProvider` class, and that is a standard Laravel service provider. You can use it as a service provider in your package:
+配置(configuration)面板时，配置类继承了 `PanelProvider` 类，且它是一个标准的 Laravel 服务提供者。你可以在包中以服务提供者的方式使用它：
 
 ```php
 <?php
@@ -221,7 +221,7 @@ class BlogPanelProvider extends PanelProvider
 }
 ```
 
-You should then register it as a service provider in the `composer.json` of your package:
+接下来你应该在包的 `composer.json` 中将其注册为服务提供者：
 
 ```json
 "extra": {

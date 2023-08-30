@@ -1,39 +1,33 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/01-installation.md"
-title: Installation
+title: 安装
 ---
 
-**The Notifications package is pre-installed with the [Panel Builder](/docs/panels).** This guide is for using the Notifications package in a custom TALL Stack application (Tailwind, Alpine, Livewire, Laravel).
+**该 Notifications 包已经在[面板构造器](../panels/installation)中预安装了。** 本教程适合于在自定义 TALL 栈(Tailwind, Alpine, Livewire, Laravel)应用中使用该通知包。
 
-## Requirements
+## 要求
 
-Filament requires the following to run:
+运行 Filament 有一些基础要求：
 
 - PHP 8.1+
-- Laravel v10.0+
+- Laravel v9.0+
 - Livewire v3.0+
 
-> **Livewire v3 is still in beta**
-> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Livewire v3 in production.
+> ** Livewire v3 仍处于 beta 测试阶段 **
+> 虽说破坏性更新应该最小化，我们推荐你在将 Livewire 用于生产前彻底地测试一下应用。
 
-First, since Livewire v3 is still in beta, make sure that the `minimum-stability` in your `composer.json` is set to `dev`:
-
-```json
-"minimum-stability": "dev",
-```
-
-Then, require the Notifications package using Composer:
+首先使用 Composer 导入此通知包：
 
 ```bash
-composer require filament/notifications:"^3.0-stable" -W
+composer require filament/notifications:"^3.0"
 ```
 
-## New Laravel projects
+## 全新 Laravel 项目
 
-To quickly get started with Filament in a new Laravel project, run the following commands to install [Livewire](https://livewire.laravel.com), [Alpine.js](https://alpinejs.dev), and [Tailwind CSS](https://tailwindcss.com):
+要在新的 Laravel 项目中快速开始使用 Filament，你可以运行如下命令安装 [Livewire](https://laravel-livewire.com)、[Alpine.js](https://alpinejs.dev) 和 [Tailwind CSS](https://tailwindcss.com)。
 
-> Since these commands will overwrite existing files in your application, only run this in a new Laravel project!
+> 由于这些命令会粗暴地覆盖你应用中现有的文件，因此我们只推荐在新的 Laravel 项目中运行这个命令。
 
 ```bash
 php artisan filament:install --scaffold --notifications
@@ -43,23 +37,23 @@ npm install
 npm run dev
 ```
 
-## Existing Laravel projects
+## 现有的 Laravel 项目
 
-Run the following command to install the Notifications package assets:
+首先，运行以下命令安装包静态资源：
 
 ```bash
 php artisan filament:install --notifications
 ```
 
-### Installing Tailwind CSS
+### 安装 Tailwind CSS
 
-Run the following command to install Tailwind CSS with the Tailwind Forms and Typography plugins:
+运行如下命令安装 Tailwind CSS 及 Tailwind Forms 和 Typography 插件：
 
 ```bash
 npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
 ```
 
-Create a new `tailwind.config.js` file and add the Filament `preset` *(includes the Filament color scheme and the required Tailwind plugins)*:
+新建一个 `tailwind.config.js` 文件并添加了 Filament 的 `preset` *(引入 Filament 颜色以及必要的 Tailwind 插件)*： 
 
 ```js
 import preset from './vendor/filament/support/tailwind.config.preset'
@@ -74,9 +68,9 @@ export default {
 }
 ```
 
-### Configuring styles
+### 配置样式
 
-Add Tailwind's CSS layers to your `resources/css/app.css`:
+将 Tialwind CSS layer 添加到在 `resources/css/app.css`:
 
 ```css
 @tailwind base;
@@ -84,7 +78,7 @@ Add Tailwind's CSS layers to your `resources/css/app.css`:
 @tailwind utilities;
 ```
 
-Create a `postcss.config.js` file in the root of your project and register Tailwind CSS and Autoprefixer as plugins:
+在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS 和 Autoprefixer 注册成插件：
 
 ```js
 export default {
@@ -95,8 +89,9 @@ export default {
 }
 ```
 
-### Automatically refreshing the browser
-You may also want to update your `vite.config.js` file to refresh the page automatically when Livewire components are updated:
+### 自动刷新浏览器
+
+你可能也想更新 `vite.config.js` 文件，以在 Livewire 组件更新后的刷新页面:
 
 ```js
 import { defineConfig } from 'vite'
@@ -115,13 +110,13 @@ export default defineConfig({
 })
 ```
 
-### Compiling assets
+### 编译静态资源
 
-Compile your new CSS and Javascript assets using `npm run dev`.
+使用 `npm run dev` 编译新的 CSS 和 JS 资源。
 
-### Configuring your layout
+### 配置布局
 
-Create a new `resources/views/components/layouts/app.blade.php` layout file for Livewire components:
+最后，为 Livewire 组件创建一个新的 `resources/views/components/layouts/app.blade.php` 布局文件：
 
 ```blade
 <!DOCTYPE html>
@@ -154,19 +149,19 @@ Create a new `resources/views/components/layouts/app.blade.php` layout file for 
 </html>
 ```
 
-## Publishing configuration
+## 发布配置
 
-You can publish the package configuration using the following command (optional):
+你可以使用如下命令发布此包的配置(可选)：
 
 ```bash
 php artisan vendor:publish --tag=filament-config
 ```
 
-## Upgrading
+## 升级
 
-> Upgrading from Filament v2? Please review the [upgrade guide](upgrade-guide).
+> 如果你是从 Filament v2 升级，请查看[升级向导](upgrade-guide)。
 
-Filament automatically upgrades to the latest non-breaking version when you run `composer update`. If you notice that Filament is not upgrading automatically, ensure that the `filament:upgrade` command is present in your `composer.json`:
+当你使用 `composer update` 时，Filament 会自动升级到最新的非破坏性版本。如果你发现 Filament 没有自动升级，请确保 `filament:upgrade` 命令出现在 `compser.json` 中：
 
 ```json
 "post-autoload-dump": [
@@ -175,7 +170,7 @@ Filament automatically upgrades to the latest non-breaking version when you run 
 ],
 ```
 
-If you prefer not to use automatic upgrades, remove the `filament:upgrade` command from your `composer.json` and run the following commands:
+如果你不希望自动升级，请从 `composer.json` 中移除 `filament:upgrade`，并运行如下命令：
 
 ```bash
 composer update

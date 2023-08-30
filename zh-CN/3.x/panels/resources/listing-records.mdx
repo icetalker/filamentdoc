@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/02-listing-records.md"
-title: Listing records
+title: 展示记录
 ---
 
-## Using tabs to filter the records
+## 使用标签页过滤记录
 
-You can add tabs above the table, which can be used to filter the records based on some predefined conditions. Each tab can scope the Eloquent query of the table in a different way. To register tabs, add a `getTabs()` method to the List page class, and return an array of `Tab` objects:
+你可以在表格上面添加标签页，使之基于预定义条件过滤记录。每个标签页以不同的方式设置表格的 Eloquent 查询范围。要注册标签页，在列表页类中添加 `getTabs()` 方法，并返回一个 `Tab` 对象数组：
 
 ```php
 use Filament\Resources\Pages\ListRecords\Tab;
@@ -24,9 +24,9 @@ public function getTabs(): array
 }
 ```
 
-### Customizing the filter tab labels
+### 自定义过滤器标签页标签
 
-The keys of the array will be used as identifiers for the tabs, so they can be persisted in the URL's query string. The label of each tab is also generated from the key, but you can override that by passing a label into the `make()` method of the tab:
+数组的键将用作选项卡的标识符，因此它们可以持久化在 URL 的查询字符串中。每个选项卡的标签也是由键生成的，但您可以通过将标签传递到选项卡的 `make()` 方法来覆盖它：
 
 ```php
 use Filament\Resources\Pages\ListRecords\Tab;
@@ -44,9 +44,9 @@ public function getTabs(): array
 }
 ```
 
-### Adding icons to filter tabs
+### 添加图标到过滤器标签页
 
-You can add icons to the tabs by passing an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) into the `icon()` method of the tab:
+你可以将[图标](https://blade-ui-kit.com/blade-icons?set=1#search)传递到标签页的 `icon` 方法，将图标添加到标签页中：
 
 ```php
 use Filament\Resources\Pages\ListRecords\Tab;
@@ -55,7 +55,7 @@ Tab::make()
     ->icon('heroicon-m-user-group')
 ```
 
-You can also change the icon's position to be after the label instead of before it, using the `iconPosition()` method:
+你也可以使用 `iconPosition()` 方法修改图标的位置，使其从标签前面移到标签后面：
 
 ```php
 use Filament\Support\Enums\IconPosition;
@@ -65,9 +65,9 @@ Tab::make()
     ->iconPosition(IconPosition::After)
 ```
 
-### Adding badges to filter tabs
+### 添加徽章到过滤器标签页
 
-You can add badges to the tabs by passing a string into the `badge()` method of the tab:
+你可以将字符串传递给标签页的 `badge()` 方法，在标签页中添加徽章：
 
 ```php
 use Filament\Resources\Pages\ListRecords\Tab;
@@ -76,19 +76,19 @@ Tab::make()
     ->badge(Customer::query()->where('active', true)->count())
 ```
 
-As in the example above, this could be quite useful for showing the number of records that pass that filter.
+如上例所示，该方法对于统计过滤器中的记录数量非常有用。
 
-## Authorization
+## 授权
 
-For authorization, Filament will observe any [model policies](https://laravel.com/docs/authorization#creating-policies) that are registered in your app.
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。
 
-Users may access the List page if the `viewAny()` method of the model policy returns `true`.
+如果模型策略的 `viewAny()` 方法返回 `true`，则用户可以访问列表页。
 
-The `reorder()` method is used to control [reordering a record](#reordering-records).
+`reorder()` 方法用于控制[重排记录](#重排记录)。
 
-## Customizing the table Eloquent query
+## 自定义表格 Eloquent 查询
 
-Although you can [customize the Eloquent query for the entire resource](getting-started#customizing-the-resource-eloquent-query), you may also make specific modifications for the List page table. To do this, use the `modifyQueryUsing()` method on the List page class:
+尽管你可以[为整个资源自定义 Eloquent 查询](getting-started#自定义资源-eloquent-查询)，你也可以为列表页表格进行特定修改。为此，请在列表页类中使用 `modifyQueryUsing()` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -101,17 +101,17 @@ public function table(Table $table): Table
 }
 ```
 
-## Custom list page view
+## 自定义列表页视图
 
-For further customization opportunities, you can override the static `$view` property on the page class to a custom view in your app:
+要进一步自定义，你可以重写页面类的静态 `$view` 属性：
 
 ```php
 protected static string $view = 'filament.resources.users.pages.list-users';
 ```
 
-This assumes that you have created a view at `resources/views/filament/resources/users/pages/list-users.blade.php`.
+这假定了你已经创建了一个视图文件 `resources/views/filament/resources/users/pages/list-users.blade.php`。
 
-Here's a basic example of what that view might contain:
+下例是视图可能包含内容的简单示例：
 
 ```blade
 <x-filament-panels::page>
@@ -119,4 +119,4 @@ Here's a basic example of what that view might contain:
 </x-filament-panels::page>
 ```
 
-To see everything that the default view contains, you can check the `vendor/filament/filament/resources/views/resources/pages/list-records.blade.php` file in your project.
+要查看默认视图中包含的内容，你可以查看项目的 `vendor/filament/filament/resources/views/resources/pages/list-records.blade.php` 文件。

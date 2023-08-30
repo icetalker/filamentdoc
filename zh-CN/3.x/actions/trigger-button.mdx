@@ -1,21 +1,21 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/03-trigger-button.md"
-title: Trigger button
+title: 触发按钮
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-All actions have a trigger button. When the user clicks on it, the action is executed - a modal will open, a closure function will be executed, or they will be redirected to a URL.
+所有的 Action 都有一个触发按钮。当用户点击按钮时，动作便执行了 - 打开一个模态框、执行一个闭包函数或者重定向到一个 URL。
 
-This page is about customizing the look of that trigger button.
+本页讲的是如何自定义触发按钮外观。
 
-## Choosing a trigger style
+## 选择触发样式
 
-Out of the box, action triggers have 3 styles - "button", "link", and "icon button".
+开箱即用，操作触发器有 3 个样式 - “按钮”、“链接”及“图标按钮”。
 
-"Button" triggers have a background color, label, and optionally an [icon](#setting-an-icon). Usually, this is the default button style, but you can use it manually with the `button()` method:
+“按钮”触发器有背景色、标签及可选的[图标](#设置图标)。通常，默认使用按钮样式，不过你页可以使用 `button()` 方法手动启用。
 
 ```php
 Action::make('edit')
@@ -24,7 +24,7 @@ Action::make('edit')
 
 <AutoScreenshot name="actions/trigger-button/button" alt="Button trigger" version="3.x" />
 
-"Link" triggers have no background color. They must have a label and optionally an [icon](#setting-an-icon). They look like a link that you might find embedded within text. You can switch to that style with the `link()` method:
+“链接”触发器没有背景色。它必须有一个标签及一个可选的[图标](#设置图标)。它就像你文本中嵌入的链接一样。你可以使用 `link()` 方法切换到该样式：
 
 ```php
 Action::make('edit')
@@ -33,7 +33,7 @@ Action::make('edit')
 
 <AutoScreenshot name="actions/trigger-button/link" alt="Link trigger" version="3.x" />
 
-"Icon button" triggers are circular buttons with an [icon](#setting-an-icon) and no label. You can switch to that style with the `iconButton()` method:
+“图标按钮”触发器是一个带有[图标](#设置图标)的圆形按钮，不带标签。你可以使用 `iconButton()` 方法切换到该样式：
 
 ```php
 Action::make('edit')
@@ -43,9 +43,9 @@ Action::make('edit')
 
 <AutoScreenshot name="actions/trigger-button/icon-button" alt="Icon button trigger" version="3.x" />
 
-### Using an icon button on mobile devices only
+### 在移动端只使用图标按钮
 
-You may want to use a button style with a label on desktop, but remove the label on mobile. This will transform it into an icon button. You can do this with the `labeledFrom()` method, passing in the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) at which you want the label to be added to the button:
+你可能会在桌面端使用带标签的按钮样式，不过在移动端删除标签。这就将其转换成了图标按钮。你可以使用 `labeledFrom()` 方法， 传入你希望添加标签的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)来实现该功能。
 
 ```php
 Action::make('edit')
@@ -54,9 +54,9 @@ Action::make('edit')
     ->labeledFrom('md')
 ```
 
-## Setting a label
+## 设置图标
 
-By default, the label of the trigger button is generated from its name. You may customize this using the `label()` method:
+默认情况下， 触发按钮的标签是由其名称生成。你也可以使用 `label()` 方法自定义标签：
 
 ```php
 Action::make('edit')
@@ -64,7 +64,7 @@ Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
 ```
 
-Optionally, you can have the label automatically translated [using Laravel's localization features](https://laravel.com/docs/localization) with the `translateLabel()` method:
+可选地，你可以使用 `translateLabel()` 方法[利用 Laravel 的本地化特性](https://laravel.com/docs/localization)自动翻译标签。
 
 ```php
 Action::make('edit')
@@ -72,9 +72,9 @@ Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
 ```
 
-## Setting a color
+## 设置颜色
 
-Buttons may have a color to indicate their significance. It may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+按钮有一个颜色来指示它们的重要性。可以是 `danger`、`gray`、`info`、`primary`、`success` 和 `warning`:
 
 ```php
 Action::make('delete')
@@ -83,22 +83,20 @@ Action::make('delete')
 
 <AutoScreenshot name="actions/trigger-button/danger" alt="Red trigger" version="3.x" />
 
-## Setting a size
+## 设置大小
 
-Buttons come in 3 sizes - `ActionSize::Small`, `ActionSize::Medium` or `ActionSize::Large`. You can change the size of the action's trigger using the `size()` method:
+按钮有三个尺寸 - `sm`、`md` 或 `lg`。使用 `size()` 方法可以修改操作触发器的大小：
 
 ```php
-use Filament\Support\Enums\ActionSize;
-
 Action::make('create')
-    ->size(ActionSize::Large)
+    ->size('lg')
 ```
 
 <AutoScreenshot name="actions/trigger-button/large" alt="Large trigger" version="3.x" />
 
-## Setting an icon
+## 设置图标
 
-Buttons may have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to add more detail to the UI. You can set the icon using the `icon()` method:
+按钮可能有[图标](https://blade-ui-kit.com/blade-icons?set=1#search)，用来添加更多细节到 UI 中。你可以使用 `icon()` 方法设置图标。
 
 ```php
 Action::make('edit')
@@ -108,22 +106,20 @@ Action::make('edit')
 
 <AutoScreenshot name="actions/trigger-button/icon" alt="Trigger with icon" version="3.x" />
 
-You can also change the icon's position to be after the label instead of before it, using the `iconPosition()` method:
+你可以使用 `iconPosition()` 方法修改图标的位置使之放在标签之后：
 
 ```php
-use Filament\Support\Enums\IconPosition;
-
 Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
     ->icon('heroicon-m-pencil-square')
-    ->iconPosition(IconPosition::After)
+    ->iconPosition('after')
 ```
 
 <AutoScreenshot name="actions/trigger-button/icon-after" alt="Trigger with icon after the label" version="3.x" />
 
-## Authorization
+## 授权
 
-You may conditionally show or hide actions for certain users. To do this, you can use either the `visible()` or `hidden()` methods:
+你可以条件性显示或隐藏特定用户的操作。可以使用 `visible()` 或 `hidden()` 方法，实现该功能：
 
 ```php
 Action::make('edit')
@@ -135,27 +131,27 @@ Action::make('edit')
     ->hidden(! auth()->user()->can('update', $this->post))
 ```
 
-This is useful for authorization of certain actions to only users who have permission.
+这个功能可用于授权特定操作给有权限的用户。
 
-### Disabling a button
+### 禁用按钮
 
-If you want to disable a button instead of hiding it, you can use the `disabled()` method:
+如果想要禁用按钮而非隐藏，你可以使用 `disabled()` 方法：
 
 ```php
 Action::make('delete')
     ->disabled()
 ```
 
-You can conditionally disable a button by passing a boolean to it:
+你可以传入一个布尔值条件性地禁用按钮：
 
 ```php
 Action::make('delete')
     ->disabled(! auth()->user()->can('delete', $this->post))
 ```
 
-## Registering keybindings
+## 注册键盘绑定
 
-You can attach keyboard shortcuts to trigger buttons. These use the same key codes as [Mousetrap](https://craig.is/killing/mice):
+你可以将键盘快捷键附加到触发按钮上。这一行为使用与 [Mousetrap](https://craig.is/killing/mice) 一样的 Key Code：
 
 ```php
 use Filament\Actions\Action;
@@ -165,9 +161,9 @@ Action::make('save')
     ->keyBindings(['command+s', 'ctrl+s'])
 ```
 
-## Adding a badge to the corner of the button
+## 添加徽章到按钮的角上
 
-You can add a badge to the corner of the button, to display whatever you want. It's useful for displaying a count of something, or a status indicator:
+你可以添加徽章到按钮的角上，显示任何你想展示的。比如，统计数或状态指示器：
 
 ```php
 use Filament\Actions\Action;
@@ -180,7 +176,7 @@ Action::make('filter')
 
 <AutoScreenshot name="actions/trigger-button/badge" alt="Trigger with badge" version="3.x" />
 
-You can also pass a color to be used for the badge, which can be either `danger`, `gray`, `info`, `primary`, `success` and `warning`:
+你也可以传递徽章使用颜色，这个值可以是 `danger`、`gray`、`info`、`primary`、`success` 及 `warning`：
 
 ```php
 use Filament\Actions\Action;
@@ -194,9 +190,9 @@ Action::make('filter')
 
 <AutoScreenshot name="actions/trigger-button/success-badge" alt="Trigger with green badge" version="3.x" />
 
-## Outlined button style
+## 按钮样式轮廓
 
-When you're using the "button" trigger style, you might wish to make it less prominent. You could use a different [color](#setting-a-color), but sometimes you might want to make it outlined instead. You can do this with the `outlined()` method:
+使用“按钮”触发器样式时，你可能希望使其不那么突出。你可以使用不同[颜色](#设置颜色)，不过有时你会希望使其轮廓分明。你可以使用 `outlined()` 方法实现该功能：
 
 ```php
 use Filament\Actions\Action;
@@ -209,9 +205,9 @@ Action::make('edit')
 
 <AutoScreenshot name="actions/trigger-button/outlined" alt="Outlined trigger button" version="3.x" />
 
-## Adding extra HTML attributes
+## 添加额外的 HTML 属性
 
-You can pass extra HTML attributes to the button which will be merged onto the outer DOM element. Pass an array of attributes to the `extraAttributes()` method, where the key is the attribute name and the value is the attribute value:
+你可以传递额外的 HTML 属性给按钮，使其合并到外部 DOM 元素。把属性名作为数组键、属性值作为数组值，将一个属性数组传递给 `extraAttributes()` 方法：
 
 ```php
 use Filament\Actions\Action;
@@ -223,7 +219,7 @@ Action::make('edit')
     ])
 ```
 
-If you pass CSS classes in a string, they will be merged with the default classes that already apply to the other HTML element of the button:
+如果你以字符串传入 CSS 类，这些类会与已经应用到该按钮的其他 HTML 元素的默认类合并：
 
 ```php
 use Filament\Actions\Action;

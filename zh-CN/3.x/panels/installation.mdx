@@ -1,59 +1,60 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/01-installation.md"
-title: Installation
+title: 安装
 ---
 
-## Requirements
+## 要求
 
-Filament requires the following to run:
+运行 Filament 有一些基础要求：
 
 - PHP 8.1+
 - Laravel v10.0+
 - Livewire v3.0+
 
-> **Livewire v3 is still in beta!**<br />
-> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
+> ** Livewire v3 仍处于 beta 测试阶段 **
+> 虽说破坏性更新应该最小化，我们推荐你在将 Livewire 用于生产前彻底地测试一下应用。
 
-## Installation
+## 安装
 
-> If you are upgrading from Filament v2, please review the [upgrade guide](upgrade-guide).
+> 如果你是从 Filament v2 升级，请查看[升级向导](upgrade-guide)。
 
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
+首先，Livewire V3 仍然处于 Beta 阶段，请确保将 `composer.json` 中的 `minimum-stability` 设置成 `dev`:
 
 ```json
-"minimum-stability": "dev",
+"minimum-stability": "dev"
 ```
 
-Install the Filament Panel Builder by running the following commands in your Laravel project directory:
+然后安装 Filament 面板构造器，在 Laravl 项目目录下运行如下命令：
 
 ```bash
 composer require filament/filament:"^3.0-stable" -W
-
 php artisan filament:install --panels
 ```
 
-This will create and register a new [Laravel service provider](https://laravel.com/docs/providers) called `app/Providers/Filament/AdminPanelProvider.php`.
+这段命令将会创建并注册一个新的 [Laravel 服务提供者](https://laravel.com/docs/providers)，叫做 `app\Providers\Filament\AdminPanelProvider`.
 
-> If you get an error when accessing your panel, check that the service provider was registered in your `config/app.php`. If not, you should manually add it to the `providers` array.
+> 如果访问面板时出错，请检查该服务提供者有没有在 `config/app.php` 中注册。如果没有，你应该手动将其添加到 `providers` 数组中。
 
-## Create a user
-You can create a new user account with the following command:
+## 创建用户
+
+如果还没有用户，你可以使用以下命令创建新用户：
 
 ```bash
 php artisan make:filament-user
 ```
 
-Open `/admin` in your web browser, sign in, and start building your app!
+访问 `/admin` 并登录，你现在可以开始创建自己的应用了! 
 
-Not sure where to start? Review the [Getting Started guide](getting-started) to learn how to build a complete Filament admin panel.
+不确定应该从哪里开始？请浏览[开始向导](getting-started)，学习如何构建一个完整登录的 Filament 管理后台。
 
-## Using other Filament packages
-The Filament Panel Builder pre-installs the [Form Builder](/docs/forms), [Table Builder](/docs/tables), [Notifications](/docs/notifications), [Actions](/docs/actions), [Infolists](/docs/infolists), and [Widgets](/docs/widgets) packages. No other installation steps are required to use these packages within a panel.
+## 使用其他 Filament 包
 
-## Deploying to production
+Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/forms)、[表格构造器](/docs/zh-CN/tables)、[通知生成器](/docs/zh-CN/notifications)、[Action](/docs/zh-CN/actions)、[信息列表](/docs/zh-CN/infolists)及 [Widget] 包。因此在面板中无需再行安装就能使用。
 
-By default, all `User` models can access Filament locally. However, when deploying to production, you must update your `App\Models\User.php` to implement the `FilamentUser` contract — ensuring that only the correct users can access your panel:
+## 部署到生成环境
+
+默认情况下，所有的 `App\Models\User` 在本地下都可以访问 Filament。要允许用户在生成环境中访问，你还需要采取一些额外的措施来确保只有授权的用户可以访问该应用。
 
 ```php
 <?php
@@ -75,45 +76,41 @@ class User extends Authenticatable implements FilamentUser
 }
 ```
 
-> If you don't complete these steps, a 403 Forbidden error will be returned when accessing the app in production.
+> 如果你没有完成这些步骤，当你在生产环境中试图访问应用时，会出现 403 错误。
 
-Learn more about [users](users).
+了解更多[用户](users)相关信息。
 
-## Publishing configuration
+## 发布配置
 
-You can publish the Filament package configuration (if needed) using the following command:
+你可以使用如下命令发布配置文件：
 
 ```bash
 php artisan vendor:publish --tag=filament-config
 ```
 
-## Publishing translations
+## 发布翻译文件
 
-You can publish the language files for translations (if needed) with the following command:
-
-```bash
-php artisan vendor:publish --tag=filament-panels-translations
-```
-
-Since this package depends on other Filament packages, you can publish the language files for those packages with the following commands:
+可以使用如下命令可以发布语言文件供翻译：
 
 ```bash
-php artisan vendor:publish --tag=filament-actions-translations
-
-php artisan vendor:publish --tag=filament-forms-translations
-
-php artisan vendor:publish --tag=filament-notifications-translations
-
-php artisan vendor:publish --tag=filament-tables-translations
-
 php artisan vendor:publish --tag=filament-translations
 ```
 
-## Upgrading
+由于此包依赖于其他 Filament 包，因此你还可以使用如下命令发布语言文件：
 
-> Upgrading from Filament v2? Please review the [upgrade guide](upgrade-guide).
+```bash
+php artisan vendor:publish --tag=filament-actions-translations
+php artisan vendor:publish --tag=filament-forms-translations
+php artisan vendor:publish --tag=filament-notifications-translations
+php artisan vendor:publish --tag=filament-tables-translations
+php artisan vendor:publish --tag=filament-support-translations
+```
 
-Filament automatically upgrades to the latest non-breaking version when you run `composer update`. If you notice that Filament is not upgrading automatically, ensure that the `filament:upgrade` command is present in your `composer.json`:
+## 升级
+
+> 如果你是从 Filament v2 升级，请查看[升级向导](upgrade-guide)。
+
+当你使用 `composer update` 时，Filament 会自动升级到最新的非破坏性版本。Filament 不会自动升级，请确保 `filament:upgrade` 命令出现在 `compser.json` 中：
 
 ```json
 "post-autoload-dump": [
@@ -122,10 +119,9 @@ Filament automatically upgrades to the latest non-breaking version when you run 
 ],
 ```
 
-If you prefer not to use automatic upgrades, remove the `filament:upgrade` command from your `composer.json` and run the following commands:
+如果你倾向于不去自动升级，请从 `composer.json` 中移除 `filament:upgrade`，并运行如下命令：
 
 ```bash
 composer update
-
 php artisan filament:upgrade
 ```

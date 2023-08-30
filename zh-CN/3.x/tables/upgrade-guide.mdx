@@ -4,94 +4,69 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/doc
 title: Upgrading from v2.x
 ---
 
-> If you see anything missing from this guide, please do not hesitate to [make a pull request](https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/11-upgrade-guide.md) to our repository! Any help is appreciated!
+> 如果你发现本指南中有任何遗落，请[发起 PR](https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/11-upgrade-guide.md) 到官方仓库！
 
-## New requirements
+## 新的要求
 
-- Laravel v10.0+
+- Laravel v9.0+
 - Livewire v3.0+
 
-Please upgrade Filament before upgrading to Livewire v3. Instructions on how to upgrade Livewire can be found [here](https://livewire.laravel.com/docs/upgrading).
+## 自动升级
 
-> **Livewire v3 is still in beta!**<br />
-> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
-
-## Upgrading automatically
-
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
-
-```json
-"minimum-stability": "dev",
-```
-
-The easiest way to upgrade your app is to run the automated upgrade script. This script will automatically upgrade your application to the latest version of Filament, and make changes to your code which handle most breaking changes.
+升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
 
 ```bash
-composer require filament/upgrade:"^3.0-stable" -W --dev
+composer require filament/upgrade:"^3.0" --dev
 vendor/bin/filament-v3
 ```
 
-Make sure to carefully follow the instructions, and review the changes made by the script. You may need to make some manual changes to your code afterwards, but the script should handle most of the repetitive work for you.
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，但脚本应该已经为您处理了大部分重复工作。
 
-Finally, you must run `php artisan filament:install` to finalize the Filament v3 installation. This command must be run for all new Filament projects.
+最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
 
-You can now `composer remove filament/upgrade` as you don't need it anymore.
+然后，你可以运行 `composer remove filament/upgrade`，因为你不在需要它了。
 
-> Some plugins you're using may not be available in v3 just yet. You could temporarily remove them from your `composer.json` file until they've been upgraded, replace them with a similar plugins that are v3-compatible, wait for the plugins to be upgraded before upgrading your app, or even write PRs to help the authors upgrade them.
+> 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
 
-## Upgrading manually
+## 手动升级
 
-Since Livewire v3 is still in beta, set the `minimum-stability` in your `composer.json` to `dev`:
+### 高影响更新
 
-```json
-"minimum-stability": "dev",
-```
+#### 配置文件重命名并与其他 Filament 包合并
 
-### High-impact changes
-
-#### Config file renamed and combined with other Filament packages
-
-Only one config file is now used for all Filament packages. Most configuration has been moved into other parts of the codebase, and little remains. You should use the v3 documentation as a reference when replace the configuration options you did modify. To publish the new configuration file and remove the old one, run:
+现在所有的 Filament 包共有一个配置文件。大部分配置已经转移到代码库的其他位置，只留下了少数。在替换您修改过的配置选项时，应该使用 v3 文档作为参考。要发布新配置文件并删除旧配置文件，请运行：
 
 ```bash
 php artisan vendor:publish --tag=filament-config --force
 rm config/tables.php
 ```
 
-#### `TABLES_FILESYSTEM_DRIVER` .env variable
+#### `TABLES_FILESYSTEM_DRIVER` .env 环境变量
 
-The `TABLES_FILESYSTEM_DRIVER` .env variable has been renamed to `FILAMENT_FILESYSTEM_DISK`. This is to make it more consistent with Laravel, as Laravel v9 introduced this change as well. Please ensure that you update your .env files accordingly, and don't forget production!
+`TABLES_FILESYSTEM_DRIVER` .env 环境变量被重命名为 `FILAMENT_FILESYSTEM_DISK`。这个更新是为了使之与 Laravel 更加一致，因为 Laravel 9 也引入了这一更新。请确保相应地更新 .env 文件，同时别忘记生产环境！
 
-#### New `@filamentScripts` and `@filamentStyles` Blade directives
+#### 新增 `@filamentScripts` 及 `@filamentStyles` Blade 模板指令
 
-The `@filamentScripts` and `@filamentStyles` Blade directives must be added to your Blade layout file/s. Since Livewire 3 no longer uses similar directives, you can replace `@livewireScripts` with `@filamentScripts`  and `@livewireStyles` with `@filamentStyles`.
+`@filamentScripts` 和 `@filamentStyles` 模板指令必须添加到 Blade 布局文件中。由于 Livewire 3 不再使用类似的指令，你可以将 `@livewireScripts` 替换为 `@filamentScripts`，将 `@livewireStyles` 替换为 `@filamentStyles`。
 
-#### CSS file removed
+#### CSS 文件移除
 
-The CSS file for form components, `module.esm.css`, has been removed. Check `resources/css/app.css`. That CSS is now automatically loaded by `@filamentStyles`.
+表单组件的 CSS 文件 - `module.esm.css` - 已经被移除。查看 `resources/css/app.css`。那个 CSS 现在由 `@filamentStyles` 自动加载。
 
-#### JavaScript files removed
+#### JavaScript 文件移除
 
-You no longer need to import the `FormsAlpinePlugin` in your JavaScript files. Alpine plugins are now automatically loaded by `@filamentScripts`.
+你不再需要在 JavaScript 文件中引入 `FormsAlpinePlugin`。Alpine 插件现在由 `@filamentScripts` 自动加载。
 
-#### Heroicons have been updated to v2
+#### Heroicons 已经升级到 v2
 
-The Heroicons library has been updated to v2. This means that any icons you use in your app may have changed names. You can find a list of changes [here](https://github.com/tailwindlabs/heroicons/releases/tag/v2.0.0).
+Heroicons 库已经升级到了 v2。也就是说你应用中使用的任何图标都已经改名了。你可以[点击此处](https://github.com/tailwindlabs/heroicons/releases/tag/v2.0.0)查看更新列表。
 
-### Medium-impact changes
+### 中等影响更新
 
-#### Secondary color
+#### Secondary 颜色
 
-Filament v2 had a `secondary` color for many components which was gray. All references to `secondary` should be replaced with `gray` to preserve the same appearance. This frees `secondary` to be registered to a new custom color of your choice.
+Filament v2 的 `secondary` 在许多组件中是灰色。所有 `secondary` 的引用都应该替换成 `gray`，以保持相同的外观。这一更新释放了 `secondary` 使之可以注册成你需要的自定义颜色。
 
-#### `BadgeColumn::enum()` removed
+#### `BadgeColumn::enum()` 移除
 
-You can use a `formatStateUsing()` function to transform text.
-
-#### Enum classes moved
-
-The following enum classes have moved:
-
-- `Filament\Tables\Actions\Position` has moved to `Filament\Tables\Enums\ActionsPosition`.
-- `Filament\Tables\Actions\RecordCheckboxPosition` has moved to `Filament\Tables\Enums\RecordCheckboxPosition`.
-- `Filament\Tables\Filters\Layout` has moved to `Filament\Tables\Enums\FiltersLayout`.
+你可以使用 `formatStateUsing()` 函数来转换文本。

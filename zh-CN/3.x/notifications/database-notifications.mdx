@@ -1,23 +1,23 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/03-database-notifications.md"
-title: Database notifications
+title: 数据库通知
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Before we start, make sure that the [Laravel notifications table](https://laravel.com/docs/notifications#database-prerequisites) is added to your database:
+开始前，请确保将 [Laravel 通知表](https://laravel.com/docs/notifications#database-prerequisites)添加到数据库中：
 
 ```bash
 php artisan notifications:table
 ```
 
-> If you're using PostgreSQL, make sure that the `data` column in the migration is using `json()`: `$table->json('data')`.
+> 如果你用的是 PostgreSQL，请确保迁移中 `data` 字段使用 `json()`: `$table->json('data')`。
 
-> If you're using UUIDs for your `User` model, make sure that your `notifiable` column is using `uuidMorphs()`: `$table->uuidMorphs('notifiable')`.
+> 如果你的 `User` 模型中使用了 UUID，请确保你的 `notifiable` 字段使用 `uuidMorphs()`: `$table->uuidMorphs('notifiable')`。
 
-To add database notifications to your app, you must add a new Livewire component to your Blade layout:
+要将数据库通知添加到应用中，你必须在你的 Blade 布局中添加一个新的 Livewire 组件：
 
 ```blade
 @livewire('database-notifications')
@@ -25,7 +25,7 @@ To add database notifications to your app, you must add a new Livewire component
 
 <AutoScreenshot name="notifications/database" alt="Database notifications" version="3.x" />
 
-Database notifications will be rendered within a modal. To open this modal, you must have a "trigger" button in your view. Create a new trigger button component in your app, for instance at `/resources/views/notifications/database-notifications-trigger.blade.php`:
+数据库通知会在模态框中渲染。要打开这一模态框，你必须在视图中有一个“触发”按钮。在应用中创建新的触发按钮组件，比如在 `/resources/views/notifications/database-notifications-trigger.blade.php` 文件中：
 
 ```blade
 <button type="button">
@@ -33,9 +33,9 @@ Database notifications will be rendered within a modal. To open this modal, you 
 </button>
 ```
 
-`$unreadNotificationsCount` is a variable automatically passed to this view, which provides it with a real-time count of unread notifications the user has.
+`$unreadNotificationsCount` 是一个自动传入视图的变量，它提供了用户未读通知的实时数量。
 
-In the service provider, point to this new trigger view:
+在该服务提供者中，指向新的触发视图：
 
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
@@ -43,13 +43,13 @@ use Filament\Notifications\Livewire\DatabaseNotifications;
 DatabaseNotifications::trigger('filament-notifications.database-notifications-trigger');
 ```
 
-Now, click on the trigger button that is rendered in your view. A modal should appear containing your database notifications when clicked!
+然后，点击视图中渲染的触发按钮。一个包含数据库通知的模态框就会出现！
 
-## Sending database notifications
+## 发送数据库通知
 
-There are several ways to send database notifications, depending on which one suits you best.
+有多种方法可用于发送数据库通知，取决于哪一种更适合你。
 
-You may use our fluent API:
+你可以使用我们的 fluent API:
 
 ```php
 use Filament\Notifications\Notification;
@@ -61,7 +61,7 @@ Notification::make()
     ->sendToDatabase($recipient);
 ```
 
-Or, use the `notify()` method:
+或者，也可以使用 `notify()` 方法：
 
 ```php
 use Filament\Notifications\Notification;
@@ -75,7 +75,7 @@ $recipient->notify(
 );
 ```
 
-Alternatively, use a traditional [Laravel notification class](https://laravel.com/docs/notifications#generating-notifications) by returning the notification from the `toDatabase()` method:
+此外，还可以使用传统 [Laravel 通知类](https://laravel.com/docs/notifications#generating-notifications)返回通知给 `toBroadcast()` 方法：
 
 ```php
 use App\Models\User;
@@ -89,15 +89,15 @@ public function toDatabase(User $notifiable): array
 }
 ```
 
-## Receiving database notifications
+## 接收数据库通知
 
-Without any setup, new database notifications will only be received when the page is first loaded.
+如果不进行配置，新的数据库通知只会在页面首次加载时收到。
 
-### Polling for new database notifications
+### 轮询新数据库通知
 
-Polling is the practice of periodically making a request to the server to check for new notifications. This is a good approach as the setup is simple, but some may say that it is not a scalable solution as it increases server load.
+轮询是定期向服务器发送请求，检查是否有新通知的操作。此方法安装简单，不过这不是可扩展的方案因为它会增加服务器负载。
 
-By default, Livewire polls for new notifications every 30 seconds:
+默认情况下，Livewire 轮询每 30 秒发起一次：
 
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
@@ -106,7 +106,7 @@ DatabaseNotifications::databaseNotifications();
 DatabaseNotifications::databaseNotificationsPollingInterval('30s');
 ```
 
-You may completely disable polling if you wish:
+如果需要，你可以完全禁用轮询：
 
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
@@ -115,11 +115,11 @@ DatabaseNotifications::databaseNotifications();
 DatabaseNotifications::databaseNotificationsPollingInterval(null);
 ```
 
-### Using Echo to receive new database notifications with websockets
+### 使用 Echo 接收 websocket 的新数据库通知
 
-Alternatively, the package has a native integration with [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation). Make sure Echo is installed, as well as a [server-side websockets integration](https://laravel.com/docs/broadcasting#server-side-installation) like Pusher.
+此外，也可以本地集成 [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation)。请确保已经安装了 Echo， 以及[服务端 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
 
-Once websockets are set up, after sending a database notification you may dispatch a `DatabaseNotificationsSent` event, which will immediately fetch new notifications for that user:
+一旦安装了 websocket，在发送数据库通知后，你可以排放 `DatabaseNotificationsSent` 事件，使用户立即获取新的通知：
 
 ```php
 use Filament\Notifications\Events\DatabaseNotificationsSent;
@@ -134,9 +134,9 @@ Notification::make()
 event(new DatabaseNotificationsSent($recipient));
 ```
 
-## Marking database notifications as read
+## 将数据库通知标记为已读
 
-There is a button at the top of the modal to mark all notifications as read at once. You may also add [Actions](sending-notifications#adding-actions-to-notifications) to notifications, which you can use to mark individual notifications as read. To do this, use the `markAsRead()` method on the action:
+在模态框顶部有一个按钮，用来一次性将所有通知标记为已读。你可能也想将 [Action](sending-notifications#添加-actios-到通知中) 添加到通知中，然后将单条通知标记为已读。为此，请在 Action 上使用 `markAsRead()` 方法： 
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -154,7 +154,7 @@ Notification::make()
     ->send();
 ```
 
-Alternatively, you may use the `markAsUnread()` method to mark a notification as unread:
+此外，你可以使用 `markAsUnread()` 方法将一条消息设置成未读：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -172,9 +172,9 @@ Notification::make()
     ->send();
 ```
 
-## Opening the database notifications modal
+## 打开数据库通知模态框
 
-Instead of rendering the trigger button as described above, you can always open the database notifications modal from anywhere by dispatching an `open-modal` browser event:
+除了上述渲染触发按钮，你也可以通过派发(dispatch) `open-modal` 浏览器事件，在任何地方中打开数据库通知模态框：
 
 ```blade
 <button

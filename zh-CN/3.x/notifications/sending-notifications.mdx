@@ -1,15 +1,15 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/notifications/docs/02-sending-notifications.md"
-title: Sending notifications
+title: 发送通知
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-> To start, make sure the package is [installed](installation) - `@livewire('notifications')` should be in your Blade layout somewhere.
+> 首先，必须确保该扩展包已经[安装](installation) - 并且在 Blade 布局文件中插入 `@livewire('notifications')`
 
-Notifications are sent using a `Notification` object that's constructed through a fluent API. Calling the `send()` method on the `Notification` object will dispatch the notification and display it in your application. As the session is used to flash notifications, they can be sent from anywhere in your code, including JavaScript, not just Livewire components.
+通知使用 fluent API 构造的 `Notification` 对象发送。在 `Notification` 对象上调用 `send()` 方法将会派发通知，并在应用中显示。由于使用 session 来闪存通知，可以在代码中的任意位置发送通知，包括 Javascript，而不只是在 Livewire 组件中。
 
 ```php
 <?php
@@ -35,9 +35,9 @@ class EditPost extends Component
 
 <AutoScreenshot name="notifications/success" alt="Success notification" version="3.x" />
 
-## Setting a title
+## 设置标题
 
-The main message of the notification is shown in the title. You can set the title as follows:
+通知的主要消息在标题(Title)中展示。你可以这样设置标题：
 
 ```php
 use Filament\Notifications\Notification;
@@ -47,7 +47,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -55,9 +55,10 @@ new FilamentNotification()
     .send()
 ```
 
-## Setting an icon
+## 设置图标
 
-Optionally, a notification can have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) that's displayed in front of its content. You may also set a color for the icon, which is gray by default:
+
+可选的，通知也可以在其内容前展示[图标](https://blade-ui-kit.com/blade-icons?set=1#search)。你也可以指定图标的颜色，图标颜色默认为灰色：
 
 ```php
 use Filament\Notifications\Notification;
@@ -69,7 +70,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -81,7 +82,7 @@ new FilamentNotification()
 
 <AutoScreenshot name="notifications/icon" alt="Notification with icon" version="3.x" />
 
-Notifications often have a status like `success`, `warning`, `danger` or `info`. Instead of manually setting the corresponding icons and colors, there's a `status()` method which you can pass the status. You may also use the dedicated `success()`, `warning()`, `danger()` and `info()` methods instead. So, cleaning up the above example would look like this:
+通知通常有一个状态，比如 `success`、`warning`、`danger` 或 `info`。除了手动设置相应的图标和颜色外，你也可以传入状态到`status()` 方法。因此，可以将上述代码简化为：
 
 ```php
 use Filament\Notifications\Notification;
@@ -92,7 +93,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -103,9 +104,9 @@ new FilamentNotification()
 
 <AutoScreenshot name="notifications/statuses" alt="Notifications with various statuses" version="3.x" />
 
-## Setting a background color
+## 设置背景色
 
-Notifications have no background color by default. You may want to provide additional context to your notification by setting a color as follows:
+默认情况下，通知没有背景色。你可以按如下方式设置颜色为通知提供额外的上下文：
 
 ```php
 use Filament\Notifications\Notification;
@@ -116,7 +117,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -127,9 +128,9 @@ new FilamentNotification()
 
 <AutoScreenshot name="notifications/color" alt="Notification with background color" version="3.x" />
 
-## Setting a duration
+## 设置时长
 
-By default, notifications are shown for 6 seconds before they're automatically closed. You may specify a custom duration value in milliseconds as follows:
+默认情况下，通知会在自动关闭前展示 6 秒。你也可以已`毫秒`为单位自定义展示时长：
 
 ```php
 use Filament\Notifications\Notification;
@@ -141,7 +142,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -151,7 +152,7 @@ new FilamentNotification()
     .send()
 ```
 
-If you prefer setting a duration in seconds instead of milliseconds, you can do so:
+如果你想要用秒而不是毫秒做单位，设置时长：
 
 ```php
 use Filament\Notifications\Notification;
@@ -163,7 +164,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -173,7 +174,7 @@ new FilamentNotification()
     .send()
 ```
 
-You might want some notifications to not automatically close and require the user to close them manually. This can be achieved by making the notification persistent:
+有些通知，你可能不希望它自动关闭，而是让用户可以手动关闭。可以让通知持久化(persistent)实现：
 
 ```php
 use Filament\Notifications\Notification;
@@ -185,7 +186,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -195,9 +196,9 @@ new FilamentNotification()
     .send()
 ```
 
-## Setting body text
+## 设置主体文本
 
-Additional notification text can be shown in the body. Similar to the title, it supports Markdown:
+可以在 Body 中展示额外的通知文本。类似于标题，它支持 Markdown：
 
 ```php
 use Filament\Notifications\Notification;
@@ -209,7 +210,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -221,9 +222,9 @@ new FilamentNotification()
 
 <AutoScreenshot name="notifications/body" alt="Notification with body text" version="3.x" />
 
-## Adding actions to notifications
+## 添加 Action 到通知
 
-Notifications support [Actions](../actions/trigger-button), which are buttons that render below the content of the notification. They can open a URL or dispatch a Livewire event. Actions can be defined as follows:
+通知支持 [Action](../actions/trigger-button)，Action 是渲染在通知内容下面的按钮。 Action 可以打开 URL 或者派发 Livewire 事件。 可以这样定义 Action：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -242,7 +243,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -260,11 +261,11 @@ new FilamentNotification()
 
 <AutoScreenshot name="notifications/actions" alt="Notification with actions" version="3.x" />
 
-You can learn more about how to style action buttons [here](../actions/trigger-button).
+了解更多 Action 按钮样式，请点击[此处](../actions/trigger-button)。
 
-### Opening URLs from notification actions
+### 在通知 Action 中打开 URL
 
-You can open a URL, optionally in a new tab, when clicking on an action:
+点击 Action 时，你可以打开 URL(可选在新选项卡中打开):
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -284,7 +285,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -302,9 +303,9 @@ new FilamentNotification()
     .send()
 ```
 
-### Dispatching Livewire events from notification actions
+### 在通知 Action 中派发 Livewire 事件
 
-Sometimes you want to execute additional code when a notification action is clicked. This can be achieved by setting a Livewire event which should be dispatched on clicking the action. You may optionally pass an array of data, which will be available as parameters in the event listener on your Livewire component:
+有时，你希望在点击通知 Action 时，执行一些额外代码。可以通过设置一个 Livewire 事件，使之在点击时发送来实现。你也可以传入可选的数组， Livewire 组件上的事件监听器会将其作为参数获取：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -325,7 +326,7 @@ Notification::make()
     ->send();
 ```
 
-You can also `dispatchSelf` and `dispatchTo`:
+你也可以 `dispatchSelf` 派发给自己及 `dispatchTo` 派发给他人：
 
 ```php
 Action::make('undo')
@@ -337,7 +338,7 @@ Action::make('undo')
     ->dispatchTo('another_component', 'undoEditingPost', [$post->id])
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -356,7 +357,7 @@ new FilamentNotification()
     .send()
 ```
 
-Similarly, `dispatchSelf` and `dispatchTo` are also available:
+类似的， dispatchSelf` 和 `dispatchTo` 同样可用：
 
 ```js
 new FilamentNotificationAction('undo')
@@ -368,9 +369,9 @@ new FilamentNotificationAction('undo')
     .dispatchTo('another_component', 'undoEditingPost')
 ```
 
-### Closing notifications from actions
+### 在 Action 中关闭通知
 
-After opening a URL or dispatching an event from your action, you may want to close the notification right away:
+在 Action 中打开 URL 或者派发完事件后，你可能希望马上关闭通知：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -392,7 +393,7 @@ Notification::make()
     ->send();
 ```
 
-Or with JavaScript:
+或者，使用 JavaScript：
 
 ```js
 new FilamentNotification()
@@ -412,11 +413,11 @@ new FilamentNotification()
     .send()
 ```
 
-## Using the JavaScript objects
+## 使用 JavaScript 对象
 
-The JavaScript objects (`FilamentNotification` and `FilamentNotificationAction`) are assigned to `window.FilamentNotification` and `window.FilamentNotificationAction`, so they are available in on-page scripts.
+JavaScript 对象 (`FilamentNotification` 和 `FilamentNotificationAction`) 被赋值给  `window.FilamentNotification` 和 `window.FilamentNotificationAction`，因此它们在页面脚本中可用
 
-You may also import them in a bundled JavaScript file:
+你也可以将其导入给捆绑的 JavaScript 文件：
 
 ```js
 import { Notification, NotificationAction } from '../../vendor/filament/notifications/dist/index.js'

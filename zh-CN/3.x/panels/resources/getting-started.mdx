@@ -1,22 +1,22 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/01-getting-started.md"
-title: Getting started
+title: 开始
 ---
 
-## Overview
+## 概述
 
-Resources are static classes that are used to build CRUD interfaces for your Eloquent models. They describe how administrators should be able to interact with data from your app - using tables and forms.
+资源是用来为 Eloquent 模型创建 CRUD 接口的静态类。它描述了管理员如何在应用内，使用表格和表单，与数据进行交互的。
 
-## Creating a resource
+## 新建资源
 
-To create a resource for the `App\Models\Customer` model:
+为 `App\Models\Customer` 模型新建资源:
 
 ```bash
 php artisan make:filament-resource Customer
 ```
 
-This will create several files in the `app/Filament/Resources` directory:
+在 `app/Filament/Resources` 目录下将会生成一系列文件:
 
 ```
 .
@@ -28,69 +28,69 @@ This will create several files in the `app/Filament/Resources` directory:
 |   |   +-- ListCustomers.php
 ```
 
-Your new resource class lives in `CustomerResource.php`.
+新的资源类在 `CustomerResource.php` 中。
 
-The classes in the `Pages` directory are used to customize the pages in the app that interact with your resource. They're all full-page [Livewire](https://livewire.laravel.com) components that you can customize in any way you wish.
+`Pages` 目录下的类用于自定义应用中和资源交互的页面。这些页面是全页 [Livewire](https://laravel-livewire.com) 组件，你可以根据需要自定义。
 
-> Have you created a resource, but it's not appearing in the navigation menu? If you have a [model policy](#authorization), make sure you return `true` from the `viewAny()` method.
+> 如果你创建的资源并没有在导航菜单中显示，很可能是因为你的[模型策略](#授权)的 `viewAny()` 方法并没有返回 `true`。
 
-### Simple (modal) resources
+### 简易(模态框)资源
 
-Sometimes, your models are simple enough that you only want to manage records on one page, using modals to create, edit and delete records. To generate a simple resource with modals:
+有时候，你的模型过于简单，因此你只想在单个页面中管理记录。这种情况下你可以使用模态框进行创建，编辑和删除记录。要生成这样一个带有模态框的简易资源：
 
 ```bash
 php artisan make:filament-resource Customer --simple
 ```
 
-Your resource will have a "Manage" page, which is a List page with modals added.
+你的资源有一个管理(Manage)页面，该页面是一个带有模态框的列表页。
 
-Additionally, your simple resource will have no `getRelations()` method, as [relation managers](relation-managers) are only displayed on the Edit and View pages, which are not present in simple resources. Everything else is the same.
+另外，你的资源类不再会有 `getRelations()` 方法，因为关系管理器只会在编辑页和查看页中展示，不会出现在简易资源中。其他方面则与普通资源相同。
 
-### Automatically generating forms and tables
+### 自动生成表单和表格
 
-If you'd like to save time, Filament can automatically generate the [form](#resource-forms) and [table](#resource-tables) for you, based on your model's database columns, using `--generate`:
+如果你要节约时间，Filament 也可以基于你模型数据库的字段，为你自动生成一些[表单](#资源表单)和[表格](#资源表格)，请使用 `--generate`：
 
 ```bash
 php artisan make:filament-resource Customer --generate
 ```
 
-> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the schema for your resource if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
+> 如果数据库表中含有 ENUM 字段，`doctrine/dbal` 包将无法扫描表格且会崩溃。因此 Filament 无法据此为资源生成 schema。更多详情查阅[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
 
-### Handling soft deletes
+### 处理软删除
 
-By default, you will not be able to interact with deleted records in the app. If you'd like to add functionality to restore, force delete and filter trashed records in your resource, use the `--soft-deletes` flag when generating the resource:
+默认情况下，你不能在应用中和已删除的记录进行交互。如果你想要在资源中添加恢复(restore)、强制删除和过滤垃圾记录等功能，可以在生成资源的时候使用 `--soft-deletes` 标志：
 
 ```bash
 php artisan make:filament-resource Customer --soft-deletes
 ```
 
-You can find out more about soft deleting [here](deleting-records#handling-soft-deletes).
+你点击[此处](deleting-records#处理软删除功能)查阅更多关于软删除功能。
 
-### Generating a View page
+### 生成查看页面
 
-By default, only List, Create and Edit pages are generated for your resource. If you'd also like a [View page](viewing-records), use the `--view` flag:
+默认情况下，资源只会生成列表页，新建页和编辑页。如果你也想要生成[查看页](viewing-records)，请使用 `--view` 标志:
 
 ```bash
 php artisan make:filament-resource Customer --view
 ```
 
-## Record titles
+## 记录标题
 
-A `$recordTitleAttribute` may be set for your resource, which is the name of the column on your model that can be used to identify it from others.
+你可以为资源设置 `$recordTitleAttribute` 属性，该属性对应模型上的字段名，可以用于将其与其他模型区别开来。*(译者：此处直译，意思是大体是在搜索时用以确认某条记录的唯一性。)*
 
-For example, this could be a blog post's `title` or a customer's `name`:
+比如，它可以是博客文章的`标题(title)` 或者客户的`名字(name)`:
 
 ```php
 protected static ?string $recordTitleAttribute = 'name';
 ```
 
-This is required for features like [global search](global-search) to work.
+此属性需要启用[全局搜索](global-search)特性才有效。
 
-> You may specify the name of an [Eloquent accessor](https://laravel.com/docs/eloquent-mutators#defining-an-accessor) if just one column is inadequate at identifying a record.
+> 如果某个单一字段无法有效识别一条记录，你可以指定一个 [Eloquent 获取器](https://laravel.com/docs/eloquent-mutators#defining-an-accessor)的名称。
 
-## Resource forms
+## 资源表单
 
-Resource classes contain a `form()` method that is used to build the forms on the [Create](creating-records) and [Edit](editing-records) pages:
+资源类中包含着一个 `form()` 方法，用于为[新建](creating-records)和[编辑](editing-records)页面创建表单:
 
 ```php
 use Filament\Forms;
@@ -107,15 +107,15 @@ public static function form(Form $form): Form
 }
 ```
 
-The `schema()` method is used to define the structure of your form. It is an array of [fields](../../forms/fields/getting-started#available-fields) and [layout components](../../forms/layout/getting-started#available-layout-components), in the order they should appear in your form.
+`schema()` 方法用于定义表单结构。它是一个[表单控件](../../forms/fields/getting-started#可用字段)和[布局组件](../../forms/layout/getting-started#可用布局组件)数组，按照显示顺序在表单中排序。
 
-Check out the Forms docs for a [guide](../../forms/getting-started) on how to build forms with Filament.
+关于如何使用 Filament 创建表单，请查阅[表单文档向导](../../forms/getting-started)。
 
-### Hiding components based on the current operation
+### 基于当前操作中隐藏组件
 
-The `hiddenOn()` method of form components allows you to dynamically hide fields based on the current page or action.
+表单组件的 `hiddenOn()` 方法让你可以基于当前页面或操作动态隐藏字段组件。
 
-In this example, we hide the `password` field on the `edit` page:
+此例中，我们在 `edit` 编辑页面中隐藏了 `password` 字段：
 
 ```php
 use Livewire\Component;
@@ -126,7 +126,7 @@ Forms\Components\TextInput::make('password')
     ->hiddenOn('edit'),
 ```
 
-Alternatively, we have a `visibleOn()` shortcut method for only showing a field on one page or action:
+此外，还有一个 `visibleOn()` 快捷方法，用来在页面或 Action 中显示字段：
 
 ```php
 use Livewire\Component;
@@ -137,9 +137,9 @@ Forms\Components\TextInput::make('password')
     ->visibleOn('create'),
 ```
 
-## Resource tables
+## 资源表格
 
-Resource classes contain a `table()` method that is used to build the table on the [List page](listing-records):
+Resource 类包含一个静态 `table()` 方法，用以在[列表页](listing-records)中创建表格：
 
 ```php
 use Filament\Tables;
@@ -170,40 +170,40 @@ public static function table(Table $table): Table
 }
 ```
 
-Check out the [tables](../../tables/getting-started) docs to find out how to add table columns, filters, actions and more.
+请查阅[表格构造器](../../tables/getting-started)文档，了解如何添加表格列、过滤器、Action 等。
 
-## Authorization
+## 授权
 
-For authorization, Filament will observe any [model policies](https://laravel.com/docs/authorization#creating-policies) that are registered in your app. The following methods are used:
+关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。使用如下方法：
 
-- `viewAny()` is used to completely hide resources from the navigation menu, and prevents the user from accessing any pages.
-- `create()` is used to control [creating new records](creating-records).
-- `update()` is used to control [editing a record](editing-records).
-- `view()` is used to control [viewing a record](viewing-records).
-- `delete()` is used to prevent a single record from being deleted. `deleteAny()` is used to prevent records from being bulk deleted. Filament uses the `deleteAny()` method because iterating through multiple records and checking the `delete()` policy is not very performant.
-- `forceDelete()` is used to prevent a single soft-deleted record from being force-deleted. `forceDeleteAny()` is used to prevent records from being bulk force-deleted. Filament uses the `forceDeleteAny()` method because iterating through multiple records and checking the `forceDelete()` policy is not very performant.
-- `restore()` is used to prevent a single soft-deleted record from being restored. `restoreAny()` is used to prevent records from being bulk restored. Filament uses the `restoreAny()` method because iterating through multiple records and checking the `restore()` policy is not very performant.
-- `reorder()` is used to control [reordering a record](listing-records#reordering-records).
+- `viewAny()` 用于完全从导航菜单中隐藏资源，阻止用户访问任何页面。
+- `create()` 用于控制[新建记录](creating-records)。
+- `update()` 用于控制[编辑记录](editing-records)。
+- `view()` 用于控制[查看记录](viewing-records)。
+- `delete()` 用于阻止单条记录被删除。`deleteAny()` 用于防止记录被批量删除。Filament 使用 `deleteAny()` 方法因为通过迭代检查 `delete()` 策略性能不是很好。
+- `forceDelete()` 用于防止单条软删除记录被强制删除。`forceDeleteAny()` 用于防止记录被批量强制删除。Filament 之所以使用 `forceDeleteAny()` 因为在多条记录中迭代检查 `forceDelete()` 策略性能不佳。
+- `restore()` 用于防止单条软删除记录被强制恢复。 `restoreAny()` 用于防止记录被批量强制删除。Filament 之所以使用 `restoreAny()` 因为在多条记录中迭代检查 `restore()` 策略性能不佳。
+- `reorder()` 用于控制[重新排序](listing-records#reordering-records)。
 
-### Skipping authorization
+### 跳过授权
 
-If you'd like to skip authorization for a resource, you may set the `$shouldSkipAuthorization` property to `true`:
+如果你想让某个资源跳过授权，可以将 `$shouldSkipAuthorization` 属性设置为 `true`：
 
 ```php
 protected static bool $shouldSkipAuthorization = true;
 ```
 
-## Customizing the model label
+## 自定义模型标签
 
-Each resource has a "model label" which is automatically generated from the model name. For example, an `App\Models\Customer` model will have a `customer` label.
+每个资源都有一个基于模型名自动生成的"模型标签(model label)"。比如，`App\Models\Customer` 有一个 `Customer` 标签。
 
-The label is used in several parts of the UI, and you may customize it using the `$modelLabel` property:
+该标签用在 UI 的多个位置中，你可以使用 `$modelLabel` 属性对其进行自定义：
 
 ```php
 protected static ?string $modelLabel = 'cliente';
 ```
 
-Alternatively, you may use the `getModelLabel()` to define a dynamic label:
+此外，你也可以使用 `getModelLabel()` 方法去定义动态标签：
 
 ```php
 public static function getModelLabel(): string
@@ -212,17 +212,18 @@ public static function getModelLabel(): string
 }
 ```
 
-### Customizing the plural model label
+### 自定义复数模型标签
 
-Resources also have a "plural model label" which is automatically generated from the model label. For example, a `customer` label will be pluralized into `customers`.
+资源同时有一个基于模型标签自动生成的"复数模型标签(plural model label)"。比如，`customer` 标签的复数是 `customers`。 
 
-You may customize the plural version of the label using the `$pluralModelLabel` property:
+你可以使用 `$pluralModelLabel` 属性自定义标签的复数版本：
 
 ```php
 protected static ?string $pluralModelLabel = 'clientes';
 ```
 
-Alternatively, you may set a dynamic plural label in the `getPluralModelLabel()` method:
+此外，你可以在 `getPluralModelLabel()` 方法中设置动态复数标签：
+
 
 ```php
 public static function getPluralModelLabel(): string
@@ -231,17 +232,17 @@ public static function getPluralModelLabel(): string
 }
 ```
 
-## Resource navigation items
+## 资源导航项
 
-Filament will automatically generate a navigation menu item for your resource using the [plural label](#plural-label).
+Filament 会使用[复数标签](#复数标签)为资源自动生成导航菜单项。
 
-If you'd like to customize the navigation item label, you may use the `$navigationLabel` property:
+如果你想自定义导航项标签，你可以使用 `$navigationLabel` 属性：
 
 ```php
 protected static ?string $navigationLabel = 'Mis Clientes';
 ```
 
-Alternatively, you may set a dynamic navigation label in the `getNavigationLabel()` method:
+此外，你可以在 `getNavigationLabel()` 设置为动态导航标签：
 
 ```php
 public static function getNavigationLabel(): string
@@ -250,15 +251,15 @@ public static function getNavigationLabel(): string
 }
 ```
 
-### Setting a resource navigation icon
+### 设置资源导航图标
 
-The `$navigationIcon` property supports the name of any Blade component. By default, [Heroicons](https://heroicons.com) are installed. However, you may create your own custom icon components or install an alternative library if you wish.
+`$navigationIcon` 属性支持任何 Blade 模板组件名。默认情况下，Filament 安装了 [Heroicons](https://heroicons.com)。不过，你可以创建自定义图标组件或者安装其他图标库。
 
 ```php
 protected static ?string $navigationIcon = 'heroicon-o-user-group';
 ```
 
-Alternatively, you may set a dynamic navigation icon in the `getNavigationIcon()` method:
+此外，你可以在 `getNavigationIcon()` 方法椎间盘美国设置动态导航图标：
 
 ```php
 public static function getNavigationIcon(): ?string
@@ -267,15 +268,15 @@ public static function getNavigationIcon(): ?string
 }
 ```
 
-### Sorting resource navigation items
+### 资源导航项排序
 
-The `$navigationSort` property allows you to specify the order in which navigation items are listed:
+`$navigationSort` 属性让你可以指定导航项的排列顺序：
 
 ```php
 protected static ?int $navigationSort = 2;
 ```
 
-Alternatively, you may set a dynamic navigation item order in the `getNavigationSort()` method:
+此外，在 `getNavigationSort()` 方法中你可以动态设置导航项排序：
 
 ```php
 public static function getNavigationSort(): ?int
@@ -284,15 +285,15 @@ public static function getNavigationSort(): ?int
 }
 ```
 
-### Grouping resource navigation items
+### 导航菜单分组
 
-You may group navigation items by specifying a `$navigationGroup` property:
+你可以通过 `$navigationGroup` 属性对导航菜单进行分组：
 
 ```php
 protected static ?string $navigationGroup = 'Shop';
 ```
 
-Alternatively, you may use the `getNavigationGroup()` method to set a dynamic group label:
+此外，你也可以使用 `getNavigationGroup()` 方法设置动态分组标签：
 
 ```php
 public static function getNavigationGroup(): ?string
@@ -301,11 +302,11 @@ public static function getNavigationGroup(): ?string
 }
 ```
 
-## Generating URLs to resource pages
+## 为资源页生成 URL
 
-Filament provides `getUrl()` static method on resource classes to generate URLs to resources and specific pages within them. Traditionally, you would need to construct the URL by hand or by using Laravel's `route()` helper, but these methods depend on knowledge of the resource's slug or route naming conventions.
+Filament 在资源类中使用 `getUrl()` 静态方法，用来为资源和特定页面生成 URL。一般来说，你需要手动或使用 Laravel 的 `route()` 帮助函数来构建 URL，而这些方法依赖于对资源的 slug 或路由命名规范的了解。
 
-The `getUrl()` method, without any arguments, will generate a URL to the resource's [List page](listing-records):
+不带任何参数的 `getUrl()` 方法，将会为资源[列表页](listing-records)生成 URL： 
 
 ```php
 use App\Filament\Resources\CustomerResource;
@@ -313,7 +314,7 @@ use App\Filament\Resources\CustomerResource;
 CustomerResource::getUrl(); // /admin/customers
 ```
 
-You may also generate URLs to specific pages within the resource. The name of each page is the array key in the `getPages()` array of the resource. For example, to generate a URL to the [Create page](creating-records):
+你可以为资源中的指定页面生成 URL。每个页面的名字是资源 `getPages()` 数组中的数组键名。比如，要为[新建页](creating-records)生成 URL：
 
 ```php
 use App\Filament\Resources\CustomerResource;
@@ -321,7 +322,7 @@ use App\Filament\Resources\CustomerResource;
 CustomerResource::getUrl('create'); // /admin/customers/create
 ```
 
-Some pages in the `getPages()` method use URL parameters like `record`. To generate a URL to these pages and pass in a record, you should use the second argument:
+`getPages()` 方法中的一些页面使用了 URL 参数[比如，`record`]。要为这些页面生成 URL，并传入记录，你可以使用第二个参数： 
 
 ```php
 use App\Filament\Resources\CustomerResource;
@@ -329,13 +330,13 @@ use App\Filament\Resources\CustomerResource;
 CustomerResource::getUrl('edit', ['record' => $customer]); // /admin/customers/edit/1
 ```
 
-In this example, `$customer` can be an Eloquent model object, or an ID.
+本例中，`$customer` 可以是一个 Eloquent 模型对象，或者 ID。
 
-## Customizing the resource Eloquent query
+## 自定义资源 Eloquent 查询
 
-Within Filament, every query to your resource model will start with the `getEloquentQuery()` method.
+在 Filament 中，每个资源模型的查询都会从 `getEloquentQuery()` 方法开始。
 
-Because of this, it's very easy to apply your own query constraints or [model scopes](https://laravel.com/docs/eloquent#query-scopes) that affect the entire resource:
+因此，可以很容易使用你自己的查询约束或影响整个资源的[模型范围(scope)查询](https://laravel.com/docs/eloquent#query-scopes)：
 
 ```php
 public static function getEloquentQuery(): Builder
@@ -344,11 +345,11 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-### Disabling global scopes
+### 禁用全局范围查询
 
-By default, Filament will observe all global scopes that are registered to your model. However, this may not be ideal if you wish to access, for example, soft deleted records.
+默认情况下，Filament 会监听所有注册到模型的全局范围查询。不过，如果你想要获取比如软删除记录时，这可能不是理想的方案。
 
-To overcome this, you may override the `getEloquentQuery()` method that Filament uses:
+要解决此问题，你可以重写 `getEloquentQuery()` 方法：
 
 ```php
 public static function getEloquentQuery(): Builder
@@ -357,7 +358,7 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-Alternatively, you may remove specific global scopes:
+此外，你也可以移除指定的全局范围查询：
 
 ```php
 public static function getEloquentQuery(): Builder
@@ -366,21 +367,21 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-More information about removing global scopes may be found in the [Laravel documentation](https://laravel.com/docs/eloquent#removing-global-scopes).
+更多关于移除全局范围查询的内容，可以查看 [Laravel 文档](https://laravel.com/docs/eloquent#removing-global-scopes)。
 
-## Customizing the resource URL
+## 自定义资源 URL
 
-By default, Filament will generate a URL based on the name of the resource. You can customize this by setting the `$slug` property on the resource:
+默认情况下，Filament 会基于资源名称生成 URL。你可以在资源上设置 `$slug` 属性对其进行自定义：
 
 ```php
 protected static ?string $slug = 'pending-orders';
 ```
 
-## Deleting resource pages
+## 删除资源页
 
-If you'd like to delete a page from your resource, you can just delete the page file from the `Pages` directory of your resource, and its entry in the `getPages()` method.
+如果你要从你的资源(resource)中删除一个页面，你只需要删除资源 `Pages` 目录下的对应文件，以及它在 `getPages()` 方法下的入口。
 
-For example, you may have a resource with records that may not be created by anyone. Delete the `Create` page file, and then remove it from `getPages()`:
+比如，你有一个资源不想让任何人添加记录。删除 `Create` 页面文件，然后在 `getPages()` 中将其移除:
 
 ```php
 public static function getPages(): array
@@ -392,4 +393,3 @@ public static function getPages(): array
 }
 ```
 
-Deleting a page will not delete any actions that link to that page. Any actions will open a modal instead of sending the user to the non-existant page. For instance, the `CreateAction` on the List page, the `EditAction` on the table or View page, or the `ViewAction` on the table or Edit page. If you want to remove those buttons, you must delete the actions as well.

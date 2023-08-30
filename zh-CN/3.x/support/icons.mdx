@@ -1,34 +1,34 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/03-icons.md"
-title: Icons
+title: 图标
 ---
 
-## Overview
+## 概述
 
-Icons are used throughout the entire Filament UI to visually communicate core parts of the user experience. To render icons, we use the [Blade Icons](https://github.com/blade-ui-kit/blade-icons) package from Blade UI Kit.
+图标用在整个 Filament UI 中，用来与用户体验的核心部分进行视觉交流。我们使用 Blade UI Kit 的 [Blade Icons](https://github.com/blade-ui-kit/blade-icons) 包来渲染图标。
 
-They have a website where you can [search all the available icons](https://blade-ui-kit.com/blade-icons?set=1#search) from various Blade Icons packages. Each package contains a different icon set that you can choose from.
+可以在他们网站中[搜索所有可用的图标](https://blade-ui-kit.com/blade-icons?set=1#search)，这些图标来自多个 Blade Icon 包。每个包都包含一套不同的图标集。
 
-## Using custom SVGs as icons
+## 使用自定义 SVG 作为图标
 
-The [Blade Icons](https://github.com/blade-ui-kit/blade-icons) package allows you to register custom SVGs as icons. This is useful if you want to use your own custom icons in Filament.
+[Blade Icons] 包允许你注册自定义的 SVG 作为图标。如果你想在 Filament 中自定义图标，这个功能很有用。
 
-To start with, publish the Blade Icons configuration file:
+首先，发布 Blade Icon 配置文件：
 
 ```bash
 php artisan vendor:publish --tag=blade-icons
 ```
 
-Now, open the `config/blade-icons.php` file, and uncomment the `default` set in the `sets` array.
+然后打开 `config/blade-icons.php` 文件，并取消 `sets` 数组中 `default` 设置的注释。 
 
-Now that the default set exists in the config file, you can simply put any icons you want inside the `resources/svg` directory of your application. For example, if you put an SVG file named `star.svg` inside the `resources/svg` directory, you can reference it anywhere in Filament as `icon-star`. The `icon-` prefix is configurable in the `config/blade-icons.php` file too. You can also render the custom icon in a Blade view using the [`@svg('icon-star')` directive](https://github.com/blade-ui-kit/blade-icons#directive).
+既然默认设置存在于配置文件中，您只需将所需的任何图标放在应用程序的 `resources/svg` 目录中即可。比如，如果你将一个名为 `star.svg` 的 SVG 文件放到 `resources/svg` 目录下，你可用在 Filament 的任何地方以 `icon-star` 引用它。`icon-` 前缀也是在 `config/blade-icons.php` 文件中配置。你也可用在 Blade 视图中使用 [`@svg('icon-star')` 指令](https://github.com/blade-ui-kit/blade-icons#directive) 渲染这个自定义图标。
 
-## Replacing the default icons
+## 替换默认图标
 
-Filament includes an icon management system that allows you to replace any icons are used by default in the UI with your own. This happens in the `boot()` method of any service provider, like `AppServiceProvider`, or even a dedicated service provider for icons. If you wanted to build a plugin to replace Heroicons with a different set, you could absolutely do that by creating a Laravel package with a similar service provider.
+Filament 包含一个图标管理系统，让你可用替换任何在你自己的 UI 中使用的默认图标。在服务提供者(比如 `AppServiceProvider`、或者图标专用的服务提供者)的 `boot()` 方法中实现。如果你想创建一个插件使用不同的图标集替换 Heroicon，你应该创建一个带有类似服务提供者的 Laravel 包实现。
 
-To replace an icon, you can use the `FilamentIcon` facade. It has a `register()` method, which accepts an array of icons to replace. The key of the array is the unique [icon alias](#available-icon-aliases) that identifies the icon in the Filament UI, and the value is name of a Blade icon to replace it instead:
+要替换图标，你可以使用 `FilamentIcon` 门面。它有个 `register()` 方法，接收一个图标数组用以替换。数组的键是唯一的[图标别名](#可用图标别名)，用以在 Filament UI 中识别该图标，值是 Blade 图标的名称：
 
 ```php
 use Filament\Support\Facades\FilamentIcon;
@@ -39,9 +39,9 @@ FilamentIcon::register([
 ]);
 ```
 
-### Allowing users to customize icons from your plugin
+### 允许用户在插件中自定义图标
 
-If you have built a Filament plugin, your users may want to be able to customize icons in the same way that they can with any core Filament package. This is possible if you replace any manual `@svg()` usages with the `<x-filament::icon>` Blade component. This component allows you to pass in an icon alias, the name of the SVG icon that should be used by default, and any classes or HTML attributes:
+如果你创建了一个 Filament 插件，用户可能希望可以用与 Filament 核心包中一样的方式自定义图标。如果你将任何手动的 `@svg()` 用法替换程 `<x-filament::icon>` Blade 组件，那么这是可能的。该组件允许你传入一个图标别、默认使用的 SVG 图标的名称，及其他类及 HTML 属性：
 
 ```blade
 <x-filament::icon
@@ -52,7 +52,7 @@ If you have built a Filament plugin, your users may want to be able to customize
 />
 ```
 
-Alternatively, you may pass an SVG element into the component's slot instead of defining a default icon name:
+此外，你可以传入一个 SVG 元素到组件的 slot 插槽中，而不必定义默认图标名：
 
 ```blade
 <x-filament::icon
@@ -66,54 +66,58 @@ Alternatively, you may pass an SVG element into the component's slot instead of 
 </x-filament::icon>
 ```
 
-## Available icon aliases
+## 可用图标别名
 
-### Panel Builder icon aliases
+### 后台面板图标别名
 
-- `panels::global-search.field` - Global search field
-- `panels::pages.dashboard.navigation-item` - Dashboard navigation item
-- `panels::pages.tenancy.register-tenant.open-tenant-button` - Button to open a tenant from the tenant registration page
-- `panels::sidebar.collapse-button` - Button to collapse the sidebar
-- `panels::sidebar.expand-button` - Button to expand the sidebar
-- `panels::sidebar.group.collapse-button` - Collapse button for a sidebar group
-- `panels::tenant-menu.toggle-button` - Button to toggle the tenant menu
-- `panels::theme-switcher.light-button` - Button to switch to the light theme from the theme switcher
-- `panels::theme-switcher.dark-button` - Button to switch to the dark theme from the theme switcher
-- `panels::theme-switcher.system-button` - Button to switch to the system theme from the theme switcher
-- `panels::topbar.close-sidebar-button` - Button to close the sidebar
-- `panels::topbar.open-sidebar-button` - Button to open the sidebar
-- `panels::topbar.open-database-notifications-button` - Button to open the database notifications modal
-- `panels::user-menu.profile-item` - Profile item in the user menu
-- `panels::user-menu.logout-button` - Button in the user menu to log out
-- `panels::widgets.account.logout-button` - Button in the account widget to log out
-- `panels::widgets.filament-info.open-documentation-button` - Button to open the documentation from the Filament info widget
-- `panels::widgets.filament-info.open-github-button` - Button to open GitHub from the Filament info widget
+- `panels::database-notifications.open-button` - 用来打开数据库通知模态框的按钮
+- `panels::global-search.field` - 全局搜索字段
+- `panels::pages.dashboard.navigation-item` - 仪表盘导航项
+- `panels::pages.tenancy.register-tenant.open-tenant-button` - 从租户注册页面打开租户的按钮
+- `panels::sidebar.collapse-button` - 可部分折叠的桌面端侧边栏折叠按钮
+- `panels::sidebar.collapse-button.full` - 可完全折叠的桌面端侧边栏折叠按钮
+- `panels::sidebar.group.collapse-button` - 侧边栏分钟的折叠按钮
+- `panels::tenant-menu.toggle-button` - 切换租户菜单的按钮u
+- `panels::theme-switcher.light-button` - 主题切换器中切换到light主题的按钮
+- `panels::theme-switcher.dark-button` - 主题切换器中切换到dark主题的按钮
+- `panels::theme-switcher.system-button` - 主题切换器中切换系统主题的按钮
+- `panels::topbar.close-mobile-sidebar-button` - 关闭移动侧边栏的按钮
+- `panels::topbar.open-mobile-sidebar-button` - 打开移动侧边栏的按钮
+- `panels::user-menu.profile-item` - 用户菜单中的 Profile 项
+- `panels::user-menu.logout-button` - 用户菜单中的退出按钮
+- `panels::widgets.account.logout-button` - 账号插件中的退出按钮
+- `panels::widgets.filament-info.open-documentation-button` - 从 Filament Info 插件中打开文档的按钮
+- `panels::widgets.filament-info.open-github-button` - 从 Filament Info 插件中打开 GitHub 的按钮
 
-### Form Builder icon aliases
+### 表单构造器中的图标别名
 
-- `forms:components.checkbox-list.search-field` - Search input in a checkbox list
-- `forms::components.wizard.completed-step` - Completed step in a wizard
+- `forms:components.checkbox-list.search-field` - 复选框列表中的搜索输入框
+- `forms::components.tags-input.delete-button` - Tag 输入框中用来删除 Tag 的按钮
+- `forms::components.wizard.completed-step` - 向导卡中的完成步骤
 
-### Table Builder icon aliases
+### 表格构造器中的图标别名
 
 - `tables::columns.collapse-button`
-- `tables::filters.remove-all-button` - Button to remove all filters
-- `tables::grouping.collapse-button` - Button to collapse a group of records
-- `tables::header-cell.sort-asc-button` - Sort button of a column sorted in ascending order
-- `tables::header-cell.sort-desc-button` - Sort button of a column sorted in descending order
-- `tables::reorder.handle` - Handle to grab in order to reorder a record with drag and drop
-- `tables::search-field` - Search input
+- `tables::filters.remove-button` - 删除一个过滤器的按钮
+- `tables::filters.remove-all-button` - 删除所有过滤器的按钮
+- `tables::grouping.collapse-button` - 用于折叠一组记录的按钮
+- `tables::header-cell.sort-asc` - 以升序排列的排序按钮
+- `tables::header-cell.sort-desc` - 以降序排列的排序按钮
+- `tables::pagination.previous-button` - 上一页按钮，用于移动端及"simple pagination"
+- `tables::pagination.next-button` - 下一页按钮，用于移动端及"simple pagination"
+- `tables::reorder.handle` - 使用拖拽、拖放对记录重新排序的抓手
+- `tables::search-field` - 搜索输入框
 
-### Notifications icon aliases
+### 通知生成器中的图标别名
 
-- `notifications::database.modal.empty-state` - Empty state of the database notifications modal
-- `notifications::notification.close-button` - Button to close a notification
+- `notifications::database.modal.empty-state` - 数据库通知模态框的空状态
+- `notifications::database.modal.pagination.previous-button` - 数据库通知模态框上一页按钮
+- `notifications::database.modal.pagination.next-button` - 数据库通知模态框下一页按钮
+- `notifications::notification.close-button` - 关闭通知的按钮
 
-### UI components icon aliases
+### UI 组件中的图标别名
 
-- `badge.delete-button` - Button to delete a badge
-- `breadcrumbs.separator` - Separator between breadcrumbs
-- `modal.close-button` - Button to close a modal
-- `pagination.previous-button` - Button to go to the previous page
-- `pagination.next-button` - Button to go to the next page
-- `section.collapse-button` - Button to collapse a section
+- `badge.delete-button` - 删除徽章的按钮
+- `breadcrumbs.separator` - 面包屑之间的分隔符
+- `modal.close-button` - 关闭模态框的按钮
+- `section.collapse-button` - 折叠区域的按钮

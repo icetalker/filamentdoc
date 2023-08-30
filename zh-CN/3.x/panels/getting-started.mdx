@@ -1,23 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/02-getting-started.md"
-title: Getting started
+title: 开始
 ---
-## Overview
 
-Panels are the top-level container in Filament, allowing you to build feature-rich admin panels that include pages, resources, forms, tables, notifications, actions, infolists, and widgets. All Panels include a default dashboard that can include widgets with statistics, charts, tables, and more.
+## 概述
 
-## Prerequisites
+面板是 Filament 中的顶级容器，它允许你构建功能丰富的管理面板，其中包括页面、资源、表单、表格、通知、Action、信息列表和 Widget。所有面板都有一个默认的仪表盘，其中包含统计、图表、表格等多种 Widget。
 
-Before using Filament, you should be familiar with Laravel. Filament builds upon many core Laravel concepts, especially [database migrations](https://laravel.com/docs/migrations) and [Eloquent ORM](https://laravel.com/docs/eloquent). If you're new to Laravel or need a refresher, we highly recommend completing the [Laravel Bootcamp](https://bootcamp.laravel.com), which covers the fundamentals of building Laravel apps.
+## 前置要求
 
-## The demo project
+使用 Filament 之前，你需要先熟悉 Laravel。Filament 是基于许多 Laravel 核心概念构建的，特别是[数据库迁移](https://laravel.com/docs/migrations)和 [Eloquent ORM](https://laravel.com/docs/eloquent)。如果你没此前没用过 Laravel，或者需要复习，建议你跟着 [Laravel Bootcamp](https://bootcamp.laravel.com/blade/installation) 去创建一个小应用。那个教程涵盖了创建 Laravel 应用的基础知识。
 
-This guide covers building a simple patient management system for a veterinary practice using Filament. It will support adding new patients (cats, dogs, or rabbits), assigning them to an owner, and recording which treatments they received. The system will have a dashboard with statistics about the types of patients and a chart showing the number of treatments administered over the past year.
+## Demo 项目
 
-## Setting up the database and models
+本教程介绍使用 Filament 为兽医诊所建立一个简单的患者管理系统。它将支持添加新患者(猫、狗或兔子)，将他们分配给主人(owners)，并记录他们接受的治疗(treatments)。该系统将有一个仪表板，上面有患者类型的统计数据，还有一张显示过去一年治疗次数的图表。
 
-This project needs three models and migrations: `Owner`, `Patient`, and `Treatment`. Use the following artisan commands to create these:
+## 设置数据库和模型
+
+这个项目中需要 3 个模型 - `Owner`、`Patient` 和 `Treatment`。使用以下 artisan 命令创建：
 
 ```bash
 php artisan make:model Owner -m
@@ -25,9 +26,9 @@ php artisan make:model Patient -m
 php artisan make:model Treatment -m
 ```
 
-### Defining migrations
+### 定义迁移
 
-Use the following basic schemas for your database migrations:
+数据库迁移请使用如下 schema：
 
 ```php
 
@@ -63,9 +64,9 @@ Schema::create('treatments', function (Blueprint $table) {
 
 Run the migrations using `php artisan migrate`.
 
-### Unguarding all models
+### 解除所有模型的防护
 
-For brevity in this guide, we will disable Laravel's [mass assignment protection](https://laravel.com/docs/eloquent#mass-assignment). Filament only saves valid data to models so the models can be unguarded safely. To unguard all Laravel models at once, add `Model::unguard()` to the `boot()` method of `app/Providers/AppServiceProvider.php`:
+为了本教程的简洁，我们将禁用 Laravel 的[批量赋值保护](https://laravel.com/docs/eloquent#mass-assignment)。Filament 通过只将有效数据存入到模型中，因此模型可以安全地解除防护。要一次性解除所有模型的防护，只需在 `app/Providers/AppServiceProvider.php` 的 `boot()` 方法中添加 `Model::unguard()`：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -76,9 +77,9 @@ public function boot(): void
 }
 ```
 
-### Setting up relationships between models
+### 设置模型之间的关联
 
-Let's set up relationships between the models. For our system, pet owners can own multiple pets (patients), and patients can have many treatments:
+让我们来设置模型之间的关联。在此系统中，宠物的主人可以拥有多个宠物(患者)，而患者可能有多个治疗：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -115,19 +116,19 @@ class Treatment extends Model
 }
 ```
 
-## Introducing resources
+## 介绍资源
 
-In Filament, resources are static classes used to build CRUD interfaces for your Eloquent models. They describe how administrators can interact with data from your panel using tables and forms.
+在 Filament 中，资源是用于为你的 Eloquent 模型创建 CRUD 接口的静态类。他们描述了后台管理员应该如何在面板中和数据交互 - 通过表格和表单。
 
-Since patients (pets) are the core entity in this system, let's start by creating a patient resource that enables us to build pages for creating, viewing, updating, and deleting patients.
+因为患者(宠物)是这个系统的核心实体。我们就从创建患者资源开始，该资源将帮助我们构建新建、查看、更新及删除患者的页面
 
-Use the following artisan command to create a new Filament resource for the `Patient` model:
+使用如下 artisan 命令为 `Patient` 模型创建一个新的 Filament 资源： 
 
 ```bash
 php artisan make:filament-resource Patient
 ```
 
-This will create several files in the `app/Filament/Resources` directory:
+这将在 `app/Filament/Resources` 目录下创建多个文件：
 
 ```
 .
@@ -139,15 +140,16 @@ This will create several files in the `app/Filament/Resources` directory:
 |   |   +-- ListPatients.php
 ```
 
-Visit `/admin/patients` in your browser and observe a new link called "Patients" in the sidebar. Clicking the link will display an empty table. Let's add a form to create new patients.
+在浏览器中访问 `/admin/patients`，可以发现一个新的链接(Patients)已经被添加到侧边栏了。点击此链接将会展示一个空表格。让我们来添加表单以创建新患者吧。
 
-### Setting up the resource form
+### 设置资源表单
 
-If you open the `PatientResource.php` file, there's a `form()` method with an empty `schema([...])` array. Adding form fields to this schema will build a form that can be used to create and edit new patients.
+如果你打开 `PatientResource.php` 文件，你会看到一个 `form()` 方法，其中有一个空的 `schema([...])` 数组。添加表单字段到该 schema，构建一个用于新建及编辑患者的表单。
 
-#### "Name" text input
+#### "Name" 文本输入框
 
 Filament bundles a large selection of [form fields](../forms/fields/getting-started). Let's start with a simple [text input field](../forms/fields/text-input):
+Filament 捆绑了大量[表单字段](../forms/fields)。让我们从最简单的[文本输入框](../forms/fields/text-input)入手：
 
 ```php
 use Filament\Forms;
@@ -162,9 +164,9 @@ public static function form(Form $form): Form
 }
 ```
 
-Visit `/admin/patients/create` (or click the "New Patient" button) and observe that a form field for the patient's name was added.
+访问 `/admin/patients/create` (或者点击 "New patient" 按钮)，可以看到一个患者名称的表单字段已经被添加进来了。
 
-Since this field is required in the database and has a maximum length of 255 characters, let's add two [validation rules](../forms/validation) to the name field:
+由于该字段是数据库中必须的，且有 255 字符的最大长度限制。让我们添加两个[验证规则](../forms/validation)到该字段：
 
 ```php
 use Filament\Forms;
@@ -174,11 +176,11 @@ Forms\Components\TextInput::make('name')
     ->maxLength(255)
 ```
 
-Attempt to submit the form to create a new patient without a name and observe that a message is displayed informing you that the name field is required.
+尝试不输入名字提交表单，就会发现出现一条信息提示，告诉你 name 字段是必须的。
 
 #### "Type" select
 
-Let's add a second field for the type of patient: a choice between a cat, dog, or rabbit. Since there's a fixed set of options to choose from, a [select](../forms/fields/select) field works well:
+让我们来添加第二个字段，患者的类型 - 可以是猫、狗或者兔子。因为它是一组固定的选项供选择，使用 [Select](../forms/fields/select) 字段是不错的选择：
 
 ```php
 use Filament\Forms;
@@ -201,9 +203,9 @@ public static function form(Form $form): Form
 }
 ```
 
-The `options()` method of the Select field accepts an array of options for the user to choose from. The array keys should match the database, and the values are used as the form labels. Feel free to add as many animals to this array as you wish.
+Select 字段的 `options()` 方法接收了一个选项数组，使用户可以从中选择。数组的键应该匹配数据库，数组值将用作表单标签。你可以按照你的需求添加尽可能多的宠物类型到该数组中。
 
-Since this field is also required in the database, let's add the `required()` validation rule:
+由于该字段也是数据库必须的字段，因此我们需要加上 `required()` 验证规则方法：
 
 ```php
 use Filament\Forms;
@@ -217,9 +219,9 @@ Forms\Components\Select::make('type')
     ->required()
 ```
 
-#### "Date of birth" picker
+#### "生日" 选择器
 
-Let's add a [date picker field](../forms/fields/date-time-picker) for the `date_of_birth` column along with the validation (the date of birth is required and the date should be no later than the current day).
+让我们添加一个[日期选择器字段](../forms/fields/date-time-picker)用于 `date_of_birth` 列，同时添加验证规则(生日为必须的，日期不应该迟于今天)。
 
 ```php
 use Filament\Forms;
@@ -248,7 +250,7 @@ public static function form(Form $form): Form
 
 #### "Owner" select
 
-We should also add an owner when creating a new patient. Since we added a `BelongsTo` relationship in the Patient model (associating it to the related `Owner` model), we can use the **[`relationship()` method](../forms/fields/select#integrating-with-an-eloquent-relationship)** from the select field to load a list of owners to choose from:
+我们应该在创建新患者(Patient)的同时，添加其主人(owner)。因为我们在患者模型中添加了一个 `BelongsTo` 关联(关联到相应的 `Owner` 模型)，我们可以在 Select 字段中使用 **[`relationship()`](../forms/fields/select#integrating-with-an-eloquent-relationship)** 来加载主人列表，以供选择：
 
 ```php
 use Filament\Forms;
@@ -278,9 +280,9 @@ public static function form(Form $form): Form
 }
 ```
 
-The first argument of the `relationship()` method is the name of the function that defines the relationship in the model (used by Filament to load the select options) — in this case, `owner`. The second argument is the column name to use from the related table — in this case, `name`.
+`relationship()` 方法的首个参数是要模型中定义关联的函数名(用于加载 Select 选项) —— 即本例的 `owner`。而第二个参数是关联表的字段名，如本例中的 `name`。
 
-Let's also make the `owner` field required, `searchable()`, and `preload()` the first 50 owners into the searchable list (in case the list is long):
+我同时让主人是可搜索的(`searchable()`)，且预加载(`preload()`)前 50 个主人到这个可搜索的列表中(以防列表太长)：
 
 ```php
 use Filament\Forms;
@@ -292,8 +294,9 @@ Forms\Components\Select::make('owner_id')
     ->required()
 ```
 
-#### Creating new owners without leaving the page
-Currently, there are no owners in our database. Instead of creating a separate Filament owner resource, let's give users an easier way to add owners via a modal form (accessible as a `+` button next to the select). Use the [`createOptionForm()` method](../forms/fields/select#creating-a-new-option-in-a-modal) to embed a modal form with [`TextInput` fields](../forms/fields/text-input) for the owner's name, email address, and phone number:
+##### 不离开页面新建 Owner
+
+此刻，数据库中没有 Owner。不去创建单独的 Filament 主人资源，让我们提供给用户一个便捷的方式：通过模型表单添加主人(可通过 Select 字段旁边的 `+` 按钮访问)。使用 [`createOptionForm()` 方法](../forms/fields/select#在模态框中创建新选项) 来嵌入一个模态框，模态框中添加用于主人名称、邮箱及电话的 [`TextInput` 字段](../forms/fields/text-input)：
 
 ```php
 use Filament\Forms;
@@ -319,23 +322,23 @@ Forms\Components\Select::make('owner_id')
     ->required()
 ```
 
-A few new methods on the TextInput were used in this example:
+本例中使用了一些 TextInput 新方法：
 
-- `label()` overrides the auto-generated label for each field. In this case, we want the `Email` label to be `Email address`, and the `Phone` label to be `Phone number`.
-- `email()` ensures that only valid email addresses can be input into the field. It also changes the keyboard layout on mobile devices.
-- `tel()` ensures that only valid phone numbers can be input into the field. It also changes the keyboard layout on mobile devices.
+- `label()` 覆盖每个字段自动生成的标签。本例中我们将 `Email` 字段的标签设为 `Email address`，`Phone` 字段的标签设置为 `Phone number`。
+- `email()` 确保只有有效的邮箱地址可以输入到该字段。同时它会改变移动端的键盘布局。
+- `tel()` 确保只有有效的电话号码可以输入到该字段中。同时会改变移动端的键盘布局。
 
-The form should be working now! Try creating a new patient and their owner. Once created, you will be redirected to the Edit page, where you can update their details.
+这个表单应该已经生效了！你可以尝试创建新患者及它们的Owner。创建完成后，页面会跳转到编辑页，你可以在此更新详情。
 
-### Setting up the patients table
+### 设置患者表格
 
-Visit the `/admin/patients` page again. If you have created a patient, there should be one empty row in the table — with an edit button. Let's add some columns to the table, so we can view the actual patient data.
+再次访问 `/admin/patients`。如果你创建了一个患者，表格中理应有一行带有编辑按钮的空数据。让我们添加一些字段到表格中，这样我们就能从中查看实际患者数据。
 
-Open the `PatientResource.php` file. You should see a `table()` method with an empty `columns([...])` array. You can use this array to add columns to the `patients` table.
+打开 `PatientResource.php` 文件，你可以看到一个 `table()` 方法，它带有一个空的 `columns([...])` 数组。你可以使用该数组将字段添加到 `patients` 表。
 
-#### Adding text columns
+#### 添加文本字段
 
-Filament bundles a large selection of [table columns](../tables/columns). Let's use a simple [text column](../tables/columns/text) for all the fields in the `patients` table:
+Filament 捆绑了一系列[表格列字段](../tables/columns)。让我们使用最简单的[文本列](../tables/columns/text)，将其用在 `patients` 表格中的所有字段：
 
 ```php
 use Filament\Tables;
@@ -353,11 +356,11 @@ public static function table(Table $table): Table
 }
 ```
 
-> Filament uses dot notation to eager-load related data. We used `owner.name` in our table to display a list of owner names instead of less informational ID numbers. You could also add columns for the owner's email address and phone number.
+> Filament 使用点语法来即时加载关联数据。我们在表格中使用 `owner.name` 来展示 owner 的名称，而非信息较少的 ID 号。你同时应该为主人的邮箱和电话添加列。
 
-##### Making columns searchable
+##### 使列可搜索
 
-The ability to [search](/tables/columns/getting-started#searching) for patients directly in the table would be helpful as a veterinary practice grows. You can make columns searchable by chaining the `searchable()` method to the column. Let's make the patient's name and owner's name searchable.
+随着兽医业务的增长，在表格中直接[搜索](/tables/columns/getting-started#搜索)患者的能力很有用。你可以在列中链式调用 `searchable()` 方法使之可查询。让我们将患者名称和主人名称设成可搜索。
 
 ```php
 use Filament\Tables;
@@ -377,11 +380,12 @@ public static function table(Table $table): Table
 }
 ```
 
+刷新该页面，你会发现表格中有一个新增的搜索文本字段，
 Reload the page and observe a new search input field on the table that filters the table entries using the search criteria.
 
-##### Making the columns sortable
+##### 使这些列可排序
 
-To make the `patients` table [sortable](../tables/columns/getting-started#sorting) by age, add the `sortable()` method to the `date_of_birth` column:
+要让 `patients` 表格可以按照年龄[排序](../tables/columns/getting-started#sorting)，请将 `sortable()` 方法添加到 `date_of_birth` 表格列：
 
 ```php
 use Filament\Tables;
@@ -402,15 +406,15 @@ public static function table(Table $table): Table
 }
 ```
 
-This will add a sort icon button to the column header. Clicking it will sort the table by date of birth.
+这会在该列的表头添加一个排序按钮，点击该按钮会让表格按生日进行排序。
 
-#### Filtering the table by patient type
+#### 通过患者类型筛选
 
-Although you can make the `type` field searchable, making it filterable is a much better user experience.
+虽然你可以将 `type` 字段设置成可搜索的 searchable，不过使之可过滤会有更好的用户体验。
 
-Filament tables can have [filters](../tables/filters), which are components that reduce the number of records in a table by adding a scope to the Eloquent query. Filters can even contain custom form components, making them a potent tool for building interfaces.
+Filament 表格可以设置[过滤器](../tables/filters)，过滤器是一个允许你限制 Eloquent 查询范围来减少表格记录的组件。过滤器过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
 
-Filament includes a prebuilt [`SelectFilter`](../tables/filters#select-filters) that you can add to the table's `filters()`:
+Filament 包含了一个预制的 [`SelectFilter`](../tables/filters#select-filters)，你可以将其添加到表格的 `filters()` 中：
 
 ```php
 use Filament\Tables;
@@ -433,29 +437,32 @@ public static function table(Table $table): Table
 }
 ```
 
-Reload the page, and you should see a new filter icon in the top right corner (next to the search form). The filter opens a select menu with a list of patient types. Try filtering your patients by type.
-
-## Introducing relation managers
-
-Currently, patients can be associated with their owners in our system. But what happens if we want a third level? Patients come to the vet practice for treatment, and the system should be able to record these treatments and associate them with a patient.
-
 One option is to create a new `TreatmentResource` with a select field to associate treatments with a patient. However, managing treatments separately from the rest of the patient information is cumbersome for the user. Filament uses "relation managers" to solve this problem.
 
-Relation managers are tables that display related records for an existing resource on the edit screen for the parent resource. For example, in our project, you could view and manage a patient's treatments directly below their edit form.
 
-> You can also use Filament ["actions"](../actions/modals#modal-forms) to open a modal form to create, edit, and delete treatments directly from the patient's table.
+刷新页面，会发现表格的右上角有一个新的过滤器图标(在搜索表单旁边)。这个过滤器打开一个包含患者类型的选择菜单。现在，你可以尝试通过患者类型进行数据过滤了。
 
-Use the `make:filament-relation-manager` artisan command to quickly create a relation manager, connecting the patient resource to the related treatments:
+## 介绍关联管理器
+
+此刻，系统中患者可以和它们的主人相关联了。但是，如果我们想要第三个层级呢？患者来到诊所寻求治疗，系统应该可以记录这些治疗并与患者关联。
+
+其中一个方式是，新建一个 `TreatmentResource`，使用 Select 字段让治疗和患者相关联。但是，管理治疗如果单独放在患者信息之外对用户来说过于复杂。Filament 使用"管理管理器"来解决这一的问题。
+
+关联管理器是在父资源的编辑页面中展示现有资源的关联记录的表格。比如，我们的项目中，你可以直接在编辑表单下直接查看或者管理患者的治疗。
+
+> 你页可以使用 Filament 的 [Action](../actions/modals#modal-forms) 去打开模态框表单，在患者表单中直接创建、编辑或删除治疗。
+
+使用 `make:filament-relation-manager` artisan 命令，可以快速创建关联，将患者资源和相关治疗连接起来：
 
 ```bash
 php artisan make:filament-relation-manager PatientResource treatments description
 ```
 
-- `PatientResource` is the name of the resource class for the owner model. Since treatments belong to patients, the treatments should be displayed on the Edit Patient page.
-- `treatments` is the name of the relationship in the Patient model we created earlier.
-- `description` is the column to display from the treatments table.
+- `PatientResource` 是 Patinent 模型的资源类名。由于治疗(Treatment) 属于患者(Patient)，治疗应该在患者编辑页面中展示。 
+- `treatments` 是此前我们在 Patient 模型中创建的关联名。
+- `description` 是 treatments 表中要展示的列。
 
-This will create a `PatientResource/RelationManagers/TreatmentsRelationManager.php` file. You must register the new relation manager in the `getRelations()` method of the `PatientResource`:
+该命令将新建一个 `PatientResource/RelationManagers/TreatmentsRelationManager` 文件。你需要到 `PatientResource` 的 `getRelations()` 方法中注册新的关联管理器。
 
 ```php
 use App\Filament\PatientResource\RelationManagers;
@@ -468,7 +475,7 @@ public static function getRelations(): array
 }
 ```
 
-The `TreatmentsRelationManager.php` file contains a class that is prepopulated with a form and table using the parameters from the `make:filament-relation-manager` artisan command. You can customize the fields and columns in the relation manager similar to how you would in a resource:
+`TreatmentsRelationManager.php` 文件中包含一个使用 `make:filament-relation-manager` artisan 命令参数预先填充 form 和 table 类。你可以在关联管理器中自定义表单字段和表格列，类似于资源：
 
 ```php
 use Filament\Forms;
@@ -495,11 +502,11 @@ public function table(Table $table): Table
 }
 ```
 
-Visit the Edit page for one of your patients. You should already be able to create, edit, delete, and list treatments for that patient.
+现在，访问其中一位患者的编辑页面。你应该已经可以创建、编辑、删除并罗列该患者的治疗。
 
-### Setting up the treatment form
+### 设置治疗表单
 
-By default, text fields only span half the width of the form. Since the `description` field might contain a lot of information, add a `columnSpan('full')` method to make the field span the entire width of the modal form:
+默认情况下，文本字段只占用表单宽度的一半。因为 `description` 字段可能包含很多信息，这里我们使用 `columnSpan('full')` 方法让该字段占用模特款表单的整个宽度：
 
 ```php
 use Filament\Forms;
@@ -510,7 +517,7 @@ Forms\Components\TextInput::make('description')
     ->columnSpan('full')
 ```
 
-Let's add the `notes` field, which can be used to add more details about the treatment. We can use a [textarea](../forms/fields/textarea) field with a `columnSpan('full')`:
+让我们添加 `notes` 字段，用于添加更多治疗的信息。我们可以使用 [Textarea 字段](../forms/fields/textarea)，并使用 `columnSpan('full')` ：
 
 ```php
 use Filament\Forms;
@@ -531,9 +538,10 @@ public function form(Form $form): Form
 }
 ```
 
-#### Configuring the `price` field
+#### 配置 `price` 字段
 
-Let's add a `price` field for the treatment. We can use a text input with some customizations to make it suitable for currency input. It should be `numeric()`, which adds validation and changes the keyboard layout on mobile devices. Add your preferred currency prefix using the `prefix()` method; for example, `prefix('€')` will add a `€` before the input without impacting the saved output value:
+我们来为治疗添加一个 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。它是 `numberic()` 的，添加验证的同时，改变移动设备中键盘的布局。同时使用 `prefix()` 方法添加货币前缀，比如，prefix('€')`会在不影响保存的输出值的情况下，在文本输入框前面添加 `€`。
+此外，我们需要 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。可以用 `numberic()` 方法，添加验证的同时，改变移动设备中键盘的布局。同时可以添加一个前缀 `prefix('€')`，使之在输入框签名渲染 `€`，而不会改变字段保存的输出。
 
 ```php
 use Filament\Forms;
@@ -558,15 +566,15 @@ public function form(Form $form): Form
 }
 ```
 
-##### Casting the price to an integer
+##### 将价格转成整型
 
-Filament stores currency values as integers (not floats) to avoid rounding and precision issues — a widely-accepted approach in the Laravel community. However, this requires creating a cast in Laravel that transforms the float into an integer when retrieved and back to an integer when stored in the database. Use the following artisan command to create the cast:
+Filament 将货币值存储成整型(而非浮点型)，以避免取整和精度问题 —— 这是一个被 Laravel 社区广泛接受的方式。然而，这要求在 Laravel 中创建一个 Cast，使其在检索时将整型转换成浮点型，在存入数据库时转换回整型。使用如下命令创建 Cast:
 
 ```bash
 php artisan make:cast MoneyCast
 ```
 
-Inside the new `app/Casts/MoneyCast.php` file, update the `get()` and `set()` methods:
+在 `app/Casts/MoneyCast.php` 文件中，更新 `get()` 和 `set()` 方法：
 
 ```php
 public function get($model, string $key, $value, array $attributes): float
@@ -582,7 +590,7 @@ public function set($model, string $key, $value, array $attributes): float
 }
 ```
 
-Now, add the `MoneyCast` to the `price` attribute in the `Treatment` model:
+现在，在 `Treatment` 模型中将 `MoneyCast` 添加到 `price` 属性： 
 
 ```php
 use App\Casts\MoneyCast;
@@ -598,9 +606,9 @@ class Treatment extends Model
 }
 ```
 
-### Setting up the treatments table
+### 设置治疗表格
 
-When the relation manager was generated previously, the `description` text column was automatically added. Let's also add a `sortable()` column for the `price` with a currency prefix. Use the Filament `money()` method to format the `price` column as money — in this case for `EUR` (`€`):
+生成关联管理器时，已经自动添加了 `description` 文本字段。让我们同时添加一个 `sortable()` 可排序的带货币前缀的 `price` 字段。使用 Filament 的 `money()` 方法将 `price` 字段格式化为金额 —— 比如此处的 `EUR` (`€`)：
 
 ```php
 use Filament\Tables;
@@ -618,7 +626,7 @@ public function table(Table $table): Table
 }
 ```
 
-Let's also add a column to indicate when the treatment was administered using the default `created_at` timestamp. Use the `dateTime()` method to display the date-time in a human-readable format:
+同时使用默认的 `created_at` 时间戳添加一个字段说明治疗时间。使用 `dateTime()` 方法使之展示成人类可读的格式：
 
 ```php
 use Filament\Tables;
@@ -630,7 +638,7 @@ public function table(Table $table): Table
         ->columns([
             Tables\Columns\TextColumn::make('description'),
             Tables\Columns\TextColumn::make('price')
-                ->money('EUR')
+                ->money('usd')
                 ->sortable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->dateTime(),
@@ -638,25 +646,25 @@ public function table(Table $table): Table
 }
 ```
 
-> You can pass any valid [PHP date formatting string](https://www.php.net/manual/en/datetime.format.php) to the `dateTime()` method (e.g. `dateTime('m-d-Y h:i A')`).
+> 你可以传入任何有效的[PHP 日期格式字符串](https://www.php.net/manual/en/datetime.format.php) 到 `dateTime()` 方法 (e.g. `dateTime('m-d-Y h:i A')`)。
 
-## Introducing widgets
+## 介绍 Widget
 
-Filament widgets are components that display information on your dashboard, especially statistics. Widgets are typically added to the default [Dashboard](../panels/dashboard) of the panel, but you can add them to any page, including resource pages. Filament includes built-in widgets like the [stats widget](../widgets/stats-overview), to render important statistics in a simple overview; [chart widget](../widgets/charts), which can render an interactive chart; and [table widget](../panels/dashboard#table-widgets), which allows you to easily embed the Table Builder.
+Filament Widget 是一个在仪表盘上展示信息的组件，特别是统计信息。Wideget 通常被添加到面板中默认的[仪表盘](../panels/dashboard)中，不过你也可以将其添加到任何页面，包括资源页。Filament 自带了一些内置 Widget，比如[统计 Widget](../widgets/stats-overview)用以在简单的卡片中渲染重要的统计信息；[图表 widget](../widgets/charts)用来渲染直观的图表；[表格 Widget](../panels/dashboard#表格-widget) 允许你内嵌表格构造器。
 
-Let's add a stats widget to our default dashboard page that includes a stat for each type of patient and a chart to visualize treatments administered over time.
+让我们为默认的仪表盘页添加一个统计 Widget，使之包含每个患者类型的统计信息以及一个随时间推进的可视化治疗图表。
 
-### Creating a stats widget
+### 创建统计插件
 
-Create a [stats widget](../widgets/stats-overview) to render patient types using the following artisan command:
+使用如下 artisan 命令创建 [stats widget](../widgets/stats-overview)，用来渲染患者类型：
 
 ```bash
 php artisan make:filament-widget PatientTypeOverview --stats-overview
 ```
 
-When prompted, do not specify a resource, and select "admin" for the location.
+出现提示时，不要指定资源，并选择 "admin" 作为路径。
 
-This will create a new `app/Filament/Widgets/PatientTypeOverview.php` file. Open it, and return `Stat` instances from the `getStats()` method:
+这会生成 `app/Filament/Widgets/PatientTypeOverview.php` 文件。打开在 `getCards()` 方法中返回 `Stat` 实例：
 
 ```php
 <?php
@@ -669,7 +677,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class PatientTypeOverview extends BaseWidget
 {
-    protected function getStats(): array
+    protected function getCards(): array
     {
         return [
             Stat::make('Cats', Patient::query()->where('type', 'cat')->count()),
@@ -680,29 +688,30 @@ class PatientTypeOverview extends BaseWidget
 }
 ```
 
-Open your dashboard, and you should see your new widget displayed. Each stat should show the total number of patients for the specified type.
+打开仪表盘，你就应该能看到新的 Widget。每个统计显示了特定类型的患者总数。
 
-### Creating a chart widget
+### 创建图表 widget
 
-Let's add a chart to the dashboard to visualize the number of treatments administered over time. Use the following artisan command to create a new chart widget:
+让我们在仪表盘中添加一个图表，用来展示随时间推进的治疗。使用以下 artisan 命令创建一个新的图表 Widget：
 
 ```bash
 php artisan make:filament-widget TreatmentsChart --chart
 ```
 
-When prompted, do not specify a resource, select "admin" for the location, and choose "line chart" as the chart type.
+当出现提示时，不要指定资源，选择 "admin" 作为目标路径，并选择 "line chart" 作为类型。
 
-Open `app/Filament/Widgets/TreatmentsChart.php` and set the `$heading` of the chart to "Treatments".
+打开 `app/Filament/Widgets/TreatmentsChart.php` 并将图表的标题 `$heading` 设置成 "Treatments"。
 
-The `getData()` method returns an array of datasets and labels. Each dataset is a labeled array of points to plot on the chart, and each label is a string. This structure is identical to the [Chart.js](https://www.chartjs.org/docs) library, which Filament uses to render charts.
+`getData()` 方法返回一个数据集和标签组成的数组。每个数据集都是要在图表上绘制的标签点数组，每个标签都是一个字符串。此结构与 [Chart.js](https://www.chartjs.org/docs) 库相同，Filament 用它来渲染图表。
 
-To populate chart data from an Eloquent model, Filament recommends that you install the [flowframe/laravel-trend](https://github.com/Flowframe/laravel-trend) package:
+要从 Eloquent 模型中生成图表数据，Filament 推荐你安装 `flowframe/laravel-trend` 包，你可以查看[文档]https://github.com/Flowframe/laravel-trend)。安装该包：
 
 ```bash
 composer require flowframe/laravel-trend
 ```
 
 Update the `getData()` to display the number of treatments per month for the past year:
+更新 `getData()`，展示过去一年中每个月的治疗数量：
 
 ```php
 use App\Models\Treatment;
@@ -731,18 +740,18 @@ protected function getData(): array
 }
 ```
 
-Now, check out your new chart widget in the dashboard!
+现在，请查看仪表盘中新增的 Widget！
 
-> You can [customize your dashboard page](../panels/dashboard#customizing-the-dashboard-page) to change the grid and how many widgets are displayed.
+> 你可以[自定义仪表盘页](../panels/dashboard#自定义仪表盘页面)，跳转网格及展示的 Widget 数。
 
-## Next steps with the Panel Builder
+## 面板的进阶内容
 
-Congratulations! Now that you know how to build a basic Filament application, here are some suggestions for further learning:
+恭喜你，你已经学会了如何创建一个基础的 Filament 应用。以下是一些关于进阶学习的建议：
 
-- [Create custom pages in the panel that don't belong to resources.](pages)
-- [Learn more about adding action buttons to pages and resources, with modals to collect user input or for confirmation.](../actions/overview)
-- [Explore the available fields to collect input from your users.](../forms/fields/getting-started#available-fields)
-- [Check out the list of form layout components.](../forms/layout/getting-started)
-- [Discover how to build complex, responsive table layouts without touching CSS.](../tables/layout)
-- [Add summaries to your tables](../tables/summaries)
-- [Write automated tests for your panel using our suite of helper methods.](testing)
+- [在面板中创建不属于资源的自定义页面。](pages)
+- [学习如何将 Action 添加到页面和资源中，使用模态框去获取用户输入或确认。](../actions/overview)
+- [了解可用字段以收集用户输入。](../forms/fields/getting-started#可用字段)
+- [学习表单布局组件列表，用来搭建直观的表单结构。](../forms/layout/getting-started)
+- [了解如何在不触碰 CSS 的情况下构建复杂、响应迅速的表格布局。](../tables/layout)
+- [为表格添加总结。](../tables/summaries)
+- [使用 helper 方法套件为你的面板编写自动测试。](testing)

@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/11-themes.md"
-title: Themes
+title: 主题
 ---
 
-## Changing the colors
+## 修改颜色
 
-In the [configuration](configuration), you can easily change the colors that are used. Filament ships with 6 predefined colors that are used everywhere within the framework. They are customizable as follows:
+在[配置](configuration)中，你可以轻松地修改使用的颜色。Filament 随带了 6 个预定义颜色，你可以在框架的任意地方使用。他们可以自定义如下：
 
 ```php
 use Filament\Panel;
@@ -27,9 +27,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-The `Filament\Support\Colors\Color` class contains color options for all [Tailwind CSS color palettes](https://tailwindcss.com/docs/customizing-colors).
+`Filament\Support\Colors\Color` 类包含了所有 [Tailwind CSS 调色板](https://tailwindcss.com/docs/customizing-colors)中的所有颜色选项：
 
-Alternatively, you may pass your own palette in as an array of RGB values:
+此外，你也可以用一个 RGB 值数组的格式，传入你自己的颜色：
 
 ```php
 $panel
@@ -50,9 +50,9 @@ $panel
     ])
 ```
 
-### Generating a color palette
+### 生成调色板
 
-If you want us to attempt to generate a palette for you based on a singular hex or RGB value, you can pass that in:
+如果你想基于十六进制值或者 RGB 值生成调色板，你可以传入:
 
 ```php
 $panel
@@ -66,9 +66,9 @@ $panel
     ])
 ```
 
-## Changing the font
+## 修改字体
 
-By default, we use the [Inter](https://fonts.google.com/specimen/Inter) font. You can change this using the `font()` method in the [configuration](configuration) file:
+默认情况下，我们使用 [Inter](https://fonts.google.com/specimen/Inter) 字体。你可以在[配置](configuration) 文件使用 `font()` 对其进行修改：
 
 ```php
 use Filament\Panel;
@@ -81,11 +81,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-All [Google Fonts](https://fonts.google.com) are available to use.
+所有 [Google Fonts](https://fonts.google.com) 都是可用的。
 
-### Changing the font provider
+### 修改字体 provider
 
-[Bunny Fonts CDN](https://fonts.bunny.net) is used to serve the fonts. It is GDPR-compliant. If you'd like to use [Google Fonts CDN](https://fonts.google.com) instead, you can do so using the `provider` argument of the `font()` method:
+[Bunny Fonts CDN](https://fonts.bunny.net) 用于提供字体服务。它符合 GDPR。如果你想使用 [Google Fonts CDN](https://fonts.google.com)，可以通过 `font` 方法的 `$proveder` 参数实现：
 
 ```php
 use Filament\FontProviders\GoogleFontProvider;
@@ -93,7 +93,7 @@ use Filament\FontProviders\GoogleFontProvider;
 $panel->font('Inter', provider: GoogleFontProvider::class)
 ```
 
-Or if you'd like to serve the fonts from a local stylesheet, you can use the `LocalFontProvider`:
+如果你想在本地样式表中提供字体服务，可以使用 `LocalFontProvider`：
 
 ```php
 use Filament\FontProviders\LocalFontProvider;
@@ -105,37 +105,29 @@ $panel->font(
 )
 ```
 
-## Creating a custom theme
+## 创建自定义主题
 
-Filament allows you to change the CSS used to render the UI by compiling a custom stylesheet to replace the default one. This custom stylesheet is called a "theme".
+Filament 允许你通过编译自定义样式表替换默认的样式，修改 CSS 用以渲染 UI。自定义的样式表称为 "主题"。
 
-Themes use [Tailwind CSS](https://tailwindcss.com), the Tailwind Forms plugin, the Tailwind Typography plugin, and [Autoprefixer](https://github.com/postcss/autoprefixer).
+主题使用 [Tailwind CSS](https://tailwindcss.com)、Tailwind Forms 插件、Tailwind Typography 插件和 [Autoprefixer](https://github.com/postcss/autoprefixer)。
 
-To create a custom theme for a panel, you can use the `php artisan make:filament-theme` command:
+要在面板中创建自定义主题，你可以使用 `php artisan make:filament-theme` 命令：
 
 ```bash
 php artisan make:filament-theme
 ```
 
-If you have multiple panels, you can specify the panel you want to create a theme for:
+如果你有多个面板，你可以指定你要创建主题的面板：
 
 ```bash
 php artisan make:filament-theme admin
 ```
 
-The command will create a CSS file and Tailwind Configuration file in the `/resources/css/filament` directory. You can then customize the theme by editing these files. It will also give you instructions on how to compile the theme and register it in Filament. **Please follow the instructions in the command to complete the setup process:**
+该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。***、请遵照命令中的说明，完成安装过程**
 
-```
-⇂ First, add a new item to the `input` array of `vite.config.js`: `resources/css/filament/admin/theme.css`  
-⇂ Next, register the theme in the admin panel provider using `->viteTheme('resources/css/filament/admin/theme.css')`  
-⇂ Finally, run `npm run build` to compile the theme
-```
+## 非粘性顶部栏
 
-Please reference the command to see the exact file names that you need to register, they may not be `admim/theme.css`.
-
-## Non-sticky topbar
-
-By default, the topbar sticks to the top of the page. You may make the topbar scroll out of view with the following CSS:
+默认情况下，顶部导航栏粘贴固定在页面顶部。你可以将下面样式使之可以滚动滑出视图之外：
 
 ```css
 .fi-topbar {
@@ -143,19 +135,19 @@ By default, the topbar sticks to the top of the page. You may make the topbar sc
 }
 ```
 
-## Changing the logo
+## 修改Logo
 
-By default, Filament will use your app's name as a logo.
+默认情况下，Filament 会在你使用你的应用名作为 Logo。
 
-You may create a `resources/views/vendor/filament-panels/components/logo.blade.php` file to provide a custom logo:
+你也可以创建 `resources/views/vendor/filament-panels/components/logo.blade.phpp` 文件，用来自定义 logo:
 
 ```blade
 <img src="{{ asset('/images/logo.svg') }}" alt="Logo" class="h-10">
 ```
 
-## Disabling dark mode
+## 禁用暗黑模式
 
-To disable dark mode switching, you can use the [configuration](configuration) file:
+要禁用暗黑模式切换，你可以使用[配置文件](configuration)：
 
 ```php
 use Filament\Panel;
@@ -168,9 +160,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Adding a favicon
+## 添加 favicon
 
-To add a favicon, you can use the [configuration](configuration) file, passing the public URL of the favicon:
+要添加 favicon，你可以在[配置文件](configuration)中传入 favicon 的公共 URL：
 
 ```php
 use Filament\Panel;

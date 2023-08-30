@@ -1,13 +1,13 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/03-entries/01-getting-started.md"
-title: Getting started
+title: 开始
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Entry classes can be found in the `Filament\Infolists\Components` namespace. You can put them inside the `$infolist->schema()` method:
+Entry 类位于  `Filament\Infolists\Components` 命名空间下。你可以将其放到 `$infolist->schema()` 方法内：
 
 ```php
 use Filament\Infolists\Infolist;
@@ -21,7 +21,7 @@ public function infolist(Infolist $infolist): Infolist
 }
 ```
 
-Entries may be created using the static `make()` method, passing its unique name. You may use "dot notation" to access entries within relationships.
+条目(Entry)可以使用静态 `make()` 方法创建，传入其唯一名称。你可以使用"点语法"访问 Entry 关联。
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -33,18 +33,18 @@ TextEntry::make('author.name')
 
 <AutoScreenshot name="infolists/entries/simple" alt="Entries in an infolist" version="3.x" />
 
-## Available entries
+## 可用条目
 
 - [Text entry](text)
 - [Icon entry](icon)
 - [Image entry](image)
 - [Color entry](color)
 
-You may also [create your own custom entries](custom) to display data however you wish.
+你也可以[创建自定义条目](custom)，按照你的需要来展示数据。
 
-## Setting a label
+## 设置标签
 
-By default, the label of the entry, which is displayed in the header of the infolist, is generated from the name of the entry. You may customize this using the `label()` method:
+默认情况下，Entry 的标签(展示在信息列表头部)，是由 Entry 的名称生成。你可以使用 `label()` 方法对其自定义：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -53,7 +53,7 @@ TextEntry::make('title')
     ->label('Post title')
 ```
 
-Optionally, you can have the label automatically translated [using Laravel's localization features](https://laravel.com/docs/localization) with the `translateLabel()` method:
+可选地，你可以通过 `translateLabel()` 方法使用 [Laravel 本地化特性](https://laravel.com/docs/localization)自动翻译标签。
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -193,19 +193,6 @@ TextEntry::make('apiKey')
 
 <AutoScreenshot name="infolists/entries/hint-icon" alt="Entry with hint icon" version="3.x" />
 
-#### Adding a tooltip to a hint icon
-
-Additionally, you can add a tooltip to display when you hover over the hint icon, using the `tooltip` parameter of `hintIcon()`:
-
-```php
-use Filament\Infolists\Components\TextEntry;
-
-TextEntry::make('apiKey')
-    ->label('API key')
-    ->hint('[Documentation](/documentation)')
-    ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Read it!')
-```
-
 ## Hiding entries
 
 To hide an entry conditionally, you may use the `hidden()` and `visible()` methods, whichever you prefer:
@@ -233,9 +220,9 @@ Infolists\Components\TextEntry::make('amount_including_vat')
     })
 ```
 
-## Tooltips
+## Tooltip
 
-You may specify a tooltip to display when you hover over an entry:
+你可以指定鼠标悬停在 Entry 时要展示的 tooltip：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -246,7 +233,7 @@ TextEntry::make('title')
 
 <AutoScreenshot name="infolists/entries/tooltips" alt="Entry with tooltip" version="3.x" />
 
-This method also accepts a closure that can access the current infolist record:
+该方法同时接收一个闭包，该闭包可以访问当前信息列表的记录：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -256,7 +243,7 @@ TextEntry::make('title')
     ->tooltip(fn (Model $record): string => "By {$record->author->name}")
 ```
 
-## Custom attributes
+## 自定义属性
 
 The HTML of entries can be customized, by passing an array of `extraAttributes()`:
 

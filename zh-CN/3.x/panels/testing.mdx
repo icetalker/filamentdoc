@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/13-testing.md"
-title: Testing
+title: 测试
 ---
 
-## Overview
+## 概述
 
-All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to a PHPUnit.
+所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。不过，你可以将其适配到 PHPUnit。
 
-Since all pages in the app are Livewire components, we're just using Livewire testing helpers everywhere. If you've never tested Livewire components before, please read [this guide](https://livewire.laravel.com/docs/testing) from the Livewire docs.
+由于应用中的所有页面都是 Livewire 组件，我们始终都在使用 Livewire 测试辅助函数。 如果你之前从未测试过 Livewire 组件，请阅读 Livewire 文档下的[这一向导](https://livewire.laravel.com/docs/testing)。
 
-## Getting started
+## 开始
 
-Ensure that you are authenticated to access the app in your `TestCase`:
+确保你在测试案例(`TestCase`)中有权限访问应用:
 
 ```php
 protected function setUp(): void
@@ -23,15 +23,15 @@ protected function setUp(): void
 }
 ```
 
-## Resources
+## 资源
 
-### Pages
+### 页面
 
-#### List
+#### 列表
 
-##### Routing & render
+##### 路由 & 渲染
 
-To ensure that the List page for the `PostResource` is able to render successfully, generate a page URL, perform a request to this URL and ensure that it is successful:
+要确保 `PostResource` 的列表页渲染成功，需生成页面 URL、发送请求到该 URL 并检查是否成功：
 
 ```php
 it('can render page', function () {
@@ -39,11 +39,11 @@ it('can render page', function () {
 });
 ```
 
-##### Table
+##### 表格
 
-Filament includes a selection of helpers for testing tables. A full guide to testing tables can be found [in the Table Builder documentation](../tables/testing).
+Filament 内含一系列辅助函数用来测试表格。表格测试全指南可查阅[表格构造器文档](../tables/testing)。
 
-To use a table [testing helper](../tables/testing), make assertions on the resource's List page class, which holds the table:
+要使用表格[测试辅助函数](../tables/testing)，在持有该表格的资源列表类中使用断言：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -56,11 +56,11 @@ it('can list posts', function () {
 });
 ```
 
-#### Create
+#### 新建
 
-##### Routing & render
+##### 路由 & 渲染
 
-To ensure that the Create page for the `PostResource` is able to render successfully, generate a page URL, perform a request to this URL and ensure that it is successful:
+检查 `PostResource` 的新建页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功：
 
 ```php
 it('can render page', function () {
@@ -68,9 +68,9 @@ it('can render page', function () {
 });
 ```
 
-##### Creating
+##### 创建
 
-You may check that data is correctly saved into the database by calling `fillForm()` with your form data, and then asserting that the database contains a matching record:
+你可使用表单数据调用 `fillForm()` 检查存入到数据库的数据时候正确，并断言数据库中是否包含一条匹配的记录：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -97,9 +97,9 @@ it('can create', function () {
 });
 ```
 
-##### Validation
+##### 验证
 
-Use `assertHasFormErrors()` to ensure that data is properly validated in a form:
+使用 `assertHasFormErrors()` 检查表单中的数据验证是否正确：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -116,11 +116,11 @@ it('can validate input', function () {
 });
 ```
 
-#### Edit
+#### 编辑
 
-##### Routing & render
+##### 路由 & 渲染
 
-To ensure that the Edit page for the `PostResource` is able to render successfully, generate a page URL, perform a request to this URL and ensure that it is successful:
+检查 `PostResource` 的编辑页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功：
 
 ```php
 it('can render page', function () {
@@ -130,9 +130,9 @@ it('can render page', function () {
 });
 ```
 
-##### Filling existing data
+##### 填充已有数据
 
-To check that the form is filled with the correct data from the database, you may `assertFormSet()` that the data in the form matches that of the record:
+检测当前表单是否正确填充了数据库的数据，你可以使用 `assertFormSet()` 断言表单中的数据是否匹配数据库记录： 
 
 ```php
 use function Pest\Livewire\livewire;
@@ -152,9 +152,9 @@ it('can retrieve data', function () {
 });
 ```
 
-##### Saving
+##### 保存
 
-You may check that data is correctly saved into the database by calling `fillForm()` with your form data, and then asserting that the database contains a matching record:
+你可以使用表单数据调用 `fillForm()`，检查数据是否正确存入数据库，并断言数据库中是否包含匹配的记录：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -183,9 +183,9 @@ it('can save', function () {
 });
 ```
 
-##### Validation
+##### 验证
 
-Use `assertHasFormErrors()` to ensure that data is properly validated in a form:
+使用 `assertHasFormErrors()` 检测表单中的数据是否被正确验证:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -205,9 +205,9 @@ it('can validate input', function () {
 });
 ```
 
-##### Deleting
+##### 删除
 
-You can test the `DeleteAction` using `callAction()`:
+你可以使用 `callPageAction()` 测试 `DeleteAction`：
 
 ```php
 use Filament\Actions\DeleteAction;
@@ -225,7 +225,7 @@ it('can delete', function () {
 });
 ```
 
-You can ensure that a particular user is not able to see a `DeleteAction` using `assertActionHidden()`:
+你可以使用 `assertPageActionHidden()` 断言 `DeleteAction` 对特定用户隐藏：
 
 ```php
 use Filament\Actions\DeleteAction;
@@ -241,11 +241,11 @@ it('can not delete', function () {
 });
 ```
 
-#### View
+#### 查看
 
-##### Routing & render
+##### 路由 & 渲染
 
-To ensure that the View page for the `PostResource` is able to render successfully, generate a page URL, perform a request to this URL and ensure that it is successful:
+检查 `PostResource` 的查看页是否可以成功渲染，生成页面 URL，发起请求到该地址，检测是否成功：
 
 ```php
 it('can render page', function () {
@@ -255,9 +255,9 @@ it('can render page', function () {
 });
 ```
 
-##### Filling existing data
+##### 填充已有数据
 
-To check that the form is filled with the correct data from the database, you may `assertSet()` that the data in the form matches that of the record:
+检测当前表单是否正确填充了数据库的数据，你可以使用 `assertFormSet()` 断言表单中的数据是否匹配数据库记录：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -277,11 +277,11 @@ it('can retrieve data', function () {
 });
 ```
 
-### Relation managers
+### 关联管理器
 
-##### Render
+##### 渲染
 
-To ensure that a relation manager is able to render successfully, mount the Livewire component:
+要检测关联管理器是否渲染成功，挂载 Livewire 组件：
 
 ```php
 use App\Filament\Resources\CategoryResource\Pages\EditCategory;
@@ -300,14 +300,13 @@ it('can render relation manager', function () {
 });
 ```
 
-##### Table
+##### 表格
 
-Filament includes a selection of helpers for testing tables. A full guide to testing tables can be found [in the Table Builder documentation](../tables/testing).
+Filament 内含一系列辅助函数用于测试表格。表格测试全指南可查阅[表格构造器文档](../tables/testing)。
 
-To use a table [testing helper](../tables/testing), make assertions on the relation manager class, which holds the table:
+要使用表格[测试辅助函数](../tables/testing)，在持有该表格的关联管理器类中使用断言：
 
 ```php
-use App\Filament\Resources\CategoryResource\Pages\EditCategory;
 use function Pest\Livewire\livewire;
 
 it('can list posts', function () {
@@ -317,7 +316,6 @@ it('can list posts', function () {
 
     livewire(CategoryResource\RelationManagers\PostsRelationManager::class, [
         'ownerRecord' => $category,
-        'pageClass' => EditCategory::class,
     ])
         ->assertCanSeeTableRecords($category->posts);
 });

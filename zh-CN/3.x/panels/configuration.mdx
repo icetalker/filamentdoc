@@ -1,42 +1,42 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/09-configuration.md"
-title: Configuration
+title: 配置
 ---
 
-## Overview
+## 概述
 
-By default, the configuration file is located at `app/Providers/Filament/AdminPanelProvider.php`. Keep reading to learn more about [panels](#introducing-panels) and how each has [its own configuration file](#creating-a-new-panel).
+默认情况下，配置文件位于 `app/Providers/Filament/AdminPanelProvider.php`。继续阅读了解更多[面板](#介绍面板)信息以及每个面板如何拥有[自己的配置文件](#创建新面板)。
 
-## Introducing panels
+## 面板介绍
 
-By default, when you install the package, there is one panel that has been set up for you - and it lives on `/admin`. All the [resources](resources/getting-started), [pages](pages), and [dashboard widgets](dashboard) you create get registered to this panel.
+默认情况下，当你安装完该包后，已经为你设置好了一个面板，它位于 `/admin`。你所创建的所有[资源](resources/getting-started)、[页面](pages)及[仪表盘 Widget](dashboard) 都注册到此面板中。 
 
-However, you can create as many panels as you want, and each can have its own set of resources, pages and widgets.
+不过，你可以根据需要创建尽可能多的面板，每个都有一套它自己的资源、页面以及 Widget。
 
-For example, you could build a panel where users can log in at `/app` and access their dashboard, and admins can log in at `/admin` and manage the app. The `/app` panel and the `/admin` panel have their own resources, since each group of users has different requirements. Filament allows you to do that by providing you with the ability to create multiple panels.
+比如，你创建了一个面板，用户可以通过 `/app` 登录并访问它们的仪表盘，管理员可以通过 `/admin` 登录并管理应用。`/app` 面板及 `/admin` 面板都有它们自己的资源，因为每个用户组有不同的需求。Filament 通过提供创建多个面板的能力来允许你实现该功能。
 
-### The default admin panel
+### 默认的管理面板
 
-When you run `filament:install`, a new file is created in `app/Providers/Filament` - `AdminPanelProvider.php`. This file contains the configuration for the `/admin` panel.
+当你运行 `filament:install` 后，在 `app/Providers/Filament` 下面新建了一个文件 —— `AdminPanelProvider`。该文件包含了 `/admin` 面板的配置文件。
 
-When this documentation refers to the "configuration", this is the file you need to edit. It allows you to completely customize the app.
+此文档提及“配置”时，这就是你需要去编辑的那个文件。它允许你完全自定义应用。
 
-### Creating a new panel
+### 创建新面板
 
-To create a new panel, you can use the `make:filament-panel` command, passing in the unique name of the new panel:
+要创建新面板，请使用 `make:filament-panel` 命令，传入新面板的唯一名称:
 
 ```bash
 php artisan make:filament-panel app
 ```
 
-This command will create a new panel called "app". A configuration file will be created at `app/Providers/Filament/AppPanelProvider.php`. You can access this panel at `/app`, but you can [customize the path](#changing-the-path) if you don't want that.
+该命令会创建一个名为"app"的新面板。同时生成一个新配置文件 `app/Providers/Filament/AppPanelProvider.php`。你可以在 `/app` 中访问该面板，不过如果你不想要该路径你也可以[自定义路径](#修改路径)。
 
-Since this configuration file is also a [Laravel service provider](https://laravel.com/docs/providers), it needs to be registered in `config/app.php`. Filament will attempt to do this for you, but if you get an error while trying to access your panel then this process has probably failed. You can manually register the service provider by adding it to the `providers` array.
+由于配置文件也是一个 [Laravel 服务提供者](https://laravel.com/docs/providers)，它需要在 `config/app.php` 中注册。Filament 会尝试为你完成此操作，不过如果你访问该面板时返回错误，那么可能是该操作失败。你可以将其添加到 `providers` 数组手动注册服务提供者。
 
-## Changing the path
+## 修改路径
 
-In a panel configuration file, you can change the path that the app is accessible at using the `path()` method:
+在面板配置文件中，你可以使用 `path()` 方法，修改该应用可访问的路径：
 
 ```php
 use Filament\Panel;
@@ -49,7 +49,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-If you want the app to be accessible without any prefix, you can set this to be an empty string:
+如果你想不使用前缀访问该应用，你可以将其设为空字符串：
 
 ```php
 use Filament\Panel;
@@ -62,11 +62,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-Make sure your `routes/web.php` file doesn't already define the `''` or `'/'` route, as it will take precedence.
+## 渲染钩子
 
-## Render hooks
-
-[Render hooks](../support/render-hooks) allow you to render Blade content at various points in the framework views. You can [register global render hooks](../support/render-hooks#registering-render-hooks) in a service provider or middleware, but it also allows you to register render hooks that are specific to a panel. To do that, you can use the `renderHook()` method on the panel configuration object. Here's an example, integrating [`wire-elements/modal`](https://github.com/wire-elements/modal) with Filament:
+Filament 允许你在应用布局中的不同点渲染 Blade 模板内容。这对于集成像 [`wire-elements/modal`](https://github.com/wire-elements/modal) 这样的包非常有用，该包需要添加 Livewire 组件到你的应用中。下例中，使用 Filament 集成了 [`wire-elements/modal`](https://github.com/wire-elements/modal)：
 
 ```php
 use Filament\Panel;
@@ -83,11 +81,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-A full list of available render hooks can be found [here](../support/render-hooks#available-render-hooks).
+渲染钩子的全列表清单，请查阅[此处](../support/render-hooks#可用渲染钩子).
 
-## Setting a domain
+## 设置域名
 
-By default, Filament will respond to requests from all domains. If you'd like to scope it to a specific domain, you can use the `domain()` method, similar to [`Route::domain()` in Laravel](https://laravel.com/docs/routing#route-group-subdomain-routing):
+默认情况下，Filament 会对所有域名的请求进行响应。如果你想将其限制到特定域名，你可用使用 `domain()` 方法，它类似于 [Laravel 中的 `Route::domain()`](https://laravel.com/docs/routing#route-group-subdomain-routing)：
 
 ```php
 use Filament\Panel;
@@ -97,20 +95,5 @@ public function panel(Panel $panel): Panel
     return $panel
         // ...
         ->domain('admin.example.com');
-}
-```
-
-## Customizing the maximum content width
-
-By default, Filament will restrict the width of the content on a page, so it doesn't become too wide on large screens. To change this, you may use the `maxContentWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, and `full`. The default is `7xl`:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->maxContentWidth('full');
 }
 ```

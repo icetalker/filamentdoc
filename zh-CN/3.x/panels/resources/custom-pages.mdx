@@ -1,20 +1,20 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/10-custom-pages.md"
-title: Custom pages
+title: 自定义页面
 ---
 
-## Overview
+## 概述
 
-Filament allows you to create completely custom pages for resources. To create a new page, you can use:
+Filament 允许你为资源创建完全自定义的页面。使用如下命令创建新页面：
 
 ```bash
 php artisan make:filament-page SortUsers --resource=UserResource --type=custom
 ```
 
-This command will create two files - a page class in the `/Pages` directory of your resource directory, and a view in the `/pages` directory of the resource views directory.
+这一命令将创建两个文件 - 在资源目录的 `/Pages` 文件夹中新建一个页面类，在资源视图目录的 `/pages` 文件夹中创建一个新的视图(view)文件。
 
-You must register custom pages to a route in the static `getPages()` method of your resource:
+你必须在资源的静态方法 `getPages()` 中为自定义页面注册路由:
 
 ```php
 public static function getPages(): array
@@ -26,6 +26,6 @@ public static function getPages(): array
 }
 ```
 
-> The order of pages registered in this method matters - any wildcard route segments that are defined before hard-coded ones will be matched by Laravel's router first.
+> 在此方法中注册的页面顺序很重要 —— 在硬编码路由之前先定义的通配符路由，Laravel 路由器都会优先匹配。
 
-Any [parameters](https://laravel.com/docs/routing#route-parameters) defined in the route's path will be available to the page class, in an identical way to [Livewire](https://livewire.laravel.com/docs/components#accessing-route-parameters).
+路由路径下定义的所有[参数](https://laravel.com/docs/routing#route-parameters)，在页面类中都是可用的。和 [Livewire](https://laravel-livewire.com/docs/rendering-components#route-params) 中的路由参数采用相同的方式。
