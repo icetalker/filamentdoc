@@ -8,27 +8,44 @@ title: 从 v2.x 升级
 
 ## 新的要求
 
-- Laravel v9.0+
+- Laravel v10.0+
 - Livewire v3.0+
 
+Please upgrade Filament before upgrading to Livewire v3. Instructions on how to upgrade Livewire can be found [here](https://livewire.laravel.com/docs/upgrading).
+
+> **Livewire v3 is still in beta!**<br />
+> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
+
 ## 自动升级
+
+由于 Livewire V3 仍然处于 Beta 阶段，请将 `composer.json` 中的 `minimum-stability` 设置成 `dev`:
+
+```json
+"minimum-stability": "dev",
+```
 
 升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
 
 ```bash
-composer require filament/upgrade:"^3.0" --dev
+composer require filament/upgrade:"^3.0-stable" -W --dev
 vendor/bin/filament-v3
 ```
 
-请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，但脚本应该为您处理了大部分重复工作。
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，不过脚本应该已经为您处理了大部分重复性工作。
 
 最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
 
-然后，你可以运行 `composer remove filament/upgrade`，因为你不在需要它了。。
+然后，你可以运行 `composer remove filament/upgrade`，因为你不在需要它了。
 
-> 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
+> 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中直到这些插件升级，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
 
 ## 手动升级
+
+由于 Livewire V3 仍然处于 Beta 阶段，请将 `composer.json` 中的 `minimum-stability` 设置成 `dev`:
+
+```json
+"minimum-stability": "dev",
+```
 
 ### 高影响更新
 
@@ -86,3 +103,16 @@ Filament v2 的 `secondary` 在许多组件中是灰色。所有 `secondary` 的
 
 - `Closure $get` 替换为 `\Filament\Forms\Get $get`
 - `Closure $set` 替换为 `\Filament\Forms\Set $set`
+
+#### `TextInput` masks now use Alpine.js' masking package
+
+Filament v2 拥有一个流畅的 mask 对象语法，用于管理输入遮罩。在 v3 中，你可以使用 Alpin.js 的 masking 语法替代。更多详情请查看[输入遮罩文档](fields/text-input#input-masking)。
+
+### 低影响更新
+
+#### Rule 修改回调参数重命名
+
+修改 Rule 对象的参数已被重命名为 `modifyRuleUsing`，影响：
+
+- `exists()`
+- `unique()`
