@@ -4,7 +4,7 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: 添加 Action 到 Livewire 组件
 ---
 
-## Setting up the Livewire component
+## 设置 Livewire 组件
 
 首先，生成新的 Livewire 组件：
 
@@ -88,7 +88,7 @@ class ManagePost extends Component implements HasForms, HasActions
 
 你也需要 `<x-filament-actions::modals />`，在其中注入所需的 HTML 来渲染 Action 模态框。这只需要在 Livewire 组件内引入一次，不论你对该组件有多少次操作。
 
-## Action 参数
+## 传递 Action 参数
 
 有时，你可能希望传递参数到你的 Action 中。比如，如果你在同一个视图中渲染同一个 Action 多次，不过每次使用不同模型，你可以传入模型 ID 作为参数，然后稍后对其进行检索。为此，你可以在视图中调用该 Action，并传入以数组方式传入参数：
 
@@ -104,7 +104,7 @@ class ManagePost extends Component implements HasForms, HasActions
 </div>
 ```
 
-现在，你可以在 Action 方法中访问该 post ID：
+现在，你可以在 action 方法中访问该 post ID：
 
 ```php
 use App\Models\Post;
@@ -159,3 +159,44 @@ public function deleteAction(): Action
     <x-filament-actions::modals />
 </div>
 ```
+
+## 修改 Action
+
+通过调用 `replaceMountedAction()` 方法，你可以在当前 Action 执行完毕后，将其替换成其他 Action。这样，你就可以链式调用多个 Action：
+
+```php
+use App\Models\Post;
+use Filament\Actions\Action;
+
+public function editAction(): Action
+{
+    return Action::make('edit')
+        ->form([
+            // ...
+        ])
+        // ...
+        ->action(function (array $arguments) {
+            $post = Post::find($arguments['post']);
+            
+            // ...
+            
+            $this->replaceMountedAction('publish', $arguments);        
+        });
+}
+
+public function publishAction(): Action
+{
+    return Action::make('publish')
+        ->requiresConfirmation()
+        // ...
+        ->action(function (array $arguments) {
+            $post = Post::find($arguments['post']);
+            
+            $post->publish();
+        });
+}
+```
+
+现在，当第一个 Action 提交后，第二个 Action 会在第一个的地方打开。原本传递到第一个 Action 的[参数](#传递-action-参数)将会传递到第二个 Action，这样你就可以使用它们在请求间持久化数据。
+
+如果第一个 Action 取消了，第二个就不会打开。如果第二个取消，第一个已经运行过，就不能再取消。

@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: Edit action
 ---
 
-## Overview
+## 概述
 
-Filament includes a prebuilt action that is able to edit Eloquent records. When the trigger button is clicked, a modal will open with a form inside. The user fills the form, and that data is validated and saved into the database. You may use it like so:
+Filament 包含一个可以编辑 Eloquent 记录的预制 Action。点击触发按钮后，会打开一个带有表单的模态框。用户填写表单，数据经过验证后存入到数据库。你可以这样使用：
 
 ```php
 use Filament\Actions\EditAction;
@@ -22,7 +22,7 @@ EditAction::make()
     ])
 ```
 
-If you want to edit table rows, you can use the `Filament\Tables\Actions\EditAction` instead:
+如果你想要编辑表格行记录，你可以使用 `Filament\Tables\Actions\EditAction`：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -44,9 +44,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Customizing data before filling the form
+## 表单填充前自定义数据
 
-You may wish to modify the data from a record before it is filled into the form. To do this, you may use the `mutateRecordDataUsing()` method to modify the `$data` array, and return the modified version before it is filled into the form:
+如果你想要在数据填充到表单前，对数据进行修改；你可以使用 `mutateRecordDataUsing()` 方法，修改 `$data` 数组，并且返回其填充到表单前修改的版本：
 
 ```php
 EditAction::make()
@@ -57,9 +57,9 @@ EditAction::make()
     })
 ```
 
-## Customizing data before saving
+## 保存前自定义数据
 
-Sometimes, you may wish to modify form data before it is finally saved to the database. To do this, you may use the `mutateFormDataUsing()` method, which has access to the `$data` as an array, and returns the modified version:
+有时候，你可能希望在表单数据存入数据库之前对其进行修改。为此你可以使用 `mutateFormDataUsing()` 方法，该方法将 `$data` 当作数组访问，并返回修改后的版本：
 
 ```php
 EditAction::make()
@@ -70,9 +70,9 @@ EditAction::make()
     })
 ```
 
-## Customizing the saving process
+## 自定义保存过程
 
-You can tweak how the record is updated with the `using()` method:
+你可以使用 `using()` 方法微调记录的更新方式：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -85,16 +85,16 @@ EditAction::make()
     })
 ```
 
-## Redirecting after saving
+## 保存后重定向
 
-You may set up a custom redirect when the form is submitted using the `successRedirectUrl()` method:
+使用 `successRedirectUrl()` 方法中，你可以对表单提交后的重定向进行自定义设置：
 
 ```php
 EditAction::make()
     ->successRedirectUrl(route('posts.list'))
 ```
 
-If you want to redirect using the created record, use the `$record` parameter:
+如果你想要使用更新后的记录进行重定向，请使用 `$record` 参数：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -105,18 +105,18 @@ EditAction::make()
     ]))
 ```
 
-## Customizing the save notification
+## 自定义保存通知
 
-When the record is successfully updated, a notification is dispatched to the user, which indicates the success of their action.
+记录更新成功后，会发送一个通知给用户，说明操作成功：
 
-To customize the title of this notification, use the `successNotificationTitle()` method:
+要自定义通知标题，请使用 `successNotificationTitle()` 方法：
 
 ```php
 EditAction::make()
     ->successNotificationTitle('User updated')
 ```
 
-You may customize the entire notification using the `successNotification()` method:
+使用 `successNotification()` 方法，你可以自定义整个通知：
 
 ```php
 use Filament\Notifications\Notification;
@@ -130,18 +130,18 @@ EditAction::make()
     )
 ```
 
-To disable the notification altogether, use the `successNotification(null)` method:
+要完全禁用通知，请使用 `successNotification(null)` 方法：
 
 ```php
 EditAction::make()
     ->successNotification(null)
 ```
 
-## Lifecycle hooks
+## 生命周期钩子
 
-Hooks may be used to execute code at various points within the action's lifecycle, like before a form is saved.
+钩子可用在 Action 生命周期的各种节点中执行代码，比如表单数据保存之前。
 
-There are several available hooks:
+可用的钩子有：
 
 ```php
 EditAction::make()
@@ -165,9 +165,9 @@ EditAction::make()
     })
 ```
 
-## Halting the saving process
+## 中断保存处理过程
 
-At any time, you may call `$action->halt()` from inside a lifecycle hook or mutation method, which will halt the entire saving process:
+在任何时候，你都可以在生命周期钩子或者 mutation 方法中，调用 `$action->halt()`，中断整个保存处理过程：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -194,7 +194,7 @@ EditAction::make()
     })
 ```
 
-If you'd like the action modal to close too, you can completely `cancel()` the action instead of halting it:
+如果你想同时关闭 Action 模态框，你可以使用 `cancel()` 完全取消该 Action：
 
 ```php
 $action->cancel();

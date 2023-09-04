@@ -16,7 +16,7 @@ Action::make('delete')
     ->action(fn () => $this->client->delete())
 ```
 
-Action 也能从用户那边收集额外信息。比如，你可以有一个按钮去发送邮件给客户。当用户点击按钮时，打开模态框去收集邮件标题和内容。当用户点击模态框中的“发送”按钮后，发送邮件：
+Action 也能从用户那边收集额外信息。比如，你可以有一个按钮去发送邮件给客户。当用户点击按钮时，打开模态框去收集邮件标题和内容。当用户点击模态框中的“发送”按钮后，就会发送邮件：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -48,16 +48,15 @@ Action 触发按钮和模态框的整体外观可以使用 Fluent PHP 方法自�
 
 ## Action 类型
 
-Action 概念用在整个 Filament 的许多上下文中。有些情景不支持从 Action 中打开模态框 - 他们只打开 URL、调用公共 Livewire 方法，或者发送 Livewire 事件。
-另外，不同上下文中使用不同的 PHP Action 类，因为它们提供给开发者适合该用例的上下文感知数据。
+Action 概念用在整个 Filament 的许多上下文中。有些情景不支持从 Action 中打开模态框 - 他们只打开 URL、调用公共 Livewire 方法，或者发送 Livewire 事件。另外，不同上下文中使用不同的 PHP Action 类，因为它们提供给开发者适合该用例的上下文感知数据。
 
-### 自定义 Livewire 组件动作
+### 自定义 Livewire 组件 Action
 
 你可以在应用内将 Action 到任何 Livewire 组件中，甚至可以添加到[面板](../panels/pages)中的页面。
 
 这些 Action 使用 `Filament\Actions\Action` 类。他们可以根据你的选择，打开模态框或者甚至只是打开 URL。
 
-如果你需要添加 Action 到 Livewire 组件，请在文档中[访问该页面](adding-an-action-to-a-livewire-component)。如果，你想在面板的页面头部中添加 Action，请[查阅此页面](../panels/pages#header-actions)。
+如果你需要添加 Action 到 Livewire 组件，请在文档中[访问该页面](添加-action-到-livewire-组件)。如果，你想在面板的页面头部中添加 Action，请[查阅此页面](../panels/pages#header-actions)。
 
 ### 表格 Action
 
@@ -67,9 +66,9 @@ Filament 表格也使用 Action。Action 可以添加到表格的行尾，或者
 
 如果你想要在应用中将 Action 添加到表格中，在文档中[查看此页面](../tables/actions)。
 
-#### 表格批量动作
+#### 表格批量操作
 
-表格也支持"批量动作"。当用户在表中选择多行时，可以使用这一功能。传统上，当选择行时，"批量操作"按钮会出现在表的左上角。当用户单击此按钮时，会向他们显示一个下拉菜单，其中包含可供选择的操作。批量操作也可以添加到表格的头部中，与其他头部操作相邻。在这种情况下，批量操作触发器按钮将被禁用，直到用户选择表行。
+表格也支持"批量操作(Bulk Action)"。当用户在表中选择多行时，可以使用这一功能。传统上，当选择行时，"批量操作"按钮会出现在表的左上角。当用户单击此按钮时，会向他们显示一个下拉菜单，其中包含可供选择的操作。批量操作也可以添加到表格的头部中，与其他头部操作相邻。在这种情况下，批量操作触发器按钮将被禁用，直到用户选择表行。
 
 这些 Action 使用 `Filament\Tables\Actions\BulkAction` 类。他们可以根据你的选择，打开模态框。
 
@@ -79,13 +78,14 @@ Filament 表格也使用 Action。Action 可以添加到表格的行尾，或者
 
 表单组件可以包含 Action。表单组件内部 Action 的一个很好用例是，使用一个 Select 字段和一个"创建"新记录的操作按钮。当您单击按钮时，会打开一个模态来收集新记录的数据。当模态表单提交时，将在数据库中创建新记录，并用新创建的记录填充 Select 字段。幸运的是，[这种情况是开箱即用地处理](../forms/fields/select#创建新纪录)，不过这是一个说明表单组件的 Action 如何强大的好例子。
 
-These actions use the `Filament\Forms\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
+这些 Action 使用 `Filament\Forms\Components\Actions\Actio` 类。它们可以打开模态框或者 URL。
 
 如果你要在应用中将 Action 添加到表单组件中。请查阅文档中的[此页](../forms/actions)。
 
 ### 信息列表组件 Action
 
-Infolist components can contain actions. These use the `Filament\Infolists\Components\Actions\Action` class. They can open a modal if you choose, or even just a URL.
+
+信息列表组件可以包含 Action。这些 Action 使用 `Filament\Infolists\Components\Actions\Action` 类。它们可以打开模态框或者 URL。
 
 如果你要在应用中将 Action 添加到信息列表组件中。请查阅文档中的[此页](../infolists/actions)。
 
@@ -93,7 +93,7 @@ Infolist components can contain actions. These use the `Filament\Infolists\Compo
 
 当你[发送通知](../notifications/sending-notifications)，你也可以添加 Action。这些按钮在通知内容的下方渲染。比如，一个提醒用户有新信息的通知，应该包含一个打开对话主题的 Action 按钮。
 
-These actions use the `Filament\Notifications\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
+这些 Action 使用 `Filament\GlobalSearch\Actions\Action` 类。它们不能打开模态框，但是可以打开 URL 或者派发 Livewire 事件。
 
 如果你要在应用中将 Action 添加到通知中。请查阅文档中的[此页](../notifications/sending-notifications#添加-actions-到通知)。
 
@@ -101,7 +101,7 @@ These actions use the `Filament\Notifications\Actions\Action` class. They aren't
 
 在后台面板中，有一个[全局搜索](../panels/resources/global-search)字段，让你可以在应用的一个地方中搜索所有的资源。不过，你可以在每个全局搜索结果下面添加其他的 Action。比如，你可能想要"编辑"和"查看"客户端搜索结果，这样用户就可以迅速编辑他们的简介以及以只读模式查看记录。 
 
-These actions use the `Filament\GlobalSearch\Actions\Action` class. They aren't able to open modals, but they can open a URL or dispatch a Livewire event.
+这些 Action 使用 `Filament\GlobalSearch\Actions\Action` 类。它们不能打开模态框，但是可以打开 URL 或者派发 Livewire 事件。
 
 如果你要在面板中将 Action 添加到全局搜索结果中。请查阅文档中的[此页]((../panels/resources/global-search#添加-actions-到全局搜索结果)。
 

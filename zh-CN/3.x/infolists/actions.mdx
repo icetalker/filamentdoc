@@ -7,12 +7,11 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Filament's infolists can use [actions](../actions). They are buttons that can be added to any infolist component. Also, you can [render anonymous sets of actions](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component) on their own, that are not attached to a particular infolist component.
-Filament 的信息列表可以使用[Action](../actions)。Action 是可以添加到任何信息列表组件的按钮。同时，你也可以独立地[渲染匿名 Action 集](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component)，而不必附到特定的信息列表组件。
+Filament 的信息列表可以使用 [Action](../actions)。Action 是可以添加到任何信息列表组件的按钮。同时，你也可以单独地[渲染匿名 Action 集](#adding-anonymous-actions-to-an-infolist-without-attaching-them-to-a-component)，而不必将其附到特定的信息列表组件。
 
-## Defining a infolist component action
+## 定义信息列表组件 Action
 
-Action objects inside a infolist component are instances of `Filament/Infolists/Components/Actions/Action`. You must pass a unique name to the action's `make()` method, which is used to identify it amongst others internally within Filament. You can [customize the trigger button](../actions/trigger-button) of an action, and even [open a modal](../actions/modals) with little effort:
+信息列表中的 Action 对象是 `Filament/Infolists/Components/Actions/Action` 实例。你必须传递唯一的名称(name)到 Action 的 `make()` 方法中，用于在 Filament 内部与其他 Action 区分。你可以[自定义 Action 的触发按钮](../actions/trigger-button)，甚至于毫不费力地[打开模态框](../actions/modals)：
 
 ```php
 use App\Actions\ResetStars;
@@ -27,13 +26,13 @@ Action::make('resetStars')
     })
 ```
 
-### Adding an affix action to a entry
+### 添加 Affix Action 到 Entry
 
-Certain entries support "affix actions", which are buttons that can be placed before or after its content. The following entries support affix actions:
+"Affix(前后缀) Action" 是可以放在 Entry 内容前后的按钮，有些 Entry 支持 "Affix Action"。下面是支持该功能的一些 Entry:
 
 - [Text entry](entries/text-entry)
 
-To define an affix action, you can pass it to either `prefixAction()` or `suffixAction()`:
+你可以将 Action 传递到 `prefixAction()` 或者 `suffixAction()` 中进行定义：
 
 ```php
 use App\Models\Product;
@@ -55,9 +54,9 @@ TextEntry::make('cost')
 
 <AutoScreenshot name="infolists/entries/actions/suffix" alt="Text entry with suffix action" version="3.x" />
 
-#### Passing multiple affix actions to a entry
+#### 传递多个 Affix Action 到 Enrty 中
 
-You may pass multiple affix actions to a entry by passing them in an array to either `prefixActions()` or `suffixActions()`. Either method can be used, or both at once, Filament will render all the registered actions in order:
+你可以使用 `prefixActions()` 或者 `suffixActions()` 以数组的方式，将多个前后缀 Action 传递给一个 Entry。可以调用其中任意一种方法或者两者皆用，Filament 会按注册顺序进行渲染：
 
 ```php
 use Filament\Infolists\Components\Actions\Action;
@@ -76,9 +75,9 @@ TextEntry::make('cost')
     ])
 ```
 
-### Adding a hint action to a entry
+### 添加 hint action 到 entry
 
-All entries support "hint actions", which are rendered aside the entry's [hint](entries/getting-started#adding-a-hint-next-to-the-label). To add a hint action to a entry, you may pass it to `hintAction()`:
+所有的 Entry 都支持 “Hint Action”，它渲染在 Entry 的[提示](entries/getting-started#在标签旁添加-hint-提示)旁边。要将 Hint Action 添加到 Entry，你需要将其传入到 `hintAction()` 中：
 
 ```php
 use App\Models\Product;
@@ -100,9 +99,9 @@ TextEntry::make('cost')
 
 <AutoScreenshot name="infolists/entries/actions/hint" alt="Text entry with hint action" version="3.x" />
 
-#### Passing multiple hint actions to a entry
+#### 添加多个 Hint Action 到 Entry
 
-You may pass multiple hint actions to a entry by passing them in an array to `hintActions()`. Filament will render all the registered actions in order:
+要将多个 Hint Action 传给 Entry，你可以用数组的方式将其传递给 `hintActions()`。Filament 会按照 Action 注册顺序对其进行渲染：
 
 ```php
 use Filament\Infolists\Components\Actions\Action;
@@ -117,9 +116,9 @@ TextEntry::make('cost')
     ])
 ```
 
-### Adding an action to a custom infolist component
+### 添加 Action 到自定义信息列表组件
 
-If you wish to render an action within a custom infolist component, `ViewEntry` object, or `View` component object, you may do so using the `registerActions()` method:
+如果你想在自定义的信息列表组件(比如，`ViewEntry` 对象或者 `View` 组件对象)中渲染 Action，你可以使用 `registerActions()` 方法：
 
 ```php
 use App\Models\Post;
@@ -143,7 +142,7 @@ ViewEntry::make('status')
     ])
 ```
 
-Now, to render the action in the view of the custom component, you need to call `$getAction()`, passing the name of the action you registered:
+现在，要在自定义组件的视图中渲染 Action，你需要调用 `$getAction()` 并传入你注册的 Action 名：
 
 ```blade
 <div>
@@ -153,9 +152,9 @@ Now, to render the action in the view of the custom component, you need to call 
 </div>
 ```
 
-### Adding "anonymous" actions to an infolist without attaching them to a component
+### 添加"匿名" Action 到信息列表，而不附到组件上：
 
-You may use an `Actions` component to render a set of actions anywhere in the form, avoiding the need to register them to any particular component:
+你可以使用 `Actions` 组件，使之在表单的任何位置中渲染一套 Action。而不必将其注册到任何特定的组件中：
 
 ```php
 use App\Actions\Star;
@@ -182,9 +181,9 @@ Actions::make([
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/simple" alt="Anonymous actions" version="3.x" />
 
-#### Making the independent infolist actions consume the full width of the infolist
+#### 创建独立的信息列表组件，消费信息列表全部宽度
 
-You can stretch the independent infolist actions to consume the full width of the infolist using `fullWidth()`:
+使用 `fullWidth()` 你可以将独立信息列表 Action 拉伸到消费信息列表的全宽：
 
 ```php
 use Filament\Infolists\Components\Actions;
@@ -196,30 +195,32 @@ Actions::make([
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/full-width" alt="Anonymous actions consuming the full width" version="3.x" />
 
-#### Controlling the horizontal alignment of independent infolist actions
+#### 控制独立信息列表 Action 的水平对齐
 
-Independent infolist actions are aligned to the start of the component by default. You may change this by passing `center` or `end` to `alignment()`:
+独立的信息列表 Action 默认对齐到组件的起始位置。你可以将 `Alignment::Center` 或 `Alignment::End` 传递给 `alignment()` 对此进行修改：
 
 ```php
 use Filament\Infolists\Components\Actions;
+use Filament\Support\Enums\Alignment;
 
 Actions::make([
     // ...
-])->alignment('center'),
+])->alignment(Alignment::Center),
 ```
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/horizontally-aligned-center" alt="Anonymous actions horizontally aligned to the center" version="3.x" />
 
-#### Controlling the vertical alignment of independent infolist actions
+#### 控制独立信息列表 Action 的垂直对齐
 
-Independent infolist actions are vertically aligned to the start of the component by default. You may change this by passing `center` or `end` to `verticalAlignment()`:
+独立的信息列表 Action 在垂直方向上默认对齐到组件的起始位置。你可以将 `Alignment::Center` 或 `Alignment::End` 传递给 `verticalAlignment()` 对此进行修改：
 
 ```php
 use Filament\Infolists\Components\Actions;
+use Filament\Support\Enums\VerticalAlignment;
 
 Actions::make([
     // ...
-])->verticalAlignment('end'),
+])->verticalAlignment(VerticalAlignment::End),
 ```
 
 <AutoScreenshot name="infolists/layout/actions/anonymous/vertically-aligned-end" alt="Anonymous actions vertically aligned to the end" version="3.x" />

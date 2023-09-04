@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: Force-delete action
 ---
 
-## Overview
+## 概述
 
-Filament includes a prebuilt action that is able to force-delete [soft deleted](https://laravel.com/docs/eloquent#soft-deleting) Eloquent records. When the trigger button is clicked, a modal asks the user for confirmation. You may use it like so:
+Filament 包含一个可以强制删除[软删除](https://laravel.com/docs/eloquent#soft-deleting) Eloquent 记录的预制 Action。点击触发按钮后，会打开一个模态框要求用户确认。你可以这样使用：
 
 ```php
 use Filament\Actions\ForceDeleteAction;
@@ -15,7 +15,7 @@ ForceDeleteAction::make()
     ->record($this->post)
 ```
 
-If you want to force-delete table rows, you can use the `Filament\Tables\Actions\ForceDeleteAction` instead, or `Filament\Tables\Actions\ForceDeleteBulkAction` to force-delete more than one at once:
+如果你想强制删除表格行记录，请使用 `Filament\Tables\Actions\ForceDeleteAction` 替换，或者使用 `Filament\Tables\Actions\ForceDeleteBulkAction` 强制删除多个记录：
 
 ```php
 use Filament\Tables\Actions\BulkActionGroup;
@@ -39,27 +39,27 @@ public function table(Table $table): Table
 }
 ```
 
-## Redirecting after force-deleting
+## 强制删除后重定向
 
-You may set up a custom redirect when the form is submitted using the `successRedirectUrl()` method:
+使用 `successRedirectUrl()` 方法，你可以对表单提交后进行重定向设置：
 
 ```php
 ForceDeleteAction::make()
     ->successRedirectUrl(route('posts.list'))
 ```
 
-## Customizing the force-delete notification
+## 自定义强制删除通知
 
-When the record is successfully force-deleted, a notification is dispatched to the user, which indicates the success of their action.
+记录强制删除成功后，会发送一个通知给用户，说明操作成功：
 
-To customize the title of this notification, use the `successNotificationTitle()` method:
+要自定义通知标题，请使用 `successNotificationTitle()` 方法：
 
 ```php
 ForceDeleteAction::make()
     ->successNotificationTitle('User force-deleted')
 ```
 
-You may customize the entire notification using the `successNotification()` method:
+你也可以使用 `successNotification()` 方法，自定义整个通知：
 
 ```php
 use Filament\Notifications\Notification;
@@ -73,16 +73,16 @@ ForceDeleteAction::make()
     )
 ```
 
-To disable the notification altogether, use the `successNotification(null)` method:
+要完全禁用通知，请使用 `successNotification(null)` 方法：
 
 ```php
 ForceDeleteAction::make()
     ->successNotification(null)
 ```
 
-## Lifecycle hooks
+## 生命周期钩子
 
-You can use the `before()` and `after()` methods to execute code before and after a record is force-deleted:
+你可以使用 `before()` 和  `after()` 方法，在记录删除之前及之后执行代码：
 
 ```php
 ForceDeleteAction::make()

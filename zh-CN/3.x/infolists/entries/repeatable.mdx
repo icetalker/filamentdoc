@@ -5,9 +5,9 @@ title: Repeatable entry
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The repeatable entry allows you to repeat a set of entries and layout components for items in an array or relationship.
+RepeatableEntry 允许你为数组或关联中的项重复一套 Entry 及布局组件：
 
 ```php
 use Filament\Infolists\Components\RepeatableEntry;
@@ -23,13 +23,13 @@ RepeatableEntry::make('comments')
     ->columns(2)
 ```
 
-As you can see, the repeatable entry has an embedded `schema()` which gets repeated for each item.
+如你所见，RepeatableEntry 有一个可嵌入的 `schema()`，可以重复每一项。
 
 <AutoScreenshot name="infolists/entries/repeatable/simple" alt="Repeatable entry" version="3.x" />
 
-## Grid layout
+## Grid 布局
 
-You may organize repeatable items into columns by using the `grid()` method:
+使用 `grid()` 方法，你可以将重复项组织到列中：
 
 ```php
 use Filament\Infolists\Components\RepeatableEntry;
@@ -41,13 +41,13 @@ RepeatableEntry::make('comments')
     ->grid(2)
 ```
 
-This method accepts the same options as the `columns()` method of the [grid](../layout/grid). This allows you to responsively customize the number of grid columns at various breakpoints.
+该方法接收与 [Grid](../layout/grid) 的 `columns()` 方法相同的选项。让你可以在各种临界点中响应式地定制 Grid 的列数。
 
 <AutoScreenshot name="infolists/entries/repeatable/grid" alt="Repeatable entry in grid layout" version="3.x" />
 
-## Removing the wrapping card
+## 移除样式容器
 
-By default, each item in a repeatable entry gets wrapped in a card. This behavior can be disabled using `wrappedInCard()`:
+默认情况下，RepeatableEntry 中的每一项都被包装在一个样式为卡片的容器中，你可以使用 `contained()` 移除样式容器：
 
 ```php
 use Filament\Infolists\Components\RepeatableEntry;
@@ -56,5 +56,5 @@ RepeatableEntry::make('comments')
     ->schema([
         // ...
     ])
-    ->wrappedInCard(false)
+    ->contained(false)
 ```

@@ -7,7 +7,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-You may group actions together into a dropdown menu by using an `ActionGroup` object. Groups may contain many actions, or other groups:
+使用 `ActionGroup` 对象将 Action 分组到一个下拉菜单中。分组可能包含多个 Action 或者其他分组：
 
 ```php
 ActionGroup::make([
@@ -19,28 +19,30 @@ ActionGroup::make([
 
 <AutoScreenshot name="actions/group/simple" alt="Action group" version="3.x" />
 
-This page is about customizing the look of the group's trigger button and dropdown.
+本页是关于自定义分组触发按钮及下拉菜单外观。
 
-## Customizing the group trigger style
+## 自定义分组触发按钮样式
 
-The button which opens the dropdown may be customized in the same way as a normal action. [All of the methods available for trigger buttons](trigger-button) may be used to customize the group trigger button:
+打开下拉菜单的按钮能够通过和普通 Action 同样的方式自定义。[触发按钮的所有可用方法](trigger-button)可用于自定义分组触发按钮：
 
 ```php
+use Filament\Support\Enums\ActionSize;
+
 ActionGroup::make([
     // Array of actions
 ])
     ->label('More actions')
     ->icon('heroicon-m-ellipsis-vertical')
-    ->size('sm')
+    ->size(ActionSize::Small)
     ->color('primary')
     ->button()
 ```
 
 <AutoScreenshot name="actions/group/customized" alt="Action group with custom trigger style" version="3.x" />
 
-## Setting the placement of the dropdown
+## 设置下拉菜单的位置
 
-The dropdown may be positioned relative to the trigger button by using the `placement()` method:
+使用 `placement()` 方法，可以设置下拉菜单相对于触发按钮的位置：
 
 ```php
 ActionGroup::make([
@@ -51,9 +53,9 @@ ActionGroup::make([
 
 <AutoScreenshot name="actions/group/placement" alt="Action group with top placement style" version="3.x" />
 
-## Adding dividers between actions
+## 在 Action 之间添加分隔符
 
-You may add dividers between groups of actions by using nested `ActionGroup` objects:
+通过嵌套 `ActionGroup` 对象，你可以在不同 Action 分组之间添加分隔线：
 
 ```php
 ActionGroup::make([
@@ -64,13 +66,13 @@ ActionGroup::make([
 ])
 ```
 
-The `dropdown(false)` method puts the actions inside the parent dropdown, instead of a new nested dropdown.
+`dropdown(false)` 方法将 Action 放在父级下拉菜单中，而不是新的嵌套下拉。
 
 <AutoScreenshot name="actions/group/nested" alt="Action groups nested with dividers" version="3.x" />
 
-## Setting the width of the dropdown
+## 设置下拉菜单的宽度
 
-The dropdown may be set to a width by using the `width()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl` and `7xl`:
+使用 `width()` 方法，可以为下拉菜单设置宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 和 `7xl`：
 
 ```php
 ActionGroup::make([
@@ -79,9 +81,9 @@ ActionGroup::make([
     ->width('xs')
 ```
 
-## Controlling the maximum height of the dropdown
+## 控制下拉菜单最大高度
 
-The dropdown content can have a maximum height using the `maxHeight()` method, so that it scrolls. You can pass a [CSS length](https://developer.mozilla.org/en-US/docs/Web/CSS/length):
+使用 `maxHeight()` 方法，下拉菜单可以设置最大高度，内容超过此高度则使用滚动条。你可以传入[CSS 长度](https://developer.mozilla.org/en-US/docs/Web/CSS/length)：
 
 ```php
 ActionGroup::make([

@@ -14,7 +14,12 @@ title: 安装
 - Laravel v10.0+
 - Livewire v3.0+
 
-首先，使用 Composer 导入此包：
+> **Livewire v3 已于最近发布了!**<br />
+> Livewire 团队为使其稳定方面做得很好，不过这是对 Livewire v2 的完全重写。你可能会碰到问题，因此，我们建议在将 Filament v3 使用到生产环境之前对应用进行全面的测试。
+
+### 安装
+
+使用 Composer 导入此包：
 
 ```bash
 composer require filament/tables:"^3.0-stable" -W
@@ -84,7 +89,9 @@ export default {
 }
 ```
 
-你可能也想更新 `vite.config.js` 文件，以在 Livewire 组件更新后的刷新页面:
+### 自动刷新浏览器
+
+你可能也想更新 `vite.config.js` 文件，以在 Livewire 组件更新后自动刷新页面:
 
 ```js
 import { defineConfig } from 'vite'
@@ -102,6 +109,8 @@ export default defineConfig({
     ],
 })
 ```
+
+### 编译资源
 
 使用 `npm run dev` 编译新的 CSS 和 JS 资源。
 
@@ -134,8 +143,6 @@ export default defineConfig({
     <body class="antialiased">
         {{ $slot }}
 
-        @livewire('notifications')
-
         @filamentScripts
         @vite('resources/js/app.js')
     </body>
@@ -152,14 +159,9 @@ php artisan vendor:publish --tag=filament-config
 
 ## 升级
 
-要将包更新到最新版本，你需要运行：
+> 如果你是从 Filament v2 升级，请查看[升级向导](upgrade-guide)。
 
-```bash
-composer update
-php artisan filament:upgrade
-```
-
-推荐将 `filament:upgrade` 命令添加到 `composer.json` 文件的 `post-autoload-dump` 中，使之自动运行：
+当你使用 `composer update` 时，Filament 会自动升级到最新的非破坏性版本。Filament 不会自动升级，请确保 `filament:upgrade` 命令出现在 `compser.json` 中：
 
 ```json
 "post-autoload-dump": [
@@ -168,4 +170,9 @@ php artisan filament:upgrade
 ],
 ```
 
-这会在 `filament:install` 执行期间完成，不过请再次确认是否完成。
+如果你倾向于不去自动升级，请从 `composer.json` 中移除 `filament:upgrade`，并运行如下命令：
+
+```bash
+composer update
+php artisan filament:upgrade
+```

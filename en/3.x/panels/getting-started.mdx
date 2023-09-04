@@ -3,6 +3,7 @@ layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/02-getting-started.md"
 title: Getting started
 ---
+
 ## Overview
 
 Panels are the top-level container in Filament, allowing you to build feature-rich admin panels that include pages, resources, forms, tables, notifications, actions, infolists, and widgets. All Panels include a default dashboard that can include widgets with statistics, charts, tables, and more.
@@ -293,6 +294,7 @@ Forms\Components\Select::make('owner_id')
 ```
 
 #### Creating new owners without leaving the page
+
 Currently, there are no owners in our database. Instead of creating a separate Filament owner resource, let's give users an easier way to add owners via a modal form (accessible as a `+` button next to the select). Use the [`createOptionForm()` method](../forms/fields/select#creating-a-new-option-in-a-modal) to embed a modal form with [`TextInput` fields](../forms/fields/text-input) for the owner's name, email address, and phone number:
 
 ```php

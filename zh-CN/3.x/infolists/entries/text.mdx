@@ -5,9 +5,9 @@ title: Text entry
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Text entries display simple text:
+TextEntry 显示简单的文本：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -17,9 +17,9 @@ TextEntry::make('title')
 
 <AutoScreenshot name="infolists/entries/text/simple" alt="Text entry" version="3.x" />
 
-## Displaying as a "badge"
+## 显示成"徽章"
 
-By default, text is quite plain and has no background color. You can make it appear as a "badge" instead using the `badge()` method. A great use case for this is with statuses, where may want to display a badge with a [color](#customizing-the-color) that matches the status:
+默认情况下，文本很简单且没有背景色。你可以使用 `badge()` 方法使之显示成徽章。这一功能的一个很好的用例是带状态的文本，你可能想要显示与该状态相匹配的[颜色](#自定义颜色)徽章：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -36,11 +36,11 @@ TextEntry::make('status')
 
 <AutoScreenshot name="infolists/entries/text/badge" alt="Text entry as badge" version="3.x" />
 
-You may add other things to the badge, like an [icon](#adding-an-icon).
+你也可以添加其他东西到徽章中，比如[图标](添加图标)。
 
-## Date formatting
+## 日期格式化
 
-You may use the `date()` and `dateTime()` methods to format the entry's state using [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+你可以使用 `date()` 和 `dateTime()` 方法，使用 [PHP 日期格式化 token](https://www.php.net/manual/en/datetime.format.php) 将 Entry 的值格式化：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -49,7 +49,7 @@ TextEntry::make('created_at')
     ->dateTime()
 ```
 
-You may use the `since()` method to format the entry's state using [Carbon's `diffForHumans()`](https://carbon.nesbot.com/docs/#api-humandiff):
+你也可以使用 `since()`，使用 [Carbon 的 `diffForHumans()`] 将 Entry 值格式化:
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -58,9 +58,9 @@ TextEntry::make('created_at')
     ->since()
 ```
 
-## Number formatting
+## 数字格式化
 
-The `numeric()` method allows you to format an entry as a number, using PHP's `number_format()`:
+`numeric()` 方法允许你使用 PHP 的 `number_format()` 将 Entry 格式化为数字：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -73,9 +73,9 @@ TextEntry::make('stock')
     )
 ```
 
-## Currency formatting
+## 货币格式化
 
-The `money()` method allows you to easily format monetary values, in any currency:
+`money()` 方法允许你轻松格式化任何货币的金额值：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -84,9 +84,9 @@ TextEntry::make('price')
     ->money('eur')
 ```
 
-## Limiting text length
+## 限制文本长度
 
-You may `limit()` the length of the entry's value:
+你可以通过 `limit()` 限制 Entry 值的长度：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -95,7 +95,7 @@ TextEntry::make('description')
     ->limit(50)
 ```
 
-You may also reuse the value that is being passed to `limit()`:
+你可以重用传递给 `limit()` 的值：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -109,14 +109,14 @@ TextEntry::make('description')
             return null;
         }
 
-        // Only render the tooltip if the entry contents exceeds the length limit.
+        // 只有 Entry 内容超过长度限制时，才渲染 tooltip。
         return $state;
     })
 ```
 
-## Limiting word count
+## 限制字数
 
-You may limit the number of `words()` displayed in the entry:
+使用 `words()`，你可以限制 Entry 中展示的字数：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -125,9 +125,9 @@ TextEntry::make('description')
     ->words(10)
 ```
 
-## Listing multiple values
+## 展示多个值
 
-By default, if there are multiple values inside your text entry, they will be comma-separated. You may use the `listWithLineBreaks()` method to display them on new lines instead:
+默认情况下，如果你的 TextEntry 中有多个值，则它们会以逗号隔开。你可以使用 `listWithLineBreaks()` 方法将其显示为多行：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -138,9 +138,9 @@ TextEntry::make('authors.name')
 
 <AutoScreenshot name="infolists/entries/text/list" alt="Text entry with multiple values" version="3.x" />
 
-### Adding bullet points to the list
+### 列表中添加点号
 
-You may add a bullet point to each list item using the `bulleted()` method:
+使用 `bulleted()` 方法，你可以为每个列表项添加点号：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -152,9 +152,9 @@ TextEntry::make('authors.name')
 
 <AutoScreenshot name="infolists/entries/text/bullet-list" alt="Text entry with multiple values and bullet points" version="3.x" />
 
-### Limiting the number of values in the list
+### 限制列表中值的数量
 
-You can limit the number of values in the list using the `limitList()` method:
+使用 `limitList()` 方法，你可以限制列表中值的数量：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -164,9 +164,9 @@ TextEntry::make('authors.name')
     ->limitList(3)
 ```
 
-### Using a list separator
+### 使用列表分隔符
 
-If you want to "explode" a text string from your model into multiple list items, you can do so with the `separator()` method. This is useful for displaying comma-separated tags [as badges](#displaying-as-a-badge), for example:
+如果你想将模型中的文本字符串打散(explode)成多个列表项，你可以使用 `separator()` 方法。这对于显示以逗号分隔的标签(#显示成徽章)很有用。比如：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -176,9 +176,9 @@ TextEntry::make('tags')
     ->separator(',')
 ```
 
-## Rendering HTML
+## 渲染 HTML
 
-If your entry value is HTML, you may render it using `html()`:
+如果你的 Entry 值是 HTML，你可以使用 `html()` 对其进行渲染：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -187,9 +187,9 @@ TextEntry::make('description')
     ->html()
 ```
 
-### Rendering Markdown as HTML
+### 将 Markdown 渲染成 HTML
 
-If your entry value is Markdown, you may render it using `markdown()`:
+如果你的 Entry 值是 Markdown 格式，你可以使用 `markdown()` 对其渲染：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -198,9 +198,9 @@ TextEntry::make('description')
     ->markdown()
 ```
 
-## Custom formatting
+## 自定义格式化
 
-You may instead pass a custom formatting callback to `formatStateUsing()`, which accepts the `$state` of the entry, and optionally its `$record`:
+你可以将自定义格式回调传递给 `formatStateUsing()`，该回调接收 Entry 的 `state` 作为参数，及可选参数 `$record`:
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -209,9 +209,9 @@ TextEntry::make('status')
     ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
 ```
 
-## Adding a placeholder if the entry is empty
+## 当 Entry 为空时添加占位符
 
-Sometimes you may want to display a placeholder if the entry's value is empty:
+有时候如果 Entry 值为空，你可能想要显示占位符：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -220,9 +220,9 @@ TextEntry::make('updated_at')
     ->placeholder('Never')
 ```
 
-## Customizing the color
+## 自定义颜色
 
-You may set a color for the text, either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+你可以为文本设置颜色，可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -233,9 +233,9 @@ TextEntry::make('status')
 
 <AutoScreenshot name="infolists/entries/text/color" alt="Text entry in the primary color" version="3.x" />
 
-## Adding an icon
+## 添加图标
 
-Text entries may also have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search):
+TextEntry 也可以拥有[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -246,65 +246,66 @@ TextEntry::make('email')
 
 <AutoScreenshot name="infolists/entries/text/icon" alt="Text entry with icon" version="3.x" />
 
-You may set the position of an icon using `iconPosition()`:
+你可以使用 `iconPosition()` 设置图标的位置：
 
 ```php
-use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\TextEntry;use Filament\Support\Enums\IconPosition;
 
 TextEntry::make('email')
     ->icon('heroicon-m-envelope')
-    ->iconPosition('after') // `before` or `after`
+    ->iconPosition(IconPosition::After) // `IconPosition::Before` or `IconPosition::After`
 ```
 
 <AutoScreenshot name="infolists/entries/text/icon-after" alt="Text entry with icon after" version="3.x" />
 
-## Customizing the text size
+## 自定义文本大小
 
-You may make the text larger using `size('lg')`:
+你可以使用 `size(TextEntrySize::Large)` 让文本变大：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('title')
-    ->size('lg')
+    ->size(TextEntry\TextEntrySize::Large)
 ```
 
 <AutoScreenshot name="infolists/entries/text/large" alt="Text entry in a large font size" version="3.x" />
 
-## Customizing the font weight
+## 自定义字体粗细
 
-Text entries have regular font weight by default but you may change this to any of the following options: `thin`, `extralight`, `light`, `medium`, `semibold`, `bold`, `extrabold` or `black`.
+TextEntry 默认情况下使用常规字粗，不过你可以将其修改为以下选项：`FontWeight::Thin`、`FontWeight::ExtraLight`、`FontWeight::Light`、`FontWeight::Medium`、`FontWeight::SemiBold`、`FontWeight::Bold`、`FontWeight::ExtraBold` 或 `FontWeight::Black`。
 
-For instance, you may make the font bold using `weight('bold')`:
+比如，你可以使用 `weight(FontWeight::Bold)` 让字体变粗：
 
 ```php
-use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\TextEntry;use Filament\Support\Enums\FontWeight;
 
 TextEntry::make('title')
-    ->weight('bold')
+    ->weight(FontWeight::Bold)
 ```
 
 <AutoScreenshot name="infolists/entries/text/bolt" alt="Text entry in a bold font" version="3.x" />
 
-## Customizing the font family
+## 自定义字体
 
-You can change the text font family to any of the following options: `sans`, `serif` or `mono`.
+你可以将字体(font family)修改为以下选项：`FontFamily::Sans`、`FontFamily::Serif` 或 `FontFamily::Mono`。
 
-For instance, you may make the font monospaced using `fontFamily('mono')`:
+比如，使用 `fontFamily(FontFamily::Mono)` 你可以使用 monospaced 字体：
 
 ```php
+use Filament\Support\Enums\FontFamily;
 use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('apiKey')
     ->label('API key')
-    ->fontFamily('mono')
+    ->fontFamily(FontFamily::Mono)
 ```
 
 <AutoScreenshot name="infolists/entries/text/mono" alt="Text entry in a monospaced font" version="3.x" />
 
-## Allowing the text to be copied to the clipboard
+## 允许将文本复制到剪切板
 
-You may make the text copyable, such that clicking on the entry copies the text to the clipboard, and optionally specify a custom confirmation message and duration in milliseconds. This feature only works when SSL is enabled for the app.
+你可以使文本可复制(copyable)，比如点击 Entry 将文本复制到剪切板，且可选地指定自定义确认消息及时长(毫秒计)。该特性只有在应用启用 SSL 时有效。
 
 ```php
 use Filament\Infolists\Components\TextEntry;

@@ -88,8 +88,10 @@ Action::make('delete')
 按钮有三个尺寸 - `sm`、`md` 或 `lg`。使用 `size()` 方法可以修改操作触发器的大小：
 
 ```php
+use Filament\Support\Enums\ActionSize;
+
 Action::make('create')
-    ->size('lg')
+    ->size(ActionSize::Large)
 ```
 
 <AutoScreenshot name="actions/trigger-button/large" alt="Large trigger" version="3.x" />
@@ -109,10 +111,12 @@ Action::make('edit')
 你可以使用 `iconPosition()` 方法修改图标的位置使之放在标签之后：
 
 ```php
+use Filament\Support\Enums\IconPosition;
+
 Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
     ->icon('heroicon-m-pencil-square')
-    ->iconPosition('after')
+    ->iconPosition(IconPosition::After)
 ```
 
 <AutoScreenshot name="actions/trigger-button/icon-after" alt="Trigger with icon after the label" version="3.x" />

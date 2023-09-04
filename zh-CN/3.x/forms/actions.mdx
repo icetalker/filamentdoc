@@ -5,13 +5,13 @@ title: Actions
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Filament's forms can use [Actions](../actions). They are buttons that can be added to any form component. For instance, you may want an action to call an API endpoint to generate content with AI, or to create a new option for a select dropdown. Also, you can [render anonymous sets of actions](#adding-anonymous-actions-to-a-form-without-attaching-them-to-a-component) on their own which are not attached to a particular form component.
+Filament 表单可以使用 [Action](../actions)。Action 是可以添加到表单组件的按钮。比如你可能想要调用 API 端点来使用 AI 生成内容，或者为下拉选项框新建选项。 同时，你也可以单独[渲染匿名 Action 集](#adding-anonymous-actions-to-a-form-without-attaching-them-to-a-component)，而不将其附到特殊的表单组件中。
 
-## Defining a form component action
+## 定义表单组件 Action
 
-Action objects inside a form component are instances of `Filament/Forms/Components/Actions/Action`. You must pass a unique name to the action's `make()` method, which is used to identify it amongst others internally within Filament. You can [customize the trigger button](../actions/trigger-button) of an action, and even [open a modal](../actions/modals) with little effort:
+表单组件中的 Action 对象是 `Filament/Forms/Components/Actions/Action` 的实例。你必须传递一个唯一的名称到 Action 的 `make()` 方法，用来在 Filament 内部与其他 Action 区分开来。你可以[自定义 Action 的触发按钮](../actions/trigger-button)，甚至毫不费力地[打开模态框](../actions/modals)：
 
 ```php
 use App\Actions\ResetStars;
@@ -26,16 +26,16 @@ Action::make('resetStars')
     })
 ```
 
-### Adding an affix action to a field
+### 将 Affix Action 添加到字段
 
-Certain fields support "affix actions", which are buttons that can be placed before or after its input area. The following fields support affix actions:
+特定字段支持 "Affix(前后缀) Action"，其为输入区域前后的按钮。以下字段支持 Affix Action：
 
 - [Text input](fields/text-input)
 - [Select](fields/select)
 - [Date-time picker](fields/date-time-picker)
 - [Color picker](fields/color-picker)
 
-To define an affix action, you can pass it to either `prefixAction()` or `suffixAction()`:
+你可以传递 `prefixAction` 或 `suffixAction`，定义一个 Affix Action：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -56,11 +56,12 @@ TextInput::make('cost')
 
 <AutoScreenshot name="forms/fields/actions/suffix" alt="Text input with suffix action" version="3.x" />
 
+请注意，本例中 `$set` 和 `$state` 被注入到 `action()` 函数中。这是[表单组件 Action 注入](#form-component-action-utility-injection)。
 Notice `$set` and `$state` injected into the `action()` function in this example. This is [form component action utility injection](#form-component-action-utility-injection).
 
-#### Passing multiple affix actions to a field
+#### 传入多个 Affix Action 到一个字段
 
-You may pass multiple affix actions to a field by passing them in an array to either `prefixActions()` or `suffixActions()`. Either method can be used, or both at once, Filament will render all the registered actions in order:
+你可以使用 `prefixActions()` 或者 `suffixActions()` 以数组的方式，将多个前后缀 Action 传递给一个字段。可以调用其中任意一种方法或者两者皆用，Filament 会按注册顺序进行渲染：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -79,9 +80,9 @@ TextInput::make('cost')
     ])
 ```
 
-### Adding a hint action to a field
+### 添加 hint action 到字段
 
-All fields support "hint actions", which are rendered aside the field's [hint](fields/getting-started#adding-a-hint-next-to-the-label). To add a hint action to a field, you may pass it to `hintAction()`:
+所有的字段都支持 “Hint Action”，它渲染在字段的[提示](fields/getting-started#adding-a-hint-next-to-the-label)旁边。要将 Hint Action 添加到字段中，你需要将其传入到 `hintAction()` 中：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -104,9 +105,9 @@ Notice `$set` and `$state` injected into the `action()` function in this example
 
 <AutoScreenshot name="forms/fields/actions/hint" alt="Text input with hint action" version="3.x" />
 
-#### Passing multiple hint actions to a field
+#### 添加多个 Hint Action 到字段中
 
-You may pass multiple hint actions to a field by passing them in an array to `hintActions()`. Filament will render all the registered actions in order:
+要将多个 Hint Action 传给一个字段y，你可以用数组的方式将它们传递给 `hintActions()`。Filament 会按照 Action 注册顺序对其进行渲染：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -121,9 +122,9 @@ TextInput::make('cost')
     ])
 ```
 
-### Adding an action to a custom form component
+### 添加 Action 到自定义表单组件
 
-If you wish to render an action within a custom form component, `ViewField` object, or `View` component object, you may do so using the `registerActions()` method:
+如果你想在自定义的表单组件(比如，`ViewField` 对象或者 `View` 组件对象)中渲染 Action，你可以使用 `registerActions()` 方法：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -143,7 +144,7 @@ ViewField::make('rating')
 
 Notice `$set` injected into the `action()` function in this example. This is [form component action utility injection](#form-component-action-utility-injection).
 
-Now, to render the action in the view of the custom component, you need to call `$getAction()`, passing the name of the action you registered:
+现在，要在自定义组件的视图中渲染 Action，你需要调用 `$getAction()` 并传入你注册的 Action 名：
 
 ```blade
 <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }">
@@ -153,9 +154,9 @@ Now, to render the action in the view of the custom component, you need to call 
 </div>
 ```
 
-### Adding "anonymous" actions to a form without attaching them to a component
+### 添加"匿名" Action 到消息列表，而不附到组件上：
 
-You may use an `Actions` component to render a set of actions anywhere in the form, avoiding the need to register them to any particular component:
+你可以使用 `Actions` 组件，使之在表单的任何位置中渲染一套 Action。而不必将其注册到任何特定的组件中：
 
 ```php
 use App\Actions\Star;
@@ -182,9 +183,9 @@ Actions::make([
 
 <AutoScreenshot name="forms/layout/actions/anonymous/simple" alt="Anonymous actions" version="3.x" />
 
-#### Making the independent form actions consume the full width of the form
+#### 创建独立的表单组件，消费表单全部宽度
 
-You can stretch the independent form actions to consume the full width of the form using `fullWidth()`:
+使用 `fullWidth()` 你可以将独立表单 Action 拉伸到占用表单的全宽：
 
 ```php
 use Filament\Forms\Components\Actions;
@@ -196,9 +197,9 @@ Actions::make([
 
 <AutoScreenshot name="forms/layout/actions/anonymous/full-width" alt="Anonymous actions consuming the full width" version="3.x" />
 
-#### Controlling the horizontal alignment of independent form actions
+#### 控制独立表单 Action 的水平对齐
 
-Independent form actions are aligned to the start of the component by default. You may change this by passing `Alignment::Center` or `Alignment::End` to `alignment()`:
+独立表单 Action 默认对其到表单起始位置。你可以将 `Alignment::Center` 或 `Alignment::End` 传入到 `alignment()` 方法，对此进行修改：
 
 ```php
 use Filament\Forms\Components\Actions;
@@ -211,9 +212,9 @@ Actions::make([
 
 <AutoScreenshot name="forms/layout/actions/anonymous/horizontally-aligned-center" alt="Anonymous actions horizontally aligned to the center" version="3.x" />
 
-#### Controlling the vertical alignment of independent form actions
+#### 控制独立表单 Action 的垂直对齐
 
-Independent form actions are vertically aligned to the start of the component by default. You may change this by passing `Alignment::Center` or `Alignment::End` to `verticalAlignment()`:
+独立的表单 Action 在垂直方向上默认对齐到组件的起始位置。你可以将 `Alignment::Center` 或 `Alignment::End` 传递给 `verticalAlignment()`，对此进行修改：
 
 ```php
 use Filament\Forms\Components\Actions;

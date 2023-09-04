@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: View action
 ---
 
-## Overview
+## 概述
 
-Filament includes a prebuilt action that is able to view Eloquent records. When the trigger button is clicked, a modal will open with information inside. Filament uses form fields to structure this information. All form fields are disabled, so they are not editable by the user. You may use it like so:
+Filament 包含一个可以查看 Eloquent 记录的预制 Action。点击触发按钮后，会打开一个带有信息的模态框要。Filament 使用表单字段来组织这些信息。所有表单字段都是禁用状态，这样用户就不能编辑这些信息了。你可以这样使用：
 
 ```php
 use Filament\Actions\ViewAction;
@@ -22,7 +22,7 @@ ViewAction::make()
     ])
 ```
 
-If you want to view table rows, you can use the `Filament\Tables\Actions\ViewAction` instead:
+如果你想查看的是表格行记录，请使用 `Filament\Tables\Actions\ViewAction` 替换：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -44,9 +44,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Customizing data before filling the form
+## 表单填充前自定义数据
 
-You may wish to modify the data from a record before it is filled into the form. To do this, you may use the `mutateRecordDataUsing()` method to modify the `$data` array, and return the modified version before it is filled into the form:
+你可能想要在数据填充到表单前，对数据进行修改。为此，你可以使用 `mutateRecordDataUsing()` 方法，修改 `$data` 数组，并且返回其填充到表单前修改的版本：
 
 ```php
 ViewAction::make()

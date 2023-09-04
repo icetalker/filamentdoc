@@ -11,18 +11,12 @@ title: 从 v2.x 升级
 - Laravel v10.0+
 - Livewire v3.0+
 
-Please upgrade Filament before upgrading to Livewire v3. Instructions on how to upgrade Livewire can be found [here](https://livewire.laravel.com/docs/upgrading).
+请在升级到 Livewire v3 前先升级 Filament。升级 Livewire 说明请查看[此处](https://livewire.laravel.com/docs/upgrading)。
 
-> **Livewire v3 is still in beta!**<br />
-> Although breaking changes should be minimal, we recommend testing your application thoroughly before using Filament v3 in production.
+> **Livewire v3 最近发布了!**<br />
+> Livewire 团队在使其稳定方面做得很好，不过它是完全重写 Livewire v2。你可能会碰到问题，因此，我们建议在将 Filament v3 使用到生产环境之前对应用进行全面的测试。
 
 ## 自动升级
-
-由于 Livewire V3 仍然处于 Beta 阶段，请将 `composer.json` 中的 `minimum-stability` 设置成 `dev`:
-
-```json
-"minimum-stability": "dev",
-```
 
 升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
 
@@ -41,11 +35,7 @@ vendor/bin/filament-v3
 
 ## 手动升级
 
-由于 Livewire V3 仍然处于 Beta 阶段，请将 `composer.json` 中的 `minimum-stability` 设置成 `dev`:
-
-```json
-"minimum-stability": "dev",
-```
+通过 Composer 升级完依赖后，你应该执行 `php artisan filament:upgrade` 命令，以清理 Laravel 缓存并发布新的前端资源。
 
 ### 高影响更新
 

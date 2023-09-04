@@ -7,7 +7,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-The color entry allows you to show the color preview from a CSS color definition, typically entered using the color picker field, in one of the supported formats (HEX, HSL, RGB, RGBA).
+ColorEntry(颜色条目)允许你使用 CSS 颜色定义展示颜色预览，通常使用拾色器(ColoPicker)字段。颜色支持的格式有(HEX、HSL、RGB、RGBA)。
 
 ```php
 use Filament\Infolists\Components\ColorEntry;
@@ -17,9 +17,9 @@ ColorEntry::make('color')
 
 <AutoScreenshot name="infolists/entries/color/simple" alt="Color entry" version="3.x" />
 
-## Allowing the color to be copied to the clipboard
+## 允许将颜色复制到剪切板
 
-You may make the color copyable, such that clicking on the preview copies the CSS value to the clipboard, and optionally specify a custom confirmation message and duration in milliseconds. This feature only works when SSL is enabled for the app.
+你可以让颜色可复制(copyable)，比如在预览上单击将 CSS 值复制到剪切板，且可选地指定自定义确认消息及时长(毫秒计)。该特性只有在应用启用 SSL 时有效：
 
 ```php
 use Filament\Infolists\Components\ColorEntry;

@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/03-entries/07-custom.md"
-title: Custom entries
+title: 自定义 Entry
 ---
 
 ## View entries
 
-You may render a custom view for an entry using the `view()` method:
+你可以使用 `view()` 方法，为一个 Entry 渲染自定义视图：
 
 ```php
 use Filament\Infolists\Components\ViewEntry;
@@ -15,21 +15,21 @@ ViewEntry::make('status')
     ->view('filament.infolists.entries.status-switcher')
 ```
 
-This assumes that you have a `resources/views/filament/infolists/entries/status-switcher.blade.php` file.
+该代码假定你有一个 `resources/views/filament/infolists/entries/status-switcher.blade.php` 文件。
 
-## Custom classes
+## 自定义类
 
-You may create your own custom entry classes and entry views, which you can reuse across your project, and even release as a plugin to the community.
+你可以创建自定义的 Entry 类及视图，将其在跨项目中重用，甚至可以将其作为插件发布到社区。
 
-> If you're just creating a simple custom entry to use once, you could instead use a [view entry](#view-entries) to render any custom Blade file.
+> 如果你只要创建一个只用一次的简单自定义 Entry，你可以使用 [View Enty](#view-entry) 来渲染任何自定义 Blade 文件。
 
-To create a custom entry class and view, you may use the following command:
+要创建自定义 Entry 类及视图，你可以使用如下命令：
 
 ```bash
 php artisan make:infolist-entry StatusSwitcher
 ```
 
-This will create the following entry class:
+该命令会创建以下 Entry 类：
 
 ```php
 use Filament\Infolists\Components\Entry;
@@ -40,11 +40,11 @@ class StatusSwitcher extends Entry
 }
 ```
 
-It will also create a view file at `resources/views/filament/infolists/entries/status-switcher.blade.php`.
+同时也会创建一个视图文件：`resources/views/filament/infolists/entries/status-switcher.blade.php`。
 
-## Accessing the state
+## 访问 state
 
-Inside your view, you may retrieve the state of the entry using the `$getState()` function:
+在视图内部，你可以使用 `$getState()` 函数查询该 Entry 的状态(state)：
 
 ```blade
 <div>
@@ -52,9 +52,9 @@ Inside your view, you may retrieve the state of the entry using the `$getState()
 </div>
 ```
 
-## Accessing the Eloquent record
+## 访问 Eloquent 记录
 
-Inside your view, you may access the Eloquent record using the `$getRecord()` function:
+在视图内部，你可以使用 `$getRecord()` 函数访问 Eloquent 记录：
 
 ```blade
 <div>

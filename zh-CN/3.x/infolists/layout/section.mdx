@@ -7,7 +7,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-You may want to separate your entries into sections, each with a heading and description. To do this, you can use a section component:
+你可以将多个 Entry 分到不同的分区(Section)中，每个都有一个标题及描述。为此，你可以使用 Section 组件：
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -21,9 +21,22 @@ Section::make('Rate limiting')
 
 <AutoScreenshot name="infolists/layout/section/simple" alt="Section" version="3.x" />
 
-## Adding an icon to the section's header
+你也可以使用不带头部的分区，只需这样包裹子组件：
 
-You may add an icon to the section's header using the `icon()` method:
+```php
+use Filament\Infolists\Components\Section;
+
+Section::make()
+    ->schema([
+        // ...
+    ])
+```
+
+<AutoScreenshot name="infolists/layout/section/without-header" alt="Section without header" version="3.x" />
+
+## 添加图标到 Section 头部
+
+使用 `icon()` 方法，你可以将图标添加到 Section 头部：
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -40,7 +53,7 @@ Section::make('Cart')
 
 ## Positioning the heading and description aside
 
-You may use the `aside()` method to align the heading and description on the left, and the infolist components inside a card on the right:
+你可以使用 `aside()` 方法将左侧的标题和描述，与卡片内右侧的消息列表组件对齐。
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -55,9 +68,9 @@ Section::make('Rate limiting')
 
 <AutoScreenshot name="infolists/layout/section/aside" alt="Section with heading and description aside" version="3.x" />
 
-## Collapsing sections
+## 折叠 Section
 
-Sections may be `collapsible()` to optionally hide content in long infolists:
+Section 可设为可折叠 `collapsible()`，以选择性隐藏长信息列表中的内容：
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -70,7 +83,7 @@ Section::make('Cart')
     ->collapsible()
 ```
 
-Your sections may be `collapsed()` by default:
+你可以将分区设为默认折叠，请使用 `collapsed()`：
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -85,9 +98,9 @@ Section::make('Cart')
 
 <AutoScreenshot name="infolists/layout/section/collapsed" alt="Collapsed section" version="3.x" />
 
-## Compact section styling
+## 压缩 Section 样式
 
-When nesting sections, you can use a more compact styling:
+当嵌套 Section 时，你可以使用更加紧凑的样式：
 
 ```php
 use Filament\Infolists\Components\Section;
@@ -102,9 +115,9 @@ Section::make('Rate limiting')
 
 <AutoScreenshot name="infolists/layout/section/compact" alt="Compact section" version="3.x" />
 
-## Using grid columns within a section
+## 在分区中使用网格 columns
 
-You may use the `columns()` method to easily create a [grid](grid) within the section:
+你也可以使用 `columns()` 方法，在分区内轻松创建 [Grid](grid):
 
 ```php
 use Filament\Infolists\Components\Section;

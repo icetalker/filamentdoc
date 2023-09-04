@@ -1,10 +1,10 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/06-adding-an-infolist-to-a-livewire-component.md"
-title: Adding an infolist to a Livewire component
+title: 添加 Infolist 到 Livewire 组件
 ---
 
-## Setting up the Livewire component
+## 准备 Livewire 组件
 
 首先，生成新的 Livewire 组件：
 
@@ -45,9 +45,9 @@ class ViewProduct extends Component implements HasForms, HasInfolists
 }
 ```
 
-## Adding the infolist
+## 添加信息列表
 
-在 Livewire 组件中添加一个方法，该方法接收一个 `$infolist` 对象作为参数，对其修改并返回：
+接下来，在 Livewire 组件中添加一个方法，该方法接收一个 `$infolist` 对象作为参数，对其修改并返回：
 
 ```php
 use Filament\Infolists\Infolist;
@@ -62,7 +62,7 @@ public function productInfolist(Infolist $infolist): Infolist
 }
 ```
 
-最后，在 Livewire 组件视图中渲染信息列表：
+最后，在 Livewire 组件视图中渲染该信息列表：
 
 ```blade
 {{ $this->productInfolist }}
@@ -72,7 +72,7 @@ public function productInfolist(Infolist $infolist): Infolist
 
 你可以用两种方式将数据传入到信息列表：
 
-可以传入 Eloquent 模型实例到信息列表的 `record()` 方法中，将所有的模型属性和关自动映射到消息列表 Schema 中的条目： 
+可以传入 Eloquent 模型实例到信息列表的 `record()` 方法中，将所有的模型属性和关自动映射到消息列表 Schema 中的 Entry： 
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -90,7 +90,7 @@ public function productInfolist(Infolist $infolist): Infolist
 }
 ```
 
-也可以传送数据数组到信息列表的 `state()` 方法中，手动将数据映射到信息列表 Schema 中的条目：
+此外，也可以传送数据数组到信息列表的 `state()` 方法中，手动将数据映射到信息列表 Schema 中的 Entry：
 
 ```php
 use Filament\Infolists\Components\TextEntry;

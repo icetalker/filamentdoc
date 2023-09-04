@@ -62,13 +62,13 @@ TextEntry::make('title')
     ->translateLabel() // Equivalent to `label(__('Title'))`
 ```
 
-## Entry URLs
+## Entry URL
 
-When an entry is clicked, you may open a URL.
+点击 Entry 时，你可以打开一个网址。
 
-### Opening URLs
+### 打开 URL
 
-To open a URL, you may use the `url()` method, passing a callback or static URL to open. Callbacks accept a `$record` parameter which you may use to customize the URL:
+你可以使用 `url()` 方法，传入回调函数或者静态 URL，来打开 URL。回调接收 `$record` 作为参数，你可以用它来自定义 URL:
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -77,7 +77,7 @@ TextEntry::make('title')
     ->url(fn (Post $record): string => route('posts.edit', ['post' => $record]))
 ```
 
-You may also choose to open the URL in a new tab:
+你也可以选择在新选项卡中打开 URL：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -87,9 +87,9 @@ TextEntry::make('title')
     ->openUrlInNewTab()
 ```
 
-## Setting a default value
+## 设置默认值
 
-To set a default value for fields with a `null` state, you may use the `default()` method:
+要为状态为 `null` 的字段设置默认值，你可以使用 `default()` 方法：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -98,11 +98,11 @@ TextEntry::make('title')
     ->default('Untitled')
 ```
 
-## Adding helper text below the entry
+## 在 Entry 下添加帮助文本
 
-Sometimes, you may wish to provide extra information for the user of the infolist. For this purpose, you may add helper text below the entry.
+有时，你希望为消息列表用户提供额外信息。为此，你可以在 Entry 下面添加帮助文本。
 
-The `helperText()` method is used to add helper text:
+`helperText()` 方法用于添加帮助文本：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -111,7 +111,7 @@ TextEntry::make('name')
     ->helperText('Your full name here, including any middle names.')
 ```
 
-This method accepts a plain text string, or an instance of `Illuminate\Support\HtmlString` or `Illuminate\Contracts\Support\Htmlable`. This allows you to render HTML, or even markdown, in the helper text:
+该方法接收普通文本字符串，或者 `Illuminate\Support\HtmlString` 或 `Illuminate\Contracts\Support\Htmlable` 的实例。它允许你在帮助文本中渲染 HTML，甚至 markdown：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -129,11 +129,11 @@ TextEntry::make('name')
 
 <AutoScreenshot name="infolists/entries/helper-text" alt="Entry with helper text" version="3.x" />
 
-## Adding a hint next to the label
+## 在标签旁添加 Hint 提示
 
-As well as [helper text](#adding-helper-text-below-the-entry) below the entry, you may also add a "hint" next to the label of the entry. This is useful for displaying additional information about the entry, such as a link to a help page.
+除了在 Entry 下添加[帮助文本](#在-entry-下添加帮助文本)，你也可以在 Entry 的标签旁边添加提示(hint)。这对于展示 Entry 的额外信息，比如链接到帮助页面，非常有用。
 
-The `hint()` method is used to add a hint:
+使用 `hint()` 方法添加提示：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -143,7 +143,7 @@ TextEntry::make('apiKey')
     ->hint('Documentation? What documentation?!')
 ```
 
-This method accepts a plain text string, or an instance of `Illuminate\Support\HtmlString` or `Illuminate\Contracts\Support\Htmlable`. This allows you to render HTML, or even markdown, in the helper text:
+该方法接收普通文本字符串，或者 `Illuminate\Support\HtmlString` 或 `Illuminate\Contracts\Support\Htmlable` 的实例。它允许你渲染 HTML，甚至 markdown：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -163,9 +163,9 @@ TextEntry::make('apiKey')
 
 <AutoScreenshot name="infolists/entries/hint" alt="Entry with hint" version="3.x" />
 
-### Changing the text color of the hint
+### 修改提示的文本颜色
 
-You can change the text color of the hint. By default, it's gray, but you may use `danger`, `info`, `primary`, `success` and `warning`:
+你也可以修改提示(Hint)的文本颜色。默认为灰色，不过你也可以改成 `danger`、`info`、`primary`、`success` 及 `warning`：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -178,9 +178,9 @@ TextEntry::make('apiKey')
 
 <AutoScreenshot name="infolists/entries/hint-color" alt="Entry with hint color" version="3.x" />
 
-### Adding an icon aside the hint
+### 在提示旁边添加图标
 
-Hints may also have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) rendered next to them:
+提示同样可以在其旁边渲染[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -193,9 +193,22 @@ TextEntry::make('apiKey')
 
 <AutoScreenshot name="infolists/entries/hint-icon" alt="Entry with hint icon" version="3.x" />
 
-## Hiding entries
+#### 添加 tooltip 到提示图标
 
-To hide an entry conditionally, you may use the `hidden()` and `visible()` methods, whichever you prefer:
+此外，使用 `hintIcon()` 的 `tooltip` 参数，你可以添加一个鼠标悬停在图标时显示的 tooltip：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('apiKey')
+    ->label('API key')
+    ->hint('[Documentation](/documentation)')
+    ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Read it!')
+```
+
+## 隐藏 Entry
+
+你可以使用 `hidden()` 或 `visible()` 方法，条件性地隐藏 Entry：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -207,11 +220,11 @@ TextEntry::make('role')
     ->visible(auth()->user()->isAdmin())
 ```
 
-## Calculated state
+## 计算状态
 
-Sometimes you need to calculate the state of an entry, instead of directly reading it from a database entry.
+有时候，你需要计算 Entry 的状态，而不是直接从数据库中对它进行读取。
 
-By passing a callback function to the `state()` method, you can customize the returned state for that entry:
+将回调函数传入到 `state()` 方法，你可以自定义该 Entry 返回的状态：
 
 ```php
 Infolists\Components\TextEntry::make('amount_including_vat')
@@ -222,7 +235,7 @@ Infolists\Components\TextEntry::make('amount_including_vat')
 
 ## Tooltip
 
-你可以指定鼠标悬停在 Entry 时要展示的 tooltip：
+你可以指定鼠标悬停时显示的 tooltip：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -233,7 +246,7 @@ TextEntry::make('title')
 
 <AutoScreenshot name="infolists/entries/tooltips" alt="Entry with tooltip" version="3.x" />
 
-该方法同时接收一个闭包，该闭包可以访问当前信息列表的记录：
+该方法也接受一个可以访问当前信息列表记录的闭包：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -245,7 +258,7 @@ TextEntry::make('title')
 
 ## 自定义属性
 
-The HTML of entries can be customized, by passing an array of `extraAttributes()`:
+传递数组给 `extraAttributes()`，可以自定义 Entry 的 HTML：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -256,9 +269,9 @@ TextEntry::make('slug')
 
 These get merged onto the outer `<div>` element of each entry in that entry.
 
-## Global settings
+## 全局设置
 
-If you wish to change the default behaviour of all entries globally, then you can call the static `configureUsing()` method inside a service provider's `boot()` method, to which you pass a Closure to modify the entries using. For example, if you wish to make all `TextEntry` components [`words(10)`](text#limiting-word-count), you can do it like so:
+如果你想全局修改所有 Entry 的默认行为，你可以在服务提供者 `boot()` 方法中调用静态的 `configureUsing()` 方法，其中传入一个闭包以修改 Entry 行为。比如，如果你想让所有的 `TextEntry` 组件设置为 [`word(10)`](#限制字数)，你可以这样：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -269,7 +282,7 @@ TextEntry::configureUsing(function (TextEntry $entry): void {
 });
 ```
 
-Of course, you are still able to overwrite this on each entry individually:
+当然，你仍然可以在各个 Entry 中单独重写该行为：
 
 ```php
 use Filament\Infolists\Components\TextEntry;

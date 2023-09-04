@@ -1,15 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/13-upgrade-guide.md"
-title: Upgrading from v2.x
+title: 从 v2.x 升级
 ---
 
 > 如果你发现本指南中有任何遗落，请[发起 PR](https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/11-upgrade-guide.md) 到官方仓库！
 
 ## 新的要求
 
-- Laravel v9.0+
+- Laravel v10.0+
 - Livewire v3.0+
+
+> **Livewire v3 最近发布了!**<br />
+> Livewire 团队在使其稳定方面做得很好，不过它是完全重写 Livewire v2。你可能会碰到问题，因此，我们建议在将 Filament v3 使用到生产环境之前对应用进行全面的测试。
 
 ## 自动升级
 
@@ -29,6 +32,8 @@ vendor/bin/filament-v3
 > 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
 
 ## 手动升级
+
+通过 Composer 升级依赖后，你应该执行 `php artisan filament:upgrade` 命令，以清理 Laravel 缓存并发布新的前端资源。
 
 ### 高影响更新
 

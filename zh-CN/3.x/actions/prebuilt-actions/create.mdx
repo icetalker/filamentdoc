@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: Create action
 ---
 
-## Overview
+## 概述
 
-Filament includes a prebuilt action that is able to create Eloquent records. When the trigger button is clicked, a modal will open with a form inside. The user fills the form, and that data is validated and saved into the database. You may use it like so:
+Filament 包含一个可以创建 Eloquent 记录的预制 Action。点击触发按钮后，会打开一个带有表单的模态框。用户填写表单，数据经验证后存入到数据库。你可以这样使用：
 
 ```php
 use Filament\Actions\CreateAction;
@@ -22,7 +22,7 @@ CreateAction::make()
     ])
 ```
 
-If you want to add this action to the header of a table instead, you can use `Filament\Tables\Actions\CreateAction`:
+如果你想将该 Action 添加到表格的头部，你可以使用 `Filament\Tables\Actions\CreateAction`：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -44,9 +44,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Customizing data before saving
+## 保持前自定义数据
 
-Sometimes, you may wish to modify form data before it is finally saved to the database. To do this, you may use the `mutateFormDataUsing()` method, which has access to the `$data` as an array, and returns the modified version:
+有时候，你需要在表单数据存入到数据库前对其进行修改。为此，你可以使用 `mutateFormDataUsing()` 方法，该方法能够以数组的方式访问 `$data` 并返回修改后的版本：
 
 ```php
 CreateAction::make()
@@ -57,9 +57,9 @@ CreateAction::make()
     })
 ```
 
-## Customizing the creation process
+## 自定义创建过程
 
-You can tweak how the record is created with the `using()` method:
+你可以使用 `using()` 方法微调记录的创建方式：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -70,18 +70,18 @@ CreateAction::make()
     })
 ```
 
-`$model` is the class name of the model, but you can replace this with your own hard-coded class if you wish.
+`$model` 是模型类名，不过如果需要你可以使用硬编码类替换。
 
-## Redirecting after creation
+## 创建后重定向
 
-You may set up a custom redirect when the form is submitted using the `successRedirectUrl()` method:
+使用 `successRedirectUrl()` 方法中，你可以对表单提交后的重定向进行自定义设置：
 
 ```php
 CreateAction::make()
     ->successRedirectUrl(route('posts.list'))
 ```
 
-If you want to redirect using the created record, use the `$record` parameter:
+如果你想要使用创建后的记录进行重定向，请使用 `$record` 参数：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -92,18 +92,18 @@ CreateAction::make()
     ]))
 ```
 
-## Customizing the save notification
+## 创建保存通知
 
-When the record is successfully created, a notification is dispatched to the user, which indicates the success of their action.
+记录成功创建后，会派送通知给用户，说明操作成功：
 
-To customize the title of this notification, use the `successNotificationTitle()` method:
+要自定义通知标题，请使用 `successNotificationTitle()` 方法：
 
 ```php
 CreateAction::make()
     ->successNotificationTitle('User registered')
 ```
 
-You may customize the entire notification using the `successNotification()` method:
+使用 `successNotification()` 方法，你可以自定义整个通知：
 
 ```php
 use Filament\Notifications\Notification;
@@ -117,44 +117,44 @@ CreateAction::make()
     )
 ```
 
-To disable the notification altogether, use the `successNotification(null)` method:
+要完全禁用通知，请使用 `successNotification(null)` 方法：
 
 ```php
 CreateAction::make()
     ->successNotification(null)
 ```
 
-## Lifecycle hooks
+## 生命周期钩子
 
-Hooks may be used to execute code at various points within the action's lifecycle, like before a form is saved.
+钩子可用在 Action 生命周期的各种节点中执行代码，比如表单数据保存之前。
 
-There are several available hooks:
+可用的钩子有：
 
 ```php
 CreateAction::make()
     ->beforeFormFilled(function () {
-        // Runs before the form fields are populated with their default values.
+        // 表单字段以默认值填充之前运行
     })
     ->afterFormFilled(function () {
-        // Runs after the form fields are populated with their default values.
+        // 表单字段以默认值填充之后运行
     })
     ->beforeFormValidated(function () {
-        // Runs before the form fields are validated when the form is submitted.
+        // 在表单提交时，字段验证之前运行
     })
     ->afterFormValidated(function () {
-        // Runs after the form fields are validated when the form is submitted.
+        // 在表单提交时，字段验证之后运行
     })
     ->before(function () {
-        // Runs before the form fields are saved to the database.
+        //表单字段保存到数据库之前
     })
     ->after(function () {
-        // Runs after the form fields are saved to the database.
+        //表单字段保存到数据库之后
     })
 ```
 
-## Halting the creation process
+## 中断创建处理过程
 
-At any time, you may call `$action->halt()` from inside a lifecycle hook or mutation method, which will halt the entire creation process:
+在任何时候，你都可以在生命周期钩子或者 mutation 方法中，调用 `$action->halt()`，中断整个创建处理过程：
 
 ```php
 use Filament\Notifications\Actions\Action;
@@ -180,15 +180,15 @@ CreateAction::make()
     })
 ```
 
-If you'd like the action modal to close too, you can completely `cancel()` the action instead of halting it:
+如果你想同时关闭 Action 模态框，你可以使用 `cancel()` 完全取消该 Action：
 
 ```php
 $action->cancel();
 ```
 
-## Using a wizard
+## 使用 wizard
 
-You may easily transform the creation process into a multistep wizard. Instead of using a `form()`, define a `steps()` array and pass your `Step` objects:
+你可以轻松将创建处理过程转换成多步的向导(Wizard)。将 `form()` 换成 `step()`，并传入 `Step` 对象数组定义步骤：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -226,9 +226,9 @@ CreateAction::make()
     ])
 ```
 
-Now, create a new record to see your wizard in action! Edit will still use the form defined within the resource class.
+现在，你就可以创建新纪录，以查看 Action 中的 Wizard。编辑仍然使用资源类定义的表单。
 
-If you'd like to allow free navigation, so all the steps are skippable, use the `skippableSteps()` method:
+如果你想允许自由导航，使所有步骤都可以跳过，请使用 `skippableSteps()` 方法：
 
 ```php
 CreateAction::make()
@@ -238,9 +238,9 @@ CreateAction::make()
     ->skippableSteps()
 ```
 
-## Disabling create another
+## 禁用 create another
 
-If you'd like to remove the "create another" button from the modal, you can use the `createAnother(false)` method:
+如果你想移除 "create another" 按钮，请使用 `createAnother(false)` 方法：
 
 ```php
 CreateAction::make()

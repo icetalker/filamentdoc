@@ -10,7 +10,7 @@ title: 开始
 
 ## 前置要求
 
-使用 Filament 之前，你需要先熟悉 Laravel。Filament 是基于许多 Laravel 核心概念构建的，特别是[数据库迁移](https://laravel.com/docs/migrations)和 [Eloquent ORM](https://laravel.com/docs/eloquent)。如果你没此前没用过 Laravel，或者需要复习，建议你跟着 [Laravel Bootcamp](https://bootcamp.laravel.com/blade/installation) 去创建一个小应用。那个教程涵盖了创建 Laravel 应用的基础知识。
+使用 Filament 之前，你需要先熟悉 Laravel。Filament 是基于许多 Laravel 核心概念构建的，特别是[数据库迁移](https://laravel.com/docs/migrations)和 [Eloquent ORM](https://laravel.com/docs/eloquent)。如果你此前未曾用过 Laravel，或者需要复习，建议你跟着 [Laravel Bootcamp](https://bootcamp.laravel.com/blade/installation) 去创建一个小应用。那个教程涵盖了创建 Laravel 应用的基础知识。
 
 ## Demo 项目
 
@@ -62,7 +62,7 @@ Schema::create('treatments', function (Blueprint $table) {
 });
 ```
 
-Run the migrations using `php artisan migrate`.
+使用 `php artisan migrate` 运行迁移文件。
 
 ### 解除所有模型的防护
 
@@ -148,7 +148,6 @@ php artisan make:filament-resource Patient
 
 #### "Name" 文本输入框
 
-Filament bundles a large selection of [form fields](../forms/fields/getting-started). Let's start with a simple [text input field](../forms/fields/text-input):
 Filament 捆绑了大量[表单字段](../forms/fields)。让我们从最简单的[文本输入框](../forms/fields/text-input)入手：
 
 ```php
@@ -380,8 +379,7 @@ public static function table(Table $table): Table
 }
 ```
 
-刷新该页面，你会发现表格中有一个新增的搜索文本字段，
-Reload the page and observe a new search input field on the table that filters the table entries using the search criteria.
+刷新该页面，你会发现表格中有一个新增的搜索文本框字段，使用搜索条件过滤表格记录。
 
 ##### 使这些列可排序
 
@@ -436,9 +434,6 @@ public static function table(Table $table): Table
         ]);
 }
 ```
-
-One option is to create a new `TreatmentResource` with a select field to associate treatments with a patient. However, managing treatments separately from the rest of the patient information is cumbersome for the user. Filament uses "relation managers" to solve this problem.
-
 
 刷新页面，会发现表格的右上角有一个新的过滤器图标(在搜索表单旁边)。这个过滤器打开一个包含患者类型的选择菜单。现在，你可以尝试通过患者类型进行数据过滤了。
 
@@ -540,8 +535,7 @@ public function form(Form $form): Form
 
 #### 配置 `price` 字段
 
-我们来为治疗添加一个 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。它是 `numberic()` 的，添加验证的同时，改变移动设备中键盘的布局。同时使用 `prefix()` 方法添加货币前缀，比如，prefix('€')`会在不影响保存的输出值的情况下，在文本输入框前面添加 `€`。
-此外，我们需要 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。可以用 `numberic()` 方法，添加验证的同时，改变移动设备中键盘的布局。同时可以添加一个前缀 `prefix('€')`，使之在输入框签名渲染 `€`，而不会改变字段保存的输出。
+我们来为治疗添加一个 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。它是 `numberic()` 的，添加验证的同时，改变移动设备中键盘的布局。同时使用 `prefix()` 方法添加货币前缀，比如，prefix('€')`会在不影响保存的输出值的情况下，在文本输入框前面添加 `€`：
 
 ```php
 use Filament\Forms;
@@ -704,13 +698,12 @@ php artisan make:filament-widget TreatmentsChart --chart
 
 `getData()` 方法返回一个数据集和标签组成的数组。每个数据集都是要在图表上绘制的标签点数组，每个标签都是一个字符串。此结构与 [Chart.js](https://www.chartjs.org/docs) 库相同，Filament 用它来渲染图表。
 
-要从 Eloquent 模型中生成图表数据，Filament 推荐你安装 `flowframe/laravel-trend` 包，你可以查看[文档]https://github.com/Flowframe/laravel-trend)。安装该包：
+要从 Eloquent 模型中生成图表数据，Filament 推荐你安装 `flowframe/laravel-trend` 包，你可以查看[文档](https://github.com/Flowframe/laravel-trend)。安装该包：
 
 ```bash
 composer require flowframe/laravel-trend
 ```
 
-Update the `getData()` to display the number of treatments per month for the past year:
 更新 `getData()`，展示过去一年中每个月的治疗数量：
 
 ```php

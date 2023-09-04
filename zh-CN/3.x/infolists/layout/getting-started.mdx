@@ -6,12 +6,11 @@ title: 开始
 
 ## 概述
 
-信息列表不只是展示条目。你也可以使用"布局组件"将其成无限嵌套结构。
+信息列表不仅限于是展示条目(Entry)。你也可以使用"布局组件"将其组织成无限嵌套结构。
 
+布局组件类可以在 "Filament\Infolists\Components" 命名空间中找到。它们与其他 [entry](entries/getting-started) 一起放在信息列表的 Schema 中。
 
-布局组件类可以在 "Filament\Infolists\Components" 命名空间中找到。它们与其他[entry](entries)一起放在信息列表的 Schema 中。
-
-组件可以使用静态 `make()` 方法创建。通常，接下来你需要定义子组件的 `schema()` 在内部展示：
+组件可以使用静态 `make()` 方法创建。通常，接下来你需要定义子组件的 `schema()` 以在其内部展示：
 
 ```php
 use Filament\Infolists\Components\Grid;
@@ -24,7 +23,7 @@ Grid::make(2)
 
 ## 可用布局组件
 
-Filament 附带了一些布局组件，适于根据需要排列表单字段：
+Filament 附带了一些布局组件，适于按需排列表单字段：
 
 - [Grid](grid)
 - [Fieldset](fieldset)
@@ -33,7 +32,7 @@ Filament 附带了一些布局组件，适于根据需要排列表单字段：
 - [Card](card)
 - [Split](split)
 
-你也可以[创建自定义布局组件](custom)，按你希望的方式组织自动。
+你也可以[创建自定义布局组件](custom)，按你希望的方式组织字段。
 
 ## 设置 ID
 
@@ -48,7 +47,7 @@ Card::make()
 
 ## 添加额外的 HTML 属性
 
-你可以将额外的 HTML 属性传递给组件，这些属性将合并到外部 DOM 元素上。将属性数组传递给 `extraAttributes()` 方法，其中键是属性名称，值是属性值：
+你可以将额外的 HTML 属性传递给组件，这些属性将合并到外部 DOM 元素上。将属性数组传递给 `extraAttributes()` 方法，其中数组键是属性名称，值是属性值：
 
 ```php
 use Filament\Infolists\Components\Group;
@@ -57,11 +56,11 @@ Card::make()
     ->extraAttributes(['class' => 'custom-card-style'])
 ```
 
-这些类会与默认类合并，任何其他属性都将覆盖默认属性。
+这些类会与默认类合并，且任何其他属性都将覆盖默认属性。
 
 ## 全局设置
 
-如果您希望全局更改组件的默认行为，那么您可以在服务提供者的 `boot()` 方法中调用静态的 `configureUsing()` 方法，向该方法传入闭包修改使用的组件。例如，如果您希望默认情况下所有 Card 组件都有[2列](grid)，您可以这样做：
+如果您希望全局更改组件的默认行为，那么您可以在服务提供者的 `boot()` 方法中调用静态的 `configureUsing()` 方法，向该方法传入闭包修改使用的组件。例如，如果您希望默认情况下所有 Card 组件都有 [2 列](grid)，您可以这样做：
 
 ```php
 use Filament\Infolists\Components\Card;
@@ -72,7 +71,7 @@ Card::configureUsing(function (Card $card): void {
 });
 ```
 
-当然，你仍然可以单独重写覆盖每个字段：
+当然，你仍然可以单独在每个字段上重写覆盖：
 
 ```php
 use Filament\Infolists\Components\Card;

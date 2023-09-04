@@ -7,22 +7,23 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-`Split` 组件允许你通过 flex 使用灵活的宽度定义布局。
+`Split` 组件允许你通过 flexbox 使用灵活的宽度定义布局。
 
 ```php
-use Filament\Infolists\Components\Card;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Enums\FontWeight;
 
 Split::make([
-    Card::make([
+    Section::make([
         TextEntry::make('title')
-            ->weight('bold'),
+            ->weight(FontWeight::Bold),
         TextEntry::make('content')
             ->markdown()
             ->prose(),
     ])->grow(),
-    Card::make([
+    Section::make([
         TextEntry::make('created_at')
             ->dateTime(),
         TextEntry::make('published_at')
@@ -31,8 +32,8 @@ Split::make([
 ])->from('md')
 ```
 
-本例中，第一个卡片将会增长（`grow()`）去消费可用的垂直空间，而不影响第二个卡片中需要渲染的空间数量。这会创建了一个侧边栏效果。 
+本例中，第一个 Section 将会增长（`grow()`）去消费可用的垂直空间，而不影响第二个 Section 中需要渲染的空间数量。这会创建了一个侧边栏效果。 
 
-`form()` 方法用来控制 Split 布局的 [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview) (`sm`, `md`, `lg`, `xl`, `2xl`)。本例中，Split 布局会用于 medium 以上的设备。在比值更小的设备中，卡片会互相堆叠。
+`form()` 方法用来控制 Split 布局所使用的 [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview) (`sm`, `md`, `lg`, `xl`, `2xl`)。本例中，Split 布局会用于 medium 以上的设备。在比此值更小的设备中， Section 会互相堆叠起来。
 
 <AutoScreenshot name="infolists/layout/split/simple" alt="Split" version="3.x" />

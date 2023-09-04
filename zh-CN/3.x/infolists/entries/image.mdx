@@ -15,13 +15,13 @@ use Filament\Infolists\Components\ImageEntry;
 ImageEntry::make('header_image')
 ```
 
-The entry must contain the path to the image, relative to the root directory of its storage disk, or an absolute URL to it.
+该 Entry 必须包含相对于存储磁盘根目录的图片路径，或者绝对 URL 路径。
 
 <AutoScreenshot name="infolists/entries/image/simple" alt="Image entry" version="3.x" />
 
-## Managing the image disk
+## 修改图片磁盘
 
-By default, the `public` disk will be used to retrieve images. You may pass a custom disk name to the `disk()` method:
+默认情况下，使用 `public` 磁盘来检索图片。你可以将自定义的磁盘名称传递给 `disk()` 方法：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -30,9 +30,9 @@ ImageEntry::make('header_image')
     ->disk('s3')
 ```
 
-## Private images
+## 私有图片
 
-Filament can generate temporary URLs to render private images, you may set the `visibility()` to `private`:
+你可以将 `visibility()` 设置为 `private`，Filament 会生成临时 URL 来渲染私有图片：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -41,9 +41,9 @@ ImageEntry::make('header_image')
     ->visibility('private')
 ```
 
-## Customizing the size
+## 自定义大小
 
-You may customize the image size by passing a `width()` and `height()`, or both with `size()`:
+你可以将宽度传入 `width()`、将高度传入 `height()` 或者将二者传递给 `size()`，来自定义图片大小： 
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -58,9 +58,9 @@ ImageEntry::make('author.avatar')
     ->size(40)
 ```
 
-## Square image
+## 方形图片
 
-You may display the image using a 1:1 aspect ratio:
+你可以使用 1:1 比例尺展示图片：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -72,9 +72,9 @@ ImageEntry::make('author.avatar')
 
 <AutoScreenshot name="infolists/entries/image/square" alt="Square image entry" version="3.x" />
 
-## Circular image
+## 圆形图片
 
-You may make the image fully rounded, which is useful for rendering avatars:
+你可以将图片设为圆形，这对渲染头像相当有用：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -86,9 +86,9 @@ ImageEntry::make('author.avatar')
 
 <AutoScreenshot name="infolists/entries/image/circular" alt="Circular image entry" version="3.x" />
 
-## Adding a default image URL
+## 添加默认图片 URL
 
-You can display a placeholder image if one doesn't exist yet, by passing a URL to the `defaultImageUrl()` method:
+将一个 URL 传入到 `defaultImageUrl()` 方法中，你可以在图片还不存在时，展示占位符图片：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -142,7 +142,7 @@ ImageEntry::make('colleagues.avatar')
 
 ## Setting a limit
 
-You may set a limit of the maximum number of images you want to display by passing `limit()`:
+You may limit the maximum number of images you want to display by passing `limit()`:
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -175,7 +175,7 @@ ImageEntry::make('colleagues.avatar')
 
 #### Showing the limited remaining text separately
 
-By default, `limitedRemainingText()` will display the count of remaining images as a number stacked on the other images. If you prefer to show the count as a number after the images you may use the `isSeparate: true` parameter:
+By default, `limitedRemainingText()` will display the count of remaining images as a number stacked on the other images. If you prefer to show the count as a number after the images, you may use the `isSeparate: true` parameter:
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -205,9 +205,9 @@ ImageEntry::make('colleagues.avatar')
     ->limitedRemainingText(size: 'lg')
 ```
 
-## Custom attributes
+## 自定义属性
 
-You may customize the extra HTML attributes of the image using `extraImgAttributes()`:
+使用 `extraImgAttributes()` 方法，你可以为图片自定义额外的 HTML 属性：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;

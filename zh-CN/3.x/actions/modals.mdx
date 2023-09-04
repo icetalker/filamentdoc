@@ -7,11 +7,11 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Actions may require additional confirmation or input from the user before they run. You may open a modal before an action is executed to do this.
+Action 可能会在运行前要求额外确认或者用户输入。你可以在 Action 执行之前打开模态框实现该功能。
 
-## Confirmation modals
+## 确认模态框
 
-You may require confirmation before an action is run using the `requiresConfirmation()` method. This is useful for particularly destructive actions, such as those that delete records.
+使用  `requiresConfirmation()` 方法，你可以在 Action 运行之前请求确认。这对于破坏性操作，比如删除记录，特别有用。
 
 ```php
 Action::make('delete')
@@ -21,13 +21,13 @@ Action::make('delete')
 
 <AutoScreenshot name="actions/modal/confirmation" alt="Confirmation modal" version="3.x" />
 
-> Note: The confirmation modal is not available when a `url()` is set instead of an `action()`. Instead, you should redirect to the URL within the `action()` closure.
+> 如果使用 `url()` 代替 `action()`，那确认模态框不可用。相反，你应该在 `action()` 方法内，重定向 URL。
 
-## Modal forms
+## 模态框表单
 
-You may also render a form in the modal to collect extra information from the user before the action runs.
+你也可以在模态框中渲染表单，在 Action 运行之前从用户那边收集额外的信息。
 
-You may use components from the [Form Builder](../forms) to create custom action modal forms. The data from the form is available in the `$data` array of the `action()` closure:
+你可以使用[表单构造器](../forms)中的组件来创建自定义模态框表单。表单中的数据可以通过 `action()` 闭包中的 `$data` 数组获取：
 
 ```php
 use App\Models\User;
@@ -48,9 +48,9 @@ Action::make('updateAuthor')
 
 <AutoScreenshot name="actions/modal/form" alt="Modal with form" version="3.x" />
 
-### Filling the form with existing data
+### 使用现有数据填充表单
 
-You may fill the form with existing data, using the `fillForm()` method:
+通过 `fillForm()` 方法，你可以使用现有数据填充表单：
 
 ```php
 use App\Models\User;
@@ -73,9 +73,9 @@ Action::make('updateAuthor')
     })
 ```
 
-### Using a wizard as a modal form
+### 使用 Wizard 作为模态框表单
 
-You may create a [multi-step form wizard](../forms/layout/wizard) inside a modal. Instead of using a `form()`, define a `steps()` array and pass your `Step` objects:
+你可以在模态框中创建[多步骤表单想到卡(wizard)](../forms/layout/wizard)。定义 `step()` 字符串，并传入 `Step` 对象：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -115,9 +115,9 @@ Action::make('create')
 
 <AutoScreenshot name="actions/modal/wizard" alt="Modal with wizard" version="3.x" />
 
-### Disabling all form fields
+### 禁用所有表单字段
 
-You may wish to disable all form fields in the modal, ensuring the user cannot edit them. You may do so using the `disabledForm()` method:
+你可以使用 `disabledForm()` 方法，禁用模态框中的所有表单字段，确保用户不能对其进行编辑：
 
 ```php
 use App\Models\User;
@@ -139,9 +139,9 @@ Action::make('approvePost')
     })
 ```
 
-## Customizing the modal's heading, description, and submit action label
+## 自定义模态框标题、描述及按钮标签
 
-You may customize the heading, description and label of the submit button in the modal:
+你可以自定义模态框的标题、描述及提交按钮标签：
 
 ```php
 Action::make('delete')
@@ -154,9 +154,9 @@ Action::make('delete')
 
 <AutoScreenshot name="actions/modal/confirmation-custom-text" alt="Confirmation modal with custom text" version="3.x" />
 
-## Adding an icon inside the modal
+## 在模态框中添加图标
 
-You may add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) inside the modal using the `modalIcon()` method:
+使用 `modalIcon()` 方法，你可以在模态框中添加[图标]https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 Action::make('delete')
@@ -167,7 +167,7 @@ Action::make('delete')
 
 <AutoScreenshot name="actions/modal/icon" alt="Confirmation modal with icon" version="3.x" />
 
-By default, the icon will inherit the color of the action button. You may customize the color of the icon using the `modalIconColor()` method:
+默认情况下，图标继承了 Action 按钮的颜色。你可以使用 `modalIconColor()` 方法自定义图标颜色：
 
 ```php
 Action::make('delete')
@@ -178,11 +178,13 @@ Action::make('delete')
     ->modalIconColor('warning')
 ```
 
-## Customizing the alignment of modal content
+## 自定义模态框内容的对齐方式
 
-By default, modal content will be aligned to the start, or centered if the modal is `xs` or `sm` in [width](#changing-the-modal-width). If you wish to change the alignment of content in a modal, you can use the `modalAlignment()` method and pass it `start` or `center`:
+默认情况下，模态框内容对齐到起始位置，或者如果模态框[宽度](#修改模态框宽度)是 `xs` 或 `sm`，则对齐到中间。如果你想修改模态框内容的对齐方式，可以在 `modalAlignment()` 中传入 `Alignment::Start` 或者 `Alignment::Center`：
 
 ```php
+use Filament\Support\Enums\Alignment;
+
 Action::make('updateAuthor')
     ->form([
         // ...
@@ -190,10 +192,10 @@ Action::make('updateAuthor')
     ->action(function (array $data): void {
         // ...
     })
-    ->modalAlignment('center')
+    ->modalAlignment(Alignment::Center)
 ```
 
-## Custom modal content
+## 自定义模态框内容
 
 You may define custom content to be rendered inside your modal, which you can specify by passing a Blade view into the `modalContent()` method:
 
@@ -244,18 +246,17 @@ Action::make('advance')
     ->action(fn () => $this->record->advance())
     ->modalContent(fn (Action $action): View => view(
         'filament.pages.actions.advance',
-        ['reportAction' => $action->getModalAction('report')],
+        ['action' => $action],
     ))
 ```
 
-Now, in the view file, you can render the action button using the name that it was passed into the view as:
+Now, in the view file, you can render the action button by calling `getModalAction()`:
 
 ```blade
 <div>
-    {{ $reportAction }}
+    {{ $action->getModalAction('report') }}
 </div>
 ```
-
 
 ## Using a slide-over instead of a modal
 
@@ -275,6 +276,21 @@ Action::make('updateAuthor')
 <AutoScreenshot name="actions/modal/slide-over" alt="Slide over with form" version="3.x" />
 
 Instead of opening in the center of the screen, the modal content will now slide in from the right and consume the entire height of the browser.
+
+## Making the modal header sticky
+
+The header of a modal scrolls out of view with the modal content when it overflows the modal size. However, slide-overs have a sticky modal that's always visible. You may control this behavior using `stickyModalHeader()`:
+
+```php
+Action::make('updateAuthor')
+    ->form([
+        // ...
+    ])
+    ->action(function (array $data): void {
+        // ...
+    })
+    ->stickyModalHeader()
+```
 
 ## Making the modal footer sticky
 
@@ -334,7 +350,7 @@ Action::make('create')
     })
 ```
 
-Please note that the `mountUsing()` method, by default, is used by Filament to initialize the [form](#modal-forms). If you override this method, you will need to call `$form->fill()` to ensure the form is initialized correctly. If you wish to populate the form with data, you can do so by passing an array to the `fill()` method, instead of [using `fillForm()` on the action itself](#filling-the-form-with-existing-data).
+> The `mountUsing()` method, by default, is used by Filament to initialize the [form](#modal-forms). If you override this method, you will need to call `$form->fill()` to ensure the form is initialized correctly. If you wish to populate the form with data, you can do so by passing an array to the `fill()` method, instead of [using `fillForm()` on the action itself](#filling-the-form-with-existing-data).
 
 ## Customizing the action buttons in the footer of the modal
 
@@ -345,11 +361,11 @@ By default, there are two actions in the footer of a modal. The first is a butto
 To modify the action instance that is used to render one of the default action buttons, you may pass a closure to the `modalSubmitAction()` and `modalCancelAction()` methods:
 
 ```php
-use Filament\Actions\Modal\Actions\Action as ModalAction;
+use Filament\Actions\StaticAction;
 
 Action::make('help')
     ->modalContent(view('actions.help'))
-    ->modalCancelAction(fn (ModalAction $action) => $action->label('Close'))
+    ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
 ```
 
 The [methods available to customize trigger buttons](trigger-button) will work to modify the `$action` instance inside the closure.
@@ -370,6 +386,10 @@ You may pass an array of extra actions to be rendered, between the default actio
 
 ```php
 Action::make('create')
+    ->form([
+        // ...
+    ])
+    // ...
     ->extraModalFooterActions(fn (Action $action): array => [
         $action->makeModalSubmitAction('createAnother', arguments: ['another' => true]),
     ])
@@ -381,6 +401,10 @@ The second parameter of `makeModalSubmitAction()` allows you to pass an array of
 
 ```php
 Action::make('create')
+    ->form([
+        // ...
+    ])
+    // ...
     ->extraModalFooterActions(fn (Action $action): array => [
         $action->makeModalSubmitAction('createAnother', arguments: ['another' => true]),
     ])
@@ -392,6 +416,69 @@ Action::make('create')
         }
     })
 ```
+
+#### Opening another modal from an extra footer action
+
+You can nest actions within each other, allowing you to open a new modal from an extra footer action:
+
+```php
+Action::make('edit')
+    // ...
+    ->extraModalFooterActions([
+        Action::make('delete')
+            ->requiresConfirmation()
+            ->action(function () {
+                // ...
+            }),
+    ])
+```
+
+Now, the edit modal will have a "Delete" button in the footer, which will open a confirmation modal when clicked. This action is completely independent of the `edit` action, and will not run the `edit` action when it is clicked.
+
+In this example though, you probably want to cancel the `edit` action if the `delete` action is run. You can do this using the `cancelParentActions()` method:
+
+```php
+Action::make('delete')
+    ->requiresConfirmation()
+    ->action(function () {
+        // ...
+    })
+    ->cancelParentActions()
+```
+
+If you have deep nesting with multiple parent actions, but you don't want to cancel all of them, you can pass the name of the parent action you want to cancel, including its children, to `cancelParentActions()`:
+
+```php
+Action::make('first')
+    ->requiresConfirmation()
+    ->action(function () {
+        // ...
+    })
+    ->extraModalFooterActions([
+        Action::make('second')
+            ->requiresConfirmation()
+            ->action(function () {
+                // ...
+            })
+            ->extraModalFooterActions([
+                Action::make('third')
+                    ->requiresConfirmation()
+                    ->action(function () {
+                        // ...
+                    })
+                    ->extraModalFooterActions([
+                        Action::make('fourth')
+                            ->requiresConfirmation()
+                            ->action(function () {
+                                // ...
+                            })
+                            ->cancelParentActions('second'),
+                    ]),
+            ]),
+    ])
+```
+
+In this example, if the `fourth` action is run, the `second` action is canceled, but so is the `third` action since it is a child of `second`. The `first` action is not canceled, however, since it is the parent of `second`. The `first` action's modal will remain open.
 
 ## Closing the modal by clicking away
 

@@ -1,0 +1,64 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/10-upgrade-guide.md"
+title: 从 v2.x 升级
+---
+
+> 如果你发现本指南中有任何遗落，请[发起 PR](https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/14-upgrade-guide.md) 到官方仓库！
+
+## 新的要求
+
+- Laravel v9.0+
+- Livewire v3.0+
+
+请在升级到 Livewire v3 前先升级 Filament。升级 Livewire 说明请查看[此处](https://livewire.laravel.com/docs/upgrading)。
+
+> **Livewire v3 最近发布了!**<br />
+> Livewire 团队在使其稳定方面做得很好，不过它是完全重写 Livewire v2。你可能会碰到问题，因此，我们建议在将 Filament v3 使用到生产环境之前对应用进行全面的测试。
+
+## 自动升级
+
+升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
+
+```bash
+composer require filament/upgrade:"^3.0-stable" -W --dev
+
+vendor/bin/filament-v3
+```
+
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，不过脚本应该已经为您处理了大部分重复性工作。
+
+最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
+
+然后，你可以运行 `composer remove filament/upgrade`，因为你不在需要它了。
+
+> 你所使用的部分插件可能还没有适配 v3。你可以暂时将其移除出 `composer.json` 文件中直到这些插件升级，替换成另一个兼容 v3 的类似插件。或者等到插件更新再升级应用，甚至可以发起 PR 帮助作者升级插件。
+
+## 手动升级
+
+通过 Composer 升级完依赖后，你应该执行 `php artisan filament:upgrade` 命令，以清理 Laravel 缓存并发布新的前端资源。
+
+### 低影响变更s
+
+#### 表单中执行 Action
+
+在 v2 中，如果你传递字符串给 `action()` 函数，并使用模态框；当模态框提交时，该类中与传入字符串同名的方法就会被运行：
+
+```php
+ Action::make('import_data')
+    ->action('importData')
+    ->form([
+        FileUpload::make('file'),
+    ])
+```
+
+在 v3 中，将字符串连接到 `action()` 将会将其硬连接，使之在点击触发按钮后运行该 Action，而不会打开模态框。
+
+建议将你的业务逻辑放在闭包函数中。更多信息请查看[文档](overview)。
+
+另外一个简单的替代方案是，使用 `Closure::fromCallable()`：
+
+```php
+Action::make('import_data')
+    ->action(Closure::fromCallable([$this, 'importData']))
+```

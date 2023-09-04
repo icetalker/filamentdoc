@@ -7,7 +7,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Icon entries render an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) representing their contents:
+IconEntry 渲染一个表示其内容的[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Infolists\Components\IconEntry;
@@ -20,13 +20,13 @@ IconEntry::make('status')
     })
 ```
 
-In the function, `$state` is the value of the entry, and `$record` can be used to access the underlying Eloquent record.
+本函数中，`$state` 是 Entry 的值，并且 `$record` 可用于访问底层的 Eloquent 记录。
 
 <AutoScreenshot name="infolists/entries/icon/simple" alt="Icon entry" version="3.x" />
 
-## Customizing the color
+## 自定义颜色
 
-Icon entries may also have a set of icon colors, using the same syntax. They may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+IconEntry 也有一套图标颜色，使用相同的语法。可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 use Filament\Infolists\Components\IconEntry;
@@ -40,26 +40,26 @@ IconEntry::make('status')
     })
 ```
 
-In the function, `$state` is the value of the entry, and `$record` can be used to access the underlying Eloquent record.
+本函数中，`$state` 是 Entry 的值，并且 `$record` 可用于访问底层的 Eloquent 记录。
 
 <AutoScreenshot name="infolists/entries/icon/color" alt="Icon entry with color" version="3.x" />
 
-## Customizing the size
+## 自定义大小
 
-The default icon size is `lg`, but you may customize the size to be either `xs`, `sm`, `md`, `lg` or `xl`:
+默认图标大小是 `IconEntrySize::Large`，不过你也可以将其大小自定义为 `IconEntrySize::ExtraSmall`、`IconEntrySize::Small`、`IconEntrySize::Medium` 或者 `IconEntrySize::ExtraLarge`：
 
 ```php
 use Filament\Infolists\Components\IconEntry;
 
 IconEntry::make('status')
-    ->size('md')
+    ->size(IconEntry\IconEntrySize::Medium)
 ```
 
 <AutoScreenshot name="infolists/entries/icon/medium" alt="Medium-sized icon entry" version="3.x" />
 
-## Handling booleans
+## 处理布尔值
 
-Icon entries can display a check or cross icon based on the contents of the database entry, either true or false, using the `boolean()` method:
+使用 `boolean()` 方法，IconEntry 可以根据数据库条目内容的 true 或 false，展示打勾或打叉：
 
 ```php
 use Filament\Infolists\Components\IconEntry;
@@ -72,7 +72,7 @@ IconEntry::make('is_featured')
 
 ### Customizing the boolean icons
 
-You may customize the icon representing each state. Icons are the name of a Blade component present. By default, [Heroicons v1](https://v1.heroicons.com) are installed:
+You may customize the icon representing each state. Icons are the name of a Blade component present. By default, [Heroicons](https://heroicons.com) are installed:
 
 ```php
 use Filament\Infolists\Components\IconEntry;
@@ -85,9 +85,9 @@ IconEntry::make('is_featured')
 
 <AutoScreenshot name="infolists/entries/icon/boolean-icon" alt="Icon entry to display a boolean with custom icons" version="3.x" />
 
-### Customizing the boolean colors
+### 自定义布尔值颜色
 
-You may customize the icon color representing each state. These may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+你也可以自定义图标颜色所代表的每个状态。这些颜色可以是 `danger`、`gray`、`info`、`primary`、`success` 或者 `warning`：
 
 ```php
 use Filament\Infolists\Components\IconEntry;
