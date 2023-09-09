@@ -173,7 +173,7 @@ Field::make('status')->enum(MyStatus::class)
 Field::make('invitation')->exists()
 ```
 
-默认情况下，如果表单注册了模型(getting-started#注册模型)，就会搜索表单模型。你也可以指定一个自定义的表格名或者模型：
+默认情况下，如果表单[注册了模型](getting-started#注册模型)，就会搜索表单模型。你也可以指定一个自定义的表格名或者模型：
 
 ```php
 use App\Models\Invitation;
@@ -322,7 +322,7 @@ Field::make('name')->required()
 
 ### Required If
 
-The field value must not be empty _only if_ the other specified field has any of the given values. [See the Laravel documentation.](https://laravel.com/docs/validation#rule-required-if)
+只有在其他指定字段有给定值时，该字段才不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-if)。
 
 ```php
 Field::make('name')->requiredIf('field', 'value')
@@ -330,7 +330,7 @@ Field::make('name')->requiredIf('field', 'value')
 
 ### Required Unless
 
-The field value must not be empty _unless_ the other specified field has any of the given values. [See the Laravel documentation.](https://laravel.com/docs/validation#rule-required-unless)
+该字段值不能为空，_除非_其他自定字段有给定值。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-unless)。
 
 ```php
 Field::make('name')->requiredUnless('field', 'value')

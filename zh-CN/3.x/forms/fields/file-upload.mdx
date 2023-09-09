@@ -5,9 +5,9 @@ title: File upload
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The file upload field is based on [Filepond](https://pqina.nl/filepond).
+文件上传(FileUpload)字段是基于 [Filepond](https://pqina.nl/filepond) 的。
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -17,15 +17,15 @@ FileUpload::make('attachment')
 
 <AutoScreenshot name="forms/fields/file-upload/simple" alt="File upload" version="3.x" />
 
-> Filament also supports [`spatie/laravel-medialibrary`](https://github.com/spatie/laravel-medialibrary). See our [plugin documentation](/plugins/filament-spatie-media-library) for more information.
+> Filament 也支持 [`spatie/laravel-medialibrary`](https://github.com/spatie/laravel-medialibrary)。更多详情请查阅[插件文档](/plugins/filament-spatie-media-library)。
 
-## Configuring the storage disk and directory
+## 配置存储磁盘和存储目录
 
-By default, files will be uploaded publicly to your storage disk defined in the [configuration file](../installation#publishing-configuration). You can also set the `FILAMENT_FILESYSTEM_DISK` environment variable to change this.
+默认情况下，文件会公开上传到[配置文件](../installation#发布配置文件)中定义的存储盘。你也可以设置 `FILAMENT_FILESYSTEM_DISK` 环境变量对此进行修改。
 
-> To correctly preview images and other files, FilePond requires files to be served from the same domain as the app, or the appropriate CORS headers need to be present. Ensure that the `APP_URL` environment variable is correct, or modify the [filesystem](https://laravel.com/docs/filesystem) driver to set the correct URL. If you're hosting files on a separate domain like S3, ensure that CORS headers are set up.
+> 要正确预览图片及其他文件，FilePond 要求将文本保存到与应用相同的域名中，或者设置合适的 CORS 头。请确保 `APP_URL` 环境变量设置正确；或者修改[文件系统(filesystem)](https://laravel.com/docs/filesystem)驱动，设置成正确的 URL。如果文件托管到另外的域名，比如 S3，请确保设置了 CORS 头部。
 
-To change the disk and directory for a specific field, and the visibility of files, use the `disk()`, `directory()` and `visibility()` methods:
+要为特定字段修改磁盘和目录以及文件的可见度，请使用 `disk()`、`directory()` 及 `visibility()` 方法：
 
 ```php
 use Filament\Forms\Components\FileUpload;

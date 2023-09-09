@@ -5,9 +5,9 @@ title: Checkbox
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The checkbox component, similar to a [toggle](toggle), allows you to interact a boolean value.
+Checkbox 组件，类似于 [Toggle](toggle)，允许你和布尔值互动。
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -17,7 +17,7 @@ Checkbox::make('is_admin')
 
 <AutoScreenshot name="forms/fields/checkbox/simple" alt="Checkbox" version="3.x" />
 
-If you're saving the boolean value using Eloquent, you should be sure to add a `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) to the model property:
+如果你使用 Eloquent 保存该布尔值，请确保该模型属性中添加了 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting)：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -32,11 +32,11 @@ class User extends Model
 }
 ```
 
-## Positioning the label above
+## 标签置于其上
 
-Checkbox fields have two layout modes, inline and stacked. By default, they are inline.
+Checkbox 字段有两个布局模式，行内或者堆叠。默认情况下，使用的是行内模式。
 
-When the checkbox is inline, its label is adjacent to it:
+使用行内模式时，标签与之相邻：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -46,7 +46,7 @@ Checkbox::make('is_admin')->inline()
 
 <AutoScreenshot name="forms/fields/checkbox/inline" alt="Checkbox with its label inline" version="3.x" />
 
-When the checkbox is stacked, its label is above it:
+使用堆叠模式时，标签在其之上：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -56,13 +56,13 @@ Checkbox::make('is_admin')->inline(false)
 
 <AutoScreenshot name="forms/fields/checkbox/not-inline" alt="Checkbox with its label above" version="3.x" />
 
-## Checkbox validation
+## Checkbox 验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to checkboxes.
+除了[验证](../validation)页面中罗列的规则之外，还有一些特别针对 Checkbox 字段的其他规则。
 
-### Accepted validation
+### Accepted 验证
 
-You may ensure that the checkbox is checked using the `accepted()` method:
+使用 `accepted()` 方法，你可以确保 Checkbox 被勾选：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -71,9 +71,9 @@ Checkbox::make('terms_of_service')
     ->accepted()
 ```
 
-### Declined validation
+### Declined 验证
 
-You may ensure that the checkbox is not checked using the `declined()` method:
+使用 `declined()` 方法，你可以确保 Checkbox 没被勾选：
 
 ```php
 use Filament\Forms\Components\Checkbox;

@@ -1,17 +1,17 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/03-fields/01-getting-started.md"
-title: Getting started
+title: 开始
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Field classes can be found in the `Filament\Form\Components` namespace.
+字段类在 `Filament\Form\Components` 命名空间下。
 
-Fields reside within the schema of your form, alongside any [layout components](layout/getting-started).
+字段和[布局组件](layout/getting-started)一样，在表单的 schema 中。
 
-Fields may be created using the static `make()` method, passing its unique name. The name of the field should correspond to a property on your Livewire component. You may use "dot notation" to bind fields to keys in arrays.
+字段可以使用静态 `make()` 方法创建，并传入唯一名。字段名应该对应于 Livewire 组件上的属性名。你可以使用"点语法"将字段绑定到数组的键。
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -21,9 +21,9 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/simple" alt="Form field" version="3.x" />
 
-## Available fields
+## 可用字段
 
-Filament ships with many types of field, suitable for editing different types of data:
+Filament 随带多类字段，适于编辑不同类型的数据：
 
 - [Text input](text-input)
 - [Select](select)
@@ -43,11 +43,11 @@ Filament ships with many types of field, suitable for editing different types of
 - [Color picker](color-picker)
 - [Hidden](hidden)
 
-You may also [create your own custom fields](custom) to edit data however you wish.
+你也可以根据需要[创建自定义字段](custom)。
 
-## Setting a label
+## 设置标签
 
-By default, the label of the field will be automatically determined based on its name. To override the field's label, you may use the `label()` method. Customizing the label in this way is useful if you wish to use a [translation string for localization](https://laravel.com/docs/localization#retrieving-translation-strings):
+默认情况下，字段的标签会根据字段名自动生成。你可以使用 `label()` 方法，重写字段标签。以此方法自定义标签，对于使用[本地化语言](https://laravel.com/docs/localization#retrieving-translation-strings)非常有用：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -56,7 +56,7 @@ TextInput::make('name')
     ->label(__('fields.name'))
 ```
 
-Optionally, you can have the label automatically translated [using Laravel's localization features](https://laravel.com/docs/localization) with the `translateLabel()` method:
+此外，你也可以使用 `translateLabel()` 方法，应用 [Laravel 本地化特性](https://laravel.com/docs/localization)自动翻译标签：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -65,9 +65,9 @@ TextInput::make('name')
     ->translateLabel() // Equivalent to `label(__('Name'))`
 ```
 
-## Setting an ID
+## 设置 ID
 
-In the same way as labels, field IDs are also automatically determined based on their names. To override a field ID, use the `id()` method:
+和标签一样的方式，字段 ID 也是依据字段名自动生成。要重写字段 ID，请使用 `id()` 方法：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -76,9 +76,9 @@ TextInput::make('name')
     ->id('name-field')
 ```
 
-## Setting a default value
+## 设置默认值
 
-Fields may have a default value. This will be filled if the [form's `fill()` method](getting-started#default-data) is called without any arguments. To define a default value, use the `default()` method:
+字段可以有默认值。如果调用[表单 `fill() 方法`](getting-started#默认数据)时不带参数，这个值就会被填充进去。要定义默认值，请使用 `default()` 方法：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -87,13 +87,13 @@ TextInput::make('name')
     ->default('John')
 ```
 
-Note that these defaults are only used when the form is loaded without existing data. Inside [panel resources](../../panels/resources#resource-forms) this only works on Create Pages, as Edit Pages will always fill the data from the model.
+请注意，默认值只会在表单未使用已有数据加载时使用。在[面板资源](../../panels/resources#资源表单)中，该功能只在新建页面有效，因为编辑页面总是会从模型中填充数据。
 
-## Adding helper text below the field
+## 在字段下面添加帮助文本
 
-Sometimes, you may wish to provide extra information for the user of the form. For this purpose, you may add helper text below the field.
+有时候，你可能希望为表单用户提供一些额外信息。为此，你可以在字段下面添加帮助文本(helper text)。
 
-The `helperText()` method is used to add helper text:
+`helperText()` 方法用于添加帮助文本：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -102,7 +102,7 @@ TextInput::make('name')
     ->helperText('Your full name here, including any middle names.')
 ```
 
-This method accepts a plain text string, or an instance of `Illuminate\Support\HtmlString` or `Illuminate\Contracts\Support\Htmlable`. This allows you to render HTML, or even markdown, in the helper text:
+该方法接收普通文本字符串，或者 `Illuminate\Support\HtmlString` 和 `Illuminate\Contracts\Support\Htmlable` 实例。这就允许你在帮助文本中渲染 HTML 甚至 markdown：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -120,11 +120,11 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/helper-text" alt="Form field with helper text" version="3.x" />
 
-## Adding a hint next to the label
+## 添加提示文本到标签
 
-As well as [helper text](#adding-helper-text-below-the-field) below the field, you may also add a "hint" next to the label of the field. This is useful for displaying additional information about the field, such as a link to a help page.
+与字段下面的[帮助文本](在字段下面添加帮助文本)一样，你也可以在字段标签的旁边添加提示(hint)。这对于在显示字段额外信息(比如帮助页面链接)，很有用。
 
-The `hint()` method is used to add a hint:
+`hint()` 方法用于添加提示：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -133,7 +133,7 @@ TextInput::make('password')
     ->hint('Forgotten your password? Bad luck.')
 ```
 
-This method accepts a plain text string, or an instance of `Illuminate\Support\HtmlString` or `Illuminate\Contracts\Support\Htmlable`. This allows you to render HTML, or even markdown, in the helper text:
+该方法接收普通文本字符串，或者 `Illuminate\Support\HtmlString` 和 `Illuminate\Contracts\Support\Htmlable` 实例。这就允许你在提示文本中返回 HTML 甚至 markdown：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -151,9 +151,9 @@ TextInput::make('password')
 
 <AutoScreenshot name="forms/fields/hint" alt="Form field with hint" version="3.x" />
 
-### Changing the text color of the hint
+### 修改提示文本的颜色
 
-You can change the text color of the hint. By default, it's gray, but you may use `danger`, `info`, `primary`, `success` and `warning`:
+你可以修改提示的文本颜色。默认情况下，它是灰色的，不过你也可以使用 `danger`、`info`、`primary`、`success` 和 `warning`。
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -165,9 +165,9 @@ RichEditor::make('content')
 
 <AutoScreenshot name="forms/fields/hint-color" alt="Form field with hint color" version="3.x" />
 
-### Adding an icon aside the hint
+### 提示旁边添加图标
 
-Hints may also have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) rendered next to them:
+提示也在其旁边渲染[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -179,9 +179,9 @@ RichEditor::make('content')
 
 <AutoScreenshot name="forms/fields/hint-icon" alt="Form field with hint icon" version="3.x" />
 
-#### Adding a tooltip to a hint icon
+#### 添加 tooltip 到提示图标
 
-Additionally, you can add a tooltip to display when you hover over the hint icon, using the `tooltip` parameter of `hintIcon()`:
+此外，在 `hintIcon()` 中使用 `tooltip` 参数，你也可以添加一个鼠标悬停在提示图标时显示的 tooltip：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -190,9 +190,9 @@ TextInput::make('name')
     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Need some more information?')
 ```
 
-## Adding extra HTML attributes
+## 添加额外的 HTML 属性
 
-You can pass extra HTML attributes to the field, which will be merged onto the outer DOM element. Pass an array of attributes to the `extraAttributes()` method, where the key is the attribute name and the value is the attribute value:
+你可以传递额外的 HTML 属性到字段中，这些属性会与其外层的 DOM 元素合并。传入属性数组到 `extraAttributes()` 方法，数组键是属性名，数组值是属性值：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -201,7 +201,7 @@ TextInput::make('name')
     ->extraAttributes(['title' => 'Text input'])
 ```
 
-Some fields use an underlying `<input>` or `<select>` DOM element, but this is often not the outer element in the field, so the `extraAttributes()` method may not work as you wish. In this case, you may use the `extraInputAttributes()` method, which will merge the attributes onto the `<input>` or `<select>` element:
+有些字段底层使用 `<input>` 或者 `<select>` DOM 元素，不过，这通常不是字段的外层元素，因此，`extraAttributes()` 方法或许不是你所希望的那样。这种情况下，你可以使用 `extraInputAttributes()` 方法，该方法会将这些属性合并到 `<input>` 或者 `select` 元素中： 
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -210,9 +210,9 @@ TextInput::make('categories')
     ->extraInputAttributes(['width' => 200])
 ```
 
-## Disabling a field
+## 禁用字段
 
-You may disable a field to prevent it from being edited by the user:
+你可以禁用一个字段，以防用户对其进行编辑：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -223,7 +223,7 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/disabled" alt="Disabled form field" version="3.x" />
 
-Optionally, you may pass a boolean value to control if the field should be disabled or not:
+此外，你也可以传入一个布尔值，控制该字段是否应该禁用：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -232,7 +232,7 @@ Toggle::make('is_admin')
     ->disabled(! auth()->user()->isAdmin())
 ```
 
-Disabling a field will prevent it from being saved. If you'd like it to be saved, but still not editable, use the `dehydrated()` method:
+禁用一个字段会阻止对该字段的保存。如果你想要保存该字段，不过仍然使之不可编辑，请使用 `dehydrated()` 方法：
 
 ```php
 Toggle::make('is_admin')
@@ -240,11 +240,11 @@ Toggle::make('is_admin')
     ->dehydrated()
 ```
 
-> If you choose to dehydrate the field, a skilled user could still edit the field's value by manipulating Livewire's JavaScript.
+> 如果你对该字段进行脱水(dehydrate)，技术型用户仍然可以操作 Livewire 的 JavaScript 来编辑字段值：
 
-### Hiding a field
+### 隐藏字段
 
-You may hide a field:
+你可以隐藏字段：
 
  ```php
  use Filament\Forms\Components\TextInput;
@@ -253,7 +253,7 @@ You may hide a field:
     ->hidden()
  ```
 
-Optionally, you may pass a boolean value to control if the field should be hidden or not:
+你可以传入布尔值，控制该字段是否隐藏：
 
  ```php
  use Filament\Forms\Components\TextInput;
@@ -262,9 +262,9 @@ Optionally, you may pass a boolean value to control if the field should be hidde
     ->hidden(! auth()->user()->isAdmin())
  ```
 
-## Autofocusing a field when the form is loaded
+## 表单加载时自动聚焦
 
-Most fields are autofocusable. Typically, you should aim for the first significant field in your form to be autofocused for the best user experience. You can nominate a field to be autofocused using the `autofocus()` method:
+大部分字段是可以自动聚焦的。通常，为了最佳用户体验，你应该自动聚焦到表单中第一个重要字段。使用 `autofocus()` 方法可以指定自动聚焦的自动：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -273,9 +273,9 @@ TextInput::make('name')
     ->autofocus()
 ```
 
-## Setting a placeholder
+## 设置占位符
 
-Many fields will also include a placeholder value for when it has no value. This is displayed in the UI but not saved if the field is submitted with no value. You may customize this placeholder using the `placeholder()` method:
+许多字段会在没有值的时候显示占位符。这会在 UI 中展示，不过如果字段提交时空值，并不会将其保存。你可以使用 `placeholder()` 方法自定义该占位符：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -286,21 +286,21 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/placeholder" alt="Form field with placeholder" version="3.x" />
 
-## Marking a field as required
+## 标记字段为必需d
 
-By default, [required fields](validation#required) will show an asterisk `*` next to their label. You may want to hide the asterisk on forms where all fields are required, or where it makes sense to add a [hint](#adding-a-hint-next-to-the-label) to optional fields instead:
+默认情况下，[必需字段](validation#required)会在其标签旁显示星号 `*`。如果所有字段都是必需的，你可能想要在表单中隐藏型号，或者相反只在可选字段中添加 [hint 提示](#adding-a-hint-next-to-the-label)：
 
 ```php
 use Filament\Forms\Components\TextInput;
 
 TextInput::make('name')
-    ->required() // Adds validation to ensure the field is required
-    ->markAsRequired(false) // Removes the asterisk
+    ->required() // 添加验证确保该字段必需
+    ->markAsRequired(false) // 移除星号
 ```
 
-## Global settings
+## 全局设置
 
-If you wish to change the default behaviour of a field globally, then you can call the static `configureUsing()` method inside a service provider's `boot()` method or a middleware. Pass a closure which is able to modify the component. For example, if you wish to make all [checkboxes `inline(false)`](checkbox#positioning-the-label-above), you can do it like so:
+如果你想全局改变字段的默认行为，那么你可以在服务提供者的 `boot()` 方法中或者中间件里调用静态 `configureUsing()` 方法。传入一个可以修改组件的闭包。比如，如果你想让所有的 [checkbox `inline(false)`](checkbox#positioning-the-label-above)，你可以这样：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -310,7 +310,7 @@ Checkbox::configureUsing(function (Checkbox $checkbox): void {
 });
 ```
 
-Of course, you are still able to overwrite this behaviour on each field individually:
+当然，你仍然可以单独对每个字段重写该行为：
 
 ```php
 use Filament\Forms\Components\Checkbox;

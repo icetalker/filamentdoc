@@ -5,9 +5,9 @@ title: Toggle
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The toggle component, similar to a [checkbox](checkbox), allows you to interact a boolean value.
+Toogle 组件，类似于 [Checkbox](checkbox)，允许你使用布尔值。
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -17,7 +17,7 @@ Toggle::make('is_admin')
 
 <AutoScreenshot name="forms/fields/toggle/simple" alt="Toggle" version="3.x" />
 
-If you're saving the boolean value using Eloquent, you should be sure to add a `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) to the model property:
+如果你使用 Eloquent 保存该布尔值，请确保该模型属性中添加了 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting)。
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -32,9 +32,9 @@ class User extends Model
 }
 ```
 
-## Adding icons to the toggle button
+## 添加图标到 Toogle 按钮
 
-Toggles may also use an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to represent the "on" and "off" state of the button. To add an icon to the "on" state, use the `onIcon()` method. To add an icon to the "off" state, use the `offIcon()` method:
+Toogle 可以使用[图标](https://blade-ui-kit.com/blade-icons?set=1#search)，来展示按钮的 "on" 和 "off" 状态。要将图标添加到 "on" 状态，请使用 `onIcon()` 方法。要将图标添加到 "off" 状态，请使用 `offIcon()` 方法：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -46,9 +46,9 @@ Toggle::make('is_admin')
 
 <AutoScreenshot name="forms/fields/toggle/icons" alt="Toggle icons" version="3.x" />
 
-## Customizing the color of the toggle button
+## 自定义 Toogle 按钮的颜色
 
-You may also customize the color representing the "on" or "off" state of the toggle. These may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`. To add a color to the "on" state, use the `onColor()` method. To add a color to the "off" state, use the `offColor()` method:
+你也可以自定义表示 Toogle 的 "on" 或 "off" 状态所对应的颜色。可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`。要将颜色添加到 "on" 状态，请使用 `onColor()` 方法。要将颜色添加到 "off" 状态，请使用 `offColor()` 方法：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -62,11 +62,11 @@ Toggle::make('is_admin')
 
 <AutoScreenshot name="forms/fields/toggle/on-color" alt="Toggle on color" version="3.x" />
 
-## Positioning the label above
+## 标签置于其上
 
-Toggle fields have two layout modes, inline and stacked. By default, they are inline.
+Toogle 字段有两个布局模式，行内或者堆叠。默认情况下，使用的是行内模式。
 
-When the toggle is inline, its label is adjacent to it:
+使用行内模式时，标签与之相邻：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -77,7 +77,7 @@ Toggle::make('is_admin')
 
 <AutoScreenshot name="forms/fields/toggle/inline" alt="Toggle with its label inline" version="3.x" />
 
-When the toggle is stacked, its label is above it:
+使用堆叠模式时，标签在其之上：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -88,13 +88,13 @@ Toggle::make('is_admin')
 
 <AutoScreenshot name="forms/fields/toggle/not-inline" alt="Toggle with its label above" version="3.x" />
 
-## Toggle validation
+## Toggle 验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to toggles.
+除了[验证](../validation)页面中罗列的规则之外，还有一些特别针对 Toogle 字段的其他规则。
 
-### Accepted validation
+### Accepted 验证
 
-You may ensure that the toggle is "on" using the `accepted()` method:
+使用 `accepted()` 方法，你可以确保 Toogle 在 `on` 状态：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -103,9 +103,9 @@ Toggle::make('terms_of_service')
     ->accepted()
 ```
 
-### Declined validation
+### Declined 验证
 
-You may ensure that the toggle is "off" using the `declined()` method:
+使用 `declined()` 方法，你可以确保 Toogle 在 `off` 状态：
 
 ```php
 use Filament\Forms\Components\Toggle;

@@ -7,21 +7,21 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Filament's form package allows you to easily build dynamic forms in your app. You can use it to [add a form to any Livewire component](adding-a-form-to-a-livewire-component). Additionally, it's used within other Filament packages to render forms within [app resources](../panels/resources/getting-started), [action modals](../actions/modals), [table filters](../tables/filters), and more. Learning how to build forms is essentially to learning how to use these Filament packages.
+Filament 表单构造器允许你在应用中轻松创建动态表单。使用表单构造器，你可以[将表单添加到 Livewire 组件](adding-a-form-to-a-livewire-component)。此外，它可以在其他 Filament 包使用，在[应用资源](../panels/resources/getting-started)、[Action 模态框](../actions/modals)、[表格过滤器](../tables/filters) 等中渲染表单。了解如何创建表单本质就是学习如何使用这些 Filament 包。
 
-This guide will walk you through the basics of building forms with Filament's form package. If you're planning to add a new form to your own Livewire component, you should [do that first](adding-a-form-to-a-livewire-component) and then come back. If you're adding a form to an [app resource](../panels/resources/getting-started), or another Filament package, you're ready to go!
+本教程将带你一起了解通过 Filament 表单构造器创建表单的基础。如果你计划将新表单添加到自己的 Livewire 组件，你可以先[添加完表单](adding-a-form-to-a-livewire-component)，再回来。如果你要将表单添加到[应用资源](../panels/resources/getting-started)或者其他 Filament 包中，可以开始了！
 
-## Form schemas
+## 表单 schema
 
-All Filament forms have a "schema". This is an array, which contains [fields](fields/getting-started#available-fields) and [layout components](layout/getting-started#available-layout-components).
+所有的 Filament 表单都有 "schema"。这是一个数组，其中包含[表单字段](fields/getting-started#可用字段)和[布局组件](layout/getting-started#可用布局组件)。
 
-Fields are the inputs that your user will fill their data into. For example, HTML's `<input>` or `<select>` elements. Each field has its own PHP class. For example, the [`TextInput`](fields/text-input) class is used to render a text input field, and the [`Select`](fields/select) class is used to render a select field. You can see a full [list of available fields here](fields/getting-started#available-fields).
+表单字段是用户用来填写数据的输入框。比如，HTML 的 `<input>` 或者 `<select>` 元素。每个字段都有它们自己的 PHP 类。比如，[`TextInput`](fields/text-input) 类用于渲染文本输入框字段，[`Select`](fields/select) 类用于渲染下拉列表字段。你可在[此处查看可用字段完整清单](fields/getting-started#可用字段)。
 
-Layout components are used to group fields together, and to control how they are displayed. For example, you can use a [`Grid`](layout/grid#grid-component) component to display multiple fields side-by-side, or a [`Wizard`](layout/wizard) to separate fields into a multistep form. You can deeply nest layout components within each other to create very complex responsive UIs. You can see a full [list of available layout components here](layout/getting-started#available-layout-components).
+布局组件用于分组字段，并控制他们的展示方式。比如，你可以使用 [`Grid`](layout/grid#grid-组件)组件去并排展示多个字段，或者使用 [`Wizard`](layout/wizard) 将不同字段分离到多步骤表单中。你可以深度嵌套布局组件，以创建复杂的响应性 UI。你可以在[此处查看可用布局组件完整清单](layout/getting-started#可以布局组件)。
 
-### Adding fields to a form schema
+### 添加字段到表单 schema
 
-Initialise a field or layout component with the `make()` method, and build a schema array with multiple fields:
+使用 `make()` 方法初始化字段或布局组件，并使用多字段创建 schema 数组：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -41,7 +41,7 @@ public function form(Form $form): Form
 
 <AutoScreenshot name="forms/getting-started/fields" alt="Form fields" version="3.x" />
 
-Forms within a panel and other packages usually have 2 columns by default. For custom forms, you can use the `columns()` method to achieve the same effect:
+面板或者其他包中的表单通常默认有两列。对于自定义表单，你可以使用 `columns()` 方法，完成相同的效果：
 
 ```php
 $form
@@ -53,7 +53,7 @@ $form
 
 <AutoScreenshot name="forms/getting-started/columns" alt="Form fields in 2 columns" version="3.x" />
 
-Now, the `RichEditor` will only consume half of the available width. We can use the `columnSpan()` method to make it span the full width:
+现在，`RichEditor` 只消费可用宽度的一半。我们可以使用 `columnSpan()` 方法使之占用整个宽度：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -69,11 +69,11 @@ use Filament\Forms\Components\TextInput;
 
 <AutoScreenshot name="forms/getting-started/column-span" alt="Form fields in 2 columns, but with the rich editor spanning the full width of the form" version="3.x" />
 
-You can learn more about columns and spans in the [layout documentation](layout/grid). You can even make them responsive!
+你可以在[布局文档](layout/grid)中了解更多列和跨度的信息。甚至可以使之以响应式呈现。
 
-### Adding layout components to a form schema
+### 添加b布局组件到表单 schema
 
-Let's add a new [`Section`](layout/section) to our form. `Section` is a layout component, and it allows you to add a heading and description to a set of fields. It can also allow fields inside it to collapse, which saves space in long forms.
+让我们在表单中添加一个新的 [`Section`](layout/section)。Section` 是布局组件，它允许你为一组字段添加标题和描述。也允许内部折叠，用以在长表单中节省空间。
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -93,7 +93,7 @@ use Filament\Forms\Components\TextInput;
 ]
 ```
 
-In this example, you can see how the `Section` component has its own `schema()` method. You can use this to nest other fields and layout components inside:
+本例中，你可以看到 `Section` 组件有它自己的 `schema()` 方法。你可以在它内部嵌套其他字段及布局组件：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -115,13 +115,13 @@ Section::make('Publishing')
 
 <AutoScreenshot name="forms/getting-started/section" alt="Form with section component" version="3.x" />
 
-This section now contains a [`Select` field](fields/select) and a [`DateTimePicker` field](fields/date-time-picker). You can learn more about those fields and their functionalities on the respective docs pages.
+该分区(section)现在包含一个 [`Select` 字段](fields/select)和一个 [`DateTimePicker` 字段](fields/date-time-picker)。你可以在相应文档页面中了解这些字段以及他们的功能。
 
-## Validating fields
+## 验证字段
 
-In Laravel, validation rules are usually defined in arrays like `['required', 'max:255']` or a combined string like `required|max:255`. This is fine if you're exclusively working in the backend with simple form requests. But Filament is also able to give your users frontend validation, so they can fix their mistakes before any backend requests are made.
+在 Laravel 中，验证规则通常定义在类似于 `['required', 'max:255']` 这样的数组中，或者 `required|max:255` 这样的连接字符串中。如果你只处理后端的简单表单请求，这是可以的。不过 Filament 也可以提供用户前端验证，这样他们可以在发起后端请求前，修正他们的错误。
 
-In Filament, you can add validation rules to your fields by using methods like `required()` and `maxLength()`. This is also advantageous over Laravel's validation syntax, since your IDE can autocomplete these methods:
+在 Filament 中，你可以使用注入 `required()` 和 `maxLength()` 这样的方法，将验证规则添加到字段中。该方式也优于 Laravel 的验证验证语法，因为 IDE 可以自动补全这些方法：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -155,13 +155,13 @@ use Filament\Forms\Components\TextInput;
 ]
 ```
 
-In this example, some fields are `required()`, and some have a `maxLength()`. We have [methods for most of Laravel's validation rules](validation#available-rules), and you can even add your own [custom rules](validation#custom-rules).
+本例中，有些字段是必须的 `required`，有些有 `maxLength()` 限制。我们有[大部分 Laravel 验证规则](validation#可用规则)对应的方法，甚至你可以添加自己的[自定义规则](validation#自定义规则)。
 
-## Dependant fields
+## 依赖字段
 
-Since all Filament forms are built on top of Livewire, form schemas are completely dynamic. There are so many possibilities, but here are a couple of examples of how you can use this to your advantage:
+由于所有 Filament 表单是基于 Livewire 创建的，表单 Schema 是完全动态的。其中有许多可能，此处是一些如何使用以对你有利的例子：
 
-Fields can hide or show based on another field's values. In our form, we can hide the `published_at` timestamp field until the `status` field is set to `published`. This is done by passing a closure to the `hidden()` method, which allows you to dynamically hide or show a field while the form is being used. Closures have access to many useful arguments like `$get`, and you can find a [full list here](advanced#form-component-utility-injection). The field that you depend on (the `status` in this case) needs to be set to `live()`, which tells the form to reload the schema each time it gets changed.
+字段可以依据其他字段的值隐藏或者显示。上面的表单中，我们可以 `published_at` 时间戳字段，直至 `status` 字段设置成 `published`。将闭包传递到 `hidden()` 方法，可以实现该功能；这将允许你在使用表单时动态隐藏或展示字段。闭包可以访问许多有用的参数，比如 `$get`，你可以[在此处](advanced#form-component-utility-injection)查看所有参数清单。你所依赖的字段(本例中的 `status`)需要设置成 `live()`，用来告知表单在每次修改时重载 schema。
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -182,9 +182,9 @@ use Filament\Forms\Get;
 ]
 ```
 
-It's not just `hidden()` - all Filament form methods support closures like this. You can use them to change the label, placeholder, or even the options of a field, based on another. You can even use them to add new fields to the form, or remove them. This is a powerful tool that allows you to create complex forms with minimal effort.
+不只是 `hidden()`，所有的 Filament 表单方法都支持像这样的闭包。你可以用它来基于其他字段修改标签、占位符，甚至于字段的选项。你甚至可以用它来为表单添加新字段或者删除字段。这是一个你可以用最小的努力来创建复杂表单的强大工具。
 
-Fields can also write data to other fields. For example, we can set the title to automatically generate a slug when the title is changed. This is done by passing a closure to the `afterStateUpdated()` method, which gets run each time the title is changed. This closure has access to the title (`$state`) and a function (`$set`) to set the slug field's state. You can find a [full list of closure arguments here](advanced#form-component-utility-injection). The field that you depend on (the `title` in this case) needs to be set to `live()`, which tells the form to reload and set the slug each time it gets changed.
+字段也可以添加数据到其他字段。比如你可以设置标题，使之修改时自动生成 slug。该功能可以通过传递闭包到 `afterStateUpdated()` 方法实现，该方法会在每次标题改变时运行。该闭包可以方法标题(`$state`)以及一个用以设置 slug 字段值的函数(`$set`)。你可以到[此处查看闭包参数完整清单](advanced#form-component-utility-injection)。你所有依赖的字段(此处的 `title`)需要设置为 `live()`，用来告知表单在每次修改时重载并设置 slug。
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -205,11 +205,11 @@ use Illuminate\Support\Str;
 ]
 ```
 
-## Next steps with the forms package
+## 下一步
 
-Now you've finished reading this guide, where to next? Here are some suggestions:
+你已经阅读完本教程，接下来呢？这是一些建议：
 
-- [Explore the available fields to collect input from your users.](fields/getting-started#available-fields)
-- [Check out the list of layout components to craft intuitive form structures with.](fields/getting-started#available-fields)
-- [Find out about all advanced techniques that you can customize forms to your needs.](advanced)
-- [Write automated tests for your forms using our suite of helper methods.](testing)
+- [了解可用字段，收集用户输入。](fields/getting-started#可用字段)
+- [了解布局组件清单，用它创建直观的表单结构。](fields/getting-started#可用字段)
+- [了解所有自定义表单所需的高级技术。](advanced)
+- [使用辅助函数为表单编写自动化测试。](testing)

@@ -5,9 +5,9 @@ title: Markdown editor
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The markdown editor allows you to edit and preview markdown content, as well as upload images using drag and drop.
+Markdown 编辑器允许你编辑和预览 Markdown 内容，同时可以使用拖拽上传图片、
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -17,9 +17,9 @@ MarkdownEditor::make('content')
 
 <AutoScreenshot name="forms/fields/markdown-editor/simple" alt="Markdown editor" version="3.x" />
 
-## Customizing the toolbar buttons
+## 自定义工具栏按钮
 
-You may set the toolbar buttons for the editor using the `toolbarButtons()` method:
+使用 `toolbarButtons()` 方法，你可以设置编辑器的工具栏按钮：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -42,7 +42,7 @@ MarkdownEditor::make('content')
     ])
 ```
 
-Alternatively, you may disable specific buttons using the `disableToolbarButtons()` method:
+此外，你可以使用 `disableToolbarButtons()` 方法禁用指定按钮：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -54,9 +54,9 @@ MarkdownEditor::make('content')
     ])
 ```
 
-## Uploading images to the editor
+## 上传图片到编辑器
 
-You may customize how images are uploaded using configuration methods:
+使用配置方法你可以自定义图片上传方式：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;

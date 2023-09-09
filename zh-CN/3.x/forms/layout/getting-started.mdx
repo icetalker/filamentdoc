@@ -1,16 +1,16 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/04-layout/01-getting-started.md"
-title: Getting started
+title: 开始
 ---
 
-## Overview
+## 概述
 
-Filament forms are not limited to just displaying fields. You can also use "layout components" to organize them into an infinitely nestable structure.
+Filament 表单不限于展示字段。你也可以使用"布局组件"，将其组织成无限嵌套结构。
 
-Layout component classes can be found in the `Filament\Forms\Components` namespace. They reside within the schema of your form, alongside any [fields](fields/getting-started).
+布局组件类在 `Filament\Forms\Components` 命名空间下。他们和其他[表单字段]一起，存放在表单 Schema 内。
 
-Components may be created using the static `make()` method. Usually, you will then define the child component `schema()` to display inside:
+组件可以使用静态 `make()` 方法创建。通常，你可以定义子组件的 `schema` 在其内部显示：
 
 ```php
 use Filament\Forms\Components\Grid;
@@ -21,9 +21,9 @@ Grid::make(2)
     ])
 ```
 
-## Available layout components
+## 可用布局组件
 
-Filament ships with some layout components, suitable for arranging your form fields depending on your needs:
+Filament 随带一些布局组件，适合于根据需要排列表单字段：
 
 - [Grid](grid)
 - [Fieldset](fieldset)
@@ -32,11 +32,11 @@ Filament ships with some layout components, suitable for arranging your form fie
 - [Section](section)
 - [Placeholder](placeholder)
 
-You may also [create your own custom layout components](custom) to organize fields however you wish.
+你也可以[创建自定义布局组件](custom)来排列字段。
 
-## Setting an ID
+## 设置 ID
 
-You may define an ID for the component using the `id()` method:
+使用 `id()` 方法，你可以定义组件的 ID：
 
 ```php
 use Filament\Forms\Components\Section;
@@ -45,9 +45,9 @@ Section::make()
     ->id('main-section')
 ```
 
-## Adding extra HTML attributes
+## 添加额外的 HTML 属性
 
-You can pass extra HTML attributes to the component, which will be merged onto the outer DOM element. Pass an array of attributes to the `extraAttributes()` method, where the key is the attribute name and the value is the attribute value:
+你可以将额外的 HTML 属性传递给组件，这些属性会与外层 DOM 元素合并。请传递属性数值给 `extraAttributes()` 方法，数值键是属性值，数组值为属性值：
 
 ```php
 use Filament\Forms\Components\Group;
@@ -56,11 +56,11 @@ Section::make()
     ->extraAttributes(['class' => 'custom-section-style'])
 ```
 
-Classes will be merged with the default classes, and any other attributes will override the default attributes.
+类会合默认类合并，而且其他属性会覆盖默认属性。
 
-## Global settings
+## 全局设置
 
-If you wish to change the default behaviour of a component globally, then you can call the static `configureUsing()` method inside a service provider's `boot()` method, to which you pass a Closure to modify the component using. For example, if you wish to make all section components have [2 columns](grid) by default, you can do it like so:
+如果你想全局改变组件的默认行为，那么你可以在服务提供者的 `boot()` 方法中或者中间件里调用静态 `configureUsing()` 方法。传入一个可以修改组件的闭包。比如，如果你想让所有 `Section` 组件默认拥有 [2 列](grid)，你可以这样：
 
 ```php
 use Filament\Forms\Components\Section;
@@ -71,7 +71,7 @@ Section::configureUsing(function (Section $section): void {
 });
 ```
 
-Of course, you are still able to overwrite this on each field individually:
+当然，你仍然可以单独对每个组件重写该行为：
 
 ```php
 use Filament\Forms\Components\Section;

@@ -75,7 +75,7 @@ Action::make('updateAuthor')
 
 ### 使用 Wizard 作为模态框表单
 
-你可以在模态框中创建[多步骤表单想到卡(wizard)](../forms/layout/wizard)。定义 `step()` 字符串，并传入 `Step` 对象：
+你可以在模态框中创建[多步骤表单向导卡(wizard)](../forms/layout/wizard)。定义 `step()` 字符串，并传入 `Step` 对象：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -156,7 +156,7 @@ Action::make('delete')
 
 ## 在模态框中添加图标
 
-使用 `modalIcon()` 方法，你可以在模态框中添加[图标]https://blade-ui-kit.com/blade-icons?set=1#search)：
+使用 `modalIcon()` 方法，你可以在模态框中添加[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 Action::make('delete')
@@ -197,7 +197,7 @@ Action::make('updateAuthor')
 
 ## 自定义模态框内容
 
-You may define custom content to be rendered inside your modal, which you can specify by passing a Blade view into the `modalContent()` method:
+你可以将 Blade 视图传入 `modalContent()` 函数，在模态框中渲染自定义内容。
 
 ```php
 Action::make('advance')
@@ -205,9 +205,9 @@ Action::make('advance')
     ->modalContent(view('filament.pages.actions.advance'))
 ```
 
-### Passing data to the custom modal content
+### 传递数据到自定义模态框内容
 
-You can pass data to the view by returning it from a function. For example, if the `$record` of an action is set, you can pass that through to the view:
+你可以通过返回函数，将数据传递到视图中。比如，如果设置了 Action  的 `$record`，你可以将其传入到视图中：
 
 ```php
 use Illuminate\Contracts\View\View;
@@ -220,9 +220,9 @@ Action::make('advance')
     ))
 ```
 
-### Adding custom modal content below the form
+### 在表单下添加自定义模态框内容
 
-By default, the custom content is displayed above the modal form if there is one, but you can add content below using `modalContentFooter()` if you wish:
+默认情况下，如果有自定义内容的话，它们会展示在模态框表单之上，不过你可以使用 `modalContentFooter()` 将内容添加到表单下面：
 
 ```php
 Action::make('advance')
@@ -230,9 +230,9 @@ Action::make('advance')
     ->modalContentFooter(view('filament.pages.actions.advance'))
 ```
 
-### Adding an action to custom modal content
+### 添加 Action 到自定义模态框内容
 
-You can add an action button to your custom modal content, which is useful if you want to add a button that performs an action other than the main action. You can do this by registering an action with the `registerModalActions()` method, and then passing it to the view:
+你可以添加 Action 按钮到自定义模态框内容，如果你想添加按钮执行一个 Action(非主 Action)，这就有用。你可以使用 `registerModalActions()` 方法注册 Action，并将其传入到视图中：
 
 ```php
 use Illuminate\Contracts\View\View;
@@ -250,7 +250,7 @@ Action::make('advance')
     ))
 ```
 
-Now, in the view file, you can render the action button by calling `getModalAction()`:
+现在，在视图文件中，你可以调用 `getModalAction()` 来渲染 Action 按钮：
 
 ```blade
 <div>
@@ -258,9 +258,9 @@ Now, in the view file, you can render the action button by calling `getModalActi
 </div>
 ```
 
-## Using a slide-over instead of a modal
+## 使用 SlideOver 替代模态框
 
-You can open a "slide-over" dialog instead of a modal by using the `slideOver()` method:
+使用 `slideOver()` 方法，你可以打开 `slide-over` 对话框，而非模态框：
 
 ```php
 Action::make('updateAuthor')
@@ -275,11 +275,11 @@ Action::make('updateAuthor')
 
 <AutoScreenshot name="actions/modal/slide-over" alt="Slide over with form" version="3.x" />
 
-Instead of opening in the center of the screen, the modal content will now slide in from the right and consume the entire height of the browser.
+不再是在屏幕的中间打开，模态框内容现在会从右边滑入(slide in)并消费浏览器的全部高度。
 
-## Making the modal header sticky
+## 粘性模态框 Header
 
-The header of a modal scrolls out of view with the modal content when it overflows the modal size. However, slide-overs have a sticky modal that's always visible. You may control this behavior using `stickyModalHeader()`:
+当模态框内容超过模态框大小时，模态框的 Header 会滚动出屏幕。不过，SlideOver 使用了粘性模态框，使之总是可见。你可以使用 `stickyModalHeader()` 控制该行为：
 
 ```php
 Action::make('updateAuthor')
@@ -292,9 +292,9 @@ Action::make('updateAuthor')
     ->stickyModalHeader()
 ```
 
-## Making the modal footer sticky
+## 粘性模态框 Footer
 
-The footer of a modal is rendered inline after the content by default. Slide-overs, however, have a sticky footer that always shows when scrolling the content. You may enable this for a modal too using `stickyModalFooter()`:
+默认情况下，模态框的 Footer 在内容之后进行行内渲染。不过，SlideOver 拥有一个粘性的 Footer，使之在内容滚动时总是显示。使用 `stickyModalFooter()`，你可以为模态框启用该功能：
 
 ```php
 Action::make('updateAuthor')
@@ -307,9 +307,9 @@ Action::make('updateAuthor')
     ->stickyModalFooter()
 ```
 
-## Changing the modal width
+## 修改模态框宽度
 
-You can change the width of the modal by using the `modalWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, and `screen`:
+使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl`、`7xl` 和 `screen`：
 
 ```php
 Action::make('updateAuthor')
@@ -322,9 +322,9 @@ Action::make('updateAuthor')
     ->modalWidth('5xl')
 ```
 
-## Conditionally hiding the modal
+## 条件性隐藏模态框
 
-You may have a need to conditionally show a modal for confirmation reasons while falling back to the default action. This can be achieved using `modalHidden()`:
+你可能需要条件性展示模态框。请使用 `modalHidden()`：
 
 ```php
 Action::make('create')
@@ -335,9 +335,9 @@ Action::make('create')
     ->modalContent(view('filament.pages.actions.create'))
 ```
 
-## Executing code when the modal opens
+## 模态框打开时执行代码
 
-You may execute code within a closure when the modal opens, by passing it to the `mountUsing()` method:
+使用 `mountUsing()` 方法，你可以在模态框打开时，在闭包中执行代码。
 
 ```php
 use Filament\Forms\Form;
@@ -350,15 +350,15 @@ Action::make('create')
     })
 ```
 
-> The `mountUsing()` method, by default, is used by Filament to initialize the [form](#modal-forms). If you override this method, you will need to call `$form->fill()` to ensure the form is initialized correctly. If you wish to populate the form with data, you can do so by passing an array to the `fill()` method, instead of [using `fillForm()` on the action itself](#filling-the-form-with-existing-data).
+> 默认情况下，Filament 使用 `mountUsing()` 方法去初始化[表单](#模态框表单)。如果重写该方法，你需要调用 `$form->fill()` 以确保表单正确初始化。如果你想要使用数据填充表单，你可以传入数组到 `fill()` 方法中，而不是[在 Action 中使用 `fillForm()` 方法](#使用现有数据填充表单)。
 
-## Customizing the action buttons in the footer of the modal
+## 在模态框 Footer 中自定义 Action 按钮
 
-By default, there are two actions in the footer of a modal. The first is a button to submit, which executes the `action()`. The second button closes the modal and cancels the action.
+默认情况下，模态框的 Footer 中有两个 Action。第一个是提交按钮，它将执行该 Action。第二个按钮关闭模态框并取消 Action。
 
-### Modifying a default modal footer action button
+### 修改默认模态框 Footer 的 Action 按钮
 
-To modify the action instance that is used to render one of the default action buttons, you may pass a closure to the `modalSubmitAction()` and `modalCancelAction()` methods:
+要修改 Action 实例，使之用于渲染其中一个默认 Action 按钮，你可以传递闭包到 `modalSubmitAction()` 和 `modalCancelAction()` 方法：
 
 ```php
 use Filament\Actions\StaticAction;
@@ -368,11 +368,11 @@ Action::make('help')
     ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
 ```
 
-The [methods available to customize trigger buttons](trigger-button) will work to modify the `$action` instance inside the closure.
+[自定义触发按钮的可用方法](trigger-button)将用于在闭包中修改 `$action` 实例。
 
-### Removing a default modal footer action button
+### 移除默认模态框 Footer 的 Action 按钮
 
-To remove a default action, you may pass `false` to either `modalSubmitAction()` or `modalCancelAction()`:
+要移除默认 Action，你可用在 `modalSubmitAction()` 或 `modalCancelAction()` 中传入 `false`：
 
 ```php
 Action::make('help')
@@ -380,9 +380,9 @@ Action::make('help')
     ->modalSubmitAction(false)
 ```
 
-### Adding an extra modal action button to the footer
+### 添加额外的模态框 Action 按钮到 Footer
 
-You may pass an array of extra actions to be rendered, between the default actions, in the footer of the modal using the `extraModalFooterActions()` method:
+使用 `extraModalFooterActions()` 方法，你可以传递要在默认 Action 之间渲染的额外的 Action 数组：
 
 ```php
 Action::make('create')
@@ -395,9 +395,9 @@ Action::make('create')
     ])
 ```
 
-`$action->makeModalSubmitAction()` returns an action instance that can be customized using the [methods available to customize trigger buttons](trigger-button).
+`$action->makeModalSubmitAction()` 返回一个 Action 实例，该实例可以使用[触发按钮可用方法](trigger-button)进行自定义。
 
-The second parameter of `makeModalSubmitAction()` allows you to pass an array of arguments that will be accessible inside the action's `action()` closure as `$arguments`. These could be useful as flags to indicate that the action should behave differently based on the user's decision:
+`makeModalSubmitAction()` 的第二个参数，允许你传递一个参数数组，该参数数组可在 Action 的 `action()` 闭包中以 `$arguments` 访问。这可以作为一个标志，用于说明该 Action 可以基于用户决定进行不同操作：
 
 ```php
 Action::make('create')
@@ -417,9 +417,9 @@ Action::make('create')
     })
 ```
 
-#### Opening another modal from an extra footer action
+#### 在额外的 Footer Action 中打开另一个模态框
 
-You can nest actions within each other, allowing you to open a new modal from an extra footer action:
+你可以在 Action 中互相嵌套，这样可以从额外的 Footer Action 中打开新的模态框：
 
 ```php
 Action::make('edit')
@@ -433,9 +433,9 @@ Action::make('edit')
     ])
 ```
 
-Now, the edit modal will have a "Delete" button in the footer, which will open a confirmation modal when clicked. This action is completely independent of the `edit` action, and will not run the `edit` action when it is clicked.
+现在，编辑模态框的 Footer 中有一个 "Delete" 按钮，点击时会打开确认模态框。该 Action 完全独立于 `edit` Action，点击时不会运行 `edit` Action。
 
-In this example though, you probably want to cancel the `edit` action if the `delete` action is run. You can do this using the `cancelParentActions()` method:
+本例中， 如果 `delete` Action 运行了，你可能希望取消 `edit` Aaction。为此，你可以使用 `cancelParentActions()` 方法：
 
 ```php
 Action::make('delete')
@@ -446,7 +446,7 @@ Action::make('delete')
     ->cancelParentActions()
 ```
 
-If you have deep nesting with multiple parent actions, but you don't want to cancel all of them, you can pass the name of the parent action you want to cancel, including its children, to `cancelParentActions()`:
+如果你使用了深层嵌套，有多个父级 Action；而不想取消所有父级，你可以将你要取消的父级 Action 名及其子 Action 传递给 `cancelParentActions()`：
 
 ```php
 Action::make('first')
@@ -478,11 +478,11 @@ Action::make('first')
     ])
 ```
 
-In this example, if the `fourth` action is run, the `second` action is canceled, but so is the `third` action since it is a child of `second`. The `first` action is not canceled, however, since it is the parent of `second`. The `first` action's modal will remain open.
+本例中，如果第四个(`fourth`) Action 运行了，第二个(`second`) Action 则会取消，不过，第三个(`third`) Action 也会取消因为它是 `second` 的下级。第一个(`first`) Action 没有取消，不过，它是第二个(`second`) Action 的父级。第一个 (`first`) Action 的模态框会保持打开状态， 
 
-## Closing the modal by clicking away
+## 点击离开关闭模态框
 
-By default, when you click away from a modal, it will close itself. If you wish to disable this behavior for a specific action, you can use the `closeModalByClickingAway(false)` method:
+默认情况下，从模态框中点击离开(Click Away)，它会自己关闭。如果你想为某个模态框禁用该行为，请使用 `closeModalByClickingAway(false)` 方法：
 
 ```php
 Action::make('updateAuthor')
@@ -495,7 +495,7 @@ Action::make('updateAuthor')
     ->closeModalByClickingAway(false)
 ```
 
-If you'd like to change the behaviour for all modals in the application, you can do so by calling `Modal::closedByClickingAway()` inside a service provider or middleware:
+如果你想改变应用中所有模态框的行为，你可以在服务提供者或中间件中调用 `Modal::closedByClickingAway()`：
 
 ```php
 use Filament\Support\View\Components\Modal;
@@ -503,9 +503,9 @@ use Filament\Support\View\Components\Modal;
 Modal::closedByClickingAway(false);
 ```
 
-## Hiding the modal close button
+## 隐藏模态框关闭按钮
 
-By default, modals have a close button in the top right corner. If you wish to hide the close button, you can use the `modalCloseButton(false)` method:
+默认情况下，模态框在右上脚有一个关闭按钮。如果你想隐藏该关闭按钮，你可以使用 `modalCloseButton(fasle)` 方法：
 
 ```php
 Action::make('updateAuthor')
@@ -518,7 +518,7 @@ Action::make('updateAuthor')
     ->modalCloseButton(false)
 ```
 
-If you'd like to hide the close button for all modals in the application, you can do so by calling `Modal::closeButton(false)` inside a service provider or middleware:
+如果你想在应用中隐藏所有模态框的关闭按钮，你可以在服务提供者或中间件中调用 `Modal::closeButton(false)`：
 
 ```php
 use Filament\Support\View\Components\Modal;

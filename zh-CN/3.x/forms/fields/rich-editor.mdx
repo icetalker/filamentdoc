@@ -5,9 +5,9 @@ title: Rich editor
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The rich editor allows you to edit and preview HTML content, as well as upload images.
+富文本编辑器(RichEditor)允许你编辑预览 HTML 内容，以及上传图片。
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -17,9 +17,9 @@ RichEditor::make('content')
 
 <AutoScreenshot name="forms/fields/rich-editor/simple" alt="Rich editor" version="3.x" />
 
-## Customizing the toolbar buttons
+## 自定义工具栏按钮
 
-You may set the toolbar buttons for the editor using the `toolbarButtons()` method:
+使用 `toolbarButtons()` 方法，你可以设置编辑器的工具栏按钮：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -42,7 +42,7 @@ RichEditor::make('content')
     ])
 ```
 
-Alternatively, you may disable specific buttons using the `disableToolbarButtons()` method:
+此外，你可以使用 `disableToolbarButtons()` 方法禁用指定按钮：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -54,9 +54,9 @@ RichEditor::make('content')
     ])
 ```
 
-## Uploading images to the editor
+## 上传图片到编辑器
 
-You may customize how images are uploaded using configuration methods:
+使用配置方法你可以自定义图片上传方式：
 
 ```php
 use Filament\Forms\Components\RichEditor;

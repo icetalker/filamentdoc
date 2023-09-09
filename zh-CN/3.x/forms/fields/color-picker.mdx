@@ -5,11 +5,11 @@ title: Color picker
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The color picker component allows you to pick a color in a range of formats.
+拾色器(ColorPicker)组件允许你以一系列格式选择颜色。
 
-By default, the component uses HEX format:
+默认情况下，组件使用 16 进制格式：
 
 ```php
 use Filament\Forms\Components\ColorPicker;
@@ -19,9 +19,9 @@ ColorPicker::make('color')
 
 <AutoScreenshot name="forms/fields/color-picker/simple" alt="Color picker" version="3.x" />
 
-## Setting the color format
+## 设置颜色格式
 
-While HEX format is used by default, you can choose which color format to use:
+虽然默认为 16 进制格式，你也可以使用其他格式：
 
 ```php
 use Filament\Forms\Components\ColorPicker;

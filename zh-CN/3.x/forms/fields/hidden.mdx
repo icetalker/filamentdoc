@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs
 title: Hidden
 ---
 
-## Overview
+## 概述
 
-The hidden component allows you to create a hidden field in your form that holds a value.
+Hidden 组件允许你在表单中创建 hidden 字段。
 
 ```php
 use Filament\Forms\Components\Hidden;
@@ -14,4 +14,4 @@ use Filament\Forms\Components\Hidden;
 Hidden::make('token')
 ```
 
-Please be aware that the value of this field is still editable by the user if they decide to use the browser's developer tools. You should not use this component to store sensitive or read-only information.
+请注意，如果用户使用浏览器开发者工具，该字段的值仍然是可编辑的。不建议使用该组件存储敏感信息或者只读信息。

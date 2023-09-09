@@ -1,24 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/08-adding-a-form-to-a-livewire-component.md"
-title: Adding a form to a Livewire component
+title: 在 Livewire 组件中添加表单
 ---
 
-## Setting up the Livewire component
+## 设置 Livewire 组件
 
-First, generate a new Livewire component:
+首先，生成新的 Livewire 组件：
 
 ```bash
 php artisan make:livewire CreatePost
 ```
 
-Then, render your Livewire component on the page:
+然后，在页面中渲染 Livewire 组件：
 
 ```blade
 @livewire('create-post')
 ```
 
-Alternatively, you can use a full-page Livewire component:
+此外，你可以使用全页 Livewire 组件：
 
 ```php
 use App\Livewire\CreatePost;
@@ -27,15 +27,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('posts/create', CreatePost::class);
 ```
 
-## Adding the form
+## 添加表单
 
-There are 5 main tasks when adding a form to a Livewire component class. Each one is essential:
+添加表单到 Livewire 组件类有 5 个重要步骤：
 
-1) Implement the `HasForms` interface and use the `InteractsWithForms` trait.
-2) Define a public Livewire property to store your form's data. In our example, we'll call this `$data`, but you can call it whatever you want.
-3) Add a `form()` method, which is where you configure the form. [Add the form's schema](getting-started#form-schemas), and tell Filament to store the form data in the `$data` property (using `statePath('data')`).
-4) Initialize the form with `$this->form->fill()` in `mount()`. This is imperative for every form that you build, even if it doesn't have any initial data.
-5) Define a method to handle the form submission. In our example, we'll call this `create()`, but you can call it whatever you want. Inside that method, you can validate and get the form's data using `$this->form->getState()`. It's important that you use this method instead of accessing the `$this->data` property directly, because the form's data needs to be validated and transformed into a useful format before being returned.
+1) 实现 `HasForms` 接口并使用 `InteractsWithForms` trait。
+2) 定义公共 Livewire 属性，来保存表单数据。在我们的例子中，我们把这个属性叫做 `$data`，不过你可以根据需要进行命名。
+3) 添加 `form()` 方法，这是你配置表单的地方。然后[添加表单 Schema](getting-started#表单-schema)，并告诉 Filament 在 `$data` 属性中保存表单数据(使用 `statePath('data')`)。
+4) 在 `mount()` 中调用 `$this->form->fill()`，初始化表单。这对于每个表单都是必不可少的，即使它没有初始化任何数据。
+5) 定义一个方法来处理表单提交。在我们的示例中，我们使用 `create()`，你也可以自己命名。在该方法内，你可以使用 `$this->form->getState()` 验证和获取表单数据。使用该方法，而不是直接获取 `$this->data` 属性，因为表单数据需要在返回前验证并转换成有效格式。
 
 ```php
 <?php
@@ -86,7 +86,7 @@ class CreatePost extends Component implements HasForms
 }
 ```
 
-Finally, in your Livewire component's view, render the form:
+最后，在 Livewire 组件视图中，渲染视图：
 
 ```blade
 <div>
@@ -102,11 +102,11 @@ Finally, in your Livewire component's view, render the form:
 </div>
 ```
 
-> `<x-filament-actions::modals />` is used to render form component [action modals](actions). The code can be put anywhere outside the `<form>` element, as long as it's within the Livewire component.
+> `<x-filament-actions::modals />` 用于渲染表单组件 [Action 模态框](actions)。这段代码可以放在 `<form>` 元素之外的任何地方，只要它还在 Livewire 组件内。
 
-Visit your Livewire component in the browser, and you should see the form components from `schema()`:
+现在到浏览器访问 Livewire 组件，你应该就能看到表单组件了。
 
-Submit the form with data, and you'll see the form's data dumped to the screen. You can save the data to a model instead of dumping it:
+将表单数据提交，你将会看到表单数据打印到屏幕中。你可以将这些数据存入模型，而不是打印：
 
 ```php
 use App\Models\Post;
@@ -117,9 +117,9 @@ public function create(): void
 }
 ```
 
-## Initializing the form with data
+## 使用数据初始化表单
 
-To fill the form with data, just pass that data to the `$this->form->fill()` method. For example, if you're editing an existing post, you might do something like this:
+要使用数据填充表单，只需将数据传递给 `$this->form->fill()` 方法。比如，如果你在编辑已有的文章(post)，你可以这样做：
 
 ```php
 use App\Models\Post;
@@ -130,9 +130,9 @@ public function mount(Post $post): void
 }
 ```
 
-It's important that you use the `$this->form->fill()` method instead of assigning the data directly to the `$this->data` property. This is because the post's data needs to be internally transformed into a useful format before being stored.
+使用 `$this->form->fill()` 方法，而不是直接将数据赋值给 `$this->data` 属性。这是因为在存入数据库之前，文章的数据需要在内部转换成有用的格式。
 
-## Setting a form model
+## 设置表单模型
 
 Giving the `$form` access to a model is useful for a few reasons:
 

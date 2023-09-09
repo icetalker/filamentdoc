@@ -5,9 +5,9 @@ title: Placeholder
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Placeholders can be used to render text-only "fields" within your forms. Each placeholder has `content()`, which cannot be changed by the user.
+占位符(Placeholder)可用于在表单中渲染只读字段。每个占位符都有其内容(`content()`)，用户不能修改。
 
 ```php
 use Filament\Forms\Components\Placeholder;
@@ -18,11 +18,11 @@ Placeholder::make('created')
 
 <AutoScreenshot name="forms/layout/placeholder/simple" alt="Placeholder" version="3.x" />
 
-> **Important:** All form fields require a unique name. That also applies to Placeholders!
+> **重要：** 所有表单字段都要求唯一名称。这同样适用于占位符字段！
 
-## Rendering HTML inside the placeholder
+## 在占位符字段内渲染 HTML
 
-You may even render custom HTML within placeholder content:
+你甚至可以在占位符内容中渲染 HTML：
 
 ```php
 use Filament\Forms\Components\Placeholder;
@@ -32,9 +32,9 @@ Placeholder::make('documentation')
     ->content(new HtmlString('<a href="https://filamentphp.com/docs">filamentphp.com</a>'))
 ```
 
-## Dynamically generating placeholder content
+## 动态生成占位符内容
 
-By passing a closure to the `content()` method, you may dynamically generate placeholder content. You have access to any closure parameter explained in the [advanced closure customization](../advanced#closure-customization) documentation:
+传递闭包给 `content()` 方法，你可以动态生成占位符内容。[高级闭包自定义](../advanced#闭包自定义)文档中所介绍的所有闭包参数，你都可以获取：
 
 ```php
 use Filament\Forms\Components\Placeholder;

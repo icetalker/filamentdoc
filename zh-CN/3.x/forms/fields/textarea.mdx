@@ -5,9 +5,9 @@ title: Textarea
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The textarea allows you to interact with a multi-line string:
+文本区(Textarea) 允许你使用多行字符串：
 
 ```php
 use Filament\Forms\Components\Textarea;
@@ -17,9 +17,9 @@ Textarea::make('description')
 
 <AutoScreenshot name="forms/fields/textarea/simple" alt="Textarea" version="3.x" />
 
-## Resizing the textarea
+## 调整文本区大小
 
-You may change the size of the textarea by defining the `rows()` and `cols()` methods:
+你可以定义 `rows()` 及 `cols()` 方法，来修改文本去的大小：
 
 ```php
 use Filament\Forms\Components\Textarea;
@@ -29,9 +29,9 @@ Textarea::make('description')
     ->cols(20)
 ```
 
-### Autosizing the textarea
+### 文本去自动大小
 
-You may allow the textarea to automatically resize to fit its content by setting the `autosize()` method:
+通过设置 `autosize()` 方法，你也可以让文本区根据其内容自动调整大小：
 
 ```php
 use Filament\Forms\Components\Textarea;
@@ -40,13 +40,13 @@ Textarea::make('description')
     ->autosize()
 ```
 
-## Textarea validation
+## 文本区验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to textareas.
+除了[验证](../validation)页面上的所有规则，文本区也有一些专门的验证规则。
 
-### Length validation
+### 长度验证
 
-You may limit the length of the textarea by setting the `minLength()` and `maxLength()` methods. These methods add both frontend and backend validation:
+使用 `minLength()` 和 `maxLength()` 方法，你可以限制输入的长度。这些方法同时会对前端和后端进行验证：
 
 ```php
 use Filament\Forms\Components\Textarea;
@@ -56,7 +56,7 @@ Textarea::make('description')
     ->maxLength(1024)
 ```
 
-You can also specify the exact length of the textarea by setting the `length()`. This method adds both frontend and backend validation:
+使用 `length()`，你可以指定输入框的准确长度。该方法同时添加前端和后端验证：
 
 ```php
 use Filament\Forms\Components\Textarea;

@@ -5,9 +5,9 @@ title: Text input
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The text input allows you to interact with a string:
+文本输入(TextInput)字段允许你使用字符串：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -17,9 +17,9 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/text-input/simple" alt="Text input" version="3.x" />
 
-## Setting the HTML input type
+## 设置 HTML input 类型
 
-You may set the type of string using a set of methods. Some, such as `email()`, also provide validation:
+你可以使用一系列方法设置字符串类型。比如，`email()`，同时也提供了相应的验证：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -32,7 +32,7 @@ TextInput::make('text')
     ->url()
 ```
 
-You may instead use the `type()` method to pass another [HTML input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types):
+你也可以使用 `type()` 方法，并传入一个[HTML Input 类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -41,9 +41,9 @@ TextInput::make('backgroundColor')
     ->type('color')
 ```
 
-## Setting the HTML input mode
+## 设置 HTML input 模式
 
-You may set the [`inputmode` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attributes) of the input using the `inputMode()` method:
+使用 `inputMode()` 方法，你可以设置输入框的 [`inputmode` 属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attributes)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -53,9 +53,9 @@ TextInput::make('text')
     ->inputMode('decimal')
 ```
 
-## Setting the numeric step
+## 设置数值步长
 
-You may set the [`step` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#step) of the input using the `step()` method:
+使用 `step()` 方法，你可以设置的 Input 的 [`step` 属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#step)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -65,9 +65,9 @@ TextInput::make('number')
     ->step(100)
 ```
 
-## Autocompleting text
+## 自动补全文本
 
-You may allow the text to be [autocompleted by the browser](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#autocomplete) using the `autocomplete()` method:
+使用 `autocomplete()` 方法，你可以启用[浏览器的自动补全](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#autocomplete)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -77,7 +77,7 @@ TextInput::make('password')
     ->autocomplete('new-password')
 ```
 
-As a shortcut for `autocomplete="off"`, you may use `autocomplete(false)`:
+你也可以使用 `autocomplete(false)`，作为 `autocomplete="off"` 的快捷方式：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -87,11 +87,11 @@ TextInput::make('password')
     ->autocomplete(false)
 ```
 
-For more complex autocomplete options, text inputs also support [datalists](#autocompleting-text-with-a-datalist).
+对于更复杂的自动补全选项，文本输入框也支持 [datalists](#使用-datalist-自动补全)。
 
-### Autocompleting text with a datalist
+### 使用 datalist 自动补全
 
-You may specify [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) options for a text input using the `datalist()` method:
+使用 `datalist()` 方法，你可以指定文本输入框的 [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) 选项：
 
 ```php
 TextInput::make('manufacturer')
@@ -106,11 +106,11 @@ TextInput::make('manufacturer')
     ])
 ```
 
-Datalists provide autocomplete options to users when they use a text input. However, these are purely recommendations, and the user is still able to type any value into the input. If you're looking to strictly limit users to a set of predefined options, check out the [select field](select).
+使用文本输入框时，Datalist 为用户提供自动补全选项。不过，这些选项纯属推荐，用户仍然在输入框中可以输入任何值。如果你想要限制用户输入一组预定义选项，请查阅 [Select 字段](select)。
 
-## Autocapitalizing text
+## 自动大写文本
 
-You may allow the text to be [autocapitalized by the browser](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#autocapitalize) using the `autocapitalize()` method:
+使用 `autocapitalize()` 方法，你可以允许[浏览器自动大写](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#autocapitalize)文本：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -119,9 +119,9 @@ TextInput::make('name')
     ->autocapitalize('words')
 ```
 
-## Adding affix text aside the field
+## 字段旁边添加前后缀文本
 
-You may place text before and after the input using the `prefix()` and `suffix()` methods:
+使用 `prefix()` 及 `suffix()` 方法，你可以在文本前后添加文本：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -133,9 +133,9 @@ TextInput::make('domain')
 
 <AutoScreenshot name="forms/fields/text-input/affix" alt="Text input with affixes" version="3.x" />
 
-### Using icons as affixes
+### 使用图标作为前后缀
 
-You may place an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) before and after the input using the `prefixIcon()` and `suffixIcon()` methods:
+使用 `prefixIcon` 和 `suffixIcon` 方法，你可以在输入框前面或者后面放置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -147,11 +147,11 @@ TextInput::make('domain')
 
 <AutoScreenshot name="forms/fields/text-input/suffix-icon" alt="Text input with suffix icon" version="3.x" />
 
-## Input masking
+## 输入遮罩
 
-Input masking is the practice of defining a format that the input value must conform to.
+输入遮罩(Input Masking)定义了一种输入值必须遵守的格式。
 
-In Filament, you may use the `mask()` method to configure an [Alpine.js mask](https://alpinejs.dev/plugins/mask#x-mask):
+在 Filament 中，你可以使用 `mask()` 方法来配置 [Alpine 的 mask](https://alpinejs.dev/plugins/mask#x-mask)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -161,7 +161,7 @@ TextInput::make('birthday')
     ->placeholder('MM/DD/YYYY')
 ```
 
-To use a [dynamic mask](https://alpinejs.dev/plugins/mask#mask-functions), wrap the JavaScript in a `RawJs` object:
+要使用[动态遮罩](https://alpinejs.dev/plugins/mask#mask-functions)，请在 `RawJs` 对象中包裹 JavaScript：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -173,13 +173,13 @@ TextInput::make('cardNumber')
     JS))
 ```
 
-## Text input validation
+## 文本输入验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to text inputs.
+除了[验证](../validation)页面中罗列的规则之外，还有一些特别针对文本输入框的另外的规则。
 
-### Length validation
+### 长度验证
 
-You may limit the length of the input by setting the `minLength()` and `maxLength()` methods. These methods add both frontend and backend validation:
+通过设置 `minLength()` 和 `maxLength()` 方法，你可以限制输入的长度。这些方法同时会对前端和后端进行验证：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -189,7 +189,7 @@ TextInput::make('name')
     ->maxLength(255)
 ```
 
-You can also specify the exact length of the input by setting the `length()`. This method adds both frontend and backend validation:
+通过设置 `length()`，你可以指定输入框的准确长度。该方法同时添加前端和后端验证：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -198,9 +198,9 @@ TextInput::make('code')
     ->length(8)
 ```
 
-### Size validation
+### Size 验证
 
-You may validate the minimum and maximum value of a numeric input by setting the `minValue()` and `maxValue()` methods:
+通过设置 `minValue()` 和 `maxValue()` 方法，你可以验证数值输入框的最小和最大值：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -211,11 +211,11 @@ TextInput::make('number')
     ->maxValue(100)
 ```
 
-### Phone number validation
+### 电话号码验证
 
-When using a `tel()` field, the value will be validated using: `/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/`.
+使用 `tel()` 字段时，字段值会使用 `/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/` 验证。
 
-If you wish to change that, then you can use the `telRegex()` method:
+如果你想对此进行修改，你可以使用 `telRegex()` 方法：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -225,7 +225,7 @@ TextInput::make('phone')
     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
 ```
 
-Alternatively, to customize the `telRegex()` across all fields, use a service provider:
+此外，要全局自定义 `telRegex`，请使用服务提供者：
 
 ```php
 use Filament\Forms\Components\TextInput;

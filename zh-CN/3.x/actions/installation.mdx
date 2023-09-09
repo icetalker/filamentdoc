@@ -4,7 +4,7 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: 安装
 ---
 
-**在[面板中](../panels/installation)使用 Action**？那你可以跳过此安装。本教程适合于在自定义 TALL 栈应用中使用该包的开发者。
+**Action 包已经在[面板中](../panels/installation)预装了**？那你可以跳过此安装。本教程适合于在自定义 TALL 栈(Tailwind, Alpine, Livewire, Laravel)应用中使用表单构造器。
 
 ## 要求
 
@@ -29,17 +29,19 @@ composer require filament/actions:"^3.0-stable" -W
 
 要快速开始使用 Filament，你可以使用如下命令安装 [Livewire](https://laravel-livewire.com)、[Alpine.js](https://alpinejs.dev) 和 [Tailwind CSS](https://tailwindcss.com)。
 
+> 由于这些命令会粗暴地覆盖你应用中现有的文件，因此只推荐在新 Laravel 项目中使用该方法!
+
 ```bash
 php artisan filament:install --scaffold --actions
+
 npm install
+
 npm run dev
 ```
 
-> 这些命令会粗暴地覆盖你应用中现有的文件，因此我们只推荐在新项目中使用该方法。
-
 ## 已有的 Laravel 项目
 
-首先，运行以下命令安装包资源：
+运行以下命令安装包资源：
 
 ```bash
 php artisan filament:install --actions
@@ -47,13 +49,13 @@ php artisan filament:install --actions
 
 ### 安装 Tailwind CSS
 
-首先，使用 npm 安装 Tailwind CSS 及它的 `forms` 和 `typography` 插件：
+运行如下命令安装 Tailwind CSS 及 Tailwind Forms 和 Typography 插件：
 
 ```bash
 npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
 ```
 
-新建一个 `tailwind.config.js` 文件。确保添加了 Filament 的 `preset`，它配置了颜色和安装的插件： 
+新建一个 `tailwind.config.js` 文件，并添加 Filament 的 `preset` *(引入 Filament color scheme 及必要的 Tailwind 插件)*： 
 
 ```js
 import preset from './vendor/filament/support/tailwind.config.preset'
@@ -143,13 +145,10 @@ export default defineConfig({
     <body class="antialiased">
         {{ $slot }}
 
-        @livewire('notifications')
-
         @filamentScripts
         @vite('resources/js/app.js')
     </body>
 </html>
-```
 
 ## 发布配置
 

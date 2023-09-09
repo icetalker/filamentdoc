@@ -6,13 +6,13 @@ title: 测试
 
 ## 概述
 
-All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to a PHPUnit.
+所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。不过，你可以轻松将其应用到 PHPUnit。
 
-Since all actions are mounted to a Livewire component, we're just using Livewire testing helpers everywhere. If you've never tested Livewire components before, please read [this guide](https://laravel-livewire.com/docs/testing) from the Livewire docs.
+由于所有 Action 都挂载到 Livewire 组件，我们始终都在使用 Livewire 测试辅助函数。如果你之前从未测试过 Livewire 组件，请阅读 Livewire 文档下的[这一向导](https://livewire.laravel.com/docs/testing)。
 
-## Getting started
+## 开始
 
-You can call an action by passing its name or class to `callAction()`:
+将 Action 名或者类传入 `callAction()`，你可以调用 Action：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -30,7 +30,7 @@ it('can send invoices', function () {
 });
 ```
 
-To pass an array of data into an action, use the `data` parameter:
+要将数据数组传递给 Action，请使用 `data` 参数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -52,7 +52,7 @@ it('can send invoices', function () {
 });
 ```
 
-If you ever need to only set an action's data without immediately calling it, you can use `setActionData()`:
+如果你只需要设置 Action 的数据，而不用马上调用这些数据，你可以使用 `setActionData()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -70,9 +70,9 @@ it('can send invoices', function () {
 });
 ```
 
-## Execution
+## 执行
 
-To check if an action has been halted, you can use `assertActionHalted()`:
+要断言 Action 是否停止，你可以使用 `assertActionHalted()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -88,11 +88,12 @@ it('stops sending if invoice has no email address', function () {
 });
 ```
 
-## Errors
+## 错误
 
+`assertHasNoActionErrors()` 用于断言提交表单时，没有发生验证错误。
 `assertHasNoActionErrors()` is used to assert that no validation errors occurred when submitting the action form.
 
-To check if a validation error has occurred with the data, use `assertHasActionErrors()`, similar to `assertHasErrors()` in Livewire:
+要断言带有数据的验证错误，请使用 `assertHasActionErrors()`，类似于 Livewire 中的 `assertHasErrors()`。
 
 ```php
 use function Pest\Livewire\livewire;
@@ -110,7 +111,7 @@ it('can validate invoice recipient email', function () {
 });
 ```
 
-To check if an action is pre-filled with data, you can use the `assertActionDataSet()` method:
+要断言 Action 已经预填数据，请使用 `assertActionDataSet()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -135,9 +136,9 @@ it('can send invoices to the primary contact by default', function () {
 });
 ```
 
-## Action state
+## Action 状态
 
-To ensure that an action exists or doesn't in a table, you can use the `assertActionExists()` or  `assertActionDoesNotExist()` method:
+使用 `assertActionExists()` 或 `assertActionDoesNotExist()` 方法，你可以断言 Action 存在或不存在表格中：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -153,7 +154,7 @@ it('can send but not unsend invoices', function () {
 });
 ```
 
-To ensure an action is hidden or visible for a user, you can use the `assertActionHidden()` or `assertActionVisible()` methods:
+要断言 Action 对用户隐藏或可见，请使用 `assertActionHidden()` 或 `assertActionVisible()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -169,7 +170,7 @@ it('can only print invoices', function () {
 });
 ```
 
-To ensure an action is enabled or disabled for a user, you can use the `assertActionEnabled()` or `assertActionDisabled()` methods:
+要断言 Aciton 对用户启用或者禁用，请使用 `assertActionEnabled()` 或 `assertActionDisabled()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -185,7 +186,7 @@ it('can only print a sent invoice', function () {
 });
 ```
 
-To ensure sets of actions exist in the correct order, you can use `assertActionsExistInOrder()`:
+要断言 Action 是否以正确的顺序存在，请使用 `assertActionsExistInOrder()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -200,7 +201,7 @@ it('can have actions in order', function () {
 });
 ```
 
-To check if an action is hidden to a user, you can use the `assertActionHidden()` method:
+要断言 Action 是否对用户隐藏，请使用 `assertActionHidden()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -215,9 +216,9 @@ it('can not send invoices', function () {
 });
 ```
 
-## Button appearance
+## Button 外观
 
-To ensure an action has the correct label, you can use `assertActionHasLabel()` and `assertActionDoesNotHaveLabel()`:
+要断言 Action 的标签正确，可以使用 `assertActionHasLabel()` 或 `assertActionDoesNotHaveLabel()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -233,7 +234,7 @@ it('send action has correct label', function () {
 });
 ```
 
-To ensure an action's button is showing the correct icon, you can use `assertActionHasIcon()` or `assertActionDoesNotHaveIcon()`:
+要断言 Action 按钮显示了正确的图标，可以使用 `assertActionHasIcon()` 或 `assertActionDoesNotHaveIcon()`
 
 ```php
 use function Pest\Livewire\livewire;
@@ -250,7 +251,7 @@ it('when enabled the send button has correct icon', function () {
 });
 ```
 
-To ensure an action's button is displaying the right color, you can use `assertActionHasColor()` or `assertActionDoesNotHaveColor()`:
+要断言 Action 按钮显示了正确的颜色，可以使用 `assertActionHasColor()` 或 `assertActionDoesNotHaveColor()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -268,7 +269,7 @@ it('actions display proper colors', function () {
 
 ## URL
 
-To ensure an action has the correct URL, you can use `assertActionHasUrl()`, `assertActionDoesNotHaveUrl()`, `assertActionShouldOpenUrlInNewTab()`, and `assertActionShouldNotOpenUrlInNewTab()`:
+要断言 Action 拥有正确的 URL，你可以使用 `assertActionHasUrl()`、`assertActionDoesNotHaveUrl()`、`assertActionShouldOpenUrlInNewTab()` 和 `assertActionShouldNotOpenUrlInNewTab()`：
 
 ```php
 use function Pest\Livewire\livewire;
