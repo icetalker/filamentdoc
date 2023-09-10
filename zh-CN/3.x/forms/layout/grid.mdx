@@ -25,13 +25,13 @@ Filament 的网格(Grid)系统，允许你使用任何布局组件创建响应�
 - `columnSpan(['md' => 2, 'xl' => 4])` 将会使组件在中等设备中填满 2 个 column，并在超大设备中占用 4 个 column，小设备的默认临界点将占用 1 个 column，除非使用了 `default` 数组键。
 - `columnSpan('full')` 或 `columnSpanFull()` 或 `columnSpan(['default' => 'full'])` 会使组件占满父级网格的全部宽度，无论其占有多少 columns。
 
-## An example of a responsive grid layout
+## 响应式网格布局示例
 
-In this example, we have a form with a [section](section) layout component. Since all layout components support the `columns()` method, we can use it to create a responsive grid layout within the section itself.
+本例中，我们在表单中使用了 [Section](section) 布局组件。由于所有布局组件都支持 `columns()` 方法，我们可以用它在 Section 本身中创建响应式网格布局。
 
-We pass an array to `columns()` as we want to specify different numbers of columns for different breakpoints. On devices smaller than the `sm` [Tailwind breakpoint](https://tailwindcss.com/docs/responsive-design#overview), we want to have 1 column, which is default. On devices larger than the `sm` breakpoint, we want to have 3 columns. On devices larger than the `xl` breakpoint, we want to have 6 columns. On devices larger than the `2xl` breakpoint, we want to have 8 columns.
+我们希望为不同的临界点指定不同的数字，因此我们将一个数组传递给 `columns()`。在比 `sm` [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview)更小的设备中，我们只想拥有 1 个 column，按默认即可。大于 `sm` 临界点的设备，我们希望拥有 3 columns。对于大于 `xl` 临界点的设备，我们希望它拥有 6 个列。对于大于 `2xl` 临界点的设备，我们希望它拥有 8 个列。
 
-Inside the section, we have a [text input](../fields/text-input). Since text inputs are form components and all form components have a `columnSpan()` method, we can use it to specify how many columns the text input should fill. On devices smaller than the `sm` breakpoint, we want the text input to fill 1 column, which is default. On devices larger than the `sm` breakpoint, we want the text input to fill 2 columns. On devices larger than the `xl` breakpoint, we want the text input to fill 3 columns. On devices larger than the `2xl` breakpoint, we want the text input to fill 4 columns.
+在 Section 内，我们有一个 [Text iinput](../fields/text-input)。TextiNPUT 是表单组件且所有表单组件都有一个 `columnSpan()` 方法，因此我们可以用它来指定该 TextInput 应该占用多少 column。对小于 `sm` 临界点的设备，我们希望 TextInput 占用 1 column，此为默认值。对于大于 `sm` 临界点的设备，我们希望其占用 2 columns。对于大于 `xl` 临界点的设备，我们希望它占用 3 个列。对于大于 `2xl` 临界点的设备，我们希望它占用 4 个列。
 
 ```php
 use Filament\Forms\Components\Section;

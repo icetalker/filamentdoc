@@ -1,14 +1,14 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/2.x/packages/admin/docs/06-users.md"
-title: Users
+title: 用户
 ---
 
-By default, all `App\Models\User`s can access Filament locally. To allow them to access Filament in production, you must take a few extra steps to ensure that only the correct users have access to the admin panel.
+默认情况下，所有的 `App\Models\User` 用户可以在本地环境中访问 Filament。但如果要在生产环境中同样允许用户访问，需要一些额外的操作来确保授权的用户才能访问后台面板。
 
-## Authorizing access to the admin panel
+## 授权访问后台
 
-To set up your `App\Models\User` to access Filament in non-local environments, you must implement the `FilamentUser` contract:
+要让非本地环境的 `App\Models\User` 用户获取访问权限，你需要实现 `FilamentUser` 合约接口:
 
 ```php
 <?php
@@ -29,11 +29,11 @@ class User extends Authenticatable implements FilamentUser
 }
 ```
 
-The `canAccessFilament()` method returns `true` or `false` depending on whether the user is allowed to access Filament. In this example, we check if the user's email ends with `@yourdomain.com` and if they have verified their email address.
+`canAccessFilament()` 方法返回 `true` 还是 `false`，取决于用户是否被授权允许访问。本例中会检查用户的邮箱后缀是否为 `@yourdomain.com` 以及用户是否验证过该邮箱。 
 
-## Setting up avatars
+## 设置头像
 
-Out of the box, Filament uses [ui-avatars.com](https://ui-avatars.com) to generate avatars based on a user's name. To provide your own avatar URLs, you can implement the `HasAvatar` contract:
+Filament 使用可开箱即用的[ui-avatars.com](https://ui-avatars.com) 生成基于用户名的头像。你也可以实现 `HasAvatar` 合约接口，提供你自己的头像URL。
 
 ```php
 <?php
@@ -55,11 +55,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 }
 ```
 
-The `getFilamentAvatarUrl()` method is used to retrieve the avatar of the current user. If `null` is returned from this method, Filament will fall back to [ui-avatars.com](https://ui-avatars.com).
+`getFilamentAvatarUrl()` 方法用于获取当前用户的头像。如果这个方法返回 `null`，Filament 会转向[ui-avatars.com](https://ui-avatars.com)。
 
-## Configuring the name attribute
+## 配置 name 属性
 
-By default, Filament will use the `name` attribute of the user to display their name in the admin panel. To change this, you can implement the `HasName` contract:
+默认情况下，Filament 会使用用户的 `name` 属性来展示后台面板的名字。想要调整，你可以实现 `HasName` 合约接口：
 
 ```php
 <?php
@@ -81,4 +81,4 @@ class User extends Authenticatable implements FilamentUser, HasName
 }
 ```
 
-The `getFilamentName()` method is used to retrieve the name of the current user.
+`getFilamentName()` 方法用于获取当前用户的名称。
