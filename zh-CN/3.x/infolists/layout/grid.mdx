@@ -12,7 +12,7 @@ Filament 的网格(Grid)系统，允许你使用任何布局组件创建响应�
 
 所有布局组件都有一个 `columns()` 方法，你可以通过多个不同方式使用它：
 
-- 你可以传入整型速记，像这样：`columns(2)`。该整型数据表示 `lg` 及以上临界点中 columns 的数量。
+- 你可以传入整型速记，像这样：`columns(2)`。该整型数据表示 `lg` 及以上临界点中 columns 的数量。所有小型设备都只有 1 个 column。
 - 你也可以传递一个数组，数据键为临界点且数组值是 column 的值。比如，`columns(['md' => 2, 'xl' => 4])` 会在中等设备中创建 2 列布局，在超大设备中创建 4 列布局。小型设备的默认临界点使用 1 列布局，除非你使用了 `default` 数组键。
 
 临界点(`sm`、`md`、`lg`、`xl`、`2xl`)由 Tailwind 定义，可以在 [Tailwind 文档](https://tailwindcss.com/docs/responsive-design#overview)中查看。
@@ -56,7 +56,7 @@ Section::make()
 
 ## Grid 组件
 
-所有布局组件支持 `columns()` 方法，不过你还是可以使用另外的 `Grid` 组件。如果你决定表单 schema 能从显式的 Grid 语法中获益，而无需额外的样式，此方式可能对你有用。你可以将 column 配置直接传入到 `Grid::make()` 方法，而无需使用 `columns()`：
+所有布局组件支持 `columns()` 方法，不过你还是可以使用另外的 `Grid` 组件。如果你觉得表单 schema 能从显式的 Grid 语法中获益，而无需额外的样式，此方式可能对你有用。你可以将 column 配置直接传入到 `Grid::make()` 方法，而无需使用 `columns()`：
 
 ```php
 use Filament\Infolists\Components\Grid;
@@ -76,7 +76,7 @@ Grid::make([
 
 ## 在 Grid 中设置组件的起始列
 
-如果你想在 Grid 的特定列中，开始渲染一个组件。该方法接收一个整型、或者一个临界点和起始列数字组成的数组：
+如果你想在 Grid 的指定列中开始渲染一个组件，你可以使用 `columnStart()` 方法。该方法接收一个整型、或者一个临界点和起始列数字组成的数组：
 
 - `columnStart(2)` 会让组件在所有临界点中都起始于第 2 列。
 - `columnStart(['md' => 2, 'xl' => 4])` 使得组件在中等设备中起始于第 2 列，并在超大设备中起始于第 4 列。小型设备默认临界点使用 1 列，除非你使用了 `default` 数组键。

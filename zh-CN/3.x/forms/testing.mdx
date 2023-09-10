@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/09-testing.md"
-title: Testing
+title: 测试
 ---
 
-## Overview
+## 概述
 
-All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to PHPUnit.
+所有本指南内的示例都使用 [Pest](https://pestphp.com) 编写。不过，你可以将其适配到 PHPUnit。
 
-Since the Form Builder works on Livewire components, you can use the [Livewire testing helpers](https://livewire.laravel.com/docs/testing). However, we have custom testing helpers that you can use with forms:
+因为表单构造器是基于 Livewire 组件的，因此你也可以使用 [Livewire 测试辅助函数](https://laravel-livewire.com/docs/testing)。不过，我们自定义了一些测试辅助函数，让你可以用于表单测试：
 
-## Filling a form
+## 填充表单
 
-To fill a form with data, pass the data to `fillform()`:
+要填充表单，请将数据传入 `fillform()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -24,9 +24,9 @@ livewire(CreatePost::class)
     ]);
 ```
 
-> If you have multiple forms on a Livewire component, you can specify which form you want to fill using `fillForm([...], 'createPostForm')`.
+>如果一个 Livewire 组件中有多个表单，你可以使用 `fillForm([...], 'createPostForm')` 指定你想要填充哪个表单。
 
-To check that a form has data, use `assertFormSet()`:
+使用 `assertFormSet()` 断言表单中有数据：
 
 ```php
 use Illuminate\Support\Str;
@@ -45,11 +45,11 @@ it('can automatically generate a slug from the title', function () {
 });
 ```
 
-> If you have multiple forms on a Livewire component, you can specify which form you want to check using `assertFormSet([...], 'createPostForm')`.
+> 注意，如果一个 Livewire 组件中有多个表单，你可以使用 `assertFormSet([...], 'createPostForm')` 指定你想要检测哪个表单。
 
-## Validation
+## 验证
 
-Use `assertHasFormErrors()` to ensure that data is properly validated in a form:
+使用 `assertHasFormErrors()` 断言对表单中的数据进行有效验证：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -63,7 +63,7 @@ it('can validate input', function () {
 });
 ```
 
-And `assertHasNoFormErrors()` to ensure there are no validation errors:
+同时 `assertHasNoFormErrors()` 断言没有验证错误：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -77,11 +77,11 @@ livewire(CreatePost::class)
     ->assertHasNoFormErrors();
 ```
 
-> If you have multiple forms on a Livewire component, you can pass the name of a specific form as the second parameter like `assertHasFormErrors(['title' => 'required'], 'createPostForm')` or `assertHasNoFormErrors([], 'createPostForm')`.
+> 注意，如果一个 Livewire 组件中有多个表单，你可以将指定表单名作为第二个参数传入，像这样 `assertHasFormErrors(['title' => 'required'], 'createPostForm')` 或 `assertHasNoFormErrors([], 'createPostForm')`。
 
-## Form existence
+## 表单存在
 
-To check that a Livewire component has a form, use `assertFormExists()`:
+断言 Livewire 组件中有一个表单，请使用 `assertFormExists()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -92,11 +92,11 @@ it('has a form', function () {
 });
 ```
 
-> If you have multiple forms on a Livewire component, you can pass the name of a specific form like `assertFormExists('createPostForm')`.
+> 如果一个 Livewire 组件中有多个表单，你可以将指定的表单名传入 `assertFormExists('createPostForm')`。
 
-## Fields
+## 字段
 
-To ensure that a form has a given field, pass the field name to `assertFormFieldExists()`:
+断言表单中有某个给定字段，请将字段名传入到 `assertFormFieldExists()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -107,7 +107,7 @@ it('has a title field', function () {
 });
 ```
 
-You may pass a function as an additional argument in order to assert that a field passes a given "truth test". This is useful for asserting that a field has a specific configuration:
+你也可以传入函数作为额外的参数，来断言一个字段传入了一个"真值测试”\"。着对断言一个字段有某个特定配置非常有用：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -120,11 +120,11 @@ it('has a title field', function () {
 });
 ```
 
-> If you have multiple forms on a Livewire component, you can specify which form you want to check for the existence of the field like `assertFormFieldExists('title', 'createPostForm')`.
+>如果 Livewire 组件有多个表单，你可以指定哪个表单要断言字段是否存在。比如 `assertFormFieldExists('title', 'createPostForm')`。
 
-### Hidden fields
+### Hidden 字段
 
-To ensure that a field is visible, pass the name to `assertFormFieldIsVisible()`:
+断言表单中有某个字段可见，将字段名传入到 `assertFormFieldIsVisible()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -135,7 +135,7 @@ test('title is visible', function () {
 });
 ```
 
-Or to ensure that a field is hidden you can pass the name to `assertFormFieldIsHidden()`:
+或者断言表单中隐藏某个字段，将字段名传入到 `assertFormFieldIsHidden()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -146,11 +146,11 @@ test('title is hidden', function () {
 });
 ```
 
-> For both `assertFormFieldIsHidden()` and `assertFormFieldIsVisible()` you can pass the name of a specific form the field belongs to as the second argument like `assertFormFieldIsHidden('title', 'createPostForm')`.
+> 对于 `assertFormFieldIsHidden()` 和 `assertFormFieldIsVisible()`，你可以传递该字段所属表单的名称作为第二个参数，比如 `assertFormFieldIsHidden('title', 'createPostForm')`。
 
-### Disabled fields
+### 禁用字段
 
-To ensure that a field is enabled, pass the name to `assertFormFieldIsEnabled()`:
+要断言字段可用，请传递字段名到 `assertFormFieldIsEnabled()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -161,7 +161,7 @@ test('title is enabled', function () {
 });
 ```
 
-Or to ensure that a field is disabled you can pass the name to `assertFormFieldIsDisabled()`:
+要断言字段禁用，请传递字段名到 `assertFormFieldIsDisabled()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -172,4 +172,4 @@ test('title is disabled', function () {
 });
 ```
 
-> For both `assertFormFieldIsEnabled()` and `assertFormFieldIsDisabled()` you can pass the name of a specific form the field belongs to as the second argument like `assertFormFieldIsEnabled('title', 'createPostForm')`.
+> 对于 `assertFormFieldIsEnabled()` 和 `assertFormFieldIsDisabled()`，你可以传递该字段所属表单的名称作为第二个参数，比如 `assertFormFieldIsEnabled('title', 'createPostForm')`。

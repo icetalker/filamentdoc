@@ -5,9 +5,9 @@ title: Tabs
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Some forms can be long and complex. You may want to use tabs to reduce the number of components that are visible at once:
+有些表单冗长且复杂。你可能使用 Tabs(选项卡/标签页)来减少组件的一次性可见数量：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -31,9 +31,9 @@ Tabs::make('Label')
 
 <AutoScreenshot name="forms/layout/tabs/simple" alt="Tabs" version="3.x" />
 
-## Setting the default active tab
+## 设计默认激活标签
 
-The first tab will be open by default. You can change the default open tab using the `activeTab()` method:
+默认情况下，打开的是第一个 Tab。你可以使用 `activeTab()` 方法修改默认打开的 Tab：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -56,9 +56,9 @@ Tabs::make('Label')
     ->activeTab(2)
 ```
 
-## Persisting the current tab in the URL's query string
+## 在 URL 查询字符串中将当前 Tab 持久化
 
-By default, the current tab is not persisted in the URL's query string. You can change this behavior using the `persistTabInQueryString()` method:
+默认情况下，当前 Tab 不会再 URL 查询字符串中持久化，你可以使用 `persistTabInQueryString()` 方法修改此行为：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -81,7 +81,7 @@ Tabs::make('Label')
     ->persistTabInQueryString()
 ```
 
-By default, the current tab is persisted in the URL's query string using the `tab` key. You can change this key by passing it to the `persistTabInQueryString()` method:
+默认情况下，当前 Tab 在 URL 查询字符串中使用 `tab` 键持久化。你可以将其传入 `persistTabInQueryString()` 方法中修改此键：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -104,9 +104,9 @@ Tabs::make('Label')
     ->persistTabInQueryString('settings-tab')
 ```
 
-## Setting a tab icon
+## 设置 Tab 图标
 
-Tabs may have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search), which you can set using the `icon()` method:
+使用 `icon()` 方法，可以为 Tab 设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -124,9 +124,9 @@ Tabs::make('Label')
 
 <AutoScreenshot name="forms/layout/tabs/icons" alt="Tabs with icons" version="3.x" />
 
-### Setting the tab icon position
+### 设置 Tab 图标位置
 
-The icon of the tab may be positioned before or after the label using the `iconPosition()` method:
+使用 `iconPosition()` 方法可以将图标放在标签的前后：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -146,9 +146,9 @@ Tabs::make('Label')
 
 <AutoScreenshot name="forms/layout/tabs/icons-after" alt="Tabs with icons after their labels" version="3.x" />
 
-## Setting a tab badge
+## 设置 Tab 徽章
 
-Tabs may have a badge, which you can set using the `badge()` method:
+使用 `badge()` 方法，可以为选项卡设置徽章：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -166,9 +166,9 @@ Tabs::make('Label')
 
 <AutoScreenshot name="forms/layout/tabs/badges" alt="Tabs with badges" version="3.x" />
 
-## Using grid columns within a tab
+## 在选项卡中使用网格 columns
 
-You may use the `columns()` method to customize the [grid](grid) within the tab:
+你可以在 Tab 中使用 `columns()` 自定义 [Grid](grid)：
 
 ```php
 use Filament\Forms\Components\Tabs;
@@ -184,9 +184,9 @@ Tabs::make('Label')
     ])
 ```
 
-## Removing the styled container
+## 移除样式容器
 
-By default, tabs and their content are wrapped in a container styled as a card. You may remove the styled container using `contained()`:
+默认情况下，Tabs 及其内容被包装在一个样式为卡片的容器中，你可以使用 `contained()` 移除样式容器：
 
 ```php
 use Filament\Forms\Components\Tabs;

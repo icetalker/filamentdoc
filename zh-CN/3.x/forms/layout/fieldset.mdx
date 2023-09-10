@@ -5,9 +5,9 @@ title: Fieldset
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-You may want to group fields into a Fieldset. Each fieldset has a label, a border, and a two-column grid by default:
+你可能想将多个字段分组到一个 Fieldset 中。每个 Fieldset 默认都有一个标签、一条边框(border) 以及 2 列宽的网格：
 
 ```php
 use Filament\Forms\Components\Fieldset;
@@ -20,9 +20,9 @@ Fieldset::make('Label')
 
 <AutoScreenshot name="forms/layout/fieldset/simple" alt="Fieldset" version="3.x" />
 
-## Using grid columns within a fieldset
+## 在 Fieldset 中使用网格列宽
 
-You may use the `columns()` method to customize the [grid](grid) within the fieldset:
+你可以使用 `columns()` 方法，在 Fieldset 中自定义 [Grid](grid):
 
 ```php
 use Filament\Forms\Components\Fieldset;

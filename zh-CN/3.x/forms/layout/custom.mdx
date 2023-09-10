@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/04-layout/08-custom.md"
-title: Custom layouts
+title: 自定义布局
 ---
 
-## View components
+## 视图组件
 
-Aside from [building custom layout components](custom), you may create "view" components which allow you to create custom layouts without extra PHP classes.
+除了[创建自定义布局组件](custom)，你可以创建视图组件。它允许你可以在不使用额外 PHP 类的情况下，创建自定义布局。
 
 ```php
 use Filament\Forms\Components\View;
@@ -14,21 +14,21 @@ use Filament\Forms\Components\View;
 View::make('filament.forms.components.wizard')
 ```
 
-This assumes that you have a `resources/views/filament/forms/components/wizard.blade.php` file.
+这段代码假定你有这么一个文件 `resources/views/filament/forms/components/wizard.blade.php`。
 
-## Custom layout classes
+## 自定义布局类
 
-You may create your own custom component classes and views, which you can reuse across your project, and even release as a plugin to the community.
+你可以创建自定义的组件类和视图，使之可以在整个项目中重用，甚至作为插件发布到社区中。
 
-> If you're just creating a simple custom component to use once, you could instead use a [view component](#view) to render any custom Blade file.
+> 如果你只想创建一个使用一次的简单自定义组件，你可以使用[视图组件](#视图组件)来渲染任何自定义 Blade 文件。
 
-To create a custom column class and view, you may use the following command:
+要创建自定义表单布局类和视图，你可以使用如下命令：
 
 ```bash
 php artisan make:form-layout Wizard
 ```
 
-This will create the following layout component class:
+该命令回创建如下布局组件类：
 
 ```php
 use Filament\Forms\Components\Component;
@@ -44,11 +44,11 @@ class Wizard extends Component
 }
 ```
 
-It will also create a view file at `resources/views/filament/forms/components/wizard.blade.php`.
+同时也会创建一个视图文件：`resources/views/filament/forms/components/wizard.blade.php`。
 
-## Rendering the component's schema
+## 渲染组件的 schema
 
-Inside your view, you may render the component's `schema()` using the `$getChildComponentContainer()` function:
+在视图内，你可以使用 `$getChildComponentContainer()` 函数，渲染组件的 `schema()`：
 
 ```blade
 <div>
@@ -56,9 +56,9 @@ Inside your view, you may render the component's `schema()` using the `$getChild
 </div>
 ```
 
-## Accessing the Eloquent record
+## 访问 Eloquent 记录
 
-Inside your view, you may access the Eloquent record using the `$getRecord()` function:
+在视图内，你可以使用 `$getRecord()` 函数访问 Eloquent 记录：
 
 ```blade
 <div>

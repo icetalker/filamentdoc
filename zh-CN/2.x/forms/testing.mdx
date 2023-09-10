@@ -6,7 +6,7 @@ title: 测试
 
 所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。当然，你也可以使用 PHPUnit。
 
-因为表单构造器是基于 Livewire 组件的，因此你也可以使用 [Livewire 测试辅助函数](https://laravel-livewire.com/docs/testing)。不过，我们自定义了一个测试辅助函数，让你可以用于表单测试：
+因为表单构造器是基于 Livewire 组件的，因此你也可以使用 [Livewire 测试辅助函数](https://laravel-livewire.com/docs/testing)。不过，我们自定义了一些测试辅助函数，让你可以用于表单测试：
 
 ## 填充表单
 
@@ -105,7 +105,7 @@ it('has a title field', function () {
 });
 ```
 
-你也可以传入函数作为额外的参数，来断言一个字段传入了一个“真值测试”。着对断言一个字段有某个特定配置非常有用：
+你也可以传入函数作为额外的参数，来断言一个字段传入了一个“真值测试”。这对断言一个字段有某个特定配置非常有用：
 
 ```php
 use function Pest\Livewire\livewire;

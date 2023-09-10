@@ -29,13 +29,15 @@ composer require filament/tables:"^3.0-stable" -W
 
 要快速开始使用 Filament，你可以使用如下命令安装 [Livewire](https://laravel-livewire.com)、[Alpine.js](https://alpinejs.dev) 和 [Tailwind CSS](https://tailwindcss.com)。
 
+> 这些命令会粗暴地覆盖你应用中现有的文件，因此我们只推荐在新项目中使用该方法。
+
 ```bash
 php artisan filament:install --scaffold --tables
+
 npm install
+
 npm run dev
 ```
-
-> 这些命令会粗暴地覆盖你应用中现有的文件，因此我们只推荐在新项目中使用该方法。
 
 ## 已有的 Laravel 项目
 
@@ -47,13 +49,13 @@ php artisan filament:install --tables
 
 ### 安装 Tailwind CSS
 
-首先，使用 npm 安装 Tailwind CSS 及它的 `forms` 和 `typography` 插件：
+运行如下命令安装 Tailwind CSS 及 Tailwind Forms 和 Typography 插件：
 
 ```bash
 npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
 ```
 
-新建一个 `tailwind.config.js` 文件。确保添加了 Filament 的 `preset`，它配置了颜色和安装的插件： 
+新建一个 `tailwind.config.js` 文件，并添加 Filament 的 `preset` *(引入 Filament color scheme 及必要的 Tailwind 插件)*： 
 
 ```js
 import preset from './vendor/filament/support/tailwind.config.preset'
@@ -170,7 +172,7 @@ php artisan vendor:publish --tag=filament-config
 ],
 ```
 
-如果你倾向于不去自动升级，请从 `composer.json` 中移除 `filament:upgrade`，并运行如下命令：
+如果你不希望自动升级，请在 `composer.json` 中移除 `filament:upgrade` 命令，并运行如下命令：
 
 ```bash
 composer update

@@ -134,15 +134,15 @@ public function mount(Post $post): void
 
 ## 设置表单模型
 
-Giving the `$form` access to a model is useful for a few reasons:
+让 `$form` 访问模型有几个用处：
 
-- It allows fields within that form to load information from that model. For example, select fields can [load their options from the database](fields/select#integrating-with-an-eloquent-relationship) automatically.
-- The form can load and save the model's relationship data automatically. For example, you have an Edit Post form, with a [Repeater](fields/repeater#integrating-with-an-eloquent-relationship) which manages comments associated with that post. Filament will automatically load the comments for that post when you call `$this->form->fill([...])`, and save them back to the relationship when you call `$this->form->getState()`.
-- Validation rules like `exists()` and `unique()` can automatically retrieve the database table name from the model.
+- 它允许表单中的字段从模型中加载信息。比如，Select 字段可以自动[从数据库加载选项](fields/select#集成-eloquent-关联)。
+- 表单可以自动加载并保存模型的关联数据。比如，你有一个编辑文章(Post)的表单，使用 [Repeater](fields/repeater#集成-eloquent-关联) 管理与文章管理的评论。当调用 `$this->form->fill([...])` 时，Filament 会自动为那个 Post 加载评论，并且在调用 `$this->form->getState()`时，将其保存回关联之中。
+- 像 `exists()` 和 `unique()` 这样的验证规则，可以自动从模型中检索数据库表名。
 
-It is advised to always pass the model to the form when there is one. As explained, it unlocks many new powers of the Filament Form Builder.
+如果存在模型，建议将其传递给表单。如前所述，它可以解锁 Filament 表单构造器的许多新能力。
 
-To pass the model to the form, use the `$form->model()` method:
+使用 `$form->model()` 方法，可以将模型传递给表单：
 
 ```php
 use App\Models\Post;
@@ -161,9 +161,9 @@ public function form(Form $form): Form
 }
 ```
 
-### Passing the form model after the form has been submitted
+### 表单提交后传递表单模型
 
-In some cases, the form's model is not available until the form has been submitted. For example, in a Create Post form, the post does not exist until the form has been submitted. Therefore, you can't pass it in to `$form->model()`. However, you can pass a model class instead:
+有些情况下，表单模型在表单提交之前是不可用的。比如，创建 Post 的表单中，表单提交之前 post 模型并不存在。因此，你不能将其传入到 `$form->model()`。不过，你可以传递模型类替代：
 
 ```php
 use App\Models\Post;
@@ -180,7 +180,7 @@ public function form(Form $form): Form
 }
 ```
 
-On its own, this isn't as powerful as passing a model instance. For example, relationships won't be saved to the post after it is created. To do that, you'll need to pass the post to the form after it has been created, and call `saveRelationships()` to save the relationships to it:
+就其本身而言，这并不比传递模型实例更强大。比如，关联不会在创建之后保存到 post 中。为此，你需要在 post 创建之后，将其传递给表单，并调用 `saveRelationships()` 以保存关联：
 
 ```php
 use App\Models\Post;
@@ -194,9 +194,9 @@ public function create(): void
 }
 ```
 
-## Saving form data to individual properties
+## 将表单数据保存到单独的属性中
 
-In all of our previous examples, we've been saving the form's data to the public `$data` property on the Livewire component. However, you can save the data to individual properties instead. For example, if you have a form with a `title` field, you can save the form's data to the `$title` property instead. To do this, don't pass a `statePath()` to the form at all. Ensure that all of your fields have their own **public** properties on the class.
+在此前所有的示例中，我们将表单数据保存到 Livewire 组件的公共的 `$data` 属性中。不过，我们也可以将数据保存到单独的属性中。比如，如果表单中有一个 `title` 字段，你可以将其保存到 `title` 属性中。为此，根本无需将 `statePath()` 传递给表单。请确保所有字段在类中都有他们自己的 **public** 属性。
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -219,9 +219,9 @@ public function form(Form $form): Form
 }
 ```
 
-## Using multiple forms
+## 使用多种表单Using multiple forms
 
-By default, the `InteractsWithForms` trait only handles one form per Livewire component - `form()`. To add more forms to the Livewire component, you can define them in the `getForms()` method, and return an array containing the name of each form:
+默认情况下，`InteractsWithForms` trait 每个 Livewire 组件只能处理一个表单 —— 即 `form()`。要添加多个表单到 Livewire 组件，你可以在 `getForms()` 方法中定义，并返回包含每个表单名的数组:
 
 ```php
 protected function getForms(): array
@@ -233,7 +233,7 @@ protected function getForms(): array
 }
 ```
 
-Each of these forms can now be defined within the Livewire component, using a method with the same name:
+现在，通过与上述表单名同名的方法，每个表单都能在 Livewire 组件中定义：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -271,18 +271,18 @@ public function createCommentForm(Form $form): Form
 }
 ```
 
-Now, each form is addressable by its name instead of `form`. For example, to fill the post form, you can use `$this->editPostForm->fill([...])`, or to get the data from the comment form you can use `$this->createCommentForm->getState()`.
+现在，每个表单都能通过表单名而非 `form` 定位。比如，你可以使用 `$this->editPostForm->fill([...])` 填充文章(Post)表单；或者可以使用 `$this->createCommentForm->getState()` 获取评论(Comment)表单的数据。
 
-You'll notice that each form has its own unique `statePath()`. Each form will write its state to a different array on your Livewire component, so it's important to define these:
+你可以注意到，每个表单都有其唯一的 `statePath()`。每个表单都会在 Livewire 组件上将其状态(state)写入到不同数组中，因此，定义如下数组很重要：
 
 ```php
 public ?array $postData = [];
 public ?array $commentData = [];
 ```
 
-## Resetting a form's data
+## 重置表单数据
 
-You can reset a form back to its default data at any time by calling `$this->form->fill()`. For example, you may wish to clear the contents of a form every time it's submitted:
+通过调用 `$this->form->fill()`，你可以在任何时候将表单重置回其默认数据。比如，你希望每次提交后，清空表单内容：
 
 ```php
 use App\Models\Comment;
@@ -296,40 +296,40 @@ public function createComment(): void
 }
 ```
 
-## Generating form Livewire components with the CLI
+## 使用 CLI 生成表单 Livewire 组件
 
-It's advised that you learn how to set up a Livewire component with the Form Builder manually, but once you are confident, you can use the CLI to generate a form for you.
+建议你了解如何使用表单构造器手动创建 Livewire 组件，不过一旦熟悉之后，你可以使用 CLI 命令行来生成表单。
 
 ```bash
 php artisan make:livewire-form RegistrationForm
 ```
 
-This will generate a new `app/Livewire/RegistrationForm.php` component, which you can customize.
+这将会生成新的 `app/Livewire/RegistrationForm.php` 组件，你可以对其进行自定义。
 
-### Generating a form for an Eloquent model
+### 为 Eloquent 模型生成表单
 
-Filament is also able to generate forms for a specific Eloquent model. These are more powerful, as they will automatically save the data in the form for you, and [ensure the form fields are properly configured](#setting-a-form-model) to access that model.
+Filament 也可以为指定的 Eloquent 模型生成表单。这更为强大，因为它能自动为你保存表单数据，并[确保表对单字段进行合理配置](#设置表单模型)来访问该模型。
 
-When generating a form with the `make:livewire-form` command, it will ask for the name of the model:
+当使用 `make:livewire-form` 命令生成表单时，它会询问模型名称：
 
 ```bash
 php artisan make:livewire-form Products/CreateProduct
 ```
 
-#### Generating an edit form for an Eloquent record
+#### 为 Eloquent 记录生成编辑表单
 
-By default, passing a model to the `make:livewire-form` command will result in a form that creates a new record in your database. If you pass the `--edit` flag to the command, it will generate an edit form for a specific record. This will automatically fill the form with the data from the record, and save the data back to the model when the form is submitted.
+默认情况下，传入模型到 `make:livewire-form` 会产生一个表单，用于在数据库中生成新记录。如果你传入 `--edit` 标志到该命令，它会为特定记录生成编辑表单。这回使用记录数据自动填充表单，并在提交后将数据保存回模型中。
 
 ```bash
 php artisan make:livewire-form Products/EditProduct --edit
 ```
 
-### Automatically generating form schemas
+### 自动生成表单 Schema
 
-Filament is also able to guess which form fields you want in the schema, based on the model's database columns. You can use the `--generate` flag when generating your form:
+Filament 可以基于模型数据库字段，猜测你想要在 Schema 中添加哪些表单字段。生成表单时，你可以使用 `--generate` 标志：
 
 ```bash
 php artisan make:livewire-form Products/CreateProduct --generate
 ```
 
-> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the schema for your table if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
+> 如果标中包含 ENUM 字段，`doctrine/dbal` 将会无法扫描表并且崩溃。因此，如果包含 ENUM 字段，Filament 将无法生成 Schema。更多关于该问题的信息，请查阅[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
