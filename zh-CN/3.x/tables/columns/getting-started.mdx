@@ -1,13 +1,13 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/03-columns/01-getting-started.md"
-title: Getting started
+title: 开始
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Column classes can be found in the `Filament\Tables\Columns` namespace. You can put them inside the `$table->columns()` method:
+列字段(Column)类在 `Filament\Tables\Columns` 命名空间中。你可以将它们放到 `$table->columns()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -21,7 +21,7 @@ public function table(Table $table): Table
 }
 ```
 
-Columns may be created using the static `make()` method, passing its unique name. The name of the column should correspond to a column or accessor on your model. You may use "dot notation" to access columns within relationships.
+列字段可以使用静态 `make()` 方法创建，并传入其唯一名。列名应该对应于模型的字段或者访问器。你可以使用"点语法"在关联中访问字段。
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -31,29 +31,29 @@ TextColumn::make('title')
 TextColumn::make('author.name')
 ```
 
-## Available columns
+## 可用列字段
 
-Filament ships with two main types of columns - static and editable.
+Filament 带有两种主要类型的列 - 静态类型及可编辑类型。
 
-Static columns display data to the user:
+静态列将数据展示给用户：
 
 - [Text column](text)
 - [Icon column](icon)
 - [Image column](image)
 - [Color column](color)
 
-Editable columns allow the user to update data in the database without leaving the table:
+可编辑列允许用户不离开表格更新数据库中的数据：
 
 - [Select column](select)
 - [Toggle column](toggle)
 - [Text input column](text-input)
 - [Checkbox column](checkbox)
 
-You may also [create your own custom columns](custom) to display data however you wish.
+你也可以[创建自定义的列](custom)，按照你希望的方式展示数据。
 
-## Setting a label
+## 设置标签
 
-By default, the label of the column, which is displayed in the header of the table, is generated from the name of the column. You may customize this using the `label()` method:
+默认情况下，列的标签(显示于表头)是有列字段名生成。你可以使用 `label()` 方法自定义：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -62,7 +62,7 @@ TextColumn::make('title')
     ->label('Post title')
 ```
 
-Optionally, you can have the label automatically translated [using Laravel's localization features](https://laravel.com/docs/localization) with the `translateLabel()` method:
+可选地，调用 `translateLabel()` 方法，你可以[使用 Laravel 的本地化特性]自动翻译标签：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -71,9 +71,9 @@ TextColumn::make('title')
     ->translateLabel() // Equivalent to `label(__('Title'))`
 ```
 
-## Sorting
+## 排序
 
-Columns may be sortable, by clicking on the column label. To make a column sortable, you must use the `sortable()` method:
+字段可以是可排序的，通过点击列标签实现。要使列可排序，请使用 `sortable` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -84,7 +84,7 @@ TextColumn::make('name')
 
 <AutoScreenshot name="tables/columns/sortable" alt="Table with sortable column" version="3.x" />
 
-If you're using an accessor column, you may pass `sortable()` an array of database columns to sort by:
+如果你使用访问器字段，你可以传递数据库字段数组到 `sortable()` 用以排序： 
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -93,7 +93,7 @@ TextColumn::make('full_name')
     ->sortable(['first_name', 'last_name'])
 ```
 
-You may customize how the sorting is applied to the Eloquent query using a callback:
+你也可以使用回调函数，自定义排序应该如何应用到 Eloquent 查询中：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -107,9 +107,9 @@ TextColumn::make('full_name')
     })
 ```
 
-## Sorting by default
+## 默认排序
 
-You may choose to sort a table by default if no other sort is applied. You can use the `defaultSort()` method for this:
+如果没有使用到其他排序，你可以使用 `defaultSort()` 方法，对表格进行默认排序：
 
 ```php
 use Filament\Tables\Table;
@@ -124,9 +124,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Persist sort in session
+### 在 Session 中持久化排序
 
-To persist the sorting in the user's session, use the `persistSortInSession()` method:
+使用 `persistSortInSession()` 方法，可以在用户 Session 中持久化排序：
 
 ```php
 use Filament\Tables\Table;
@@ -141,9 +141,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Searching
+## 搜索
 
-Columns may be searchable by using the text input field in the top right of the table. To make a column searchable, you must use the `searchable()` method:
+使用表格右上角的文本输入字段，列字段可以是可搜索的。要使之可搜索，请使用 `searchable()` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -154,7 +154,7 @@ TextColumn::make('name')
 
 <AutoScreenshot name="tables/columns/searchable" alt="Table with searchable column" version="3.x" />
 
-If you're using an accessor column, you may pass `searchable()` an array of database columns to search within:
+如果你使用了访问器字段，你可以将数据库字段数组传递到 `searchable()` 中：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -163,7 +163,7 @@ TextColumn::make('full_name')
     ->searchable(['first_name', 'last_name'])
 ```
 
-You may customize how the search is applied to the Eloquent query using a callback:
+你也可以使用回调函数自定义搜索应该如何应用到 Eloquent 查询：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -177,8 +177,9 @@ TextColumn::make('full_name')
     })
 ```
 
-### Searching individually
+### 单独搜索
 
+使用 `isIndividual` 参数，你可以启用每列搜索文本字段：
 You can choose to enable a per-column search input field using the `isIndividual` parameter:
 
 ```php
@@ -190,9 +191,9 @@ TextColumn::make('name')
 
 <AutoScreenshot name="tables/columns/individually-searchable" alt="Table with individually searchable column" version="3.x" />
 
-If you use the `isIndividual` parameter, you may still search that column using the main "global" search input field for the entire table.
+使用 `isIndividual` 参数后，你仍然可以使用用于整个表格的"全局"搜索输入字段搜索该字段：
 
-To disable that functionality while still preserving the individual search functionality, you need the `isGlobal` parameter:
+要在保留单独搜索功能的同时禁用字段的全局搜索功能，请使用 `isGlobal` 参数：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -201,7 +202,7 @@ TextColumn::make('title')
     ->searchable(isIndividual: true, isGlobal: false)
 ```
 
-You may optionally persist the searches in the query string:
+你也可以在查询字符串中可选地持久化搜索：
 
 ```php
 use Livewire\Attributes\Url;
@@ -213,9 +214,9 @@ use Livewire\Attributes\Url;
 public array $tableColumnSearches = [];
 ```
 
-### Persist search in session
+### 在 Session 中持久化搜索
 
-To persist the table or individual column search in the user's session, use the `persistSearchInSession()` or `persistColumnSearchInSession()` method:
+要在用户 Session 中持久化表格搜索或单独列搜索，请使用 `persistSearchInSession()` 或者 `persistColumnSearchInSession()` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -231,7 +232,7 @@ public function table(Table $table): Table
 }
 ```
 
-### Forcing case-insensitive column search
+### 强制大小写不敏感列搜索
 
 By default, searching will use the sensitivity settings from the database table column. This is to avoid unnecessary performance overhead when searching large datasets that would arise if we were to force insensitivity for all users. However, if your database does not search case-insensitively by default, you can force it to by using the `forceSearchCaseInsensitive()` method:
 

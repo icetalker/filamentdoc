@@ -1,23 +1,23 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/02-getting-started.md"
-title: Getting started
+title: 开始
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Filament's Table Builder package allows you to [add an interactive datatable to any Livewire component](adding-a-table-to-a-livewire-component). It's also used within other Filament packages, such as the [Panel Builder](../panels) for displaying [resources](../panels/resources/getting-started) and [relation managers](../panels/resources/relation-managers), as well as for the [table widget](../panels/dashboard#table-widgets). Learning the features of the Table Builder will be incredibly time-saving when both building your own custom Livewire tables and using Filament's other packages.
+Filament 表格构造器允许你[添加交互式数据表到 Livewire 组件](adding-a-table-to-a-livewire-component)。它也用在其他 Filament 包中，比如在[面板构造器](../panels)中展示[资源](../panels/resources/getting-started)和[关联管理器](../panels/resources/relation-managers)，以及[表格 widget](../panels/dashboard#表格-widget)。了解表格构造器的特性将能极大节省创建自定义 Livewire 表格和使用其他 Filament 包的时间。
 
-This guide will walk you through the basics of building tables with Filament's table package. If you're planning to add a new table to your own Livewire component, you should [do that first](adding-a-table-to-a-livewire-component) and then come back. If you're adding a table to an [app resource](../panels/resources/getting-started), or another Filament package, you're ready to go!
+本教程将带你一起了解通过 Filament 表格构造器创建表格的基础。如果你计划将新表单添加到自己的 Livewire 组件，你可以先[添加完表格](adding-a-table-to-a-livewire-component)，再回来。如果你要将表格添加到[应用资源](../panels/resources/getting-started)或者其他 Filament 包中，可以开始了！
 
-## Defining table columns
+## 定义表格列
 
-The basis of any table is rows and columns. Filament uses Eloquent to get the data for rows in the table, and you are responsible for defining the columns that are used in that row.
+表格的基础是行和列。Filament 使用 Eloquent 获取表格的行数据，由你负责定义该行中使用的列字段。
 
-Filament includes many column types prebuilt for you, and you can [view a full list here](columns/getting-started#available-columns). You can even [create your own custom column types](columns/custom) to display data in whatever way you need.
+Filament 中由许多预构建的列字段类型，[此处查看可用字段完整清单](columns/getting-started#可用列字段)。你也可以[创建自定义类字段类型](columns/custom)。
 
-Columns are stored in an array, as objects within the `$table->columns()` method:
+列字段以 `$table->columns()` 方法中的对象的方式，保存在数组中：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -38,11 +38,11 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/getting-started/columns" alt="Table with columns" version="3.x" />
 
-In this example, there are 3 columns in the table. The first two display [text](columns/text) - the title and slug of each row in the table. The third column displays an [icon](columns/icon), either a green check or a red cross depending on if the row is featured or not.
+本例中，表格中有三个列字段。前两个展示[文本](columns/text) - 表格中每行的标题和 slug。第三列展示[图标](columns/icon)，显示绿色的打勾或者红色的打叉。
 
-### Making columns sortable and searchable
+### 使列字段可排序和可搜索
 
-You can easily modify columns by chaining methods onto them. For example, you can make a column [searchable](columns/getting-started#searching) using the `searchable()` method. Now, there will be a search field in the table, and you will be able to filter rows by the value of that column:
+使用链式调用方法可以轻松修改列字段。比如，你可以使用 `searchable()` 将列字段设为[可搜索](columns/getting-started#搜索)。现在，表格中将有一个搜索字段，你可以使用该列的值过滤行数据：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -53,9 +53,9 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/getting-started/searchable-columns" alt="Table with searchable column" version="3.x" />
 
-You can make multiple columns searchable, and Filament will be able to search for matches within any of them, all at once.
+您可以让多个列可搜索，Filament 将能够同时搜索其中任何一个列中的匹配项。
 
-You can also make a column [sortable](columns/getting-started#sorting) using the `sortable()` method. This will add a sort button to the column header, and clicking it will sort the table by that column:
+使用 `sortable()` 方法，你也可以让字段列[可排序](columns/getting-started#排序)。这将会在列首添加一个排序按钮，点击会使之按照该列对表格进行排序：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -66,9 +66,9 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/getting-started/sortable-columns" alt="Table with sortable column" version="3.x" />
 
-### Accessing related data from columns
+### 从列中访问关联数据
 
-You can also display data in a column that belongs to a relationship. For example, if you have a `Post` model that belongs to a `User` model (the author of the post), you can display the user's name in the table:
+你也可以在列中展示关联数据。比如，如果 `Post` 模型，其关联 `User` 模型(文章的作者)，你可以在表格中展示用户名：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -78,11 +78,11 @@ TextColumn::make('author.name')
 
 <AutoScreenshot name="tables/getting-started/relationship-columns" alt="Table with relationship column" version="3.x" />
 
-In this case, Filament will search for an `author` relationship on the `Post` model, and then display the `name` attribute of that relationship. We call this "dot notation" - you can use it to display any attribute of any relationship, even nested distant relationships. Filament uses this dot notation to eager-load the results of that relationship for you.
+本例中，Filament 会在 `Post` 模型中搜索 `author` 关联，并展示该关联的 `name` 属性。通过"点语法" - 你可以展示任何关联的任何属性，即使是嵌套遥远的关联。Filament 使用点语法来饥渴式加载关联结果。 
 
-## Defining table filters
+## 定义表格过滤器
 
-As well as making columns `searchable()`, you can allow the users to filter rows in the table in other ways. We call these components "filters", and they are defined in the `$table->filters()` method:
+除了 `searchable()`， 你可以以另外一种方式过滤表中的行数据。我们将这样的组件称之为"过滤器(filter)"，使用 `$table->filters()` 方法定义：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -111,17 +111,17 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/getting-started/filters" alt="Table with filters" version="3.x" />
 
-In this example, we have defined 2 table filters. On the table, there is now a "filter" icon button in the top corner. Clicking it will open a dropdown with the 2 filters we have defined.
+本例中，我们定义了 2 个表格过滤器。现在表格右上角有一个"过滤器"图标按钮。点击它将会打开带有 2 个过滤器的下拉菜单。
 
-The first filter is rendered as a checkbox. When it's checked, only featured rows in the table will be displayed. When it's unchecked, all rows will be displayed.
+第一个过滤器被渲染成 Checkbox。当它勾选时，表格中只会展示 featured 的行数据。没有勾选时，则会展示所有数据。
 
-The second filter is rendered as a select dropdown. When a user selects an option, only rows with that status will be displayed. When no option is selected, all rows will be displayed.
+第二个过滤器渲染成下拉列表。用户选中一个选项时，只会展示该状态下的数据。没有选中选项时，则展示所有数据。
 
-It's possible to define as many filters as you need, and use any component from the [Form Builder package](../forms) to create a UI. For example, you could create [a custom date range filter](../filters#custom-filter-forms).
+你可以按照需要定义尽可能多的过滤器，并使用[表格构造器](../forms)中的任何组件来创建 UI。比如，你可以创建[自定义日期范围过滤器](../filters#自定义过滤器表单)。
 
-## Defining table actions
+## 定义表格 Action
 
-Filament's tables can use [Actions](../actions/overview). They are buttons that can be added to the [end of any table row](actions#row-actions), or even in the [header](actions#header-actions) of a table. For instance, you may want an action to "create" a new record in the header, and then "edit" and "delete" actions on each row. [Bulk actions](actions#bulk-actions) can be used to execute code when records in the table are selected.
+Filament 表格使用 [Action](../actions/overview)。它是可以添加到[任何表格行尾部的按钮](actions#行-action)，或者表格[头部](actions#头部-action)。比如，你可以在头部中使用 Action 来创建新记录，然后再每一行中使用编辑和删除 Action。[批量操作 Action](actions#bulk-actions)可用于表格记录选中时执行代码。
 
 ```php
 use App\Models\Post;
@@ -159,21 +159,21 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/getting-started/actions" alt="Table with actions" version="3.x" />
 
-In this example, we define 2 actions for table rows. The first action is a "feature" action. When clicked, it will set the `is_featured` attribute on the record to `true` - which is written within the `action()` method. Using the `hidden()` method, the action will be hidden if the record is already featured. The second action is an "unfeature" action. When clicked, it will set the `is_featured` attribute on the record to `false`. Using the `visible()` method, the action will be hidden if the record is not featured.
+本例中，我们为表格行定义了两个 Action。第一个为 "feature" Action。点击时，它会将该记录的 `is_featured` 属性设置为 `true` - 将其写在 `action()` 方法中。使用 `hidden()` 方法，如果记录已经是 featured 了，则该 Action 会被隐藏。第二个则是 `unfeature` Action。点击时，`is_featured` 属性设置为 `false`。使用 `visible()` 方法，如果该记录没有被 featured，该 Action 将被隐藏。
 
-We also define a bulk action. When bulk actions are defined, each row in the table will have a checkbox. This bulk action is [built-in to Filament](../actions/prebuilt-actions/delete#bulk-delete), and it will delete all selected records. However, you can [write your own custom bulk actions](actions#bulk-actions) easily too.
+同时，我们定义了一个批量操作 Action。定义了批量操作后，表格中的每一行中都有一个 Checkbox。该批量操作 Action 为 [Filament 预制](../actions/prebuilt-actions/delete#批量删除)，将会删除选中的记录。不过，你也可以[编写自定义批量操作 Action](actions#批量-action)。
 
 <AutoScreenshot name="tables/getting-started/actions-modal" alt="Table with action modal open" version="3.x" />
 
-Actions can also open modals to request confirmation from the user, as well as render forms inside to collect extra data. It's a good idea to read the [Actions documentation](../actions/overview) to learn more about their extensive capabilities throughout Filament.
+Action 也可以打开模态框，要求用户确认或者渲染表格收集额外的数据。请查阅 [Action 文档](../actions/overview)，了解其在 Filament 中的扩展能力。
 
-## Next steps with the Table Builder package
+## 下一步
 
-Now you've finished reading this guide, where to next? Here are some suggestions:
+你已经阅读完本教程，接下来呢？这是一些建议：
 
-- [Explore the available columns to display data in your table.](columns/getting-started#available-columns)
-- [Deep dive into table actions and start using modals.](actions)
-- [Discover how to build complex, responsive table layouts without touching CSS.](layout)
-- [Add summaries to your tables, which give an overview of the data inside them.](summaries)
-- [Find out about all advanced techniques that you can customize tables to your needs.](advanced)
-- [Write automated tests for your tables using our suite of helper methods.](testing)
+- [了解可用列字段，用以在表格中展示数据。](columns/getting-started#可用列字段)
+- [深入了解表格 Action，并开始使用模态框。](actions)
+- [了解如何在不触碰 CSS 的情况下，创建复杂的、响应式表格布局。](layout)
+- [在表格中添加小结，对表中数据进行概述。](summaries)
+- [了解所有自定义表格的高级技术。](advanced)
+- [使用辅助函数套件为表格编写自动化测试。](testing)

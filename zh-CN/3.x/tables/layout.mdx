@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/06-layout.md"
-title: Layout
+title: 布局
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## The problem with traditional table layouts
+## 传统表格布局的问题
 
-Traditional tables are notorious for having bad responsiveness. On mobile, there is only so much flexibility you have when rending content that is horizontally long:
+传统表格因为响应式适配能力差而名声不佳。在移动端，在水平方向上渲染较长内容时，只有有限的灵活性：
 
-- Allow the user to scroll horizontally to see more table content
-- Hide non-important columns on smaller devices
+- 允许用户水平滚动查看表格内容
+- 在较小的设备上隐藏不重要的列字段
 
-Both of these are possible with Filament. Tables automatically scroll horizontally when they overflow anyway, and you may choose to show and hide columns based on the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) of the browser. To do this, you may use a `visibleFrom()` or `hiddenFrom()` method:
+这两者在 Filament 上都能实现。表格会在内容溢出时自动水平滚动，而且你可以基于浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)显示或隐藏字段。要实现该功能，请使用 `visibleFrom()` 或 `hiddenFrom()` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -21,17 +21,17 @@ TextColumn::make('slug')
     ->visibleFrom('md')
 ```
 
-This is fine, but there is still a glaring issue - **on mobile, the user is unable to see much information in a table row at once without scrolling**.
+这很好，但仍然存在一个明显的问题 - **在移动设备上，用户在不滚动的情况下无法同时看到表行中的许多信息**。
 
-Thankfully, Filament lets you build responsive table-like interfaces, without touching HTML or CSS. These layouts let you define exactly where content appears in a table row, at each responsive breakpoint.
+值得庆幸的是，Filament 可以让您在不接触 HTML 或 CSS 的情况下构建响应式的类表接口。通过这些布局，您可以在每个响应断点处准确定义内容在表行中的显示位置。
 
 <AutoScreenshot name="tables/layout/demo" alt="Table with responsive layout" version="3.x" />
 
 <AutoScreenshot name="tables/layout/demo/mobile" alt="Table with responsive layout on mobile" version="3.x" />
 
-## Allowing columns to stack on mobile
+## 移动端上允许列堆叠
 
-Let's introduce a component - `Split`:
+让我们来了解一个组件 - `Split`：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -53,9 +53,9 @@ Split::make([
 
 <AutoScreenshot name="tables/layout/split/mobile" alt="Table with a split layout on mobile" version="3.x" />
 
-A `Split` component is used to wrap around columns, and allow them to stack on mobile.
+`Split` 组件用于包裹列字段，并允许他们在移动端堆叠。
 
-By default, columns within a split will appear aside each other all the time. However, you may choose a responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) where this behaviour starts `from()`. Before this point, the columns will stack on top of each other:
+默认情况下，Split 中的列会始终显示在彼此旁边。不过，你可以使用 `from()` 选择一个该行为开始的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)。在此临界点之前，列字段将会彼此堆叠在一起：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -74,15 +74,15 @@ Split::make([
 ])->from('md')
 ```
 
-In this example, the columns will only appear horizontally aside each other from `md` [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) devices onwards:
+本例中，这些列只会在 `md` [临界点](https://tailwindcss.com/docs/responsive-design#overview)以上的设备中水平展开显示：
 
 <AutoScreenshot name="tables/layout/split-desktop" alt="Table with a split layout on desktop" version="3.x" />
 
 <AutoScreenshot name="tables/layout/split-desktop/mobile" alt="Table with a stacked layout on mobile" version="3.x" />
 
-### Preventing a column from creating whitespace
+### 防止列中创建空格
 
-Splits, like table columns, will automatically adjust their whitespace to ensure that each column has proportionate separation. You can prevent this from happening, using `grow(false)`. In this example, we will make sure that the avatar image will sit tightly against the name column:
+像表格列字段一样，Split 会自动调整空格以确保每个列能适当分开。你可以使用 `grow(false)` 防止该行为。本例中，我们将确保头像紧贴着名称字段：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -102,15 +102,15 @@ Split::make([
 ])
 ```
 
-The other columns which are allowed to `grow()` will adjust to consume the newly-freed space:
+其他允许 `grow()` 的列字段将进行调整，以消耗最新释放的空格：
 
 <AutoScreenshot name="tables/layout/grow-disabled" alt="Table with a column that doesn't grow" version="3.x" />
 
 <AutoScreenshot name="tables/layout/grow-disabled/mobile" alt="Table with a column that doesn't grow on mobile" version="3.x" />
 
-### Stacking within a split
+### Split 内堆叠
 
-Inside a split, you may stack multiple columns on top of each other vertically. This allows you to display more data inside fewer columns on desktop:
+在 Split 内，你可以将多个列字段在垂直方向上堆叠(Stack)。这就让你可以在桌面端的少数列字段中展示更多数据：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -139,9 +139,9 @@ Split::make([
 
 <AutoScreenshot name="tables/layout/stack/mobile" alt="Table with a stack on mobile" version="3.x" />
 
-#### Hiding a stack on mobile
+#### 在移动端隐藏 Stack
 
-Similar to individual columns, you may choose to hide a stack based on the responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) of the browser. To do this, you may use a `visibleFrom()` method:
+类似于单独的列，您可以根据浏览器的响应式[临界点](https://tailwindcss.com/docs/responsive-design#overview)选择隐藏 Stack。为此，可以使用 `visibleFrom()` 方法：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -170,9 +170,9 @@ Split::make([
 
 <AutoScreenshot name="tables/layout/stack-hidden-on-mobile/mobile" alt="Table with no stack on mobile" version="3.x" />
 
-#### Aligning stacked content
+#### 对齐堆叠内容
 
-By default, columns within a stack are aligned to the start. You may choose to align columns within a stack to the `Alignment::Center` or `Alignment::End`:
+默认情况下，Stack 内的列字段在开始处对齐。你可以将 Stack 内的列字段的对齐方式设置为 `Alignment::Center` 或 `Alignment::End`：
 
 ```php
 use Filament\Support\Enums\Alignment;
@@ -202,13 +202,13 @@ Split::make([
 ])
 ```
 
-Ensure that the columns within the stack have `grow(false)` set, otherwise they will stretch to fill the entire width of the stack and follow their own alignment configuration instead of the stack's.
+请确保将 Stack 内的列字段设置为 `grow(false)`，否则它们会伸展至填满 Stack 的整个宽度并遵循它们自己的对齐配置而非 Stack 的对齐方式。
 
 <AutoScreenshot name="tables/layout/stack-aligned-right" alt="Table with a stack aligned right" version="3.x" />
 
-#### Spacing stacked content
+#### 堆叠内容间隔
 
-By default, stacked content has no vertical padding between columns. To add some, you may use the `space()` method, which accepts either `1`, `2`, or `3`, corresponding to [Tailwind's spacing scale](https://tailwindcss.com/docs/space):
+默认情况下，不同列字段之间的堆叠内容在垂直方向上没有 padding。可以使用 `space()` 方法添加，该方法接收 `1`、`2` 或 `3`，对应于 [Tailwind 空格大小](https://tailwindcss.com/docs/space)。
 
 ```php
 use Filament\Tables\Columns\Layout\Stack;
@@ -222,11 +222,11 @@ Stack::make([
 ])->space(1)
 ```
 
-## Controlling column width using a grid
+## 使用网格控制列宽
 
-Sometimes, using a `Split` creates inconsistent widths when columns contain lots of content. This is because it's powered by Flexbox internally and each row individually controls how much space is allocated to content.
+有时，当列字段包含很多内容时，使用 `Split` 会出现不一致的宽度。这是因为它内部是使用 Flexbox 驱动，并且每行独自控制分配多少空格给内容。
 
-Instead, you may use a `Grid` layout, which uses CSS Grid Layout to allow you to control column widths:
+相反，你可以使用 `Grid` 布局，它使用 CSS 网格布局，允许你控制列宽：
 
 ```php
 use Filament\Tables\Columns\Layout\Grid;
@@ -243,9 +243,9 @@ Grid::make([
     ])
 ```
 
-These columns will always consume equal width within the grid, from the `lg` [breakpoint](https://tailwindcss.com/docs/responsive-design#overview).
+从 `lg` [断点](https://tailwindcss.com/docs/responsive-design#overview)开始，这些列字段在网格内始终会消费同样的宽度。
 
-You may choose to customize the number of columns within the grid at other breakpoints:
+你也可以在其他断点处自定义网格的列数：
 
 ```php
 use Filament\Tables\Columns\Layout\Grid;
@@ -268,7 +268,7 @@ Grid::make([
     ])
 ```
 
-And you can even control how many grid columns will be consumed by each component at each [breakpoint](https://tailwindcss.com/docs/responsive-design#overview):
+你甚至可以控制每个组件在每个[临界点](https://tailwindcss.com/docs/responsive-design#overview)所消费的网格列数：
 
 ```php
 use Filament\Tables\Columns\Layout\Grid;
@@ -297,11 +297,11 @@ Grid::make([
     ])
 ```
 
-## Collapsible content
+## 可折叠内容
 
-When you're using a column layout like split or stack, then you can also add collapsible content. This is very useful for when you don't want to display all data in the table at once, but still want it to be accessible to the user if they need to access it, without navigating away.
+使用像 Split 或者 Stack 这样的列布局时，你也可以添加可折叠的内容。如果你不想一次性在表格中展示所有数据，但仍然希望用户在必要时不必离开当前页面访问数据，这个功能非常有用。
 
-Split and stack components can be made `collapsible()`, but there is also a dedicated `Panel` component that provides a pre-styled background color and border radius, to separate the collapsible content from the rest:
+Split 和 Stack 组件可以设为 `collapsible`，不过有一个专用的 `Panel` 组件提供了预定义样式的背景色和边框圆角，用以将可折叠内容和其他内容分离开来：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -331,7 +331,7 @@ use Filament\Tables\Columns\TextColumn;
 ]
 ```
 
-You can expand a panel by default using the `collapsed(false)` method:
+你也可以使用 `collapsed(false)` 方法使面板默认展开：
 
 ```php
 use Filament\Tables\Columns\Layout\Panel;
@@ -352,10 +352,11 @@ Panel::make([
 
 <AutoScreenshot name="tables/layout/collapsible/mobile" alt="Table with collapsible content on mobile" version="3.x" />
 
-## Arranging records into a grid
+## 将记录排列到网格中
 
-Sometimes, you may find that your data fits into a grid format better than a list. Filament can handle that too!
+有时，你会发现，比起列表格式，数据更适合于以网格格式排列。Filament 也能处理这种情况！
 
+只需使用 `$table->contentGrid()` 方法：
 Simply use the `$table->contentGrid()` method:
 
 ```php
@@ -371,21 +372,22 @@ public function table(Table $table): Table
 }
 ```
 
-In this example, the rows will be displayed in a grid:
+本例中，行数据将以网格形式展示：
 
+- 在移动端，它只会显示为 1 列。
+- 从 `md` [临界点](https://tailwindcss.com/docs/responsive-design#overview)开始，会显示为 2 列。
+- 从 `xl` [临界点](https://tailwindcss.com/docs/responsive-design#overview)以上，会显示为 3 列。
 - On mobile, they will be displayed in 1 column only.
-- From the `md` [breakpoint](https://tailwindcss.com/docs/responsive-design#overview), they will be displayed in 2 columns.
-- From the `xl` [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) onwards, they will be displayed in 3 columns.
 
-These settings are fully customizable, any [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) from `sm` to `2xl` can contain `1` to `12` columns.
+这些设置完全是可自定义的，从 `sm` 到 `2xl` 的任何[临界点](https://tailwindcss.com/docs/responsive-design#overview)都能包含 `1` 到 `12` 列。
 
 <AutoScreenshot name="tables/layout/grid" alt="Table with grid layout" version="3.x" />
 
 <AutoScreenshot name="tables/layout/grid/mobile" alt="Table with grid layout on mobile" version="3.x" />
 
-## Custom HTML
+## 自定义 HTML
 
-You may add custom HTML to your table using a `View` component. It can even be `collapsible()`:
+使用 `View` 组件，你可以将自定义 HTML 添加到表格中。它甚至也可以是可折叠的 `collapsible()`：  
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -408,7 +410,7 @@ use Filament\Tables\Columns\TextColumn;
 ]
 ```
 
-Now, create a `/resources/views/users/table/collapsible-row-content.blade.php` file, and add in your HTML. You can access the table record using `$getRecord()`:
+现在，新建一个 `/resources/views/users/table/collapsible-row-content.blade.php` 文件，并添加你自己的 HTML。你可以使用 `$getRecord()` 访问表格记录：
 
 ```blade
 <p class="px-4 py-3 bg-gray-100 rounded-lg">
@@ -422,9 +424,9 @@ Now, create a `/resources/views/users/table/collapsible-row-content.blade.php` f
 </p>
 ```
 
-### Embedding other components
+### 嵌入其他组件
 
-You could even pass in columns or other layout components to the `components()` method:
+你甚至可以将列字段或者其他布局组件传入到 `components()` 方法中：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -451,7 +453,7 @@ use Filament\Tables\Columns\TextColumn;
 ]
 ```
 
-Now, render the components in the Blade file:
+现在， 在 Blade 文件中渲染这些组件：
 
 ```blade
 <div class="px-4 py-3 bg-gray-100 rounded-lg">

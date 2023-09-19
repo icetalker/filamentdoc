@@ -1,13 +1,13 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/04-filters.md"
-title: Filters
+title: 过滤器
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Filters allow you to define certain constraints on your data, and allow users to scope it to find the information they need. You put them in the `$table->filters()` method:
+过滤器(Filter)允许你在数据上定义特定的约束，并允许用户限定查询范围，以查找他们所需的信息。可以在 `$table->filters()` 方法中定义过滤器：
 
 ```php
 use Filament\Tables\Table;
@@ -23,7 +23,7 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/filters/simple" alt="Table with filter" version="3.x" />
 
-Filters may be created using the static `make()` method, passing its unique name. You should then pass a callback to `query()` which applies your filter's scope:
+过滤器可以使用静态的 `make()` 方法创建，并传入其唯一名。然后你应该传入一个回调函数到 `query()` 中，设置过滤器的查询范围：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -33,9 +33,9 @@ Filter::make('is_featured')
     ->query(fn (Builder $query): Builder => $query->where('is_featured', true))
 ```
 
-## Setting a label
+## 设置标签
 
-By default, the label of the filter, which is displayed in the filter form, is generated from the name of the filter. You may customize this using the `label()` method:
+默认情况下，过滤器的标签是有过滤器名生成。你可以使用 `label()` 方法自定义该标签：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -44,7 +44,7 @@ Filter::make('is_featured')
     ->label('Featured')
 ```
 
-Optionally, you can have the label automatically translated [using Laravel's localization features](https://laravel.com/docs/localization) with the `translateLabel()` method:
+可选地，你可以使用 `translateLabel()` 方法，使其[利用 Laravel 的本地化特性](https://laravel.com/docs/localization)自动翻译标签。
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -53,15 +53,15 @@ Filter::make('is_featured')
     ->translateLabel() // Equivalent to `label(__('Is featured'))`
 ```
 
-## Customizing the filter form
+## 自定义过滤器表单
 
-By default, creating a filter with the `Filter` class will render a [checkbox form component](../forms/fields/checkbox). When the checkbox is checked, the `query()` function will be applied to the table's query, scoping the records in the table. When the checkbox is unchecked, the `query()` function will be removed from the table's query.
+默认情况下，使用 `Filter` 类创建过滤器会渲染一个 [Chcekbox 表单组件](../forms/fields/checkbox)。当 Checkbox 被勾选后，`query()` 函数将会使用表格的查询，过滤表格中的记录。如果 Checkbox 未被勾选，`query()` 函数会从表格查询中删除。
 
-Filters are built entirely on Filament's form fields. They can render any combination of form fields, which users can then interact with to filter the table.
+过滤器完全是建立在 Filament 表单字段之上。他们可以渲染任何表单字段的组合，使用户可以直接交互过滤表格。
 
-### Using a toggle button instead of a checkbox
+### 使用 Toggle 按钮代替 Checbox
 
-The simplest example of managing the form field that is used for a filter is to replace the [checkbox](../forms/fields/checkbox) with a [toggle button](../forms/fields/toggle), using the `toggle()` method:
+管理用于过滤器的表单字段的最简单示例是，使用 [Toggle 按钮](../forms/fields/toggle)替换 [Checkbox](../forms/fields/checkbox)：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -72,9 +72,9 @@ Filter::make('is_featured')
 
 <AutoScreenshot name="tables/filters/toggle" alt="Table with toggle filter" version="3.x" />
 
-### Applying the filter by default
+### 默认使用过滤器Applying the filter by default
 
-You may set a filter to be enabled by default, using the `default()` method:
+使用 `default()` 方法，你可以设置默认启用过滤器：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -83,9 +83,9 @@ Filter::make('is_featured')
     ->default()
 ```
 
-### Select filters
+### Select 过滤器
 
-Often, you will want to use a [select field](../forms/fields/select) instead of a checkbox. This is especially true when you want to filter a column based on a set of pre-defined options that the user can choose from. To do this, you can create a filter using the `SelectFilter` class:
+有时候，你会使用 [Select 字段](../forms/fields/select)而非 Checkbox。当您希望用户可以根据一组预定义选项过滤列字段时，尤其如此。为此，您可以使用 `SelectFilter` 类创建一个过滤器：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -98,11 +98,11 @@ SelectFilter::make('status')
     ])
 ```
 
-The `options()` that are passed to the filter are the same as those that are passed to the [select field](../forms/fields/select).
+通过 `options()` 传递给过滤器的选项，与传递给 [Select 字段](../forms/fields/select)的方式一致：
 
-#### Customizing the column used by a select filter
+#### 自定义 SelectFilter 使用的列字段
 
-Select filters do not require a custom `query()` method. The column name used to scope the query is the name of the filter. To customize this, you may use the `attribute()` method:
+SelectFilter 不需要自定义 `query()` 方法。查询所使用的列字段名是过滤器名称。要自定义字段名，请使用 `attribute()` 方法：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -116,9 +116,9 @@ SelectFilter::make('status')
     ->attribute('status_id')
 ```
 
-#### Multi-select filters
+#### 多选 SelectFilter
 
-These allow the user to select multiple options to apply the filter to their table. For example, a status filter may present the user with a few status options to pick from and filter the table using. When the user selects multiple options, the table will be filtered to show records that match any of the selected options. You can enable this behaviour using the `multiple()` method:
+这将允许用户选择多个选项，应用到过滤器。比如，状态过滤器可能向用户展示一些状态选项供用户选取及表格过滤使用。当用户选择多个选项时，表格会过滤显示匹配所选选项的记录。你可以使用 `multiple()` 方法启用该行为：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -132,9 +132,9 @@ SelectFilter::make('status')
     ])
 ```
 
-#### Relationship select filters
+#### 关联 SelectFilter
 
-Select filters are also able to automatically populate themselves based on a relationship. For example, if your table has a `author` relationship with a `name` column, you may use `relationship()` to filter the records belonging to an author:
+SelectFilter 也能够基于关联自动填充。比如，如果表有一个 `author` 关联，它有一个 `name` 字段，你可以使用 `relationship()` 过滤属于某个作者(author)的记录：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -143,9 +143,9 @@ SelectFilter::make('author')
     ->relationship('author', 'name')
 ```
 
-### Preloading the select filter relationship options
+### 预加载 SelectFilter 关联选项
 
-If you'd like to populate the searchable options from the database when the page is loaded, instead of when the user searches, you can use the `preload()` method:
+如果你想在页面加载时填充可搜索选项，而不是在用户搜索时加载，你可以使用 `preload()` 方法：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -156,9 +156,9 @@ SelectFilter::make('author')
     ->preload()
 ```
 
-##### Customizing the select filter relationship query
+##### 自定义 SelectFilter 关联查询
 
-You may customize the database query that retrieves options using the third parameter of the `relationship()` method:
+使用 `relationship()` 方法的第三个参数，你可以自定义用于检索选项的数据库查询：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -168,9 +168,9 @@ SelectFilter::make('author')
     ->relationship('author', 'name', fn (Builder $query) => $query->withTrashed())
 ```
 
-#### Searching select filter options
+#### 搜索 SelectFilter 选项
 
-You may enable a search input to allow easier access to many options, using the `searchable()` method:
+使用 `searchable()` 方法，你可以启用搜索输入框，以方便访问选项：
 
 ```php
 use Filament\Tables\Filters\SelectFilter;
@@ -180,9 +180,9 @@ SelectFilter::make('author')
     ->searchable()
 ```
 
-### Ternary filters
+### 三元过滤器
 
-Ternary filters allow you to easily create a [select filter](#select-filters) which has three states - usually true, false and blank. To filter a column named `is_admin` to be `true` or `false`, you may use the ternary filter:
+三元过滤器(TernaryFilter)允许你创建一个拥有三个状态(通常为 true、false 及空白)的 [Select 过滤器](#select-过滤器)。要将名为 `is_admin` 的字段过滤为 `true` 或 `false`，你可以使用三元过滤器：
 
 ```php
 use Filament\Tables\Filters\TernaryFilter;
@@ -190,9 +190,9 @@ use Filament\Tables\Filters\TernaryFilter;
 TernaryFilter::make('is_admin')
 ```
 
-### Using a ternary filter with a nullable column
+### nullable 字段使用三元过滤器
 
-Another common pattern is to use a nullable column. For example, when filtering verified and unverified users using the `email_verified_at` column, unverified users have a null timestamp in this column. To apply that logic, you may use the `nullable()` method:
+另一个通用的模式是使用 nullable 字段。比如，使用 `email_verified_at` 来过滤验证及未验证的用户，未验证的用户在本字段中为空时间戳。要应用该逻辑，你可以使用 `nullable()` 方法：
 
 ```php
 use Filament\Tables\Filters\TernaryFilter;
@@ -201,9 +201,9 @@ TernaryFilter::make('email_verified_at')
     ->nullable()
 ```
 
-#### Customizing the column used by a ternary filter
+#### 自定义三元过滤器使用的列字段
 
-The column name used to scope the query is the name of the filter. To customize this, you may use the `attribute()` method:
+用于设置查询范围的字段名是过滤器的名称。要自定义字段名，你可以使用 `attribute()` 方法：
 
 ```php
 use Filament\Tables\Filters\TernaryFilter;
@@ -213,9 +213,9 @@ TernaryFilter::make('verified')
     ->attribute('status_id')
 ```
 
-#### Customizing the ternary filter option labels
+#### 自定义三元过滤器选项标签
 
-You may customize the labels used for each state of the ternary filter. The true option label can be customized using the `trueLabel()` method. The false option label can be customized using the `falseLabel()` method. The blank (default) option label can be customized using the `placeholder()` method:
+你可以自定义三元过滤器每个状态的标签。true 选项的标签可以使用 `trueLabel()` 方法自定义。false 选项可以使用 `falseLabel()` 方法自定义。空白(默认)选项的标签可以使用 `placeholder()` 方法自定义：
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -229,9 +229,9 @@ TernaryFilter::make('email_verified_at')
     ->falseLabel('Not verified users')
 ```
 
-#### Customizing how a ternary filter modifies the query
+#### 自定义三元过滤器修改查询的方式
 
-You may customize how the query changes for each state of the ternary filter, use the `queries()` method:
+使用 `queries()` 方法，你可以自定义三元过滤器的每个状态查询的修改方式：
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -248,9 +248,9 @@ TernaryFilter::make('trashed')
     )
 ```
 
-### Custom filter forms
+### 自定义过滤器表单
 
-You may use components from the [Form Builder](../forms/fields/getting-started) to create custom filter forms. The data from the custom filter form is available in the `$data` array of the `query()` callback:
+你可以使用[表单构造器](../forms/fields/getting-started)的组件，创建自定义过滤器表单。自定义过滤器表单中的数据，可以在 `query()` 回调中的 `$data` 数组中获取：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -277,9 +277,9 @@ Filter::make('created_at')
 
 <AutoScreenshot name="tables/filters/custom-form" alt="Table with custom filter form" version="3.x" />
 
-#### Setting default values for custom filter fields
+#### 设置自定义过滤器字段的默认值
 
-To customize the default value of a field in a custom filter form, you may use the `default()` method:
+要在自定义过滤器表单中自定义默认值，你可以使用 `default()` 方法：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -293,13 +293,13 @@ Filter::make('created_at')
     ])
 ```
 
-## Active indicators
+## 激活指示器
 
-When a filter is active, an indicator is displayed above the table content to signal that the table query has been scoped.
+当过滤器出于激活状态时，在表格内容上面会显示一个指示器，说明表格的查询范围已限定。
 
 <AutoScreenshot name="tables/filters/indicators" alt="Table with filter indicators" version="3.x" />
 
-By default, the label of the filter is used as the indicator. You can override this using the `indicator()` method:
+默认情况下，过滤器的标签被用作指示器。你可以使用 `indicator()` 方法对此进行重写：
 
 ```php
 use Filament\Tables\Filters\Filter;
@@ -309,11 +309,11 @@ Filter::make('is_admin')
     ->indicator('Administrators')
 ```
 
-### Custom active indicators
+### 自定义激活指示器
 
-Not all indicators are simple, so you may need to use `indicateUsing()` to customize which indicators should be shown at any time.
+并非所有的指示器都很简单，因此您可能需要使用 `indicateUsing()` 来自定义在哪个时候显示哪个指示器。
 
-For example, if you have a custom date filter, you may create a custom indicator that formats the selected date:
+例如，如果您有一个自定义日期过滤器，您可以创建一个自定义指示器来格式化所选日期：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -331,9 +331,9 @@ Filter::make('created_at')
     })
 ```
 
-### Multiple active indicators
+### 多个激活指示器
 
-You may even render multiple indicators at once, by returning an array. If you have different fields associated with different indicators, you should use the field's name as the array key, to ensure that the correct field is reset when the filter is removed:
+你甚至可以通过返回数组，一次性渲染多个指示器。如果你有关联不同指示器的不同字段，你应该使用字段名作为数组键，以确保过滤器移除时重置的字段正确：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -360,9 +360,9 @@ Filter::make('created_at')
     })
 ```
 
-## Positioning filters into grid columns
+## 将过滤器定位到网格列中
 
-To change the number of columns that filters may occupy, you may use the `filtersFormColumns()` method:
+要修改过滤器占用的列数，你可以使用 `filtersFormColumns()` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -377,9 +377,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Controlling the width of the filters dropdown
+## 控制过滤器下拉菜单的宽度
 
-To customize the dropdown width, you may use the `filtersFormWidth()` method, and specify a width - `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, or `7xl`. By default, the width is `xs`:
+要自定义下拉菜单的宽度，你可以使用 `filtersFormWidth()` 方法，并指定一个宽度 - `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 或 `7xl`。默认宽度是 `xs`：
 
 ```php
 use Filament\Tables\Table;
@@ -394,9 +394,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Controlling the maximum height of the filters dropdown
+## 控制过滤器下拉菜单的最大高度
 
-To add a maximum height to the filters' dropdown content, so that they scroll, you may use the `filtersFormMaxHeight()` method, passing a [CSS length](https://developer.mozilla.org/en-US/docs/Web/CSS/length):
+使用 `filtersFormMaxHeight()` 方法，并传入一个 [CSS 长度](https://developer.mozilla.org/en-US/docs/Web/CSS/length)，可以为过滤器下拉菜单内容添加最大高度，使之在内容溢出时滚动：
 
 ```php
 use Filament\Tables\Table;
@@ -411,9 +411,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Displaying filters above the table content
+## 在表格内容上面显示过滤器
 
-To render the filters above the table content instead of in a dropdown, you may use:
+要在表格内容之上渲染过滤器，而非使用下拉菜单，你可以这样使用：
 
 ```php
 use Filament\Tables\Enums\FiltersLayout;
@@ -430,9 +430,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/filters/above-content" alt="Table with filters above content" version="3.x" />
 
-### Allowing filters above the table content to be collapsed
+### 允许表格内容上面的过滤器折叠
 
-To allow the filters above the table content to be collapsed, you may use:
+要使内容之上的过滤器折叠，你可以这样使用：
 
 ```php
 use Filament\Tables\Enums\FiltersLayout;
@@ -446,9 +446,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Displaying filters below the table content
+## 在表格内容下面显示过滤器
 
-To render the filters below the table content instead of in a dropdown, you may use:
+要在表格内容之下渲染过滤器，而非使用下拉菜单中渲染，你可以这样使用：
 
 ```php
 use Filament\Tables\Enums\FiltersLayout;
@@ -465,9 +465,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/filters/below-content" alt="Table with filters below content" version="3.x" />
 
-## Persist filters in session
+## 在 Session 中持久化过滤器
 
-To persist the table filters in the user's session, use the `persistFiltersInSession()` method:
+要使用用户 Session 持久化表格过滤器，请使用 `persistFiltersInSession()` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -482,9 +482,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Deselecting records when filters change
+## 过滤器改变时取消记录选择
 
-By default, all records will be deselected when the filters change. Using the `deselectAllRecordsWhenFiltered(false)` method, you can disable this behaviour:
+默认情况下，当过滤器改变时，所有记录都会取消选择。使用 `deselectAllRecordsWhenFiltered(false)` 方法，可以禁用该行为：
 
 ```php
 use Filament\Tables\Table;
@@ -499,13 +499,13 @@ public function table(Table $table): Table
 }
 ```
 
-## Modifying the base query
+## 修改基础查询
 
-By default, modifications to the Eloquent query performed in the `query()` method will be applied inside a scoped `where()` clause. This is to ensure that the query does not clash with any other filters that may be applied, especially those that use `orWhere()`.
+默认情况下，对 `query()` 方法中执行的 Eloquent 查询的修改将会作用于限定查询范围的 `where()` 语句。这是为了确保该查询不会与任何其他可能应用的过滤器发生冲突，尤其是那些使用 `orWhere()` 的过滤器。
 
-However, the downside of this is that the `query()` method cannot be used to modify the query in other ways, such as removing global scopes, since the base query needs to be modified directly, not the scoped query.
+但是，这样做的缺点是 `query()` 方法不能使用其他方式修改查询，比如移除全局查询范围，因为需要直接修改的是基础查询，而非限定范围的查询。
 
-To modify the base query directly, you may use the `baseQuery()` method, passing a closure that receives the base query:
+要直接修改基础查询，你可以使用 `baseQuery()` 方法，并传入一个接收该基础查询的闭包：
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -519,9 +519,9 @@ TernaryFilter::make('trashed')
     ]))
 ```
 
-## Customizing the filters dropdown trigger action
+## 自定义过滤器下来菜单触发 Action
 
-To customize the filters' dropdown trigger buttons, you may use the `filtersTriggerAction()` method, passing a closure that returns an action. All methods that are available to [customize action trigger buttons](../actions/trigger-button) can be used:
+要自定义过滤器下拉触发按钮，你可以使用 `filtersTriggerAction()` 方法，并传入一个返回 Action 的闭包。[自定义 Action 触发按钮](../actions/trigger-button)中的所有方法都可以用于此处：
 
 ```php
 use Filament\Tables\Actions\Action;
@@ -545,7 +545,7 @@ public function table(Table $table): Table
 
 ## Table filter utility injection
 
-The vast majority of methods used to configure filters accept functions as parameters instead of hardcoded values:
+用于配置过滤器器的绝大多数方法都接受函数作为参数，而不是硬编码值：
 
 ```php
 use App\Models\Author;
@@ -555,15 +555,15 @@ SelectFilter::make('author')
     ->options(fn (): array => Author::query()->pluck('name', 'id')->all())
 ```
 
-This alone unlocks many customization possibilities.
+仅此一点就开启了许多自定义的可能性。
 
 The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
 
 These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
 
-### Injecting the current filter instance
+### 注入当前过滤器实例
 
-If you wish to access the current filter instance, define a `$filter` parameter:
+如果你想访问当前过滤器实例，请定义 `$filter` 参数：
 
 ```php
 use Filament\Tables\Filters\BaseFilter;
@@ -573,9 +573,9 @@ function (BaseFilter $filter) {
 }
 ```
 
-### Injecting the current Livewire component instance
+### 注入当前 Livewire 组件实例
 
-If you wish to access the current Livewire component instance that the table belongs to, define a `$livewire` parameter:
+如果你想访问表格所属的当前 Livewire 组件实例，请定义 `$livewire` 参数：
 
 ```php
 use Filament\Tables\Contracts\HasTable;
@@ -585,9 +585,9 @@ function (HasTable $livewire) {
 }
 ```
 
-### Injecting the current table instance
+### 注入当前表格实例
 
-If you wish to access the current table configuration instance that the filter belongs to, define a `$table` parameter:
+如果你希望访问过滤器所属的当前表格实例，请定义 `$table` 参数：
 
 ```php
 use Filament\Tables\Table;
@@ -599,7 +599,7 @@ function (Table $table) {
 
 ### Injecting multiple utilities
 
-The parameters are injected dynamically using reflection, so you are able to combine multiple parameters in any order:
+参数使用反射动态注入，因此你可以按照任何顺序组合多个参数：
 
 ```php
 use Filament\Tables\Contracts\HasTable;
@@ -610,7 +610,7 @@ function (HasTable $livewire, Table $table) {
 }
 ```
 
-### Injecting dependencies from Laravel's container
+### Laravel 容器的注入依赖
 
 You may inject anything from Laravel's container like normal, alongside utilities:
 

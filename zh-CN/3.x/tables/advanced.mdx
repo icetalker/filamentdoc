@@ -1,15 +1,15 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/10-advanced.md"
-title: Advanced
+title: 高级
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Pagination
+## 分页
 
-### Disabling pagination
+### 禁用分页
 
-By default, tables will be paginated. To disable this, you should use the `$table->paginated(false)` method:
+默认情况下，表格带有分页功能。要禁用该功能，请使用 `$table->paginated(false)` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -21,9 +21,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Customizing the pagination options
+### 自定义分页选项
 
-You may customize the options for the paginated records per page select by passing them to the `paginated()` method:
+你可以将每页的记录数量选项传入到 `paginated()` 方法中，自定义分页选项。
 
 ```php
 use Filament\Tables\Table;
@@ -35,11 +35,11 @@ public function table(Table $table): Table
 }
 ```
 
-### Preventing query string conflicts with the pagination page
+### 防止查询字符串与分页页面冲突
 
-By default, Livewire stores the pagination state in a `page` parameter of the URL query string. If you have multiple tables on the same page, this will mean that the pagination state of one table may be overwritten by the state of another table.
+默认情况下，Livewire 将分页状态保存在查询字符串的 `page` 参数里。如果你在同个页面中有多个表格，那么表格的分页状态可能会被其他表格覆盖。
 
-To fix this, you may define a `$table->queryStringIdentifier()`, to return a unique query string identifier for that table:
+要修复此问题，你可以定义 `$table->queryStringIdentifier()`，使之返回唯一字符串标识符：
 
 ```php
 use Filament\Tables\Table;
@@ -51,11 +51,11 @@ public function table(Table $table): Table
 }
 ```
 
-### Using simple pagination
+### 使用简单分页
 
-You may use simple pagination by overriding `paginateTableQuery()` method.
+重写 `paginateTableQuery()` 方法可以使用简单分页。
 
-First, locate your Livewire component. If you're using a resource from the Panel Builder and you want to add simple pagination to the List page, you'll want to open the `Pages/List.php` file in the resource, not the resource class itself.
+首先，定位你的 Livewire 组件。如果你在面板中使用资源，并且希望在列表页中添加简单分页，你需要在资源中打开 `Pages/List.php` 文件，而非资源类本身。
 
 ```php
 use Illuminate\Contracts\Pagination\Paginator;
@@ -67,9 +67,9 @@ protected function paginateTableQuery(Builder $query): Paginator
 }
 ```
 
-## Record URLs (clickable rows)
+## 记录 URL(可点击的行)
 
-You may allow table rows to be completely clickable by using the `$table->recordUrl()` method:
+使用 `$table->recordUrl()` 方法，你可以让表格行完全可点击：
 
 ```php
 use Filament\Tables\Table;
@@ -84,13 +84,13 @@ public function table(Table $table): Table
 }
 ```
 
-In this example, clicking on each post will take you to the `posts.edit` route.
+本例中，点击点击每个 post 将会跳转到 `posts.edit` 路由。
 
-If you'd like to [override the URL](columns/getting-started#opening-urls) for a specific column, or instead [run an action](columns/getting-started#running-actions) when a column is clicked, see the [columns documentation](columns/getting-started#opening-urls).
+如果你要让某个特定列字段[重写 URL](columns/getting-started#打开-url)，或者在点击列字段时[运行 Action](columns/getting-started#运行-action)，请查看[列字段文档](columns/getting-started#打开-url)。
 
-## Reordering records
+## 记录重写排序
 
-To allow the user to reorder records using drag and drop in your table, you can use the `$table->reorderable()` method:
+使用 `$table->reorderable()` 方法，可以允许用户在表格使用拖拽功能重排记录：
 
 ```php
 use Filament\Tables\Table;
@@ -102,13 +102,13 @@ public function table(Table $table): Table
 }
 ```
 
-If you're using mass assignment protection on your model, you will also need to add the `sort` attribute to the `$fillable` array there.
+如果你在模型中使用了批量赋值保护，你也需要将 `sort` 属性添加到 `$fillable` 数组中。
 
-When making the table reorderable, a new button will be available on the table to toggle reordering.
+当表格可以重新排序时，表格中会有一个新按钮用于切换排序。
 
 <AutoScreenshot name="tables/reordering" alt="Table with reorderable rows" version="3.x" />
 
-The `reorderable()` method accepts the name of a column to store the record order in. If you use something like [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) with an order column such as `order_column`, you may use this instead:
+`reorderable()` 方法接收一个保存记录排序的字段名。比如像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) 使用 `order_column` 作为排序字段，你可以这样使用：
 
 ```php
 use Filament\Tables\Table;
@@ -120,9 +120,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Enabling pagination while reordering
+### 排序时启用分页
 
-Pagination will be disabled in reorder mode to allow you to move records between pages. It is generally bad UX to re-enable pagination while reordering, but if you are sure then you can use `$table->paginatedWhileReordering()`:
+重新排序模式下，分页功能会被禁用，这样方便你在不同页面之间移动记录。通常重新排序时启用分页用户体验比较差，如果你确实要启用，可以使用 `$table->paginatedWhileReordering()`：
 
 ```php
 use Filament\Tables\Table;
@@ -134,9 +134,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Customizing the reordering trigger action
+### 自定义重新排序触发 Action
 
-To customize the reordering trigger button, you may use the `reorderRecordsTriggerAction()` method, passing a closure that returns an action. All methods that are available to [customize action trigger buttons](../actions/trigger-button) can be used:
+你可以使用 `reorderRecordsTriggerAction()` 方法，并传入返回 Action 的闭包，自定义重新排序触发按钮。[自定义 Action 触发按钮](../actions/trigger-button)中的所有方法都可以使用：
 
 ```php
 use Filament\Tables\Actions\Action;
@@ -155,9 +155,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/reordering/custom-trigger-action" alt="Table with reorderable rows and a custom trigger action" version="3.x" />
 
-## Polling table content
+## 轮询表格内容
 
-You may poll table content so that it refreshes at a set interval, using the `$table->poll()` method:
+使用 `$table->poll()` 方法，你可以轮询表的内容，使之在设定的间隔内刷新：
 
 ```php
 use Filament\Tables\Table;
@@ -169,9 +169,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Deferring loading
+## 延迟加载
 
-Tables with lots of data might take a while to load, in which case you can load the table data asynchronously using the `deferLoading()` method:
+有很多数据的表格可能需要消耗一些时间去加载，这种情况可以使用 `deferLoading()` 方法异步加载表格数据：
 
 ```php
 use Filament\Tables\Table;
@@ -183,11 +183,11 @@ public function table(Table $table): Table
 }
 ```
 
-## Searching records with Laravel Scout
+## 使用 Laravel Scout 搜索记录
 
-While Filament doesn't provide a direct integration with [Laravel Scout](https://laravel.com/docs/scout), you may override methods to integrate it.
+虽然 Filament 不提供与 [Laravel Scout](https://laravel.com/docs/scout) 的直接集成，你可以重写一些方法进行集成。
 
-Use a `whereIn()` clause to filter the query for Scout results:
+使用 `whereIn()` 语句，过滤 Scout 查询结果：
 
 ```php
 use App\Models\Post;
@@ -205,17 +205,17 @@ protected function applySearchToTableQuery(Builder $query): Builder
 }
 ```
 
-Scout uses this `whereIn()` method to retrieve results internally, so there is no performance penalty for using it.
+Scout 内部使用 `whereIn()` 方法来检索结果，因此使用该方法不会对影响性能。
 
-The `applyColumnSearchesToTableQuery()` method ensures that searching individual columns will still work. You can replace that method with your own implementation if you want to use Scout for those search inputs as well.
+`applyColumnSearchesToTableQuery()` 方法确保搜索各个列仍然有效。如果你想使用 Scout 进行搜索输入，你可以用你自己的实现来代替这个方法。
 
-## Query string
+## 查询字符串
 
-Livewire ships with a feature to store data in the URL's query string, to access across requests.
+Livewire 有一个特性，可以将数据存储到 URL 的查询字符串，以便跨请求访问。
 
-With Filament, this allows you to store your table's filters, sort, search and pagination state in the URL.
+在 Filament，这个特性将允许你将表格过滤器、排序、搜索和分页状态存储到 URL 中。
 
-To store the filters, sorting, and search state of your table in the query string:
+要在查询字符串中保存过滤器，排序及表格的搜索状态：
 
 ```php
 use Livewire\Attributes\Url;
@@ -248,11 +248,11 @@ public ?string $tableSortColumn = null;
 public ?string $tableSortDirection = null;
 ```
 
-## Styling table rows
+## 表格行样式
 
 ### Striped table rows
 
-To enable striped table rows, you can use the `striped()` method:
+使用 `striped()` 方法，可以启用表格的斑马条纹行： 
 
 ```php
 use Filament\Tables\Table;
@@ -266,9 +266,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/striped" alt="Table with striped rows" version="3.x" />
 
-### Custom row classes
+### 自定义行 CSS 类
 
-You may want to conditionally style rows based on the record data. This can be achieved by specifying a string or array of CSS classes to be applied to the row using the `$table->recordClasses()` method:
+你可能希望根据记录数据条件性地对行的样式进行自定义。使用 `$table->recordClasses()` 方法指定 CSS 类字符串或数组，可以将其应用到行中：
 
 ```php
 use Closure;
@@ -287,11 +287,11 @@ public function table(Table $table): Table
 }
 ```
 
-These classes are not automatically compiled by Tailwind CSS. If you want to apply Tailwind CSS classes that are not already used in Blade files, you should update your `content` configuration in `tailwind.config.js` to also scan for classes inside your directory: `'./app/Filament/**/*.php'`
+这些类不会被 Tailwind CSS 自动编译。如果你想要使用还未 Blade 文件中使用过的 Tailwind CSS 类，你应该更新 `tailwind.config.js` 文件中的 `content` 配置，使其在目录中同时扫描 `'./app/Filament/**/*.php'` 中 CSS 类。 
 
-## Global settings
+## 全局设置
 
-To customize the default configuration that is used for all tables, you can call the static `configureUsing()` method from the `boot()` method of a service provider. The function will be run for each table that gets created:
+要自定义用于所有表格中的默认配置，你可以在服务提供者的 `boot()` 方法中调用静态 `configureUsing()` 方法。该函数将在每次创建表格时运行：
 
 ```php
 use Filament\Tables\Enums\FiltersLayout;

@@ -1,24 +1,24 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/11-adding-a-table-to-a-livewire-component.md"
-title: Adding a table to a Livewire component
+title: 在 Livewire 组件中添加表格
 ---
 
-## Setting up the Livewire component
+## 准备 Livewire 组件
 
-First, generate a new Livewire component:
+首先，生成新的 Livewire 组件：
 
 ```bash
 php artisan make:livewire ListProducts
 ```
 
-Then, render your Livewire component on the page:
+然后，在页面中渲染 Livewire 组件：
 
 ```blade
 @livewire('list-products')
 ```
 
-Alternatively, you can use a full-page Livewire component:
+此外，你可以使用全页 Livewire 组件：
 
 ```php
 use App\Livewire\ListProducts;
@@ -27,13 +27,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('products', ListProducts::class);
 ```
 
-## Adding the table
+## 添加表格
 
-There are 3 tasks when adding a table to a Livewire component class:
+添加表格到 Livewire 组件类需要完成 3 个任务：
 
-1) Implement the `HasTable` and `HasForms` interfaces, and use the `InteractsWithTable` and `InteractsWithForms` traits.
-2) Add a `table()` method, which is where you configure the table. [Add the table's columns, filters, and actions](getting-started#columns).
-3) Make sure to define the base query that will be used to fetch rows in the table. For example, if you're listing products from your `Product` model, you will want to return `Product::query()`.
+1) 实现 `HasTable` 和 `HasForms` 接口，并且使用 `InteractsWithTable` 和 `InteractsWithForms` trait。
+2) 添加用于配置表格的 `table()` 方法，。[添加表格列字段、过滤器和 Action](getting-started#列字段)。
+3) 确保在表格中配置了用于获取行数据的基础查询。比如，如果要从 `Product` 模型中罗列产品，你可能需要返回 `Product::query()`。
 
 ```php
 <?php
@@ -81,7 +81,7 @@ class ListProducts extends Component implements HasForms, HasTable
 }
 ```
 
-Finally, in your Livewire component's view, render the table:
+最后，在 Livewire 组件视图中渲染表格：
 
 ```blade
 <div>
@@ -89,11 +89,11 @@ Finally, in your Livewire component's view, render the table:
 </div>
 ```
 
-Visit your Livewire component in the browser, and you should see the table.
+现在，可以到浏览器中访问该 Livewire 组件，应该就能看到该表格了。
 
-## Building a table for an Eloquent relationship
+## 为 Eloquent 关联创建表格
 
-If you want to build a table for an Eloquent relationship, you can use the `relationship()` and `inverseRelationship()` methods on the `$table` instead of passing a `query()`. `HasMany`, `HasManyThrough`, `BelongsToMany`, `MorphMany` and `MorphToMany` relationships are compatible:
+如果你想为 Eloquent 关联创建表格，你可以在 `$table` 中使用 `relationship()` 和 `inverseRelationship()` 方法，而无需再传递 `query()`。 `HasMany`、`HasManyThrough`、`BelongsToMany`、`MorphMany` 和 `MorphToMany` 关联都兼容：
 
 ```php
 use App\Models\Category;
@@ -113,30 +113,30 @@ public function table(Table $table): Table
 }
 ```
 
-In this example, we have a `$category` property which holds a `Category` model instance. The category has a relationship named `products`. We use a function to return the relationship instance. This is a many-to-many relationship, so the inverse relationship is called `categories`, and is defined on the `Product` model. We just need to pass the name of this relationship to the `inverseRelationship()` method, not the whole instance.
+本例中，`$category` 属性对应了 `Category` 模型实例。该 category 有一个关联名为 `products`。我们使用一个函数来返回关联实例。这是一个多对多关联，因此反转的关联名叫做 `categories` 并且它定义在 `Product` 模型上。我们只需将此关联的名称传入到 `inverseRelationship()` 方法中，而无需传递整个实例。
 
-Now that the table is using a relationship instead of a plain Eloquent query, all actions will be performed on the relationship instead of the query. For example, if you use a [`CreateAction`](../actions/prebuilt-actions/create), the new product will be automatically attached to the category.
+既然表格使用了关联而非普通 Eloquent 查询，所有的 Action 都会在关联上执行，而不再在查询上执行。比如，如果你使用了 [`CreateAction`](../actions/prebuilt-actions/create)，新产品会自动关联到该目录(category)中。
 
-If your relationship uses a pivot table, you can use all pivot columns as if they were normal columns on your table, as long as they are listed in the `withPivot()` method of the relationship *and* inverse relationship definition.
+如果关联使用了中间表，只要这些字段在关联*和*反转关联的 `withPivot()` 中罗列出来，你就可以在表格中使用所有这些字段。
 
-Relationship tables are used in the Panel Builder as ["relation managers"](../panels/resources/relation-managers#creating-a-relation-manager). Most of the documented features for relation managers are also available for relationship tables. For instance, [attaching and detaching](../panels/resources/relation-managers#attaching-and-detaching-records) and [associating and dissociating](../panels/resources/relation-managers#associating-and-dissociating-records) actions.
+关联表在面板中以["关联管理器"](../panels/resources/relation-managers#创建关联管理器)的方式使用。大部分关联管理器的特性也能用在关联表中。比如，[attaching 和 detaching](../panels/resources/relation-managers#attaching-and-detaching-records) 和 [associating 和 dissociating](../panels/resources/relation-managers#associating-and-dissociating-records) Action。
 
-## Generating table Livewire components with the CLI
+## 使用 CLI 生成表格 Livewire 组件
 
-It's advised that you learn how to set up a Livewire component with the Table Builder manually, but once you are confident, you can use the CLI to generate a table for you.
+建议你了解如何使用表格构造器手动创建 Livewire 组件，不过一旦熟悉之后，你可以使用 CLI 来为你生成表格。
 
 ```bash
 php artisan make:livewire-table Products/ListProducts
 ```
 
-This will ask you for the name of a prebuilt model, for example `Product`. Finally, it will generate a new `app/Livewire/Products/ListProducts.php` component, which you can customize.
+这将会要求输入预制模型的名称，比如 `Product`。最后，它将会生成一个新的 `app/Livewire/Products/ListProducts.php` 组件，你可以对其进行自定义。
 
-### Automatically generating table columns
+### 自动生成表格列
 
-Filament is also able to guess which table columns you want in the table, based on the model's database columns. You can use the `--generate` flag when generating your table:
+Filament 可以基于模型数据库字段，猜测你想要在表格中添加哪些表格列字段。生成表格时，请使用 `--generate` 标志：
 
 ```bash
 php artisan make:livewire-table Products/ListProducts --generate
 ```
 
-> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the schema for your table if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
+> 如果标中包含 ENUM 字段，`doctrine/dbal` 将会无法扫描表并且崩溃。因此，如果包含 ENUM 字段，Filament 将无法生成 Schema。更多关于该问题的信息，请查阅[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
