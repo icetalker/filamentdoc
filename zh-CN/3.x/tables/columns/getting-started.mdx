@@ -234,7 +234,7 @@ public function table(Table $table): Table
 
 ### 强制大小写不敏感列搜索
 
-By default, searching will use the sensitivity settings from the database table column. This is to avoid unnecessary performance overhead when searching large datasets that would arise if we were to force insensitivity for all users. However, if your database does not search case-insensitively by default, you can force it to by using the `forceSearchCaseInsensitive()` method:
+默认情况下，搜索将使用数据库表列中的敏感度设置。这是为了避免在搜索大型数据集时出现不必要的性能开销，如果我们强制所有用户不敏感，就会出现这种情况。但是，如果数据库默认大小写不敏感搜索，则可以使用 "forceSearchCaseInsensive()" 方法强制进行搜索：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -244,13 +244,13 @@ TextColumn::make('name')
     ->forceSearchCaseInsensitive()
 ```
 
-## Column actions and URLs
+## 列 Action 及 URL
 
-When a cell is clicked, you may run an "action", or open a URL.
+当点击单元格时，你可以运行 "action" 或打开 URL。
 
-### Running actions
+### 运行 action
 
-To run an action, you may use the `action()` method, passing a callback or the name of a Livewire method to run. Each method accepts a `$record` parameter which you may use to customize the behaviour of the action:
+要运行 Action，请使用 `action()` 方法，并传入要运行的回调函数或者 Livewire 方法名。每个方法接收一个 `$record` 参数，你可以用来自定义 action 的行为：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -261,9 +261,9 @@ TextColumn::make('title')
     })
 ```
 
-#### Action modals
+#### Action 模态框
 
-You may open [action modals](../actions#modals) by passing in an `Action` object to the `action()` method:
+将 `Action` 对象传入到 `action()` 方法中，你可以打开 [action 模态框](../actions#模态框)：
 
 ```php
 use Filament\Tables\Actions\Action;
@@ -279,11 +279,11 @@ TextColumn::make('title')
     )
 ```
 
-Action objects passed into the `action()` method must have a unique name to distinguish it from other actions within the table.
+传入到 `action()` 方法的 Action 对象名称必须是唯一的，用以在表格中与其他 Action 区分开来。
 
-### Opening URLs
+### 打开 URL
 
-To open a URL, you may use the `url()` method, passing a callback or static URL to open. Callbacks accept a `$record` parameter which you may use to customize the URL:
+要打开 URL，你可以使用 `url()` 方法，并传入回调函数或者静态 URL。回调接收一个 `$record` 参数，可用于自定义 URL：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -292,7 +292,7 @@ TextColumn::make('title')
     ->url(fn (Post $record): string => route('posts.edit', ['post' => $record]))
 ```
 
-You may also choose to open the URL in a new tab:
+你也可以选择在新的标签页中打开 URL：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -302,9 +302,9 @@ TextColumn::make('title')
     ->openUrlInNewTab()
 ```
 
-## Setting a default value
+## 设置默认值
 
-To set a default value for fields with a `null` state, you may use the `default()` method:
+你可以使用 `default()` 方法，为状态为 `null` 的字段设置默认值：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -313,9 +313,9 @@ TextColumn::make('title')
     ->default('Untitled')
 ```
 
-## Hiding columns
+## 隐藏列字段
 
-To hide a column conditionally, you may use the `hidden()` and `visible()` methods, whichever you prefer:
+使用 `hidden()` 和 `visible()` 方法，可以条件性隐藏列字段：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -327,9 +327,9 @@ TextColumn::make('role')
     ->visible(auth()->user()->isAdmin())
 ```
 
-### Toggling column visibility
+### 切换列的可见度
 
-Users may hide or show columns themselves in the table. To make a column toggleable, use the `toggleable()` method:
+用户可以在表格中自己隐藏或者显示列。要使列字段可切换，请使用 `toggleable()` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -373,11 +373,11 @@ public function table(Table $table): Table
 }
 ```
 
-## Calculated state
+## 计算状态
 
-Sometimes you need to calculate the state of a column, instead of directly reading it from a database column.
+有时你需要对列字段的状态进行计算，而非直接从数据库字段中读取。
 
-By passing a callback function to the `state()` method, you can customize the returned state for that column based on the `$record`:
+传入回调函数到 `state()` 方法中，你可以基于 `$record` 自定义该列返回的状态：
 
 ```php
 Tables\Columns\TextColumn::make('amount_including_vat')
@@ -386,9 +386,9 @@ Tables\Columns\TextColumn::make('amount_including_vat')
     })
 ```
 
-## Tooltips
+## Tooltip
 
-You may specify a tooltip to display when you hover over a cell:
+你可以指定鼠标悬浮在单元格时显示的 tooltip：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -399,7 +399,7 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/tooltips" alt="Table with column triggering a tooltip" version="3.x" />
 
-This method also accepts a closure that can access the current table record:
+该方法也接收一个可以访问当前表格记录的闭包：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -432,9 +432,9 @@ TextColumn::make('name')
     ->alignEnd()
 ```
 
-## Custom attributes
+## 自定义属性
 
-The HTML of columns can be customized, by passing an array of `extraAttributes()`:
+传递数组到 `extraAttributes()` 方法，可以自定义列字段的 HTML：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -443,11 +443,11 @@ TextColumn::make('slug')
     ->extraAttributes(['class' => 'bg-gray-200'])
 ```
 
-These get merged onto the outer `<div>` element of each cell in that column.
+这些元素会被合并到该列中每个单元格的外层``＜div＞` 元素上。
 
-## Global settings
+## 全局设置
 
-If you wish to change the default behaviour of all columns globally, then you can call the static `configureUsing()` method inside a service provider's `boot()` method, to which you pass a Closure to modify the columns using. For example, if you wish to make all columns [`searchable()`](#searching) and [`toggleable()`](#toggling-column-visibility), you can do it like so:
+如果你想全局修改所有列的默认行为，请在服务提供者的 `boot()` 方法中调用静态 `configureUsing()` 方法，其中你可以传入一个闭包。比如，如果你想让所有的列都[可搜索 `searchable()`](#searching) 并且 [可切换 `toggleable()`](#切换列字段可见度)，你可以这样做：
 
 ```php
 use Filament\Tables\Columns\Column;
@@ -459,7 +459,7 @@ Column::configureUsing(function (Column $column): void {
 });
 ```
 
-Additionally, you can call this code on specific column types as well:
+此外，你也可以在特定的列类型中运行该代码：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -471,7 +471,7 @@ TextColumn::configureUsing(function (TextColumn $column): void {
 });
 ```
 
-Of course, you are still able to overwrite this on each column individually:
+当然，你仍然可以单独对每个列字段进行重写：
 
 ```php
 use Filament\Tables\Columns\TextColumn;

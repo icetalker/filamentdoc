@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/12-testing.md"
-title: Testing
+title: 测试
 ---
 
-## Overview
+## 概述
 
-All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to PHPUnit.
+所有本指南内的示例都使用 [Pest](https://pestphp.com) 编写。不过，你可以将其适配到 PHPUnit。
 
-Since the Table Builder works on Livewire components, you can use the [Livewire testing helpers](https://livewire.laravel.com/docs/testing). However, we have many custom testing helpers that you can use for tables:
+因为表格构造器是基于 Livewire 组件的，因此你也可以使用 [Livewire 测试辅助函数](https://laravel-livewire.com/docs/testing)。不过，我们自定义了一些测试辅助函数，让你可以用于表格测试：
 
-## Render
+## 渲染
 
-To ensure a table component renders, use the `assertSuccessful()` Livewire helper:
+要确保表格组件渲染，请使用 `assertSuccessful()` Livewire 辅助函数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -22,7 +22,7 @@ it('can render page', function () {
 });
 ```
 
-To test which records are shown, you can use `assertCanSeeTableRecords()`, `assertCanNotSeeTableRecords()` and `assertCountTableRecords()`:
+使用 `assertCanSeeTableRecords()`、`assertCanNotSeeTableRecords()` 和 `assertCountTableRecords()`，可以测试显示了哪条记录：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -38,13 +38,13 @@ it('cannot display trashed posts by default', function () {
 });
 ```
 
-> If your table uses pagination, `assertCanSeeTableRecords()` will only check for records on the first page. To switch page, call `set('page', 2)`.
+> 如果表格使用了分页，`assertCanSeeTableRecords()` 只会检查第一页中的记录。要切换页面，请调用 `set('page', 2)`。
 
-> If your table uses `deferLoading()`, you should call `loadTable()` before `assertCanSeeTableRecords()`.
+> 如果表格使用了延迟加载 `deferLoading()`，你应该在 `assertCanSeeTableRecords()` 之前调用 `loadTable()`。
 
-## Columns
+## 列
 
-To ensure that a certain column is rendered, pass the column name to `assertCanRenderTableColumn()`:
+要断言渲染了特定的列，请传递列名到 `assertCanRenderTableColumn()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -57,9 +57,9 @@ it('can render post titles', function () {
 });
 ```
 
-This helper will get the HTML for this column, and check that it is present in the table.
+这个辅助函数会获取该列的 HTML，并检查其是否在表格中出现。
 
-For testing that a column is not rendered, you can use `assertCanNotRenderTableColumn()`:
+要测试没有渲染的列，可以使用 `assertCanNotRenderTableColumn()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -72,13 +72,13 @@ it('can not render post comments', function () {
 });
 ```
 
-This helper will assert that the HTML for this column is not shown by default in the present table.
+该辅助函数会断言该列的 HTML 默认不展示在当前表格。
 
-### Sorting
+### 排序
 
-To sort table records, you can call `sortTable()`, passing the name of the column to sort by. You can use `'desc'` in the second parameter of `sortTable()` to reverse the sorting direction.
+想要对表格进行排序，你可以调用 `sortTable()`，传入要排序的列名。你可以在 `sortTable()` 的第二个参数中使用 `'desc'`，来反转排序方向。
 
-Once the table is sorted, you can ensure that the table records are rendered in order using `assertCanSeeTableRecords()` with the `inOrder` parameter:
+当表格排序完，你可以使用 `assertCanSeeTableRecords()` 并带上 `inOrder` 参数来断言表格记录按顺序渲染：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -94,11 +94,11 @@ it('can sort posts by title', function () {
 });
 ```
 
-### Searching
+### 搜索
 
-To search the table, call the `searchTable()` method with your search query.
+要搜索表格，请在搜索查询里调用 `searchTable()` 方法：
 
-You can then use `assertCanSeeTableRecords()` to check your filtered table records, and use `assertCanNotSeeTableRecords()` to assert that some records are no longer in the table:
+你可以使用 `assertCanSeeTableRecords()` 检查过滤的表格记录，并使用 `assertCanNotSeeTableRecords()` 断言某些记录不再在表格中：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -115,7 +115,7 @@ it('can search posts by title', function () {
 });
 ```
 
-To search individual columns, you can pass an array of searches to `searchTableColumns()`:
+要搜索单独列，你可以传入要搜索的数组到 `searchTableColumns()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -132,9 +132,9 @@ it('can search posts by title column', function () {
 });
 ```
 
-### State
+### 状态
 
-To assert that a certain column has a state or does not have a state for a record you can use `assertTableColumnStateSet()` and `assertTableColumnStateNotSet()`:
+要断言记录中特定的列有或者没有状态，你可以使用 `assertTableColumnStateSet()` 和 `assertTableColumnStateNotSet()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -150,7 +150,7 @@ it('can get post author names', function () {
 });
 ```
 
-To assert that a certain column has a formatted state or does not have a formatted state for a record you can use `assertTableColumnFormattedStateSet()` and `assertTableColumnFormattedStateNotSet()`:
+要断言记录中的某个特定列具有或者没有格式化状态，你可以使用 `assertTableColumnFormattedStateSet()` 和 `assertTableColumnFormattedStateNotSet()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -164,9 +164,9 @@ it('can get post author names', function () {
 });
 ```
 
-### Existence
+### 存在
 
-To ensure that a column exists, you can use the `assertTableColumnExists()` method:
+要断言某个列存在，你可以使用 `assertTableColumnExists()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -177,9 +177,9 @@ it('has an author column', function () {
 });
 ```
 
-### Authorization
+### 授权
 
-To ensure that a particular user cannot see a column, you can use the `assertTableColumnVisible()` and `assertTableColumnHidden()` methods:
+要断言特定用户不能看见某个列，你可以使用 `assertTableColumnVisible()` 和 `assertTableColumnHidden()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -191,9 +191,9 @@ it('shows the correct columns', function () {
 });
 ```
 
-### Descriptions
+### 描述
 
-To ensure a column has the correct description above or below you can use the `assertTableColumnHasDescription()` and `assertTableColumnDoesNotHaveDescription()` methods:
+要断言一个列上面或下面有正确的描述，你可以使用 `assertTableColumnHasDescription()` 和 `assertTableColumnDoesNotHaveDescription()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -209,9 +209,9 @@ it('has the correct descriptions above and below author', function () {
 });
 ```
 
-### Extra Attributes
+### 额外属性
 
-To ensure that a column has the correct extra attributes, you can use the `assertTableColumnHasExtraAttributes()` and `assertTableColumnDoesNotHaveExtraAttributes()` methods:
+要断言一个列中具有正确的额外属性，你可以使用 `assertTableColumnHasExtraAttributes()` 和 `assertTableColumnDoesNotHaveExtraAttributes()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -241,9 +241,9 @@ it('has the correct statuses', function () {
 });
 ```
 
-## Filters
+## 过滤器
 
-To filter the table records, you can use the `filterTable()` method, along with `assertCanSeeTableRecords()` and `assertCanNotSeeTableRecords()`:
+要过滤表格数据，你可以使用 `filterTable()` 方法，以及 `assertCanSeeTableRecords()` 和 `assertCanNotSeeTableRecords()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -259,9 +259,9 @@ it('can filter posts by `is_published`', function () {
 });
 ```
 
-For a simple filter, this will just enable the filter.
+对于简单过滤器，这只是启用过滤器。
 
-If you'd like to set the value of a `SelectFilter` or `TernaryFilter`, pass the value as a second argument:
+如果你想为 `SelectFilter` 或者 `TernaryFilter` 设置值，请传入其值作为第二个参数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -279,9 +279,9 @@ it('can filter posts by `author_id`', function () {
 });
 ```
 
-### Resetting filters
+### 重置过滤器
 
-To reset all filters to their original state, call `resetTableFilters()`:
+要将所有过滤器重置到它们初始的状态，请调用 `resetTableFilters()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -294,9 +294,9 @@ it('can reset table filters`', function () {
 });
 ```
 
-### Removing Filters
+### 移除过滤器
 
-To remove a single filter you can use `removeTableFilter()`:
+要删除单个过滤器，你可以使用 `removeTableFilter()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -314,7 +314,7 @@ it('filters list by published', function () {
 });
 ```
 
-To remove all filters you can use `removeTableFilters()`:
+要移除所有过滤器，你可以使用 `removeTableFilters()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -335,11 +335,11 @@ it('can remove all table filters', function () {
 });
 ```
 
-## Actions
+## Action
 
-### Calling actions
+### 调用 Action
 
-You can call an action by passing its name or class to `callTableAction()`:
+将 Action 名或类传入到 `callTableAction()` 中，你可以调用该 Action：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -354,9 +354,9 @@ it('can delete posts', function () {
 });
 ```
 
-This example assumes that you have a `DeleteAction` on your table. If you have a custom `Action::make('reorder')`, you may use `callTableAction('reorder')`.
+本例假定你表格中有 `DeleteAction`。如果你有一个自定义的 `Action::make('reorder')`，你也可以使用 `callTableAction('reorder')`。
 
-For column actions, you may do the same, using `callTableColumnAction()`:
+对于列中的 Action，你可以使用 `callTableColumnAction()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -371,7 +371,7 @@ it('can copy posts', function () {
 });
 ```
 
-For bulk actions, you may do the same, passing in multiple records to execute the bulk action against with `callTableBulkAction()`:
+对于批量 Action，传入多条记录到 `callTableBulkAction()` 中，去执行批量操作：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -388,7 +388,7 @@ it('can bulk delete posts', function () {
 });
 ```
 
-To pass an array of data into an action, use the `data` parameter:
+使用 `data` 参数，传入数据数组到 Action 中：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -407,9 +407,9 @@ it('can edit posts', function () {
 });
 ```
 
-### Execution
+### 执行
 
-To check if an action or bulk action has been halted, you can use `assertTableActionHalted()` / `assertTableBulkActionHalted()`:
+要断言 Action 或者批量 Action 被中止，你可以使用 `assertTableActionHalted()` / `assertTableBulkActionHalted()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -427,11 +427,11 @@ it('will halt delete if post is flagged', function () {
 });
 ```
 
-### Errors
+### 错误
 
-`assertHasNoTableActionErrors()` is used to assert that no validation errors occurred when submitting the action form.
+`assertHasNoTableActionErrors()` 用于断言提交 Action 表单时，没有出现验证错误。
 
-To check if a validation error has occurred with the data, use `assertHasTableActionErrors()`, similar to `assertHasErrors()` in Livewire:
+要断言数据发生验证错误，请使用 `assertHasTableActionErrors()`，类似于 Livewire 中的 `assertHasErrors()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -447,11 +447,11 @@ it('can validate edited post data', function () {
 });
 ```
 
-For bulk actions these methods are called `assertHasTableBulkActionErrors()` and `assertHasNoTableBulkActionErrors()`.
+对于批量操作来说，这些方法叫做 `assertHasTableBulkActionErrors()` 和 `assertHasNoTableBulkActionErrors()`。
 
-### Pre-filled data
+### 预填充数据
 
-To check if an action or bulk action is pre-filled with data, you can use the `assertTableActionDataSet()` or `assertTableBulkActionDataSet()` method:
+要断言 Action 或批量操作 Action 中是否预填充了数据，你可以使用 `assertTableActionDataSet()` 或者 `assertTableBulkActionDataSet()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -475,9 +475,9 @@ it('can load existing post data for editing', function () {
 });
 ```
 
-### Action state
+### Action 状态
 
-To ensure that an action or bulk action exists or doesn't in a table, you can use the `assertTableActionExists()` / `assertTableActionDoesNotExist()` or  `assertTableBulkActionExists()` / `assertTableBulkActionDoesNotExist()` method:
+要断言 Action 或者批量 Action 存在或者不在表格中，请使用 `assertTableActionExists()` / `assertTableActionDoesNotExist()` 或  `assertTableBulkActionExists()` / `assertTableBulkActionDoesNotExist()` 方法中： 
 
 ```php
 use function Pest\Livewire\livewire;
@@ -491,7 +491,7 @@ it('can publish but not unpublish posts', function () {
 });
 ```
 
-To ensure different sets of actions exist in the correct order, you can use the various "InOrder" assertions
+要断言保不同的 Action 集以正确的顺序存在，可以使用各种 "InOrder" 断言：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -505,7 +505,7 @@ it('has all actions in expected order', function () {
 });
 ```
 
-To ensure that an action or bulk action is enabled or disabled for a user, you can use the `assertTableActionEnabled()` / `assertTableActionDisabled()` or `assertTableBulkActionEnabled()` / `assertTableBulkActionDisabled()` methods:
+要断言 Action 或批量 Action 对用户启用或禁用，你可以使用 `assertTableActionEnabled()` / `assertTableActionDisabled()` 或 `assertTableBulkActionEnabled()` / `assertTableBulkActionDisabled()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -521,8 +521,7 @@ it('can not publish, but can delete posts', function () {
 });
 ```
 
-
-To ensure that an action or bulk action is visible or hidden for a user, you can use the `assertTableActionVisible()` / `assertTableActionHidden()` or `assertTableBulkActionVisible()` / `assertTableBulkActionHidden()` methods:
+要断言 Action 或者批量 Actio 对用户可见或隐藏，你可以使用 `assertTableActionVisible()` / `assertTableActionHidden()` 或者 `assertTableBulkActionVisible()` / `assertTableBulkActionHidden()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -538,9 +537,9 @@ it('can not publish, but can delete posts', function () {
 });
 ```
 
-### Button Style
+### 按钮样式
 
-To ensure an action or bulk action has the correct label, you can use `assertTableActionHasLabel()` / `assertTableBulkActionHasLabel()` and `assertTableActionDoesNotHaveLabel()` / `assertTableBulkActionDoesNotHaveLabel()`:
+要断言 Action 或批量操作 Action 拥有正确的标签，你可以使用 `assertTableActionHasLabel()` / `assertTableBulkActionHasLabel()` 和 `assertTableActionDoesNotHaveLabel()` / `assertTableBulkActionDoesNotHaveLabel()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -556,7 +555,7 @@ it('delete actions have correct labels', function () {
 });
 ```
 
-To ensure an action or bulk action's button is showing the correct icon, you can use `assertTableActionHasIcon()` / `assertTableBulkActionHasIcon()` or `assertTableActionDoesNotHaveIcon()` / `assertTableBulkActionDoesNotHaveIcon()`:
+要断言 Action 或者批量 Action 的按钮显示正确的图标，你可以使用 `assertTableActionHasIcon()` / `assertTableBulkActionHasIcon()` 或者 `assertTableActionDoesNotHaveIcon()` / `assertTableBulkActionDoesNotHaveIcon()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -572,7 +571,7 @@ it('delete actions have correct icons', function () {
 });
 ```
 
-To ensure that an action or bulk action's button is displaying the right color, you can use `assertTableActionHasColor()` / `assertTableBulkActionHasColor()` or `assertTableActionDoesNotHaveColor()` / `assertTableBulkActionDoesNotHaveColor()`:
+要断言 Action 或者批量 Action 的按钮显示正确的颜色，你可以使用 `assertTableActionHasColor()` / `assertTableBulkActionHasColor()` 或 `assertTableActionDoesNotHaveColor()` / `assertTableBulkActionDoesNotHaveColor()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -590,7 +589,7 @@ it('delete actions have correct colors', function () {
 
 ### URL
 
-To ensure an action or bulk action has the correct URL traits, you can use `assertTableActionHasUrl()`, `assertTableActionDoesNotHaveUrl()`, `assertTableActionShouldOpenUrlInNewTab()`, and `assertTableActionShouldNotOpenUrlInNewTab()`:
+要断言 Action 或者批量 Action 的按钮使用正确的 URL trait，你可以使用 `assertTableActionHasUrl()`、`assertTableActionDoesNotHaveUrl()`、`assertTableActionShouldOpenUrlInNewTab()` 和 `assertTableActionShouldNotOpenUrlInNewTab()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -605,9 +604,9 @@ it('links to the correct Filament sites', function () {
 });
 ```
 
-## Summaries
+## 汇总
 
-To test that a summary calculation is working, you may use the `assertTableColumnSummarySet()` method:
+要测试汇总计算是否生效，你可以使用 `assertTableColumnSummarySet()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -621,9 +620,9 @@ it('can average values in a column', function () {
 });
 ```
 
-The first argument is the column name, the second is the summarizer ID, and the third is the expected value.
+第一个参数为列名，第二个是汇总 ID，第三个是期望值。
 
-You may set a summarizer ID by passing it to the `make()` method:
+汇总 ID 可以通过将其传入 `make()` 方法设置：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -633,11 +632,11 @@ TextColumn::make('rating')
     ->summarize(Average::make('average'))
 ```
 
-The ID should be unique between summarizers in that column.
+ID 在该列的汇总之间应该是唯一的。
 
-### Summarizing only one pagination page
+### 只汇总一个分页页面
 
-To calculate the average for only one pagination page, use the `isCurrentPaginationPageOnly` argument:
+只计算一个分页页面的平均值，请使用 `isCurrentPaginationPageOnly` 参数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -651,9 +650,9 @@ it('can average values in a column', function () {
 });
 ```
 
-### Testing a range summarizer
+### 测试范围汇总
 
-To test a range, pass the minimum and maximum value into a tuple-style `[$minimum, $maximum]` array:
+要测试一个范围，请将最小值和最大值传入到一个元组风格的 `[$minimum, $maximum]` 数组中：
 
 ```php
 use function Pest\Livewire\livewire;

@@ -1,17 +1,17 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/07-summaries.md"
-title: Summaries
+title: 汇总
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-You may render a "summary" section below your table content. This is great for displaying the results of calculations such as averages, sums, counts, and ranges of the data in your table.
+你可以在表格下面渲染一个汇总区域。这非常时候在表格中展示诸如平均值、总和、计数及数据范围这样的计算结果。
 
-By default, there will be a single summary line for the current page of data, and an additional summary line for the totals for all data if multiple pages are available. You may also add summaries for [groups](grouping) of records, see ["Summarising groups of rows"](#summarising-groups-of-rows).
+默认情况下，当前数据页将有一个汇总行，如果有多个页面可用，则会有一个额外的汇总行用于所有数据的汇总。你也可以为记录[分组]添加汇总，请查看["汇总行分组"](#汇总行分组)。
 
-"Summarizer" objects can be added to any [table column](columns) using the `summarize()` method:
+使用 `summarize()` 方法，"汇总器(Summarizer)" 对象可以被添加到任何[表格列](columns)中：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -21,7 +21,7 @@ TextColumn::make('rating')
     ->summarize(Average::make())
 ```
 
-Multiple "summarizers" may be added to the same column:
+可以将多个 "summarizer" 添加到同一个列：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -36,24 +36,24 @@ TextColumn::make('rating')
     ])
 ```
 
-> The first column in a table may not use summarizers. That column is used to render the heading and subheading/s of the summary section.
+> 表格的第一个列不能使用汇总。该列用于摘要部分的标题和副标题。
 
 <AutoScreenshot name="tables/summaries" alt="Table with summaries" version="3.x" />
 
-## Available summarizers
+## 可用汇总器
 
-Filament ships with four types of summarizer:
+Filament 带有 4 中类型的汇总器：
 
-- [Average](#average)
-- [Count](#count)
-- [Range](#range)
-- [Sum](#sum)
+- [平均值](#average)
+- [计数](#count)
+- [范围](#range)
+- [总和](#sum)
 
-You may also [create your own custom summarizers](#custom-summaries) to display data in whatever way you wish.
+你也可以[创建自定义汇总器](#自定义汇总器)。
 
 ## Average
 
-Average can be used to calculate the average of all values in the dataset:
+平均值(Average)可用于计算数据集中所有值的平均值：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -67,7 +67,7 @@ In this example, all ratings in the table will be added together and divided by 
 
 ## Count
 
-Count can be used to find the total number of values in the dataset. Unless you just want to calculate the number of rows, you will probably want to [scope the dataset](#scoping-the-dataset) as well:
+计数(Count)可用于计算数据集的总数。除非你只想计算行数，你可能也需要[设置数据集的范围](#设置数据集范围)：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -81,11 +81,11 @@ IconColumn::make('is_published')
     ),
 ```
 
-In this example, the table will calculate how many posts are published.
+本例中，表格将会计算发布了多少文章。
 
-### Counting the occurrence of icons
+### 统计图标出现的次数
 
-Using a count on an [icon column](columns/icon) allows you to use the `icons()` method, which gives the user a visual representation of how many of each icon are in the table:
+在[图标列](columns/icon)中使用计数，可以使用 `icons()` 方法，使用户对表格中每个图标的数量有一个直观的了解：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -97,9 +97,9 @@ IconColumn::make('is_published')
     ->summarize(Count::make()->icons()),
 ```
 
-## Range
+## 范围
 
-Range can be used to calculate the minimum and maximum value in the dataset:
+范围(Range)可用于计算数据集中的最小值和最大值：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Range;
@@ -109,11 +109,11 @@ TextColumn::make('price')
     ->summarize(Range::make())
 ```
 
-In this example, the minimum and maximum price in the table will be found.
+本例中，可以看到表格中的最低价和最高价。
 
-### Date range
+### 日期范围
 
-You may format the range as dates using the `minimalDateTimeDifference()` method:
+使用 `minimalDateTimeDifference()` 方法，你可以将范围格式化为日期：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Range;
@@ -124,15 +124,15 @@ TextColumn::make('created_at')
     ->summarize(Range::make()->minimalDateTimeDifference())
 ```
 
-This method will present the minimal difference between the minimum and maximum date. For example:
+该方法将会显示最小日期和最大日期之间的最小差异。比如：
 
-- If the minimum and maximum dates are different days, only the dates will be displayed.
-- If the minimum and maximum dates are on the same day at different times, both the date and time will be displayed.
-- If the minimum and maximum dates and times are identical, they will only appear once.
+- 如果最小日期和最大日期是不是同一天，则只会显示日期。
+- 如果最小日期和最大日期是同一天的不同时间，日期和时间都会显示。
+- 如果最小和最大日期和时间都是相同的，则只会显示一次。
 
-### Text range
+### 文本范围
 
-You may format the range as text using the `minimalTextualDifference()` method:
+使用 `minimalTextualDifference()` 方法，你可以将范围格式化为文本：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Range;
@@ -142,15 +142,15 @@ TextColumn::make('sku')
     ->summarize(Range::make()->minimalTextualDifference())
 ```
 
-This method will present the minimal difference between the minimum and maximum. For example:
+该方法将会显示最小值和最大值之间的最小差异。比如：
 
-- If the minimum and maximum start with different letters, only the first letters will be displayed.
-- If the minimum and maximum start with the same letter, more of the text will be rendered until a difference is found.
-- If the minimum and maximum are identical, they will only appear once.
+- 如果最小值和最大值以不同的字母开头，则只显示第一个字母。
+- 如果最小值和最大值以同一个字母开头，则将呈现更多的文本，直到找到差异为止。
+- 如果最小值和最大值相同，则它们只出现一次。
 
-### Including null values in the range
+### 在范围中包含 null 值
 
-By default, we will exclude null values from the range. If you would like to include them, you may use the `excludeNull(false)` method:
+默认情况下，我们会从范围中排除 null 值。如果你想将其包含进去，你可以使用 `excludeNull(false)` 方法：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Range;
@@ -162,7 +162,7 @@ TextColumn::make('sku')
 
 ## Sum
 
-Sum can be used to calculate the total of all values in the dataset:
+Sum 可用于计算数据集中所有值的总和：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -172,11 +172,11 @@ TextColumn::make('price')
     ->summarize(Sum::make())
 ```
 
-In this example, all prices in the table will be added together.
+本例中，表格中的所有价格会被相加起来。
 
-## Setting a label
+## 设置标签
 
-You may set a summarizer's label using the `label()` method:
+使用 `label()` 方法，可以设置汇总器标签
 
 ```php
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -186,9 +186,9 @@ TextColumn::make('price')
     ->summarize(Sum::make()->label('Total'))
 ```
 
-## Scoping the dataset
+## 设置数据集范围
 
-You may apply a database query scope to a summarizer's dataset using the `query()` method:
+使用 `query()` 方法，你可以将数据库查询范围应用到汇总器数据集：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -201,9 +201,9 @@ TextColumn::make('rating')
     ),
 ```
 
-In this example, now only rows where `is_published` is set to `true` will be used to calculate the average.
+本例中，只有 `is_published` 被设置为 `true` 的行数据会被用来计算平均值。
 
-This feature is especially useful with the [count](#count) summarizer, as it can count how many records in the dataset pass a test:
+该特性对于 [count](#count) 汇总器尤其有用，因为它可以统计数据集中有多少记录通过了测试：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -217,13 +217,13 @@ IconColumn::make('is_published')
     ),
 ```
 
-In this example, the table will calculate how many posts are published.
+本例中，表格对发布的文章数进行了统计。
 
-## Formatting
+## 格式化
 
-### Number formatting
+### 数字格式化
 
-The `numeric()` method allows you to format a summary as a number, using PHP's `number_format()`:
+`numeric()` 方法允许你使用 PHP 的 `number_format()` 来将汇总格式化为数字：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Average;
@@ -237,9 +237,9 @@ TextColumn::make('rating')
     ))
 ```
 
-### Currency formatting
+### 货币格式化
 
-The `money()` method allows you to easily format monetary values, in any currency:
+`money()` 方法允许你用任何货币将金额值进行格式化：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -249,9 +249,9 @@ TextColumn::make('price')
     ->summarize(Sum::make()->money('eur'))
 ```
 
-### Limiting text length
+### 限制文本长度
 
-You may `limit()` the length of the summary's value:
+使用 `limit()`，你可以限制汇总值的长度： 
 
 ```php
 use Filament\Tables\Columns\Summarizers\Range;
@@ -261,9 +261,9 @@ TextColumn::make('sku')
     ->summarize(Range::make()->limit(5))
 ```
 
-## Custom summaries
+## 自定义汇总
 
-You may create a custom summary by returning the value from the `using()` method:
+在 `using()` 方法中返回值，你可以创建自定义汇总：
 
 ```php
 use Filament\Tables\Columns\Summarizers\Summarizer;
@@ -276,15 +276,15 @@ TextColumn::make('name')
         ->using(fn (Builder $query): string => $query->min('last_name')))
 ```
 
-The callback has access to the database `$query` builder instance to perform calculations with. It should return the value to display in the table.
+回调可以访问数据库 `$query` 构建器实例，以执行计算。它应该返回展示在表格中的值。
 
-## Summarising groups of rows
+## 汇总行分组
 
-You can use summaries with [groups](grouping) to display a summary of the records inside a group. This works automatically if you choose to add a summariser to a column in a grouped table.
+你可以在[分组](grouping)中使用汇总，以在分组中显示记录汇总。如果您选择将汇总表添加到分组表中的列中，则此操作会自动生效。
 
-### Hiding the grouped rows and showing the summary only
+### 隐藏分组的行并只显示汇总
 
-You may hide the rows inside groups and just show the summary of each group using the `groupsOnly()` method. This is very useful in many reporting scenarios.
+使用 `groupsOnly()` 方法，你可以在分组内隐藏行，并且只显示每个分组的汇总。这对于许多报告场景很有用。
 
 ```php
 use Filament\Tables\Columns\Summarizers\Sum;

@@ -5,9 +5,9 @@ title: Icon column
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Icon columns render an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) representing their contents:
+图标列字段用来渲染表示其内容的[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -20,13 +20,13 @@ IconColumn::make('status')
     })
 ```
 
-In the function, `$state` is the value of the column, and `$record` can be used to access the underlying Eloquent record.
+该函数中，`$state` 是列字段的值，`$record` 可用于访问 Eloquent 记录。
 
 <AutoScreenshot name="tables/columns/icon/simple" alt="Icon column" version="3.x" />
 
-## Customizing the color
+## 自定义颜色
 
-Icon columns may also have a set of icon colors, using the same syntax. They may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+图标列也有一套图标颜色。颜色值可以是 `danger`、`gray`、`info`、`primary`、`success` 或者 `warning`：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -40,13 +40,13 @@ IconColumn::make('status')
     })
 ```
 
-In the function, `$state` is the value of the column, and `$record` can be used to access the underlying Eloquent record.
+该函数中，`$state` 是列字段的值，`$record` 可用于访问 Eloquent 记录。
 
 <AutoScreenshot name="tables/columns/icon/color" alt="Icon column with color" version="3.x" />
 
-## Customizing the size
+## 自定义大小
 
-The default icon size is `IconColumnSize::Large`, but you may customize the size to be either `IconColumnSize::ExtraSmall`, `IconColumnSize::Small`, `IconColumnSize::Medium` or `IconColumnSize::ExtraLarge`:
+图标默认大小是 `IconColumnSize::Large`，不过你可以将其自定义为 `IconColumnSize::ExtraSmall`、`IconColumnSize::Small`、`IconColumnSize::Medium` 或 `IconColumnSize::ExtraLarge`：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -57,9 +57,9 @@ IconColumn::make('status')
 
 <AutoScreenshot name="tables/columns/icon/medium" alt="Medium-sized icon column" version="3.x" />
 
-## Handling booleans
+## 处理布尔值
 
-Icon columns can display a check or cross icon based on the contents of the database column, either true or false, using the `boolean()` method:
+使用 `boolean()` 方法，图标列可以基于数据库字段内容显示勾或叉：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -70,9 +70,9 @@ IconColumn::make('is_featured')
 
 <AutoScreenshot name="tables/columns/icon/boolean" alt="Icon column to display a boolean" version="3.x" />
 
-### Customizing the boolean icons
+### 自定义布尔值图标
 
-You may customize the icon representing each state. Icons are the name of a Blade component present. By default, [Heroicons](https://heroicons.com) are installed:
+你可以自定义代表每个状态的图标。图标为 Blade 组件名。默认情况下，安装了 [Heroicons](https://heroicons.com)：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -85,9 +85,9 @@ IconColumn::make('is_featured')
 
 <AutoScreenshot name="tables/columns/icon/boolean-icon" alt="Icon column to display a boolean with custom icons" version="3.x" />
 
-### Customizing the boolean colors
+### 自定义布尔值颜色
 
-You may customize the icon color representing each state. These may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+你可以自定义代表每个状态的图标颜色。颜色值可以是 `danger`、`gray`、`info`、`primary`、`success` 或者 `warning`：
 
 ```php
 use Filament\Tables\Columns\IconColumn;

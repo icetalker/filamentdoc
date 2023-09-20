@@ -5,9 +5,9 @@ title: Text input column
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The text input column allows you to render a text input inside the table, which can be used to update that database record without needing to open a new page or a modal:
+文本输入列(TextInputColumn)允许你在表格中渲染文本输入框，可用于在不打开新页面或模态框的情况下更新数据库记录：
 
 ```php
 use Filament\Tables\Columns\TextInputColumn;
@@ -17,9 +17,9 @@ TextInputColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text-input/simple" alt="Text input column" version="3.x" />
 
-## Validation
+## 验证
 
-You can validate the input by passing any [Laravel validation rules](https://laravel.com/docs/validation#available-validation-rules) in an array:
+以数组的方式传入任何 [Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)，你可以对输入进行验证：
 
 ```php
 use Filament\Tables\Columns\TextInputColumn;
@@ -28,9 +28,9 @@ TextInputColumn::make('name')
     ->rules(['required', 'max:255'])
 ```
 
-## Customizing the HTML input type
+## 自定义 HTML Input 类型
 
-You may use the `type()` method to pass a custom [HTML input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types):
+你可以使用 `type()` 方法传递自定义 [HTML Input 类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)：
 
 ```php
 use Filament\Tables\Columns\TextInputColumn;
