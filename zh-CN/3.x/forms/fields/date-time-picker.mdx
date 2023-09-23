@@ -5,9 +5,9 @@ title: Date-time picker
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The date-time picker provides an interactive interface for selecting a date and/or a time.
+日期时间选择器提供了日期/时间选择的交互接口。
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -21,9 +21,9 @@ TimePicker::make('alarm_at')
 
 <AutoScreenshot name="forms/fields/date-time-picker/simple" alt="Date time pickers" version="3.x" />
 
-## Customizing the storage format
+## 自定义存储格式
 
-You may customize the format of the field when it is saved in your database, using the `format()` method. This accepts a string date format, using [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+使用 `format()` 方法，你可以自定义存入数据库时的字段格式。它接收一个字符串日期格式，使用 [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php)：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -32,9 +32,9 @@ DatePicker::make('date_of_birth')
     ->format('d/m/Y')
 ```
 
-## Disabling the seconds input
+## 禁用秒输入
 
-When using the time picker, you may disable the seconds input using the `seconds(false)` method:
+使用 `seconds(false)` 方法，你可以在时间选择器中禁用秒输入：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -45,9 +45,9 @@ DateTimePicker::make('published_at')
 
 <AutoScreenshot name="forms/fields/date-time-picker/without-seconds" alt="Date time picker without seconds" version="3.x" />
 
-## Timezones
+## 时区
 
-If you'd like users to be able to manage dates in their own timezone, you can use the `timezone()` method:
+如果你希望用户在他们自己的时区中管理日期，你可以使用 `timezone()` 方法：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -56,11 +56,11 @@ DateTimePicker::make('published_at')
     ->timezone('America/New_York')
 ```
 
-While dates will still be stored using the app's configured timezone, the date will now load in the new timezone, and it will be converted back when the form is saved.
+虽然日期仍然使用应用配置的时区进行存储，不过日期仍然可以在新的时区中加载，并且会在表单中保存时会转换回来。
 
-## Enabling the JavaScript date picker
+## 启用 JavaScript 日期选择器
 
-By default, Filament uses the native HTML5 date picker. You may enable a more customizable JavaScript date picker using the `native(false)` method:
+默认情况下，Filament 使用本机 HTML5 时间选择器。使用 `native(false)` 方法，你可以启用更可自定义的 JavaScript 日期选择器。
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -71,11 +71,11 @@ DatePicker::make('date_of_birth')
 
 <AutoScreenshot name="forms/fields/date-time-picker/javascript" alt="JavaScript-based date time picker" version="3.x" />
 
-Please be aware that while being accessible, the JavaScript date picker does not support full keyboard input in the same way that the native date picker does. If you require full keyboard input, you should use the native date picker.
+请注意，虽然 JavaScript 日期选择器是可访问的，但它不支持像本机日期选择器那样的全键盘输入。如果需要全键盘输入，则应使用本机日期选择器。
 
-### Customizing the display format
+### 自定义显示格式
 
-You may customize the display format of the field, separately from the format used when it is saved in your database. For this, use the `displayFormat()` method, which also accepts a string date format, using [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+你可以自定义该字段的显示格式，使之不同于其存入到数据库的格式。为此，请使用 `displayFormat()` 方法，该方法接收一个字符串日期格式：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -87,9 +87,9 @@ DatePicker::make('date_of_birth')
 
 <AutoScreenshot name="forms/fields/date-time-picker/display-format" alt="Date time picker with custom display format" version="3.x" />
 
-### Configuring the time input intervals
+### 配置时间输入间隔
 
-You may customize the input interval for increasing/decreasing the hours/minutes /seconds using the `hoursStep()` , `minutesStep()` or `secondsStep()` methods:
+使用 `hoursStep()`、`minutesStep()` 或者 `secondsStep()` 方法，你可以自定义小时、分钟、秒的增减的输入间隔：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -101,9 +101,9 @@ DateTimePicker::make('published_at')
     ->secondsStep(10)
 ```
 
-### Configuring the first day of the week
+### 一周的第一天
 
-In some countries, the first day of the week is not Monday. To customize the first day of the week in the date picker, use the `firstDayOfWeek()` method on the component. 0 to 7 are accepted values, with Monday as 1 and Sunday as 7 or 0:
+在某些国家，一周的第一天不是周一。要在日期选择器中自定义一周的第一天，请在组件中使用 `firstDayOfWeek()` 方法，可接收的参数值从 0 到 7，周一是 1，周日为 7 或 0：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -115,7 +115,7 @@ DateTimePicker::make('published_at')
 
 <AutoScreenshot name="forms/fields/date-time-picker/week-starts-on-sunday" alt="Date time picker where the week starts on Sunday" version="3.x" />
 
-There are additionally convenient helper methods to set the first day of the week more semantically:
+还有一些更方便的助手方法可以更语义地设置一周的第一天：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -129,9 +129,9 @@ DateTimePicker::make('published_at')
     ->weekStartsOnSunday()
 ```
 
-### Disabling specific dates
+### 禁用指定日期
 
-To prevent specific dates from being selected:
+要防止指定日期被选中：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -143,9 +143,9 @@ DateTimePicker::make('date')
 
 <AutoScreenshot name="forms/fields/date-time-picker/disabled-dates" alt="Date time picker where dates are disabled" version="3.x" />
 
-### Closing the picker when a date is selected
+### 选中日期后关闭选择器
 
-To close the picker when a date is selected, you can use the `closeOnDateSelection()` method:
+使用 `closeOnDateSelection()` 方法，可以在日期选中后关闭选择器：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -155,9 +155,9 @@ DateTimePicker::make('date')
     ->closeOnDateSelection()
 ```
 
-## Autocompleting dates with a datalist
+## 使用 datalist 自动补全日期
 
-Unless you're using the [JavaScript date picker](#enabling-the-javascript-date-picker), you may specify [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) options for a date picker using the `datalist()` method:
+除非你使用了 [JavaScript 日期选择器](#启用-javascript-日期选择器)，你可以使用 `datalist()` 方法，为日期选择器指定 [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) 选项：
 
 ```php
 use Filament\Forms\Components\TimePicker;
@@ -174,11 +174,11 @@ TimePicker::make('appointment_at')
     ])
 ```
 
-Datalists provide autocomplete options to users when they use the picker. However, these are purely recommendations, and the user is still able to type any value into the input. If you're looking to strictly limit users to a set of predefined options, check out the [select field](select).
+当用户使用选择器时，Datalist 会为用户提供自动补全选项。不过，这些选项是纯推荐，用户仍然可以输入任何的值。如果你希望使用一套预定义的选项对用户进行严格的限制，请查阅 [Select 字段](select)。
 
-## Adding affix text aside the field
+## 在该字段旁边添加前后缀
 
-You may place text before and after the input using the `prefix()` and `suffix()` methods:
+使用 `prefix()` 和 `suffix()` 方法，你可以在输入框前后放置文本：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -190,9 +190,9 @@ DatePicker::make('date')
 
 <AutoScreenshot name="forms/fields/date-time-picker/affix" alt="Date time picker with affixes" version="3.x" />
 
-### Using icons as affixes
+### 使用图标作为前后缀
 
-You may place an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) before and after the input using the `prefixIcon()` and `suffixIcon()` methods:
+使用 `prefixIcon()` 和 `suffixIcon()` 方法，你可以在输入框前后放置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\TimePicker;
@@ -203,13 +203,13 @@ TimePicker::make('at')
 
 <AutoScreenshot name="forms/fields/date-time-picker/prefix-icon" alt="Date time picker with prefix icon" version="3.x" />
 
-## Date-time picker validation
+## 日期时间选择器验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to date-time pickers.
+除了[验证](../validation)页面中的所有规则，还有一些专门用于日期时间选择器的规则。
 
-### Max date / min date validation
+### 最大日期/最小日期验证
 
-You may restrict the minimum and maximum date that can be selected with the picker. The `minDate()` and `maxDate()` methods accept a `DateTime` instance (e.g., Carbon), or a string:
+你可以限制选择器所能够选择的最小和最大日期。 `minDate` 和 `maxDate` 接收一个 `DateTime` 实例(比如 Carbon)或者字符串：
 
 ```php
 use Filament\Forms\Components\DatePicker;

@@ -5,9 +5,9 @@ title: Repeater
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The repeater component allows you to output a JSON array of repeated form components.
+Repeater 组件允许你输出重复表单组件的 JSON 数组：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -30,9 +30,9 @@ Repeater::make('members')
 
 <AutoScreenshot name="forms/fields/repeater/simple" alt="Repeater" version="3.x" />
 
-We recommend that you store repeater data with a `JSON` column in your database. Additionally, if you're using Eloquent, make sure that column has an `array` cast.
+建议将 repeater 数据存储在数据库的 `JSON` 字段中。此外，如果你使用了 Eloquent，请确保该对该字段进行 `array` cast。
 
-As evident in the above example, the component schema can be defined within the `schema()` method of the component:
+上例可以明显看出，组件 Schema 在组件的 `schema()` 方法中定义:
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -45,11 +45,11 @@ Repeater::make('members')
     ])
 ```
 
-If you wish to define a repeater with multiple schema blocks that can be repeated in any order, please use the [builder](builder).
+如果你想要使用可以以任何顺序重复的多个 Schema 块来定义 Repeater，请使用 [Builder](builder)。
 
-## Setting empty default items
+## 设置空默认项
 
-Repeaters may have a certain number of empty items created by default, using the `defaultItems()` method:
+使用 `defaultItems()` 方法，Repeater 可以创建特定数量的默认项：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -61,15 +61,15 @@ Repeater::make('members')
     ->defaultItems(3)
 ```
 
-Note that these default items are only created when the form is loaded without existing data. Inside [panel resources](../../panels/resources#resource-forms) this only works on Create Pages, as Edit Pages will always fill the data from the model.
+请注意，默认项只会表单中没有加载已有数据时创建。在[面板资源](../../panels/resources#资源表单)内，它只会在创建页面生效，因为编辑页面始终回从模型中填充数据。
 
-## Adding items
+## 添加项目
 
-An action button is displayed below the repeater to allow the user to add a new item.
+Repeater 下面有一个 Action 按钮，用来添加新项目。
 
-## Setting the add action button's label
+## 设置添加按钮标签
 
-You may set a label to customize the text that should be displayed in the button for adding a repeater item, using the `addActionLabel()` method:
+使用 `addActionLabel()` 方法，你可以设置添加按钮上显示的标签文本：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -81,9 +81,9 @@ Repeater::make('members')
     ->addActionLabel('Add member')
 ```
 
-### Preventing the user from adding items
+### 阻止用户添加项目
 
-You may prevent the user from adding items to the repeater using the `addable(false)` method:
+使用 `addable(false)` 方法，你可以阻止用户添加项目到 Repeater：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -95,13 +95,13 @@ Repeater::make('members')
     ->addable(false)
 ```
 
-## Deleting items
+## 删除项目
 
-An action button is displayed on each item to allow the user to delete it.
+每个项目上都有个 Action 按钮，用以删除项目。
 
-### Preventing the user from deleting items
+### 防止用户删除项目
 
-You may prevent the user from deleting items from the repeater using the `deletable(false)` method:
+使用 `deletable(false)` 方法，你可以阻止用户删除 Repeater 中的项目：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -113,13 +113,13 @@ Repeater::make('members')
     ->deletable(false)
 ```
 
-## Reordering items
+## 项目重新排序
 
-A button is displayed on each item to allow the user to drag and drop to reorder it in the list.
+每个项目上都有一个按钮，用于允许用户拖拽来对项目进行重新排序。
 
-### Preventing the user from reordering items
+### 防止用户重新排序
 
-You may prevent the user from reordering items from the repeater using the `reorderable(false)` method:
+使用 `reorderable(false)` 方法，你可以阻止用户在 Repeater 中对项目进行重新排序：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -131,9 +131,9 @@ Repeater::make('members')
     ->reorderable(false)
 ```
 
-### Reordering items with buttons
+### 使用按钮重新排列项目
 
-You may use the `reorderableWithButtons()` method to enable reordering items with buttons to move the item up and down:
+使用 `reorderableWithButtons()` 方法，你可以启用通过按钮重新排序，将项目上下移动:
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -147,9 +147,9 @@ Repeater::make('members')
 
 <AutoScreenshot name="forms/fields/repeater/reorderable-with-buttons" alt="Repeater that is reorderable with buttons" version="3.x" />
 
-### Preventing reordering with drag and drop
+### 阻止使用拖拽进行重新排序
 
-You may use the `reorderableWithDragAndDrop(false)` method to prevent items from being ordered with drag and drop:
+使用 `reorderableWithDragAndDrop(false)` 方法，可以阻止项目通过拖拽进行排序：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -161,9 +161,9 @@ Repeater::make('members')
     ->reorderableWithDragAndDrop(false)
 ```
 
-## Collapsing items
+## 可折叠的项目
 
-The repeater may be `collapsible()` to optionally hide content in long forms:
+使用 `collapsible()` 方法，可以将 Repeater 设为可折叠的，使其在长表单中隐藏内容：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -175,7 +175,7 @@ Repeater::make('qualifications')
     ->collapsible()
 ```
 
-You may also collapse all items by default:
+你可以将所有项目设置成默认折叠：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -189,9 +189,9 @@ Repeater::make('qualifications')
 
 <AutoScreenshot name="forms/fields/repeater/collapsed" alt="Collapsed repeater" version="3.x" />
 
-## Cloning items
+## 克隆项目
 
-You may allow repeater items to be duplicated using the `cloneable()` method:
+使用 `cloneable()` 方法，可以将 Repeater 项目设为可复制的。
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -205,11 +205,11 @@ Repeater::make('qualifications')
 
 <AutoScreenshot name="forms/fields/repeater/cloneable" alt="Cloneable repeater" version="3.x" />
 
-## Integrating with an Eloquent relationship
+## 集成 Eloquent 关联
 
-> If you're building a form inside your Livewire component, make sure you have set up the [form's model](../adding-a-form-to-a-livewire-component#setting-a-form-model). Otherwise, Filament doesn't know which model to use to retrieve the relationship from.
+> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不直到使用哪个模型去检索关联。
 
-You may employ the `relationship()` method of the `Repeater` to configure a `HasMany` relationship. Filament will load the item data from the relationship, and save it back to the relationship when the form is submitted. If a custom relationship name is not passed to `relationship()`, Filament will use the field name as the relationship name:
+你可以使用 `Repeater` 上 `relationship()` 方法去配置 `HasMany` 关联。Filament 将从关联中加载项目数据，并在表单提交后将其保存回关联。如果没有将自定义关联名传入到 `relationship()`，Filament 将回使用字段名作为关联名：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -221,9 +221,9 @@ Repeater::make('qualifications')
     ])
 ```
 
-### Reordering items in a relationship
+### 在关联中重排项目
 
-By default, [reordering](#reordering-items) relationship repeater items is disabled. This is because your related model needs an `sort` column to store the order of related records. To enable reordering, you may use the `orderColumn()` method, passing in a name of the column on your related model to store the order in:
+默认情况下，Repeater 项目 [重新排序](#项目重新排序)是禁用的。这是因为关联模型需要有一个 `sort` 字段用来存储关联记录的排序。要启用重新排序功能，你需要使用 `orderColumn()` 方法，传入关联模型的用于排序的字段名：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -236,7 +236,7 @@ Repeater::make('qualifications')
     ->orderColumn('sort')
 ```
 
-If you use something like [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) with an order column such as `order_column`, you may pass this in to `orderColumn()`:
+如果你使用了诸如 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) 这样使用 `order_column` 作为排序字段的包，你可以将其传入到 `orderColumn()` 中：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -249,11 +249,11 @@ Repeater::make('qualifications')
     ->orderColumn('order_column')
 ```
 
-### Integrating with a `BelongsToMany` Eloquent relationship
+### 集成 `BelongsToMany` Eloquent 关联
 
-There is a common misconception that using a `BelongsToMany` relationship with a repeater is as simple as using a `HasMany` relationship. This is not the case, as a `BelongsToMany` relationship requires a pivot table to store the relationship data. The repeater saves its data to the related model, not the pivot table. Therefore, if you want to map each repeater item to a row in the pivot table, you must use a `HasMany` relationship with a pivot model to use a repeater with a `BelongsToMany` relationship.
+有一种常见的误解是，在 Repeater 中使用 `BelongsToMany` 关联与使用 `HasMany` 关联一样简单。事实并非如此，`BelongsToMany` 关联需要中间表来存储关联数据。Repeater 将数据保存到关联模型，而非中间表。因此，如果你想将每个 Repeater 项目映射到中间表行数据，你必须使用 `HasMany` 关联中间模型，才可以在 Repeater 中使用 `BelongsToMany` 关联。
 
-Imagine you have a form to create a new `Order` model. Each order belongs to many `Product` models, and each product belongs to many orders. You have a `order_product` pivot table to store the relationship data. Instead of using the `products` relationship with the repeater, you should create a new relationship called `orderProducts` on the `Order` model, and use that with the repeater:
+假设你有一个新建 `Order` 模型的表单。每个订单属于多个 `Product` 模型，并且每个产品也属于多个订单。你使用了 `order_product` 中间表来存储关联数据。你不应该在 Repeater 中使用 `products` 关联，而应该在 `Order` 模型上创建一个 `orderProducts` 关联，并在 Repeater 上使用： 
 
 ```php
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -264,7 +264,7 @@ public function orderProducts(): HasMany
 }
 ```
 
-If you don't already have an `OrderProduct` pivot model, you should create that, with inverse relationships to `Order` and `Product`:
+如果你没有 `OrderProduct` 中间模型，你应该创建一个，将其反转关联到 `Order` 及 `Product` 上：
 
 ```php
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -284,7 +284,7 @@ class OrderProduct extends Pivot
 }
 ```
 
-Now you can use the `orderProducts` relationship with the repeater, and it will save the data to the `order_product` pivot table:
+现在，你可以在 Repeater 上使用 `orderProducts` 关联，并将数据保存到 `order_product` 中间表中：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -300,9 +300,9 @@ Repeater::make('orderProducts')
     ])
 ```
 
-### Mutating related item data before filling the field
+### 填充字段前更改关联项目数据
 
-You may mutate the data for a related item before it is filled into the field using the `mutateRelationshipDataBeforeFillUsing()` method. This method accepts a closure that receives the current item's data in a `$data` variable. You must return the modified array of data:
+使用 `mutateRelationshipDataBeforeFillUsing()` 方法，你可以在数据填充到该字段之前修改关联项目的数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你必须返回修改过的数据数组：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -319,9 +319,9 @@ Repeater::make('qualifications')
     })
 ```
 
-### Mutating related item data before creating
+### 新建前修改关联项目数据
 
-You may mutate the data for a new related item before it is created in the database using the `mutateRelationshipDataBeforeCreateUsing()` method. This method accepts a closure that receives the current item's data in a `$data` variable. You must return the modified array of data:
+使用 `mutateRelationshipDataBeforeCreateUsing()` 方法，你可以在数据库中新建记录之前修改关联项数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你必须返回修改过的数据数组：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -338,9 +338,9 @@ Repeater::make('qualifications')
     })
 ```
 
-### Mutating related item data before saving
+### 保存前修改关联项目数据
 
-You may mutate the data for an existing related item before it is saved in the database using the `mutateRelationshipDataBeforeSaveUsing()` method. This method accepts a closure that receives the current item's data in a `$data` variable. You must return the modified array of data:
+使用 `mutateRelationshipDataBeforeSaveUsing()` 方法，你可以在数据保存到数据库之前修改已有关联项目的数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你必须返回修改过的数据数组：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -357,9 +357,9 @@ Repeater::make('qualifications')
     })
 ```
 
-## Grid layout
+## 网格布局
 
-You may organize repeater items into columns by using the `grid()` method:
+使用 `grid()` 方法，你可以将 Repeater 项目组织到网格列中：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -373,11 +373,11 @@ Repeater::make('qualifications')
 
 <AutoScreenshot name="forms/fields/repeater/grid" alt="Repeater with a 2 column grid of items" version="3.x" />
 
-This method accepts the same options as the `columns()` method of the [grid](../layout/grid). This allows you to responsively customize the number of grid columns at various breakpoints.
+该方法接收的参数与 [grid](../layout/grid) 的 `columns()` 相同。它允许你在不同的临界点中响应式地自定义网格列数。
 
-## Adding a label to repeater items based on their content
+## 基于内容为 Repeater 项目添加标签
 
-You may add a label for repeater items using the `itemLabel()` method. This method accepts a closure that receives the current item's data in a `$state` variable. You must return a string to be used as the item label:
+使用 `itemLabel()` 方法，你可以为 Repeater 项目添加标签。该方法接收一个闭包，闭包使用 `$state` 变量接收当前项目的数据。你必须返回字符串用作项目标签：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -401,19 +401,19 @@ Repeater::make('members')
     ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
 ```
 
-Any fields that you use from `$state` should be `live()` if you wish to see the item label update live as you use the form.
+如果你希望在使用表单时实时更新项目标签，你在 `$state` 中使用的任何字段都应该是 `live()` 实时的。 
 
 <AutoScreenshot name="forms/fields/repeater/labelled" alt="Repeater with item labels" version="3.x" />
 
-## Using `$get()` to access parent field values
+## 使用 `$get()` 访问父级字段值
 
-All form components are able to [use `$get()` and `$set()`](../advanced) to access another field's value. However, you might experience unexpected behaviour when using this inside the repeater's schema.
+所有表单组件都可以[使用 `$get()` 和 `$set()`](../advanced) 去访问另一个字段的值。不过，当在 Repeater 的 Schema 中使用时，你可能回遇到非预期的行为。
 
-This is because `$get()` and `$set()`, by default, are scoped to the current repeater item. This means that you are able to interact with another field inside that repeater item easily without knowing which repeater item the current form component belongs to.
+这是因为 `$get()` 和 `$set()` 默认作用于当前的 Repeater 项目。这意味着，你可以在该 Repeater 内和其他字段交互，而不必知晓当前表单组件属于哪个 Repeater 项目。
 
-The consequence of this is that you may be confused when you are unable to interact with a field outside the repeater. We use `../` syntax to solve this problem - `$get('../../parent_field_name')`.
+后果是，当你无法与 Repeater 之外的字段进行交互时，你可能会感到疑惑。我们使用 `../` 语法来解决这个问题 —— `$get('../../parent_field_name')`。
 
-Consider your form has this data structure:
+假设你的表单数据结构如下：
 
 ```php
 [
@@ -427,20 +427,20 @@ Consider your form has this data structure:
 ]
 ```
 
-You are trying to retrieve the value of `client_id` from inside the repeater item.
+你要在 Repeater 项目中检索 `client_id`。
 
-`$get()` is relative to the current repeater item, so `$get('client_id')` is looking for `$get('repeater.item1.client_id')`.
+`$get()` 是相对当前 Repeater 项目，因此 `$get('client_id')` 查找的是 `$get('repeater.item1.client_id')`。
 
-You can use `../` to go up a level in the data structure, so `$get('../client_id')` is `$get('repeater.client_id')` and `$get('../../client_id')` is `$get('client_id')`.
+你可以使用 `../` 回到该数据结构的上一级，因此 `$get('../client_id')` 相当于 `$get('repeater.client_id')`，`$get('../../client_id')` 相当于 `$get('client_id')`。
 
 
-## Repeater validation
+## Repeater 验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to repeaters.
+除了[验证](../validation)页面中列出的所有规则，还有一些其他专用于 Repeater 的验证规则。
 
-### Number of items validation
+### 验证项目数量
 
-You can validate the minimum and maximum number of items that you can have in a repeater by setting the `minItems()` and `maxItems()` methods:
+设置 `minItems()` 和 `maxItems()` 方法，你可以验证 Repeater 中项目的最小和最大数量：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -453,9 +453,9 @@ Repeater::make('members')
     ->maxItems(5)
 ```
 
-## Customizing the repeater action objects
+## 自定义 Repeater Action 对象
 
-This field uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button). The following methods are available to customize the actions:
+该字段使用 Action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
 
 - `addAction()`
 - `cloneAction()`
@@ -468,7 +468,7 @@ This field uses action objects for easy customization of buttons within it. You 
 - `moveUpAction()`
 - `reorderAction()`
 
-Here is an example of how you might customize an action:
+下面是一个自定义 action 的示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -483,9 +483,9 @@ Repeater::make('members')
     )
 ```
 
-### Confirming repeater actions with a modal
+### 使用模态框确认 Repeater Action
 
-You can confirm actions with a modal by using the `requiresConfirmation()` method on the action object. You may use any [modal customization method](../../actions/modals) to change its content and behaviour:
+在 action 对象中使用 `requiresConfirmation()` 方法，你可以使用模态框确认 action。你可以使用所有[模态框自定义方法](../../actions/modals)来修改其内容和行为：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -500,4 +500,4 @@ Repeater::make('members')
     )
 ```
 
-> The `collapseAction()`, `collapseAllAction()`, `expandAction()`, `expandAllAction()` and `reorderAction()` methods do not support confirmation modals, as clicking their buttons does not make the network request that is required to show the modal.
+> `collapseAction()`、`collapseAllAction()`、`expandAction()`、`expandAllAction()` 和 `reorderAction()` 方法不支持确认模态框，因为点击这些按钮不会发起要求显示模态框的网络请求。

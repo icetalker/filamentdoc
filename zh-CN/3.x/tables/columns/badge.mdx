@@ -4,7 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/doc
 title: Badge column
 ---
 
-Badge columns render a colored badge with the cell's contents:
+## 概述
+
+徽章列(BadgeColumn)用于渲染彩色徽章：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -17,9 +19,9 @@ BadgeColumn::make('status')
     ])
 ```
 
-## Customizing the color
+## 自定义颜色
 
-Badges may have a color. It may be either `primary`, `secondary`, `success`, `warning` or `danger`:
+徽章可以有颜色。颜色值可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -34,7 +36,7 @@ BadgeColumn::make('status')
     ])
 ```
 
-You may instead activate a color using a callback, accepting the cell's `$state`:
+你可以使用回调函数激活颜色，该回调接收单单元格的 `$state` 作为参数：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -49,7 +51,7 @@ BadgeColumn::make('status')
     ])
 ```
 
-Or dynamically calculate the color based on the `$record` and / or `$state`:
+或者根据 `$record` / `$state` 动态计算颜色：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -64,9 +66,9 @@ BadgeColumn::make('status')
     })
 ```
 
-## Adding an icon
+## 添加图标：
 
-Badges may also have an icon:
+徽章也可以有图标：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -80,7 +82,7 @@ BadgeColumn::make('status')
     ])
 ```
 
-Alternatively, you may conditionally display an icon using a closure:
+此外，你可以使用闭包条件性地显示图标：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -94,7 +96,7 @@ BadgeColumn::make('status')
     ])
 ```
 
-Or dynamically calculate the icon based on the `$record` and / or `$state`:
+或者根据 `$record`/`$state` 计算图标：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -109,7 +111,7 @@ BadgeColumn::make('status')
     })
 ```
 
-You may set the position of an icon using `iconPosition()`:
+使用 `iconPosition()` 你可以设置图标位置：
 
 ```php
 use Filament\Tables\Columns\BadgeColumn;
@@ -124,6 +126,6 @@ BadgeColumn::make('status')
     ->iconPosition('after') // `before` or `after`
 ```
 
-## Formatting the text
+## 格式化文本
 
-All formatting options available for [text columns](text) are also available for badge columns.
+[文本列](text)中的所有格式化选项，都可用于徽章列中。

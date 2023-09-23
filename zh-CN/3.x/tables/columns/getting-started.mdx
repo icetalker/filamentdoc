@@ -304,7 +304,7 @@ TextColumn::make('title')
 
 ## 设置默认值
 
-你可以使用 `default()` 方法，为状态为 `null` 的字段设置默认值：
+要为空状态的列设置默认值，请使用 `default()` 方法。该方法将会将默认状态视为真实状态，这样 [Image](image) 和 [Color](color) 这样的列将会显示默认图片和颜色。
 
 ```php
 use Filament\Tables\Columns\TextColumn;

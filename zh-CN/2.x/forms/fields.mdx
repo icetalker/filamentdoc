@@ -35,7 +35,7 @@ public static function form(Form $form): Form
 }
 ```
 
-字段可以用静态方法 `make()` 传入字段名为参数创建。字段名应该对应 Livewire 组件的属性名。你可以使用[Livewire"点语法"](https://laravel-livewire.com/docs/properties#binding-nested-data)将字段绑定到像数组或者Eloquent模型这样的嵌套属性中。
+字段可以用静态方法 `make()` 传入字段名为参数创建。字段名应该对应 Livewire 组件的属性名。你可以使用 [Livewire "点语法"](https://laravel-livewire.com/docs/properties#binding-nested-data)将字段绑定到像数组或者 Eloquent 模型这样的嵌套属性中。
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -58,7 +58,7 @@ TextInput::make('name')->label(__('fields.name'))
 ```php
 use Filament\Forms\Components\TextInput;
 
-TextInput::make('name')->translateLabel() // 相当于 `label(__('Name'))
+TextInput::make('name')->translateLabel() // 相当于 `label(__('Name'))`
 ```
 
 ### 设置ID
@@ -111,7 +111,7 @@ RichEditor::make('content')
     ->hintIcon('heroicon-s-translate')
 ```
 
-提示也可以添加颜色`color()`。默认是灰色，不过你也可以设为 `primary`、`success`、`warning` 或  `danger`：
+提示也可以添加颜色 `color()`。默认是灰色，不过你也可以设为 `primary`、`success`、`warning` 或  `danger`：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -245,7 +245,7 @@ Checkbox::make('is_admin')->inline()
 
 ## 文本框
 
-文本框(Text Input) 用于与字符串交互：
+文本框(Text Input)用于与字符串交互：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -268,7 +268,7 @@ TextInput::make('text')
     ->url()
 ```
 
-同样的，你也可以使用 `type()` 传一个[HTML 文本框类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)参数:
+同样的，你也可以使用 `type()` 传入一个 [HTML 文本框类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)参数:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -327,7 +327,7 @@ TextInput::make('password')
 
 更多自动补全选项，文本框也支持 [datalists](#datalists)。
 
-#### Phone number validation
+#### 电话号码验证
 
 使用 `tel()` 字段时，字段值将会使用如下规则进行验证：`/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/`。
 
@@ -398,7 +398,7 @@ TextInput::make('domain')
 
 输入遮罩(Input mask)定义了输入必须遵循的格式。
 
-Filament 中，你可以在 `mask()` 方法中与 `Mask` 对象进行交互，配置你的mask:
+Filament 中，你可以在 `mask()` 方法中与 `Mask` 对象进行交互，配置你的 mask:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -407,7 +407,7 @@ TextInput::make('name')
     ->mask(fn (TextInput\Mask $mask) => $mask->pattern('+{7}(000)000-00-00'))
 ```
 
-在底层，masking 使用 [`imaskjs`](https://imask.js.org) 驱动。它主要的特性在Filament中同样可用。先阅读[指南](https://imask.js.org/guide.html)，再使用 Filament 实现，或许是最便利的方法。
+在底层，masking 使用 [`imaskjs`](https://imask.js.org) 驱动。它主要的特性在 Filament 中同样可用。先阅读[指南](https://imask.js.org/guide.html)，再使用 Filament 实现，或许是最便利的方法。
 
 你可以定义和配置一个 [numeric mask](https://imask.js.org/guide.html#masked-number)，用来处理数字:
 
@@ -451,7 +451,7 @@ TextInput::make('code')->mask(fn (TextInput\Mask $mask) => $mask
 )
 ```
 
-除了简单样式，你也可以定义多重模式块[pattern blocks](https://imask.js.org/guide.html#masked-pattern):
+除了简单样式，你也可以定义多重模式块 [pattern blocks](https://imask.js.org/guide.html#masked-pattern):
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -610,7 +610,7 @@ class App extends Model
 
 ### 从关联中自动加载数据
 
-你可以使用`Select` 的 `relationship()` 方法，用以配置 `BelongTo` 关联模型，自动检索和保存选项：
+你可以使用 `Select` 的 `relationship()` 方法，用以配置 `BelongTo` 关联模型，自动检索和保存选项：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -819,9 +819,9 @@ Toggle::make('is_admin')
 
 ![](https://user-images.githubusercontent.com/41773797/147613146-f5ebde21-f72d-44dd-b5c0-5d229fcd91ef.png)
 
-Toggle 字段控件有两种布局模式，inline 和 stacked。默认是inline(行内)。
+Toggle 字段控件有两种布局模式，inline 和 stacked。默认是 inline(行内)。
 
-如果是inline，标签会紧挨着它：
+如果是 inline，标签会紧挨着它：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -831,7 +831,7 @@ Toggle::make('is_admin')->inline()
 
 ![](https://user-images.githubusercontent.com/41773797/147613146-f5ebde21-f72d-44dd-b5c0-5d229fcd91ef.png)
 
-如果是stacked，标签会在它上面：
+如果是 stacked，标签会在它上面：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -841,7 +841,7 @@ Toggle::make('is_admin')->inline(false)
 
 ![](https://user-images.githubusercontent.com/41773797/147613161-43bfa094-0916-4e01-b86d-dbcf8ee63a17.png)
 
-Toggle 也可以使用开/关图标。会被显示在手柄上，指示字段含义。参数必须是Blade模板图标组件：
+Toggle 也可以使用开/关图标。会被显示在手柄上，指示字段含义。参数必须是 Blade 模板图标组件：
 
 ```php
 use Filament\Forms\Components\Toggle;
@@ -863,7 +863,7 @@ Toggle::make('is_admin')
 
 ![](https://user-images.githubusercontent.com/41773797/147613184-9086c102-ad71-4c4e-9170-9a4201a80c66.png)
 
-如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting)到相应的模型属性上。
+如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到相应的模型属性上。
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -896,7 +896,7 @@ CheckboxList::make('technologies')
 
 ![](https://user-images.githubusercontent.com/41773797/147761423-bd6e99ec-104d-40c2-875a-fed1d638f2c3.png)
 
-这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加`array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)到模型属性中：
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -928,7 +928,7 @@ CheckboxList::make('technologies')
 
 ![](https://user-images.githubusercontent.com/41773797/147761438-558a9dcc-b81a-4fbe-a922-a6771407d928.png)
 
-此方法像[grid](layout#网格)的 `columns()` 方法一样，接收选项作为参数。你可以在不同的临界点中，以自适应的方式定制列数。
+此方法像 [grid](layout#网格)的 `columns()` 方法一样，接收选项作为参数。你可以在不同的临界点中，以自适应的方式定制列数。
 
 你也可以使用 `bulkToggleable()` 方法让用户一次性切换所有复选框：
 
@@ -981,7 +981,7 @@ CheckboxList::make('participants')
     ->relationship('participants', 'full_name')
 ```
 
-另外，你也可以使用 `getOptionLabelFromRecordUsing()` 方法将选中选项的Eloquent模型转换成标签。不过需要注意的是，这种方式会比使用虚拟字段(virtual column)性能低：
+另外，你也可以使用 `getOptionLabelFromRecordUsing()` 方法将选中选项的 Eloquent 模型转换成标签。不过需要注意的是，这种方式会比使用虚拟字段(virtual column)性能低：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -1080,7 +1080,7 @@ DatePicker::make('date_of_birth')
 
 ![](https://user-images.githubusercontent.com/41773797/147613432-41e22381-af01-4f5e-8d0d-0ba535d1e444.png)
 
-你可以使用 `format()`方法，自定义存入数据库时的字段格式。它接收字符串日期格式，使用[PHP日期格式](https://www.php.net/manual/en/datetime.format.php)：
+你可以使用 `format()` 方法，自定义存入数据库时的字段格式。它接收字符串日期格式，使用 [PHP 日期格式](https://www.php.net/manual/en/datetime.format.php)：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -1088,7 +1088,7 @@ use Filament\Forms\Components\DatePicker;
 DatePicker::make('date_of_birth')->format('d/m/Y')
 ```
 
-你可以自定义字段的显示格式，以不同于存入数据库时候的格式。对此，使用 `displayFormat()` 方法，它也可以接收字符串日期格式，使用[PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+你可以自定义字段的显示格式，以不同于存入数据库时候的格式。对此，使用 `displayFormat()` 方法，它也可以接收字符串日期格式，使用 [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -1159,7 +1159,7 @@ DateTimePicker::make('date')
     ->icon('heroicon-o-calendar')
 ```
 
-此外，你也可以传入`false` 移除图标：
+此外，你也可以传入 `false` 移除图标：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -1194,7 +1194,7 @@ FileUpload::make('attachment')
 
 默认情况下，文件会被公开上传到默认的存储盘中。
 
-> 请注意，要正确地预览图片及其他文件，FilePond要求从与应用程序相同的域名提供文件，否则需要设置设置好 CORS 标头。请确保 `APP_URL` 环境变量设置正确，或者修改[文件系统](https://laravel.com/docs/10.x/filesystem)驱动，以设置正确的URL。如果你将文件托管在其他域名中，比如S3，请确保 CORS 表头设置正确。
+> 请注意，要正确地预览图片及其他文件，FilePond 要求从与应用程序相同的域名提供文件，否则需要设置设置好 CORS 标头。请确保 `APP_URL` 环境变量设置正确，或者修改[文件系统](https://laravel.com/docs/10.x/filesystem)驱动，以设置正确的 URL。如果你将文件托管在其他域名中，比如 S3，请确保 CORS 表头设置正确。
 
 可以使用 `disk()`、`directory()` 和 `visibility()` 方法，修改文件保存的磁盘和目录，以及可见性： 
 
@@ -1207,7 +1207,7 @@ FileUpload::make('attachment')
     ->visibility('private')
 ```
 
-> 请注意，由开发者决定是否将文件从磁盘上删除，因为Filament不知道其他地方是否也依赖于他。一种自动实现的方法是监听[模型事件](https://laravel.com/docs/eloquent#events)。
+> 请注意，由开发者决定是否将文件从磁盘上删除，因为 Filament 不知道其他地方是否也依赖于他。一种自动实现的方法是监听[模型事件](https://laravel.com/docs/eloquent#events)。
 
 默认情况下，新上传的文件会生成随机文件名。可以使用 `preserveFilenames()` 方法，保留上传文件的原文件名：
 
@@ -1240,7 +1240,7 @@ FileUpload::make('attachments')
 
 `attachment_file_names` 中会保存你上传文件的原始文件名。
 
-你可以使用 `acceptedFileTypes()` 方法，传入MIME类型数组，来限制可以上传的文件类型。你也可以使用 `image()` 方法作为速记方法，允许所有图片的MIME类型。
+你可以使用 `acceptedFileTypes()` 方法，传入 MIME 类型数组，来限制可以上传的文件类型。你也可以使用 `image()` 方法作为速记方法，允许所有图片的 MIME 类型。
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -1274,7 +1274,7 @@ FileUpload::make('image')
     ->imageResizeTargetHeight('1080')
 ```
 
-你也可以修改Filepond组件的一般外观。这些方法可用的选项可以在[Filepond网站](https://pqina.nl/filepond/docs/api/instance/properties/#styles)查看。
+你也可以修改 Filepond 组件的一般外观。这些方法可用的选项可以在 [Filepond 网站](https://pqina.nl/filepond/docs/api/instance/properties/#styles)查看。
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -1299,7 +1299,7 @@ use Filament\Forms\Components\FileUpload;
 FileUpload::make('attachments')->multiple()
 ```
 
-如果你使用Eloquent保存这些网址，你需要添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)到模型属性中：
+如果你使用 Eloquent 保存这些网址，你需要添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -1359,7 +1359,7 @@ FileUpload::make('attachments')
 
 ## 富文本编辑器
 
-富文本编辑器让你可以编辑和预览HTML内容，上传图片。
+富文本编辑器让你可以编辑和预览 HTML 内容，上传图片。
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -1416,7 +1416,7 @@ RichEditor::make('content')
     ->fileAttachmentsVisibility('private')
 ```
 
-## Markdown编辑器
+## Markdown 编辑器
 
 Markdown 编辑器让你可以编辑和预览 markdown 内容，也可以上传图片。
 
@@ -1486,7 +1486,7 @@ Hidden::make('token')
 
 ## Repeater
 
-Repeater 组件让你在重复的表单组件中输出JSON数组。
+Repeater 组件让你在重复的表单组件中输出 JSON 数组。
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -1679,7 +1679,7 @@ Repeater::make('members')
     ->grid(2)
 ```
 
-该方法与[grid](layout#网格)的 `columns()` 方法相似，接收相同的参数选项。让你可以在不同临界点自定义网格列数。
+该方法与 [grid](layout#网格)的 `columns()` 方法相似，接收相同的参数选项。让你可以在不同临界点自定义网格列数。
 
 ### 项目标签
 
@@ -1703,9 +1703,9 @@ Repeater::make('members')
 
 所有表单组件都可以[使用 `$get()` 和 `$set()`](advanced)获取其他字段的值。然而，在 Repeater 中使用可能会碰到异常。
 
-这是因为默认情况下，`$get()` 和 `$set()` 被限定在当前repeater项目中。也就是说，你可以在repeater项目中的其他字段交互，而不需要了解该表单属于哪一个repeater条目。
+这是因为默认情况下，`$get()` 和 `$set()` 被限定在当前repeater项目中。也就是说，你可以在 repeater 项目中的其他字段交互，而不需要了解该表单属于哪一个 repeater 条目。
 
-其结果是，当你不能与repeater字段进行互动时，会感到困惑。我们使用 `../` 语法来解决此问题 - `$get('../../parent_field_name')`。
+其结果是，当你不能与 repeater 字段进行互动时，会感到困惑。我们使用 `../` 语法来解决此问题 - `$get('../../parent_field_name')`。
 
 假设你的表单数据结构如下：
 
@@ -1723,13 +1723,13 @@ Repeater::make('members')
 
 你需要在 repeater 项目中检索 `client_id` 的值。
 
-`$get()` 用于检索当前的repeater项， 因此 `$get('client_id')` 意味着 `$get('repeater.item1.client_id')`。
+`$get()` 用于检索当前的 repeater 项， 因此 `$get('client_id')` 意味着 `$get('repeater.item1.client_id')`。
 
 你可以使用 `../` 切换到数据结构的上一级，因此 `$get('../client_id')` 相当于 `$get('repeater.client_id')`，`$get('../../client_id')` 相当于 `$get('client_id')`。
 
 ## Builder
 
-类似于[Repeater](#repeater)，Builder 组件让你可以以JSON数组的形式输出重复的表单组件。所有不同的是，Repeater 只定义了一个需要重复的表单的 shema，而 Builder 允许定义多个 schema 代码块，你可以以任何顺序进行排序。这有助于创建更高级的数组结构。
+类似于 [Repeater](#repeater)，Builder 组件让你可以以 JSON 数组的形式输出重复的表单组件。所有不同的是，Repeater 只定义了一个需要重复的表单的 schema，而 Builder 允许定义多个 schema 代码块，你可以以任何顺序进行排序。这有助于创建更高级的数组结构。
 
 Builder 组件的主要用途，是使用预定义的代码块来搭建网页内容。下例在页面内容中为不同的元素定义了多个代码块。在你网站的前端，你可以使用 JSON 或者你需要的格式遍历每个代码块。
 
@@ -1806,7 +1806,7 @@ use Filament\Forms\Components\Builder;
 Builder\Block::make('heading')->label(__('blocks.heading'))
 ```
 
-Block 也可以添加图标，显示在标签旁边。`icon()` 方法接收Blade图标组件作为参数：
+Block 也可以添加图标，显示在标签旁边。`icon()` 方法接收 Blade 图标组件作为参数：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -2033,9 +2033,9 @@ use Filament\Forms\Components\ViewField;
 ViewField::make('notifications')->view('filament.forms.components.range-slider')
 ```
 
-在你的视图内，你可以使用 Livewire和 Alpine.js 与表单组件进行状态交互。 
+在你的视图内，你可以使用 Livewire 和 Alpine.js 与表单组件进行状态交互。 
 
-视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding)进行数据绑定, 或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互。
+视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定, 或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互。
 
 使用 [Livewire's entangle](https://laravel-livewire.com/docs/2.x/alpine-js#sharing-state) 与 Alpine.js 共享 state:
 
@@ -2059,7 +2059,7 @@ ViewField::make('notifications')->view('filament.forms.components.range-slider')
 </x-dynamic-component>
 ```
 
-或者，你可以使用[`wire:model`](https://laravel-livewire.com/docs/properties#data-binding)将其值绑定到Livewire属性：
+或者，你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 将其值绑定到 Livewire 属性：
 
 ```blade
 <x-dynamic-component
@@ -2104,7 +2104,7 @@ class RangeSlider extends Field
 
 在你的视图内，你可以使用 Livewire 和 Alpine.js 与表单组件进行状态交互。 
 
-视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定，或者[`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互:
+视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定，或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互:
 
 ```blade
 <x-dynamic-component

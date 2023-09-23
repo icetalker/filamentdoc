@@ -5,11 +5,11 @@ title: Select column
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The select column allows you to render a select field inside the table, which can be used to update that database record without needing to open a new page or a modal.
+下拉列表列(SelectColumn)允许你在表格内渲染下拉列表(Select)，可用于在不打开新页面或模态框的情况下更新数据库记录：
 
-You must pass options to the column:
+你必须将选项传入到该列中：
 
 ```php
 use Filament\Tables\Columns\SelectColumn;
@@ -24,9 +24,9 @@ SelectColumn::make('status')
 
 <AutoScreenshot name="tables/columns/select/simple" alt="Select column" version="3.x" />
 
-## Validation
+## 验证
 
-You can validate the input by passing any [Laravel validation rules](https://laravel.com/docs/validation#available-validation-rules) in an array:
+以数组的方式传入任何 [Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)，你可以对输入进行验证：
 
 ```php
 use Filament\Tables\Columns\SelectColumn;
@@ -40,9 +40,9 @@ SelectColumn::make('status')
     ->rules(['required'])
 ```
 
-## Disabling placeholder selection
+## 禁用占位符选择
 
-You can prevent the placeholder from being selected using the `selectablePlaceholder()` method:
+使用 `selectablePlaceholder()` 方法，你可以防止占位符被选中：
 
 ```php
 use Filament\Tables\Columns\SelectColumn;

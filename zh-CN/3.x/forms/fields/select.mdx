@@ -5,9 +5,9 @@ title: Select
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The select component allows you to select from a list of predefined options:
+Select 组件允许你从一组预定义的选项列表中进行选择：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -22,9 +22,9 @@ Select::make('status')
 
 <AutoScreenshot name="forms/fields/select/simple" alt="Select" version="3.x" />
 
-## Enabling the JavaScript select
+## 启用 JavaScript 下拉列表
 
-By default, Filament uses the native HTML5 select. You may enable a more customizable JavaScript select using the `native(false)` method:
+默认情况下，Filament 使用本机 HTML5 下拉列表。使用 `native(false)` 方法，你可以启用更可自定义的 Javascript 下拉列表：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -40,9 +40,9 @@ Select::make('status')
 
 <AutoScreenshot name="forms/fields/select/javascript" alt="JavaScript select" version="3.x" />
 
-## Searching options
+## 搜索选项
 
-You may enable a search input to allow easier access to many options, using the `searchable()` method:
+使用 `searchable()` 方法，你可以启用搜索框，以方便获取选项：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -55,15 +55,15 @@ Select::make('author_id')
 
 <AutoScreenshot name="forms/fields/select/searchable" alt="Searchable select" version="3.x" />
 
-### Returning custom search results
+### 返回自定义搜索结果
 
-If you have lots of options and want to populate them based on a database search or other external data source, you can use the `getSearchResultsUsing()` and `getOptionLabelUsing()` methods instead of `options()`.
+如果你有很多选项并想要基于数据库搜索或者其他外部数据源弹出数据，你可以使用 `getSearchResultsUsing()` 和 `getOptionLabelUsing()` 方法，而不是 `options()`。
 
-The `getSearchResultsUsing()` method accepts a callback that returns search results in `$key => $value` format. The current user's search is available as `$search`, and you should use that to filter your results.
+`getSearchResultsUsing()` 方法接收一个返回 `$key => $value` 格式搜索结果的回调函数。当前用户搜索可通过 `$search` 获取，你应该使用它来过滤结果。
 
-The `getOptionLabelUsing()` method accepts a callback that transforms the selected option `$value` into a label. This is used when the form is first loaded when the user has not made a search yet. Otherwise, the label used to display the currently selected option would not be available.
+`getOptionLabelUsing()` 方法接收一个将选中的选项 `$value` 转换成标签的回调函数。它用在表单初次加载，用户还未进行搜索时。否则用于展示当前选择选项的标签将会不可用。
 
-Both `getSearchResultsUsing()` and `getOptionLabelUsing()` must be used on the select if you want to provide custom search results:
+如果你想提供自定义搜索结果，则必须在下拉列表中同时使用 `getSearchResultsUsing()` 和 `getOptionLabelUsing()`：
 
 ```php
 Select::make('author_id')
@@ -74,7 +74,7 @@ Select::make('author_id')
 
 ## Multi-select
 
-The `multiple()` method on the `Select` component allows you to select multiple values from the list of options:
+在 `Select` 组件上使用 `multiple()` 方法，允许你从列表中选择多个值：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -91,7 +91,7 @@ Select::make('technologies')
 
 <AutoScreenshot name="forms/fields/select/multiple" alt="Multi-select" version="3.x" />
 
-These options are returned in JSON format. If you're saving them using Eloquent, you should be sure to add an `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) to the model property:
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存，请确保将 `array` [cast] 添加到对应的模型属性上：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -106,7 +106,7 @@ class App extends Model
 }
 ```
 
-If you're [returning custom search results](#returning-custom-search-results), you should define `getOptionLabelsUsing()` instead of `getOptionLabelUsing()`. `$values` will be passed into the callback instead of `$value`, and you should return a `$key => $value` array of labels and their corresponding values:
+如果你要[返回自定义搜索结果](#返回自定义搜索结果)，应该定义 `getOptionLabelsUsing()` 而非 `getSearchResultsUsing()`。将 `$values` 而非 `$value` 传递给回调函数，你应该返回包含标签及其对应值的 `$key => $value` 标签数组：
 
 ```php
 Select::make('technologies')
@@ -116,9 +116,9 @@ Select::make('technologies')
     ->getOptionLabelsUsing(fn (array $values): array => Technology::whereIn('id', $values)->pluck('name', 'id')->toArray()),
 ```
 
-## Grouping options
+## 选项分组
 
-You can group options together under a label, to organize them better. To do this, you can pass an array of groups to `options()` or wherever you would normally pass an array of options. The keys of the array are used as group labels, and the values are arrays of options in that group:
+你可以将选项组合到一个标签下面，以便更好地组织它们。为此，请将分组数组传递给 `options()` 或者其他你通常会传递选项数组的地方。数组的键作为分组标签，数组值是该分组中的选项数组：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -139,11 +139,11 @@ Select::make('status')
 
 <AutoScreenshot name="forms/fields/select/grouped" alt="Grouped select" version="3.x" />
 
-## Integrating with an Eloquent relationship
+## 集成 Eloquent 关联
 
-> If you're building a form inside your Livewire component, make sure you have set up the [form's model](../adding-a-form-to-a-livewire-component#setting-a-form-model). Otherwise, Filament doesn't know which model to use to retrieve the relationship from.
+> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型]](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道应该使用哪个模型来检索关联。
 
-You may employ the `relationship()` method of the `Select` to configure a `BelongsTo` relationship to automatically retrieve options from. The `titleAttribute` is the name of a column that will be used to generate a label for each option:
+你可以使用 `Select` 的 `relationship()` 方法来配置 `BelongsTo` 关联，以自动检索选项。`titleAttribute` 是用于为每个选项生成标签的字段名：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -152,7 +152,7 @@ Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'name')
 ```
 
-The `multiple()` method may be used in combination with `relationship()` to use a `BelongsToMany` relationship. Filament will load the options from the relationship, and save them back to the relationship's pivot table when the form is submitted. If a `name` is not provided, Filament will use the field name as the relationship name:
+`multiple()` 方法可以和 `relationship()` 一起使用，用于 `BelongsToMany` 关联。Filament 会自动从关联中加载选项，并且在表单提交后将其保存回关联的中间表。如果没有提供 `name`，Filament 将回使用关联名作为字段名：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -162,9 +162,9 @@ Select::make('technologies')
     ->relationship(titleAttribute: 'name')
 ```
 
-### Searching relationship options across multiple columns
+### 在多个字段中搜索关联选项
 
-By default, if the select is also searchable, Filament will return search results for the relationship based on the title column of the relationship. If you'd like to search across multiple columns, you can pass an array of columns to the `searchable()` method:
+默认情况下，如果 Select 也是可搜索的，Filament 将会基于关联的标题字段返回关联的搜索结果。如果你想在多个列中搜索，你可以将字段数组传递给 `searchable()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -174,9 +174,9 @@ Select::make('author_id')
     ->searchable(['name', 'email'])
 ```
 
-### Preloading relationship options
+### 预加载关联选项
 
-If you'd like to populate the searchable options from the database when the page is loaded, instead of when the user searches, you can use the `preload()` method:
+如果你希望在页面加载时弹出可搜索的选项，而不是在用户搜索时才弹出选项，你可以使用 `preload()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -187,9 +187,9 @@ Select::make('author_id')
     ->preload()
 ```
 
-### Customizing the relationship query
+### 自定义关联查询
 
-You may customize the database query that retrieves options using the third parameter of the `relationship()` method:
+你可以使用 `relationship()` 的第三个参数，自定义检索选项的数据库查询：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -203,9 +203,9 @@ Select::make('author_id')
     )
 ```
 
-### Customizing the relationship option labels
+### 自定义关联选项标签
 
-If you'd like to customize the label of each option, maybe to be more descriptive, or to concatenate a first and last name, you could use a virtual column in your database migration:
+如果你想为每个选项自定义标签，比如让其更有描述性，或者将姓和名组合起来，你可以在数据库迁移中使用虚拟(virtual)字段：
 
 ```php
 $table->string('full_name')->virtualAs('concat(first_name, \' \', last_name)');
@@ -218,7 +218,7 @@ Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'full_name')
 ```
 
-Alternatively, you can use the `getOptionLabelFromRecordUsing()` method to transform an option's Eloquent model into a label:
+此外，你可以使用 `getOptionLabelFromRecordUsing()` 方法将选项的 Eloquent 模型转换成标签：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -234,9 +234,9 @@ Select::make('author_id')
     ->searchable(['first_name', 'last_name'])
 ```
 
-### Creating a new option in a modal
+### 在模态框中创建新选项
 
-You may define a custom form that can be used to create a new record and attach it to the `BelongsTo` relationship:
+你可以自定义用于创建新记录的表单，并将其附加到 `BelongsTo` 关联中：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -255,13 +255,13 @@ Select::make('author_id')
 
 <AutoScreenshot name="forms/fields/select/create-option" alt="Select with create option button" version="3.x" />
 
-The form opens in a modal, where the user can fill it with data. Upon form submission, the new record is selected by the field.
+该表单将在模态框中打开，用户可以在其中填写数据。表单提交之后，该字段会选中这个新记录。
 
 <AutoScreenshot name="forms/fields/select/create-option-modal" alt="Select with create option modal" version="3.x" />
 
-### Editing the selected option in a modal
+### 模态框中编辑选中的选项
 
-You may define a custom form that can be used to edit the selected record and save it back to the `BelongsTo` relationship:
+你可以自定义一个表单，用于编辑选中的记录，并将其保存回 `BelongsTo` 关联：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -280,15 +280,15 @@ Select::make('author_id')
 
 <AutoScreenshot name="forms/fields/select/edit-option" alt="Select with edit option button" version="3.x" />
 
-The form opens in a modal, where the user can fill it with data. Upon form submission, the data from the form is saved back to the record.
+该表单将在模态框中打开，用户可以在其中填写数据。表单提交之后，表单中的数据会保存到记录中。
 
 <AutoScreenshot name="forms/fields/select/edit-option-modal" alt="Select with edit option modal" version="3.x" />
 
-### Handling `MorphTo` relationships
+### 处理 `MorphTo` 关联
 
-`MorphTo` relationships are special, since they give the user the ability to select records from a range of different models. Because of this, we have a dedicated `MorphToSelect` component which is not actually a select field, rather 2 select fields inside a fieldset. The first select field allows you to select the type, and the second allows you to select the record of that type.
+`MorphTo` 关联比较特别，因为它让用户可以从一系列不同模型中选择记录。一次，我们有一个专用的 `MorphToSelect` 组件，该组件实际上不是一个 Select 字段，而是在 Fieldset 里面的 2 个 Select 字段。第一个 Select 字段允许你选择类型，第二个允许你选择该类型下的记录。
 
-To use the `MorphToSelect`, you must pass `types()` into the component, which tell it how to render options for different types:
+要使用 `MorphToSelect`，你必须传入 `types()` 到组件中，以告知如何从不同类型中渲染选项：
 
 ```php
 use Filament\Forms\Components\MorphToSelect;
@@ -302,9 +302,9 @@ MorphToSelect::make('commentable')
     ])
 ```
 
-#### Customizing the option labels for each morphed type
+#### 为每个多态类型自定义选项标签
 
-The `titleAttribute()` is used to extract the titles out of each product or post. If you'd like to customize the label of each option, you can use the `getOptionLabelFromRecordUsing()` method to transform the Eloquent model into a label:
+`titleAttribute()` 方法用于从每个产品/文章中提取标题。如果你想自定义每个选项的标签，你可以使用 `getOptionLabelFromRecordUsing()` 方法来将 Eloquent 模型转换成标签：
 
 ```php
 use Filament\Forms\Components\MorphToSelect;
@@ -318,9 +318,9 @@ MorphToSelect::make('commentable')
     ])
 ```
 
-#### Customizing the relationship query for each morphed type
+#### 为每个多态类型自定义关联查询
 
-You may customize the database query that retrieves options using the `modifyOptionsQueryUsing()` method:
+使用 `modifyOptionsQueryUsing()` 方法，你可以自定义检索选项的数据库查询：
 
 ```php
 use Filament\Forms\Components\MorphToSelect;
@@ -337,11 +337,11 @@ MorphToSelect::make('commentable')
     ])
 ```
 
-> Many of the same options in the select field are available for `MorphToSelect`, including `searchable()`, `preload()`, `allowHtml()`, and `optionsLimit()`.
+> Select 字段中许多方法同样可以用在 `MorphToSelect` 中，比如 `searchable()`、`preload()`、`allowHtml()` 和 `optionsLimit()`。
 
-### Forcing case-insensitive search
+### 强制大小写不敏感搜索
 
-By default, searching will use the sensitivity settings from the database table column. This is to avoid unnecessary performance overhead when searching large datasets that would arise if we were to force insensitivity for all users. However, if your database does not search case-insensitively by default, you can force it to by using the `forceSearchCaseInsensitive()` method:
+默认情况下，搜索将使用数据库表字段中的敏感度设置。这是为了避免在搜索大型数据集时出现不必要的性能开销，如果我们强制所有用户不敏感，就会出现这种情况。但是，如果数据库默认大小写不敏感搜索，则可以使用 "forceSearchCaseInsensive()" 方法强制进行不敏感搜索：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -352,9 +352,9 @@ Select::make('author_id')
     ->forceSearchCaseInsensitive()
 ```
 
-## Allowing HTML in the option labels
+## 在选项标签中允许 HTML
 
-By default, Filament will escape any HTML in the option labels. If you'd like to allow HTML, you can use the `allowHtml()` method:
+默认情况下，Filament 会在选项标签中转移 HTML。如果你想允许 HTML，你可以使用 `allowHtml()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -370,11 +370,11 @@ Select::make('technology')
     ->allowHtml()
 ```
 
-Be aware that you will need to ensure that the HTML is safe to render, otherwise your application will be vulnerable to XSS attacks.
+请注意，你需要确保 HTML 的渲染是安全的，否则应用可能容易受到 XSS 攻击。
 
-## Disable placeholder selection
+## 禁用占位符选择
 
-You can prevent the placeholder (null option) from being selected using the `selectablePlaceholder()` method:
+使用 `selectablePlaceholder()` 你可以防止占位符(空选项)被选中：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -389,9 +389,9 @@ Select::make('status')
     ->selectablePlaceholder(false)
 ```
 
-## Disabling specific options
+## 禁用指定选项
 
-You can disable specific options using the `disableOptionWhen()` method. It accepts a closure, in which you can check if the option with a specific `$value` should be disabled:
+使用 `disableOptionWhen()` 方法，你可以禁用指定的选项。它接收一个闭包，你可以在其中检查指定的 `$value` 值是否应该被禁用：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -406,7 +406,7 @@ Select::make('status')
     ->disableOptionWhen(fn (string $value): bool => $value === 'published')
 ```
 
-If you want to retrieve the options that have not been disabled, e.g., for validation purposes, you can do so using `getEnabledOptions()`:
+使用 `getEnabledOptions()`，你可以检索这些选项是否被禁用，比如出于验证需要：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -422,9 +422,9 @@ Select::make('status')
     ->in(fn (Select $component): array => array_keys($component->getEnabledOptions()))
 ```
 
-## Adding affix text aside the field
+## 在字段旁边添加前后缀文本
 
-You may place text before and after the input using the `prefix()` and `suffix()` methods:
+使用 `prefix()` 和 `suffix()` 方法，你可以在输入框前后放置文本：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -436,9 +436,9 @@ Select::make('domain')
 
 <AutoScreenshot name="forms/fields/select/affix" alt="Select with affixes" version="3.x" />
 
-### Using icons as affixes
+### 使用图标作为前后缀
 
-You may place an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) before and after the input using the `prefixIcon()` and `suffixIcon()` methods:
+使用 `prefixIcon()` 和 `suffixIcon()` 方法，你可以在输入框前后放置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -449,9 +449,9 @@ Select::make('domain')
 
 <AutoScreenshot name="forms/fields/select/suffix-icon" alt="Select with suffix icon" version="3.x" />
 
-## Setting a custom loading message
+## 设置自定义加载信息
 
-When you're using a searchable select or multi-select, you may want to display a custom message while the options are loading. You can do this using the `loadingMessage()` method:
+使用可搜索的 Select 或多选 Select 时，你可能希望在加载选项时显示自定义消息。为此，请使用 `loadingMessage()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -462,9 +462,9 @@ Select::make('author_id')
     ->loadingMessage('Loading authors...')
 ```
 
-## Setting a custom no search results message
+## 设置没有搜索结果的自定义消息
 
-When you're using a searchable select or multi-select, you may want to display a custom message when no search results are found. You can do this using the `noSearchResultsMessage()` method:
+使用可搜索的 Select 或多选 Select 时，你可能希望在没有找到搜索结果时显示一条自定义消息。为此，请使用 `noSearchResultsMessage()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -475,9 +475,9 @@ Select::make('author_id')
     ->noSearchResultsMessage('No authors found.')
 ```
 
-## Setting a custom search prompt
+## 设置自定义搜索提示
 
-When you're using a searchable select or multi-select, you may want to display a custom message when the user has not yet entered a search term. You can do this using the `searchPrompt()` method:
+使用可搜索的 Select 或多选 Select 时，你可能希望在用户还未输入搜索条件时显示自定义消息。为此，请使用 `searchPrompt()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -488,9 +488,9 @@ Select::make('author_id')
     ->searchPrompt('Search authors by their name or email address')
 ```
 
-## Setting a custom searching message
+## 设置自定义搜索中消息
 
-When you're using a searchable select or multi-select, you may want to display a custom message while the search results are being loaded. You can do this using the `searchingMessage()` method:
+使用可搜索的 Select 或多选 Select 时，你可能希望在搜索结果加载过程时显示自定义消息。为此，请使用 `searchingMessage()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -501,9 +501,9 @@ Select::make('author_id')
     ->searchingMessage('Searching authors...')
 ```
 
-## Tweaking the search debounce
+## 调整搜索抖动
 
-By default, Filament will wait 1000 milliseconds (1 second) before searching for options when the user types in a searchable select or multi-select. It will also wait 1000 milliseconds between searches, if the user is continuously typing into the search input. You can change this using the `searchDebounce()` method:
+默认情况下，当用户输入到可搜索的 Select 或多选 Select 时，Filament 会在搜索选项之前等待 1000 毫秒(1 秒)。如果用户持续输入到搜索框，搜索之间也会等待 1000 毫秒。你可以使用 `searchDebounce()` 方法，对此进行修改：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -514,11 +514,11 @@ Select::make('author_id')
     ->searchDebounce(500)
 ```
 
-Ensure that you are not lowering the debounce too much, as this may cause the select to become slow and unresponsive due to a high number of network requests to retrieve options from server.
+请确保你不会将抖动降得太低，因为这会导致由于从服务器检索选项的网络请求数量太高而使 Select 变得缓慢且响应较差。
 
-## Limiting the number of options
+## 现在选项数量
 
-You can limit the number of options that are displayed in a searchable select or multi-select using the `optionsLimit()` method. The default is 50:
+使用 `optionsLimit()` 方法，你可以现在选项的数量。默认值是 50：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -529,15 +529,15 @@ Select::make('author_id')
     ->optionsLimit(20)
 ```
 
-Ensure that you are not raising the limit too high, as this may cause the select to become slow and unresponsive due to high in-browser memory usage.
+请确保不要将上限提得太高，因为这可能会因为浏览器内存占用太高而导致 Select 变慢且无响应。
 
-## Select validation
+## Select 验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to selects.
+除了[验证](../validation)页面中的所有可用规则，有一些可以专门用于 Select 的规则。
 
-### Selected items validation
+### 选中的选项验证
 
-You can validate the minimum and maximum number of items that you can select in a [multi-select](#multi-select) by setting the `minItems()` and `maxItems()` methods:
+通过设置 `minItems()` 和 `maxItems()` 方法，你可以验证可以在[多选 Select] 中可以选择的最小和最大数量：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -554,15 +554,16 @@ Select::make('technologies')
     ->maxItems(3)
 ```
 
-## Customizing the select action objects
+## 自定义 Select Action 对象
 
-This field uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button) or [customize its modal](../../actions/modals). The following methods are available to customize the actions:
+该字段使用 action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
+该字段使用 action 对象
 
 - `createOptionAction()`
 - `editOptionAction()`
 - `manageOptionActions()` (for customizing both the create and edit option actions at once)
 
-Here is an example of how you might customize an action:
+下面是一个如何自定义 action 的示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;

@@ -30,7 +30,7 @@ php artisan make:filament-resource Customer
 
 新的资源类在 `CustomerResource.php` 中。
 
-`Pages` 目录下的类用于自定义后台管理面板中和资源交互的页面。这些页面是全页[Livewire](https://laravel-livewire.com)组件，你可以根据需要自定义。
+`Pages` 目录下的类用于自定义后台管理面板中和资源交互的页面。这些页面是全页 [Livewire](https://laravel-livewire.com) 组件，你可以根据需要自定义。
 
 > 如果你创建的资源并没有在导航菜单中显示，很可能是因为你的[模型策略](#授权)的 `viewAny()` 方法并没有返回 `true`。
 
@@ -86,7 +86,7 @@ php artisan make:filament-resource Customer --view-page
 
 资源可以设置 `$recordTitleAttribute` 属性，该属性对应模型上的字段名，可以用于将其与其他模型区别开来。*(译者：此处直译，意思是大体是在搜索时用以确认某条记录的唯一性。)*
 
-比如，它可以是博客文章的`标题(title)` 或者客户的`名字(name)`:
+比如，它可以是博客文章的标题 `title` 或者客户的名字 `name`:
 
 ```php
 protected static ?string $recordTitleAttribute = 'name';
@@ -94,7 +94,7 @@ protected static ?string $recordTitleAttribute = 'name';
 
 此属性需要启用[全局搜索](global-search)特性才有效。
 
-> 如果某个单一字段无法有效识别一条记录，你可以指定一个[Eloquent获取器](https://laravel.com/docs/eloquent-mutators#defining-an-accessor)的名称。
+> 如果某个单一字段无法有效识别一条记录，你可以指定一个 [Eloquent 获取器](https://laravel.com/docs/eloquent-mutators#defining-an-accessor)的名称。
 
 ## 表单
 
@@ -128,7 +128,7 @@ public static function form(Form $form): Form
 - [日期时间选择器](../../forms/fields#日期时间选择器)
 - [文件上传](../../forms/fields#文件上传)
 - [富文本编辑器](../../forms/fields#富文本编辑器)
-- [Markdown 编辑器](../../forms/fields#Markdown编辑器)
+- [Markdown 编辑器](../../forms/fields#markdown-编辑器)
 - [Repeater](../../forms/fields#repeater)
 
 查看所有可用表单[控件](../../forms/fields)，请查阅 [表单构造器文档](../../forms/fields)。
@@ -203,6 +203,7 @@ public static function table(Table $table): Table
         ]);;
 }
 ```
+
 查阅[列表页](listing-records)文档，可以查看表格[字段](listing-records#表格字段)、[过滤器](listing-records#过滤器)，[操作](listing-records#操作)，[批量操作](listing-records#批量操作)等是怎么添加的。
 
 ## 关联
@@ -222,7 +223,7 @@ BelongsToSelect::make('author_id')
     ->relationship('author', 'name')
 ```
 
-关于 `BelongsToSelect` 的更多信息，可以查看[表单文档](../../forms/fields#从`BelongsTo`关联模型中自动添加数据)。
+关于 `BelongsToSelect` 的更多信息，可以查看[表单文档](../../forms/fields#从-belongsto-关联模型中自动添加数据)。
 
 #### 布局组件
 
@@ -279,7 +280,7 @@ Fieldset::make('Metadata')
 
 #### Repeater
 
-另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用[Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)：
 
 ```php
 use App\Models\App;
@@ -331,7 +332,7 @@ CheckboxList::make('technologies')
     ->relationship('technologies', 'name')
 ```
 
-更多关于 `CheckboxList` 的信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship-1).
+更多关于 `CheckboxList` 的信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship-1)。
 
 #### 关联管理器
 
@@ -394,7 +395,7 @@ Fieldset::make('Metadata')
 
 #### Repeater
 
-另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用[Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -489,7 +490,7 @@ public static function getNavigationLabel(): string
 
 ### 图标
 
-`$navigationIcon` 属性支持任何Blade模板组件名。默认情况下，Filament 安装了[Blade Heroicons V1](https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1)包，你可以开箱即用地使用[Heroicon V1](https://v1.heroicons.com)的图标名。除此之外，你也可以创建你自己自定义的ICON组件或者安装其他图标库。
+`$navigationIcon` 属性支持任何Blade模板组件名。默认情况下，Filament 安装了 [Blade Heroicons V1](https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1) 包，你可以开箱即用地使用 [Heroicon V1](https://v1.heroicons.com) 的图标名。除此之外，你也可以创建你自己自定义的 ICON 组件或者安装其他图标库。
 
 ```php
 protected static ?string $navigationIcon = 'heroicon-o-user-group';
@@ -538,7 +539,7 @@ protected static function getNavigationGroup(): ?string
 }
 ```
 
-## 自定义Eloquent查询
+## 自定义 Eloquent 查询
 
 在 Filament 中，每个资源模型的查询都会从 `getEloquentQuery()` 方法开始。
 
@@ -566,7 +567,7 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-更多关于移除全局范围查询的信息可查阅[Laravel文档](https://laravel.com/docs/eloquent#removing-global-scopes)。
+更多关于移除全局范围查询的信息可查阅 [Laravel 文档](https://laravel.com/docs/eloquent#removing-global-scopes)。
 
 ## 自定义 URL slug
 
@@ -584,7 +585,7 @@ protected static ?string $slug = 'pending-orders';
 
 简单的多租户(multi-tenancy)策略在 Filament 中很容易设置。
 
-首先，通过 `getEloquentQuery()` 方法为每个资源限定[基础 Eloquent 查询范围](#自定义Eloquent查询)：
+首先，通过 `getEloquentQuery()` 方法为每个资源限定[基础 Eloquent 查询范围](#自定义-eloquent-查询)：
 
 ```php
 public static function getEloquentQuery(): Builder
@@ -593,7 +594,7 @@ public static function getEloquentQuery(): Builder
 }
 ```
 
-此例中，使用 `whereBelongsTo()` 来限定属于当前认证用户的记录。此外，你可以使用任何你想用的 Eloquent 方法，包括手动的 `where()` 查询，或者[scope范围查询](https://laravel.com/docs/eloquent#local-scopes)。
+此例中，使用 `whereBelongsTo()` 来限定属于当前认证用户的记录。此外，你可以使用任何你想用的 Eloquent 方法，包括手动的 `where()` 查询，或者 [scope 范围查询](https://laravel.com/docs/eloquent#local-scopes)。
 
 最好，如果要让新建的记录附加到当前用户上。最简单的办法是使用[模型观察者](https://laravel.com/docs/eloquent#observers)：
 

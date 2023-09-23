@@ -5,9 +5,9 @@ title: Image column
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Images can be easily displayed within your table:
+图片可以很容易地在表格中展示：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -15,13 +15,13 @@ use Filament\Tables\Columns\ImageColumn;
 ImageColumn::make('avatar')
 ```
 
-The column in the database must contain the path to the image, relative to the root directory of its storage disk.
+数据库中相应的字段必须包含图片相对于存储盘根目录的相对路径。
 
 <AutoScreenshot name="tables/columns/image/simple" alt="Image column" version="3.x" />
 
-## Managing the image disk
+## 管理图片磁盘
 
-By default, the `public` disk will be used to retrieve images. You may pass a custom disk name to the `disk()` method:
+默认情况下，程序使用 `public` 磁盘来检索图片。你可以将自定义的磁盘名传入 `disk()` 方法：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -30,9 +30,9 @@ ImageColumn::make('header_image')
     ->disk('s3')
 ```
 
-## Private images
+## 私有图片
 
-Filament can generate temporary URLs to render private images, you may set the `visibility()` to `private`:
+Filament 可以为私有图片生成临时链接，你可以将可见度 `visibility()` 设置为 `private`：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -41,9 +41,9 @@ ImageColumn::make('header_image')
     ->visibility('private')
 ```
 
-## Customizing the size
+## 自定义图片大小
 
-You may customize the image size by passing a `width()` and `height()`, or both with `size()`:
+你可以将图片大小传入到 `width()` 和 `height()`，或者 `size()` 中，自定义图片大小：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -58,9 +58,9 @@ ImageColumn::make('author.avatar')
     ->size(40)
 ```
 
-## Square image
+## 方形图片
 
-You may display the image using a 1:1 aspect ratio:
+你可以使用 1:1 比例尺显示图片：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -71,9 +71,9 @@ ImageColumn::make('avatar')
 
 <AutoScreenshot name="tables/columns/image/square" alt="Square image column" version="3.x" />
 
-## Circular image
+## 圆形图片
 
-You may make the image fully rounded, which is useful for rendering avatars:
+你也可以使用圆形图片，它可用于渲染头像：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -84,9 +84,9 @@ ImageColumn::make('avatar')
 
 <AutoScreenshot name="tables/columns/image/circular" alt="Circular image column" version="3.x" />
 
-## Adding a default image URL
+## 添加默认图片 URL
 
-You can display a placeholder image if one doesn't exist yet, by passing a URL to the `defaultImageUrl()` method:
+通过将 URL 传入到 `defaultImageUrl()` 方法中，如果图片还不存在，你可以显示占位符图片：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -95,9 +95,9 @@ ImageColumn::make('avatar')
     ->defaultImageUrl(url('/images/placeholder.png'))
 ```
 
-## Stacking images
+## 堆叠图片
 
-You may display multiple images as a stack of overlapping images by using `stacked()`:
+使用 `stacked()` 你可以将多个图像显示为重叠图像的堆栈：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -131,9 +131,9 @@ ImageColumn::make('colleagues.avatar')
     ->overlap(2)
 ```
 
-## Setting a limit
+## 设置限制
 
-You may limit the maximum number of images you want to display by passing `limit()`:
+使用 `limit()`，你可以限制你要显示的最大图片数量：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;

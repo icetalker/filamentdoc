@@ -4,7 +4,7 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/doc
 title: Tags column
 ---
 
-Tags columns render a list of tags from an array:
+标签列(TagsColumn)将一个数组渲染成标签列表：
 
 ```php
 use Filament\Tables\Columns\TagsColumn;
@@ -12,7 +12,7 @@ use Filament\Tables\Columns\TagsColumn;
 TagsColumn::make('tags')
 ```
 
-Be sure to add an `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) to the model property:
+请确保将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到对应的模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -27,9 +27,9 @@ class Post extends Model
 }
 ```
 
-## Using a separator
+## 使用分隔符
 
-Instead of using an array, you may use a separated string by passing the separator into `separator()`:
+除了使用数组，你也可以使用字符串分隔，请将分隔符传入到 `separator()` 中： 
 
 ```php
 use Filament\Tables\Columns\TagsColumn;

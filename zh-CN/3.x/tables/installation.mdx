@@ -163,7 +163,7 @@ php artisan vendor:publish --tag=filament-config
 
 > 如果你是从 Filament v2 升级，请查看[升级向导](upgrade-guide)。
 
-当你使用 `composer update` 时，Filament 会自动升级到最新的非破坏性版本。Filament 不会自动升级，请确保 `filament:upgrade` 命令出现在 `compser.json` 中：
+当运行 `composer update` 命令时，Filament 会自动升级到最新的非破坏性版本。升级完成后，应该清除所有 Laravel 缓存，并且重新发布前端资源。你可以使用 `filament:upgrade` 命令一次性完成这些动作，该命令会第一次运行 `filament:install` 添加到 `composer.json` 文件中：
 
 ```json
 "post-autoload-dump": [
@@ -172,7 +172,7 @@ php artisan vendor:publish --tag=filament-config
 ],
 ```
 
-如果你不希望自动升级，请在 `composer.json` 中移除 `filament:upgrade` 命令，并运行如下命令：
+请注意 `filament:upgrade` 不会真正处理升级过程，因为 Composer 已经做了升级，如果你不使用 `post-autoload-dump` 钩子手动升级，你可以自己运行该命令：
 
 ```bash
 composer update

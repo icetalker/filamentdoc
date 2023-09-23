@@ -303,13 +303,13 @@ TextColumn::make('title')
 
 ## Setting a default value
 
-To set a default value for fields with a `null` state, you may use the `default()` method:
+To set a default value for columns with an empty state, you may use the `default()` method. This method will treat the default state as if it were real, so columns like [image](image) or [color](color) will display the default image or color.
 
 ```php
 use Filament\Tables\Columns\TextColumn;
 
-TextColumn::make('title')
-    ->default('Untitled')
+TextColumn::make('description')
+    ->default('No description.')
 ```
 
 ## Hiding columns

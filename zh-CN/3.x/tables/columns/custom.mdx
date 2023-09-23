@@ -1,12 +1,11 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/03-columns/10-custom.md"
-title: Custom columns
----
+title: 自定义列字段
 
-## View columns
+## 视图列
 
-You may render a custom view for a cell using the `view()` method:
+使用 `view()` 方法，你可以自定义单元格视图：
 
 ```php
 use Filament\Tables\Columns\ViewColumn;
@@ -14,21 +13,21 @@ use Filament\Tables\Columns\ViewColumn;
 ViewColumn::make('status')->view('filament.tables.columns.status-switcher')
 ```
 
-This assumes that you have a `resources/views/filament/tables/columns/status-switcher.blade.php` file.
+这假定你有一个 `resources/views/filament/tables/columns/status-switcher.blade.php` 文件。
 
-## Custom classes
+## 自定义类
 
-You may create your own custom column classes and cell views, which you can reuse across your project, and even release as a plugin to the community.
+你可以创建自定义的 Column 类和单元格视图，使之可以在整个应用中重用，甚至将其作为插件发布到社区：
 
-> If you're just creating a simple custom column to use once, you could instead use a [view column](#view-columns) to render any custom Blade file.
+> 如果你只是创建一个使用一次的简单自定义列，你可以使用[视图列](#视图列)来渲染自定义 Blade 文件。
 
-To create a custom column class and view, you may use the following command:
+要创建自定义 Column 类及视图，你可以使用以下命令：
 
 ```bash
 php artisan make:table-column StatusSwitcher
 ```
 
-This will create the following column class:
+该命令将会创建如下类：
 
 ```php
 use Filament\Tables\Columns\Column;
@@ -39,11 +38,11 @@ class StatusSwitcher extends Column
 }
 ```
 
-It will also create a view file at `resources/views/filament/tables/columns/status-switcher.blade.php`.
+同时会新建一个 `resources/views/filament/tables/columns/status-switcher.blade.php` 视图文件。
 
-## Accessing the state
+## 访问状态
 
-Inside your view, you may retrieve the state of the cell using the `$getState()` function:
+使用 `$getState()` 函数，你可以在视图内检索单元格的状态：
 
 ```blade
 <div>
@@ -51,9 +50,9 @@ Inside your view, you may retrieve the state of the cell using the `$getState()`
 </div>
 ```
 
-## Accessing the Eloquent record
+## 访问 Eloquent 记录
 
-Inside your view, you may access the Eloquent record using the `$getRecord()` function:
+使用 `$getRecord()` 函数，你可以访问 Eloquent 记录：
 
 ```blade
 <div>

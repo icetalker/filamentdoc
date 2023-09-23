@@ -1,13 +1,13 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/03-columns/02-text.md"
-title: Text column
+title: 文本列
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-文本列用来展示数据库中的简单文本：
+文本列(TextColumn)用来展示数据库中的简单文本：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -17,9 +17,9 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/text/simple" alt="Text column" version="3.x" />
 
-## Displaying as a "badge"
+## 显示为"徽章"
 
-By default, text is quite plain and has no background color. You can make it appear as a "badge" instead using the `badge()` method. A great use case for this is with statuses, where may want to display a badge with a [color](#customizing-the-color) that matches the status:
+默认情况下，文本非常简单，没有背景色。您可以使用 "badge()" 方法将其显示为"徽章"。这方面的一个很好的用例是状态，其中可能需要显示与状态相匹配的[颜色](#自定义颜色)徽章：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -36,13 +36,13 @@ TextColumn::make('status')
 
 <AutoScreenshot name="tables/columns/text/badge" alt="Text column as badge" version="3.x" />
 
-You may add other things to the badge, like an [icon](#adding-an-icon).
+你也添加其他诸如[图标](#添加图标)到徽章中。
 
-## Displaying a description
+## 显示描述
 
-Descriptions may be used to easily render additional text above or below the column contents.
+描述用于在列内容上面或下面渲染额外的文本。
 
-You can display a description below the contents of a text column using the `description()` method:
+使用 `description()` 方法，你可以在文本列的内容下面显示描述：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -53,7 +53,7 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/text/description" alt="Text column with description" version="3.x" />
 
-By default, the description is displayed below the main text, but you can move it above using the second parameter:
+默认情况下，描述显示在主文本下方，不过你也可以使用第二个参数将其移到文本上方：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -64,9 +64,9 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/text/description-above" alt="Text column with description above the content" version="3.x" />
 
-## Date formatting
+## 日期格式化
 
-You may use the `date()` and `dateTime()` methods to format the column's state using [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+你可以使用 `date()` 和 `dateTime()` 方法，通过 [PHP 日期格式化 token](https://www.php.net/manual/en/datetime.format.php) 来格式化列状态：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -75,7 +75,7 @@ TextColumn::make('created_at')
     ->dateTime()
 ```
 
-You may use the `since()` method to format the column's state using [Carbon's `diffForHumans()`](https://carbon.nesbot.com/docs/#api-humandiff):
+你也可以使用 `since()` 方法，借由 [Carbon 的 `diffForHumans()`](https://carbon.nesbot.com/docs/#api-humandiff) 来格式化列状态：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -84,9 +84,9 @@ TextColumn::make('created_at')
     ->since()
 ```
 
-## Number formatting
+## 数字格式化
 
-The `numeric()` method allows you to format a column as a number, using PHP's `number_format()`:
+`numeric()` 方法允许你使用 PHP 的 `number_format()` 将列格式化成数字：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -99,9 +99,9 @@ TextColumn::make('stock')
     )
 ```
 
-## Currency formatting
+## 货币格式化
 
-The `money()` method allows you to easily format monetary values, in any currency:
+`money()` 方法允许你以任何货币快速格式化金额值：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -110,9 +110,9 @@ TextColumn::make('price')
     ->money('eur')
 ```
 
-## Limiting text length
+## 限制文本长度
 
-You may `limit()` the length of the cell's value:
+使用 `limit()` 方法，你可以限制单元格中值的长度：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -121,7 +121,7 @@ TextColumn::make('description')
     ->limit(50)
 ```
 
-You may also reuse the value that is being passed to `limit()`:
+你也可以重用传入到 `limit()` 中的值：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -140,9 +140,9 @@ TextColumn::make('description')
     })
 ```
 
-## Limiting word count
+## 限制字符数
 
-You may limit the number of `words()` displayed in the cell:
+使用 `words()` 方法，你可以限制显示在单元格中的字数：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -151,9 +151,9 @@ TextColumn::make('description')
     ->words(10)
 ```
 
-## Wrapping content
+## 内容换行
 
-If you'd like your column's content to wrap if it's too long, you may use the `wrap()` method:
+如果你希望列中内容太长时进行换行，可以使用 `wrap()` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -162,9 +162,9 @@ TextColumn::make('description')
     ->wrap()
 ```
 
-## Listing multiple values
+## 罗列多个值
 
-By default, if there are multiple values inside your text column, they will be comma-separated. You may use the `listWithLineBreaks()` method to display them on new lines instead:
+默认情况下，如果文本列中有多个值，会使用逗号隔开。你可以使用 `listWithLineBreaks()` 方法，将其改为换行展示：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -173,9 +173,9 @@ TextColumn::make('authors.name')
     ->listWithLineBreaks()
 ```
 
-### Adding bullet points to the list
+### 将项目符号添加到列表中
 
-You may add a bullet point to each list item using the `bulleted()` method:
+使用 `bulleted()` 方法，你可以为每个列表项目添加符号：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -185,9 +185,9 @@ TextColumn::make('authors.name')
     ->bulleted()
 ```
 
-### Limiting the number of values in the list
+### 限制列表中值的数量
 
-You can limit the number of values in the list using the `limitList()` method:
+使用 `limitList()` 方法，你可以限制列表中值的数量：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -197,9 +197,9 @@ TextColumn::make('authors.name')
     ->limitList(3)
 ```
 
-### Using a list separator
+### 使用列表分隔符
 
-If you want to "explode" a text string from your model into multiple list items, you can do so with the `separator()` method. This is useful for displaying comma-separated tags [as badges](#displaying-as-a-badge), for example:
+如果您想将模型中的文本字符串"分解(explode)"为多个列表项，可以使用 "separator()" 方法。这对于将逗号分隔的标签[显示为徽章](#显示为徽章)非常有用，例如：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -209,9 +209,9 @@ TextColumn::make('tags')
     ->separator(',')
 ```
 
-## Rendering HTML
+## 渲染 HTML
 
-If your column value is HTML, you may render it using `html()`:
+如果列中的值是 HTML，你可以使用 `html()` 进行渲染：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -220,9 +220,9 @@ TextColumn::make('description')
     ->html()
 ```
 
-### Rendering Markdown as HTML
+### 将 Markdown 渲染成 HTML
 
-If your column contains Markdown, you may render it using `markdown()`:
+如果列中包含 Markdown，你可以使用 `markdown()` 方法对其进行渲染：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -231,9 +231,9 @@ TextColumn::make('description')
     ->markdown()
 ```
 
-## Custom formatting
+## 自定义格式
 
-You may instead pass a custom formatting callback to `formatStateUsing()`, which accepts the `$state` of the cell, and optionally its `$record`:
+你可以将自定义格式的回调函数传入到 `formatStateUsing()`，该回调函数接收单元格的 `$state` 以及可选的 `$record` 作为参数：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -242,20 +242,9 @@ TextColumn::make('status')
     ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
 ```
 
-## Adding a placeholder if the cell is empty
+## 自定义颜色
 
-Sometimes you may want to display a placeholder if the cell's value is empty:
-
-```php
-use Filament\Tables\Columns\TextColumn;
-
-TextColumn::make('updated_at')
-    ->placeholder('Never')
-```
-
-## Customizing the color
-
-You may set a color for the text, either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+你可以为文本列添加颜色，颜色可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -266,9 +255,9 @@ TextColumn::make('status')
 
 <AutoScreenshot name="tables/columns/text/color" alt="Text column in the primary color" version="3.x" />
 
-## Adding an icon
+## 添加图标
 
-Text columns may also have an icon:
+文本列也可以有图标：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -279,7 +268,7 @@ TextColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text/icon" alt="Text column with icon" version="3.x" />
 
-You may set the position of an icon using `iconPosition()`:
+使用 `iconPosition()` 可以设置图标位置：
 
 ```php
 use Filament\Support\Enums\IconPosition;
@@ -292,9 +281,9 @@ TextColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text/icon-after" alt="Text column with icon after" version="3.x" />
 
-## Customizing the text size
+## 自定义文本大小
 
-You may make the text larger using `size(TextColumnSize::Large)`:
+使用 `size(TextColumnSize::Large)` 你可以让文本变大：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -305,11 +294,11 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/text/large" alt="Text column in a large font size" version="3.x" />
 
-## Customizing the font weight
+## 自定字体粗细
 
-Text columns have regular font weight by default, but you may change this to any of the following options: `FontWeight::Thin`, `FontWeight::ExtraLight`, `FontWeight::Light`, `FontWeight::Medium`, `FontWeight::SemiBold`, `FontWeight::Bold`, `FontWeight::ExtraBold` or `FontWeight::Black`.
+文本列默认使用常规字体，不过你可以将其改为以下选项：`FontWeight::Thin`、`FontWeight::ExtraLight`、`FontWeight::Light`、`FontWeight::Medium`、`FontWeight::SemiBold`、`FontWeight::Bold`、`FontWeight::ExtraBold` 或 `FontWeight::Black`。
 
-For instance, you may make the font bold using `weight(FontWeight::Bold)`:
+比如，使用 `weight(FontWeight::Bold)` 你可以将字体加粗：
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -321,11 +310,11 @@ TextColumn::make('title')
 
 <AutoScreenshot name="tables/columns/text/bold" alt="Text column in a bold font" version="3.x" />
 
-## Customizing the font family
+## 自定义字体系列
 
-You can change the text font family to any of the following options: `FontFamily::Sans`, `FontFamily::Serif` or `FontFamily::Mono`.
+你可以将字体改为以下选项：`FontFamily::Sans`、`FontFamily::Serif` 或 `FontFamily::Mono`。
 
-For instance, you may make the font mono using `fontFamily(FontFamily::Mono)`:
+比如，使用 `fontFamily(FontFamily::Mono)` 你可以将字体改为 Mono：
 
 ```php
 use Filament\Support\Enums\FontFamily;
@@ -337,9 +326,9 @@ TextColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text/mono" alt="Text column in a monospaced font" version="3.x" />
 
-## Allowing the text to be copied to the clipboard
+## 允许将文本复制到剪贴板
 
-You may make the text copyable, such that clicking on the cell copies the text to the clipboard, and optionally specify a custom confirmation message and duration in milliseconds. This feature only works when SSL is enabled for the app.
+您可以使文本可复制，在单击单元格时将文本复制到剪贴板，并可以选择指定自定义确认消息和持续时间(以毫秒为单位)。此功能仅在为应用程序启用 SSL 时有效。
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -352,9 +341,9 @@ TextColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text/copyable" alt="Text column with a button to copy it" version="3.x" />
 
-### Customizing the text that is copied to the clipboard
+### 自定义复制到剪贴板的文本
 
-You can customize the text that gets copied to the clipboard using the `copyableState() method:
+使用 `copyableState()` 方法，你可以自定义复制到剪贴板的文本：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -364,7 +353,7 @@ TextColumn::make('url')
     ->copyableState(fn (string $state): string => "URL: {$state}")
 ```
 
-In this function, you can access the whole table row with `$record`:
+本函数中，你可以使用 `$record` 访问整个行记录：
 
 ```php
 use App\Models\Post;
@@ -375,9 +364,9 @@ TextColumn::make('url')
     ->copyableState(fn (Post $record): string => "URL: {$record->url}")
 ```
 
-## Displaying the row index
+## 显示行号
 
-You may want a column to contain the number of the current row in the table:
+你可以在列中显示当前行号：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -395,9 +384,9 @@ TextColumn::make('index')->state(
 ),
 ```
 
-As `$rowLoop` is [Laravel Blade's `$loop` object](https://laravel.com/docs/blade#the-loop-variable), you can reference all other `$loop` properties.
+`$rowLoop` 是 [Laravel Blade 的 `$loop` 对象](https://laravel.com/docs/blade#the-loop-variable)，因此你可以引用 `$loop` 的所有其他属性.
 
-As a shortcut, you may use the `rowIndex()` method:
+你可以使用 `rowIndex()` 作为快捷方式： 
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -406,7 +395,7 @@ TextColumn::make('index')
     ->rowIndex()
 ```
 
-To start counting from 0 instead of 1, use `isFromZero: true`:
+如果要从 0 而非 1 开始计数，请使用 `isFromZero: true`：
 
 ```php
 use Filament\Tables\Columns\TextColumn;

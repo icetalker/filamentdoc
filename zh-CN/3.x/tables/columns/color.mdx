@@ -7,7 +7,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-The color column allows you to show the color preview from a CSS color definition, typically entered using the color picker field, in one of the supported formats (HEX, HSL, RGB, RGBA).
+颜色列允许你以支持的格式之一(HEX、HSL、RGB、RGBA)显示 CSS 颜色定义的颜色预览，通常使用颜色选择器字段输入。
 
 ```php
 use Filament\Tables\Columns\ColorColumn;
@@ -17,9 +17,9 @@ ColorColumn::make('color')
 
 <AutoScreenshot name="tables/columns/color/simple" alt="Color column" version="3.x" />
 
-## Allowing the color to be copied to the clipboard
+## 允许将颜色复制到剪贴板
 
-You may make the color copyable, such that clicking on the preview copies the CSS value to the clipboard, and optionally specify a custom confirmation message and duration in milliseconds. This feature only works when SSL is enabled for the app.
+你可以让颜色可复制，通过点击预览将 CSS 值复制到剪贴板，并可选地指定自定义确认消息和时长(以毫秒计时)。该特性只有在应用启用 SSL 时有效。
 
 ```php
 use Filament\Tables\Columns\ColorColumn;
@@ -32,9 +32,9 @@ ColorColumn::make('color')
 
 <AutoScreenshot name="tables/columns/color/copyable" alt="Color column with a button to copy it" version="3.x" />
 
-### Customizing the text that is copied to the clipboard
+### 自定义复制到剪贴板的文本
 
-You can customize the text that gets copied to the clipboard using the `copyableState() method:
+使用 `copyableState()` 方法，你可以自定义复制到剪贴板的文本：
 
 ```php
 use Filament\Tables\Columns\ColorColumn;
@@ -44,7 +44,7 @@ ColorColumn::make('color')
     ->copyableState(fn (string $state): string => "Color: {$state}")
 ```
 
-In this function, you can access the whole table row with `$record`:
+本函数中，你可以使用 `$record` 访问整条行记录：
 
 ```php
 use App\Models\Post;

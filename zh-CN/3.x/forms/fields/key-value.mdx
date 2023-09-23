@@ -5,9 +5,9 @@ title: Key-value
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The key-value field allows you to interact with one-dimensional JSON object:
+键值字段(KeyValue)允许你与一维 JSON 对象进行交互：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -17,13 +17,13 @@ KeyValue::make('meta')
 
 <AutoScreenshot name="forms/fields/key-value/simple" alt="Key-value" version="3.x" />
 
-## Adding rows
+## 添加行
 
-An action button is displayed below the field to allow the user to add a new row.
+该字段下面有一个 Action 按钮，允许用户添加新行。
 
-## Setting the add action button's label
+## 设置添加按钮标签
 
-You may set a label to customize the text that should be displayed in the button for adding a row, using the `addActionLabel()` method:
+使用 `addActionLabel()` 方法，你可以设置添加按钮上显示的标签文本：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -32,9 +32,9 @@ KeyValue::make('meta')
     ->addActionLabel('Add property')
 ```
 
-### Preventing the user from adding rows
+### 阻止用户添加行
 
-You may prevent the user from adding rows using the `addable(false)` method:
+使用 `addable(false)` 方法，你可以阻止用户添加行：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -43,13 +43,13 @@ KeyValue::make('meta')
     ->addable(false)
 ```
 
-## Deleting rows
+## 删除行
 
-An action button is displayed on each item to allow the user to delete it.
+每个项目上都有个 Action 按钮，用以删除行。
 
-### Preventing the user from deleting rows
+### 防止用户删除行
 
-You may prevent the user from deleting rows using the `deletable(false)` method:
+使用 `deletable(false)` 方法，你可以阻止用户删除行：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -58,11 +58,11 @@ KeyValue::make('meta')
     ->deletable(false)
 ```
 
-## Editing keys
+## 编辑键
 
-### Customizing the key fields' label
+### 自定义键字段标签
 
-You may customize the label for the key fields using the `keyLabel()` method:
+使用 `keyLabel()` 方法，你可以自定义键字段的标签：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -71,9 +71,9 @@ KeyValue::make('meta')
     ->keyLabel('Property name')
 ```
 
-### Adding key field placeholders
+### 添加 Key 字段占位符
 
-You may also add placeholders for the key fields using the `keyPlaceholder()` method:
+使用 `keyPlaceholder()` 方法，你也可以为键字段添加占位符：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -82,9 +82,9 @@ KeyValue::make('meta')
     ->keyPlaceholder('Property name')
 ```
 
-### Preventing the user from editing keys
+### 阻止用户编辑键
 
-You may prevent the user from editing keys using the `editableKeys(false)` method:
+使用 `editableKeys(false)` 方法，你可以阻止用户编辑键：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -93,11 +93,11 @@ KeyValue::make('meta')
     ->editableKeys(false)
 ```
 
-## Editing values
+## 编辑值
 
-### Customizing the value fields' label
+### 自定义值字段标签
 
-You may customize the label for the value fields using the `valueLabel()` method:
+使用 `valueLabel()` 方法，你可以自定义值字段的标签：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -106,9 +106,9 @@ KeyValue::make('meta')
     ->valueLabel('Property value')
 ```
 
-### Adding value field placeholders
+### 添加值字段占位符
 
-You may also add placeholders for the value fields using the `valuePlaceholder()` method:
+使用 `valuePlaceholder()` 方法，你也可以为值字段添加占位符：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -117,9 +117,9 @@ KeyValue::make('meta')
     ->valuePlaceholder('Property value')
 ```
 
-### Preventing the user from editing values
+### 阻止用户编辑值
 
-You may prevent the user from editing values using the `editableValues(false)` method:
+使用 `editableValues(false)` 方法，你可以阻止用户编辑值：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -128,9 +128,9 @@ KeyValue::make('meta')
     ->editableValues(false)
 ```
 
-## Reordering rows
+## 行重新排序
 
-You can allow the user to reorder rows within the table using the `reorderable()` method:
+使用 `reorderable()` 方法，你可以允许用户在表格内对行进行重新排序：
 
 ```php
 use Filament\Forms\Components\KeyValue;
@@ -141,15 +141,15 @@ KeyValue::make('meta')
 
 <AutoScreenshot name="forms/fields/key-value/reorderable" alt="Key-value with reorderable rows" version="3.x" />
 
-## Customizing the key-value action objects
+## 自定义键值字段 Action 对象
 
-This field uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button). The following methods are available to customize the actions:
+该字段使用 Action 对象来轻松定义其中的按钮。你可以传入一个函数到 Action 注册方法中自定义这些按钮。这个函数可以访问 `$action` 对象，用以[自定义](../../actions/trigger-button)。以下方法可用于自定义 Action：
 
 - `addAction()`
 - `deleteAction()`
 - `reorderAction()`
 
-Here is an example of how you might customize an action:
+下面是如何自定义 Action 的一个示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;

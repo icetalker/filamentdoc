@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/03-columns/11-relationships.md"
-title: Column relationships
+title: 列关联
 ---
 
-## Displaying data from relationships
+## 从关联中显示数据
 
-You may use "dot notation" to access columns within relationships. The name of the relationship comes first, followed by a period, followed by the name of the column to display:
+你可以使用"点语法"访问关联中的字段。关联名在前，紧跟着点号，之后是要显示的字段名：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -14,9 +14,9 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('author.name')
 ```
 
-## Counting relationships
+## 关联计数
 
-If you wish to count the number of related records in a column, you may use the `counts()` method:
+你可以使用 `counts()` 方法，计算该列中关联记录的数量：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -24,11 +24,11 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_count')->counts('users')
 ```
 
-In this example, `users` is the name of the relationship to count from. The name of the column must be `users_count`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#counting-related-models) for storing the result.
+本例中，`users` 是要计数的关联名。列名必须是 `users_count`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)
 
-## Determining relationship existence
+## 判断关联是否存在
 
-If you simply wish to indicate whether related records exist in a column, you may use the `exists()` method:
+使用 `exists()` 方法，你可以说明列中的关联记录是否存在：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -36,11 +36,11 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_exists')->exists('users')
 ```
 
-In this example, `users` is the name of the relationship to check for existence. The name of the column must be `users_exists`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) for storing the result.
+本例中，`users` 是要检查是否存在的关联名。列名必须是 `users_exists`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)
 
-## Aggregating relationships
+## 聚合关联
 
-Filament provides several methods for aggregating a relationship field, including `avg()`, `max()`, `min()` and `sum()`. For instance, if you wish to show the average of a field on all related records in a column, you may use the `avg()` method:
+Filament 提供了几种用于聚合关联的字段，包括 `avg()`、`max()`、`min()` 和 `min()`。比如，如果你想在列中显示所有关联记录中某个字段的平均值，你可以使用 `avg()` 方法：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -48,4 +48,4 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_avg_age')->avg('users', 'age')
 ```
 
-In this example, `users` is the name of the relationship, while `age` is the field that is being averaged. The name of the column must be `users_avg_age`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) for storing the result.
+本例中，`users` 是关联名，`age` 是要平均的字段。列名必须是 `users_avg_age`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)

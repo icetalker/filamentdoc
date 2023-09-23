@@ -5,9 +5,9 @@ title: Checkbox list
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The checkbox list component allows you to select multiple values from a list of predefined options:
+复选框列表(CheckboxList)组件允许你从预定义选项列表中选择多个值：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -23,7 +23,7 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/simple" alt="Checkbox list" version="3.x" />
 
-These options are returned in JSON format. If you're saving them using Eloquent, you should be sure to add an `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) to the model property:
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到对应的模型属性上：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -38,9 +38,9 @@ class App extends Model
 }
 ```
 
-## Setting option descriptions
+## 设置选项描述
 
-You can optionally provide descriptions to each option using the `descriptions()` method:
+使用 `descriptions()` 方法，你可以选择为每个选项提供描述：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -62,7 +62,7 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/option-descriptions" alt="Checkbox list with option descriptions" version="3.x" />
 
-Be sure to use the same `key` in the descriptions array as the `key` in the option array so the right description matches the right option.
+请确保在描述中使用与选项数组相同的 `key`，这样描述才能与选项匹配。
 
 ## Splitting options into columns
 
