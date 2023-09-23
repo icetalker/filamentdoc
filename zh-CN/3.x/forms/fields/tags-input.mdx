@@ -7,9 +7,9 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-The tags input component allows you to interact with a list of tags.
+标签输入(TagsInput)组件允许你与标签列表进行交互。
 
-By default, tags are stored in JSON:
+默认情况下，标签以 JSON 格式保存：
 
 ```php
 use Filament\Forms\Components\TagsInput;
@@ -19,7 +19,7 @@ TagsInput::make('tags')
 
 <AutoScreenshot name="forms/fields/tags-input/simple" alt="Tags input" version="3.x" />
 
-If you're saving the JSON tags using Eloquent, you should be sure to add an `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) to the model property:
+如果你使用 Eloquent 保存 JSON 标签，你应该将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到相应的模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -34,11 +34,11 @@ class Post extends Model
 }
 ```
 
-> Filament also supports [`spatie/laravel-tags`](https://github.com/spatie/laravel-tags). See our [plugin documentation](/plugins/spatie-tags) for more information.
+> Filament 也支持 [`spatie/laravel-tags`](https://github.com/spatie/laravel-tags) 包。更多信息请查看[插件文档](/plugins/spatie-tags)
 
-## Comma-separated tags
+## 逗号分隔标签
 
-You may allow the tags to be stored in a separated string, instead of JSON. To set this up, pass the separating character to the `separator()` method:
+你可以允许标签以分隔字符串而非 JSON 格式保存。要进行设置，请将分隔字符传入到 `separator()` 方法中：
 
 ```php
 use Filament\Forms\Components\TagsInput;
@@ -47,9 +47,9 @@ TagsInput::make('tags')
     ->separator(',')
 ```
 
-## Autocompleting tag suggestions
+## 自动标签补全建议
 
-Tags inputs may have autocomplete suggestions. To enable this, pass an array of suggestions to the `suggestions()` method:
+标签输入可以由自动补全建议。要启用该功能，请将建议数组传入到 `suggestions()` 方法中：
 
 ```php
 use Filament\Forms\Components\TagsInput;
@@ -63,9 +63,9 @@ TagsInput::make('tags')
     ])
 ```
 
-## Defining split keys
+## 定义拆分键
 
-Split keys allow you to map specific buttons on your user's keyboard to create a new tag. By default, when the user presses "Enter", a new tag is created in the input. You may also define other keys to create new tags, such as "Tab" or " ". To do this, pass an array of keys to the `splitKeys()` method:
+拆分键(Split Key)允许你将用户键盘上指定的按键映射到创建新标签。默认情况下，当用户按下 "Enter" 键时，输入框中会创建新标签。你也可以定义其他键，比如 "Tab" 键、空格键，来创建新标签。要实现该功能，请传入键数组到 `splitKeys()` 方法：
 
 ```php
 use Filament\Forms\Components\TagsInput;
@@ -74,11 +74,11 @@ TagsInput::make('tags')
     ->splitKeys(['Tab', ' '])
 ```
 
-You can [read more about possible options for keys](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
+[更多可能的按键选项请查阅此处](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)。
 
-## Adding a prefix and suffix to individual tags
+## 添加前缀和后缀到单独的标签
 
-You can add prefix and suffix to tags without modifying the real state of the field. This can be useful if you need to show presentational formatting to users without saving it. This is done with the `tagPrefix()` or `tagSuffix()` method:
+在不修改字段的真实状态的情况下，你可用在标签上添加前缀和后缀。如果你需要在不保存的情况下，向用户显示直观的格式，这很有用。该功能可以使用 `tagPrefix()` 或 `tagSuffix()` 方法实现：
 
 ```php
 use Filament\Forms\Components\TagsInput;
@@ -87,9 +87,9 @@ TagsInput::make('percentages')
     ->tagSuffix('%')
 ```
 
-## Tags validation
+## 标签验证
 
-You may add validation rules for each tag by passing an array of rules to the `nestedRecursiveRules()` method:
+将规则数组传入到 `nestedRecursiveRules()` 方法中，你可以为每个标签添加验证规则：
 
 ```php
 use Filament\Forms\Components\TagsInput;

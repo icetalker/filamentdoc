@@ -1,0 +1,372 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/03-fields/09-file-upload.md"
+title: 文件上传
+---
+import AutoScreenshot from "@components/AutoScreenshot.astro"
+
+## 概述
+
+文件上传(FileUpload)字段是基于 [Filepond](https://pqina.nl/filepond) 的。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+```
+
+<AutoScreenshot name="forms/fields/file-upload/simple" alt="File upload" version="3.x" />
+
+> Filament 也支持 [`spatie/laravel-medialibrary`](https://github.com/spatie/laravel-medialibrary)。更多详情请查阅[插件文档](/plugins/filament-spatie-media-library)。
+
+## 配置存储磁盘和存储目录
+
+默认情况下，文件会公开上传到[配置文件](../installation#发布配置文件)中定义的存储盘。你也可以设置 `FILAMENT_FILESYSTEM_DISK` 环境变量对此进行修改。
+
+> 要正确预览图片及其他文件，FilePond 要求将文本保存到与应用相同的域名中，或者设置合适的 CORS 头。请确保 `APP_URL` 环境变量设置正确；或者修改[文件系统(filesystem)](https://laravel.com/docs/filesystem)驱动，设置成正确的 URL。如果文件托管到另外的域名，比如 S3，请确保设置了 CORS 头部。
+
+要为特定字段修改磁盘和目录以及文件的可见度，请使用 `disk()`、`directory()` 及 `visibility()` 方法：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->disk('s3')
+    ->directory('form-attachments')
+    ->visibility('private')
+```
+
+> 是否从磁盘中删除这些文件由开发者决定，因为 Filament 无从知晓这些图片是否由其他地方的依赖。其中一种自动实现方式是监测[模型事件](https://laravel.com/docs/eloquent#events)。
+
+## 多文件上传
+
+你也可以上传多个文件。URL 以 JSON 格式存储：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+```
+
+如果你使用 Eloquent 来保存文件 URL，请确保将 `array` [cast] 添加到对应的模型属性中：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Message extends Model
+{
+    protected $casts = [
+        'attachments' => 'array',
+    ];
+
+    // ...
+}
+```
+
+## 控制文件名
+
+默认情况下，新上传的文件会生成随机文件名。这是为了确保不会和现有的文件产生冲突。
+
+### 保留原始文件名
+
+使用 `preserveFilenames()` 方法，可以保留上传文件的原始文件名：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->preserveFilenames()
+```
+
+### 生成自定义文件名
+
+使用 `getUploadedFileNameForStorageUsing()` 方法，你可以完全自定义文件名的生成方式，并基于上传的文件 `Sfile` 在闭包中返回字符串：
+
+```php
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+
+FileUpload::make('attachment')
+    ->getUploadedFileNameForStorageUsing(
+        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+            ->prepend('custom-prefix-'),
+    )
+```
+
+### 将原始文件名单独存储
+
+使用 `storeFileNamesIn()` 方法，你可以保留随机生成的文件名的同时，将原始文件名存储起来：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->storeFileNamesIn('attachment_file_names')
+```
+
+`attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [cast] 添加到该 Eloquent 模型属性中。
+
+## 图片编辑器
+
+你可以使用 `imageEditor()` 方法，为文件上传字段启用图片编辑器：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+```
+
+当你通过点击铅笔图标上传图片时，你可以打开该编辑器。你也可以在现有图片上点击铅笔图标打开图片编辑器，这将在保存时删除并重新上传图片。
+
+### 允许用户按长宽比裁切图片
+
+使用 `imageEditorAspectRatios()` 方法，你可以允许用户按照一套指定的长宽比裁切图片：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+    ->imageEditorAspectRatios([
+        '16:9',
+        '4:3',
+        '1:1',
+    ])
+```
+
+传入 `null` 作为选项，你也可以允许用户不选择长宽比：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+    ->imageEditorAspectRatios([
+        null,
+        '16:9',
+        '4:3',
+        '1:1',
+    ])
+```
+
+### 设置图片编辑器模式
+
+使用 `imageEditorMode()` 方法，你可以修改图片编辑器模式，该方法可接收 `1`、`2` 或 `3` 作为参数。这些选项的解释可以在 [Cropper.js 文档](https://github.com/fengyuanchen/cropperjs#viewmode)中查看：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+    ->imageEditorMode(2)
+```
+
+### 自定义图片编辑器的空填充色
+
+默认情况下，图片编辑器会使图片周围的空白区域透明。使用 `imageEditorEmptyFillColor()` 方法可以自定义空白区域的填充色：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+    ->imageEditorEmptyFillColor('#000000')
+```
+
+### 设置图片编辑器的视窗大小
+
+使用 `imageEditorViewportWidth()` 和 `imageEditorViewportHeight()` 方法可以修改图片编辑器的视窗，在跨设备中使用会生成长宽比：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageEditor()
+    ->imageEditorViewportWidth('1920')
+    ->imageEditorViewportHeight('1080')
+```
+
+### 不使用编辑器裁切和调整图标大小
+
+Filepond 允许你在上传之前，在不需要编辑器的情况下，裁切图片及调整图片大小。你可以使用 `imageCropAspectRatio()`、`imageResizeTargetHeight()` 和 `imageResizeTargetWidth()` 方法自定义这些行为。应该为这三个方法设置 `imageResizeMode()`， 可设置成 [`force`、`cover` 或 `contain`](https://pqina.nl/filepond/docs/api/plugins/image-resize) 三者其中之一。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->imageResizeMode('cover')
+    ->imageCropAspectRatio('16:9')
+    ->imageResizeTargetWidth('1920')
+    ->imageResizeTargetHeight('1080')
+```
+
+## 修改文件上传区域的外观
+
+你也可以修改 Filepond 组件的通用外观。这些方法的可用选项可以在 [Filepond 网站](https://pqina.nl/filepond/docs/api/instance/properties/#styles)中查看。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->imagePreviewHeight('250')
+    ->loadingIndicatorPosition('left')
+    ->panelAspectRatio('2:1')
+    ->panelLayout('integrated')
+    ->removeUploadedFileButtonPosition('right')
+    ->uploadButtonPosition('left')
+    ->uploadProgressIndicatorPosition('left')
+```
+
+## 文件重新排序
+
+使用 `reorderable()` 方法，你可以允许用户对上传文件重新排序：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->reorderable()
+```
+
+使用该方法时，FilePond 可能将新上传的文件放到列表前面，而不是尾部。要对此进行修改，请使用 `appendFiles()` 方法：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->reorderable()
+    ->appendFiles()
+```
+
+## 在新标签页中打开文件
+
+使用 `openable()` 方法，你可以添加一个按钮，用来在新标签页中打开每个文件：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->openable()
+```
+
+## 下载文件
+
+使用 `downloadable()` 方法，你可以为每个文件添加一个下载按钮：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->downloadable()
+```
+
+## 预览文件
+
+默认情况下，有些文件类型可以在 FilePond 中预览中。如果你想禁用所有文件的预览，你可以使用 `previewable(false)` 方法：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->previewable(false)
+```
+
+## 表单提交时移动文件而不是复制文件
+
+默认情况下，文件最初上传到 Livewire 的临时存储目录，然后在表单提交后将其复制到目标目录。如果你希望移动文件，加入上传的临时文件和永久文件存储在同一个磁盘上，你可以使用 `moveFiles()` 方法：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->moveFiles()
+```
+
+## 防止文件被永久存储
+
+如果你想在表单提交时，阻止文件被永久存储，你可以使用 `storeFiles(false)` 方法：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->storeFiles(false)
+```
+
+表单提交后，会返回临时文件上传对象，而不是永久文件存储路径。这非常适合像导入的CSV这样的临时文件。
+
+## 根据 EXIF 数据确定图像的方向
+
+默认情况下，FilePond 会根据 EXIF 数据自动确定图片方向。使用 `orientImagesFromExif(false)` 方法，你可以禁用该行为：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->orientImagesFromExif(false)
+```
+
+## 文件上传验证
+
+除了[验证](../validation)页面中列出的所有规则之外，还有一些其他专用于文件上传的验证规则。
+
+由于 Filament 是由 Livewire 驱动并使用其文件系统，因此你也需要参考 `config/livewire.php` 文件中的默认文件上传验证规则。这也控制了最大 12MB 的文件大小。
+
+### 文件类型验证
+
+使用 `acceptedFileTypes()`，并在其中传入一个 MIME 类型数组，你可以限制上传的文件类型:
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('document')
+    ->acceptedFileTypes(['application/pdf'])
+```
+
+你也可以使用 `image()` 作为简写，以允许所有图片 MIME 类型。
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+```
+
+### 文件大小验证
+
+你也可以限制上传文件的大小，以 KB 计：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->minSize(512)
+    ->maxSize(1024)
+```
+
+### 文件数量验证
+
+使用 `minFiles()` 和 `maxFiles()` 方法，你可以自定义可以上传的文件数量：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->minFiles(2)
+    ->maxFiles(5)
+```

@@ -5,9 +5,9 @@ title: Wizard
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-Similar to [tabs](tabs), you may want to use a multistep form wizard to reduce the number of components that are visible at once. These are especially useful if your form has a definite chronological order, in which you want each step to be validated as the user progresses.
+类似于 [tabs](tabs)，你想要使用多步骤表单向导(Wizard)来减少一次可见的组件数量。如果您的表单有一个明确的时间顺序，您希望随着用户的进度验证每个步骤，那么这些功能尤其有用。
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -30,11 +30,11 @@ Wizard::make([
 
 <AutoScreenshot name="forms/layout/wizard/simple" alt="Wizard" version="3.x" />
 
-> We have different setup instructions if you're looking to add a wizard to the creation process inside a [panel resource](../../panels/resources/creating-records#using-a-wizard) or an [action modal](../../actions/modals#using-a-wizard-as-a-modal-form). Following that documentation will ensure that the ability to submit the form is only available on the last step of the wizard.
+> 如果你想要在[面板资源](../../panels/resources/creating-records#使用-wizard)或者 [action 模态框](../../actions/modals#使用-wzard-作为模态框表单)中添加向导，可查看相应文档中的按照说明。遵循该文档将确保只有在向导的最后一步才能提交表单。
 
-## Rendering a submit button on the last step
+## 最后一步渲染提交按钮
 
-You may use the `submitAction()` method to render submit button HTML or a view at the end of the wizard, on the last step. This provides a clearer UX than displaying a submit button below the wizard at all times:
+使用 `submitAction()` 方法在向导的最后一步渲染提交按钮 HTML 或者 视图。相比于始终在向导底部显示提交按钮，它提供给了更干净的用户体验：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -49,7 +49,7 @@ Wizard::make([
 ])->submitAction(new HtmlString('<button type="submit">Submit</button>'))
 ```
 
-Alternatively, you can use the built-in Filament button Blade component:
+此外，你也可以使用内置的 Filament 按钮 Blade 模板组件：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -68,11 +68,11 @@ Wizard::make([
 BLADE)))
 ```
 
-You could use this component in a separate Blade view if you want.
+如果需要，可以在单独的 Blade 视图中使用此组件。
 
-## Setting up step icons
+## 设置步骤图标
 
-Steps may also have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search), set using the `icon()` method:
+使用 `icon()` 可以为步骤(Step)设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -86,9 +86,9 @@ Wizard\Step::make('Order')
 
 <AutoScreenshot name="forms/layout/wizard/icons" alt="Wizard with step icons" version="3.x" />
 
-## Adding descriptions to steps
+## 添加描述到步骤中
 
-You may add a short description after the title of each step using the `description()` method:
+使用 `description()` 方法，你可以在每个步骤后添加简短描述：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -102,9 +102,9 @@ Wizard\Step::make('Order')
 
 <AutoScreenshot name="forms/layout/wizard/descriptions" alt="Wizard with step descriptions" version="3.x" />
 
-## Setting the default active step
+## 设置默认激活步骤
 
-You may use the `startOnStep()` method to load a specific step in the wizard:
+使用 `startOnStep()` 方法，可以在向导中载入指定的步骤：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -114,9 +114,9 @@ Wizard::make([
 ])->startOnStep(2)
 ```
 
-## Allowing steps to be skipped
+## 允许跳过步骤
 
-If you'd like to allow free navigation, so all steps are skippable, use the `skippable()` method:
+如果你想要允许自由导航，以便所有步骤都能跳过，请使用 `skippable()` 方法：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -126,9 +126,9 @@ Wizard::make([
 ])->skippable()
 ```
 
-## Persisting the current step in the URL's query string
+## 在 URL 查询字符串中持久化当前步骤
 
-By default, the current step is not persisted in the URL's query string. You can change this behavior using the `persistStepInQueryString()` method:
+默认情况下，当前步骤不会再 URL 查询字符串中持久化。你可以使用 `persistStepInQueryString()` 方法，修改该行为：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -138,7 +138,7 @@ Wizard::make([
 ])->persistStepInQueryString()
 ```
 
-By default, the current step is persisted in the URL's query string using the `step` key. You can change this key by passing it to the `persistStepInQueryString()` method:
+默认情况下，当前步骤的持久化再查询字符串中使用 `step` 作为键。你可以将键名传入 `persistStepInQueryString()` 中对此进行修改：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -148,9 +148,9 @@ Wizard::make([
 ])->persistStepInQueryString('wizard-step')
 ```
 
-## Step lifecycle hooks
+## 步骤周期钩子
 
-You may use the `afterValidation()` and `beforeValidation()` methods to run code before and after validation occurs on the step:
+使用 `afterValidation()` 和 `beforeValidation()` 方法，你可以在每一步验证之前和验证之后运行代码：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -167,9 +167,9 @@ Wizard\Step::make('Order')
     ]),
 ```
 
-## Using grid columns within a step
+## 在步骤中使用网格列宽
 
-You may use the `columns()` method to customize the [grid](grid) within the step:
+你可以使用 `columns()` 方法来自定义步骤中的[网格](grid)：
 
 ```php
 use Filament\Forms\Components\Wizard;
@@ -184,14 +184,14 @@ Wizard::make([
 ])
 ```
 
-## Customizing the wizard action objects
+## 自定义向导 action 对象
 
-This component uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button). The following methods are available to customize the actions:
+该组件使用 Action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
 
 - `nextAction()`
 - `previousAction()`
 
-Here is an example of how you might customize an action:
+下面是一个自定义 action 的示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;

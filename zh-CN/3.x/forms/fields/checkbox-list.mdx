@@ -1,7 +1,7 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs/03-fields/06-checkbox-list.md"
-title: Checkbox list
+title: 复选框列表
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
@@ -64,9 +64,9 @@ CheckboxList::make('technologies')
 
 请确保在描述中使用与选项数组相同的 `key`，这样描述才能与选项匹配。
 
-## Splitting options into columns
+## 将选项拆分成多列
 
-You may split options into columns by using the `columns()` method:
+使用 `columns()` 方法，你可以将选项拆分成多列：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -80,11 +80,11 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/columns" alt="Checkbox list with 2 columns" version="3.x" />
 
-This method accepts the same options as the `columns()` method of the [grid](layout/grid). This allows you to responsively customize the number of columns at various breakpoints.
+该方法接收和[网格](layout/grid)的 `columns()` 方法相同的选项。这就允许你在不同的临界点中响应式地自定义列数。
 
-### Setting the grid direction
+### 设置网格方向
 
-By default, when you arrange checkboxes into columns, they will be listed in order vertically. If you'd like to list them horizontally, you may use the `gridDirection('row')` method:
+默认情况下，列中的复选框列表按垂直方向排列。如果你想将其进行水平排列，你可以使用 `gridDirection('row')` 方法：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -99,9 +99,9 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/rows" alt="Checkbox list with 2 rows" version="3.x" />
 
-## Searching options
+## 搜索选项
 
-You may enable a search input to allow easier access to many options, using the `searchable()` method:
+使用 `searchable()` 方法，你可以启用搜索框，以快速访问选项：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -115,9 +115,9 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/searchable" alt="Searchable checkbox list" version="3.x" />
 
-## Bulk toggling checkboxes
+## 批量切换复选框
 
-You may allow users to toggle all checkboxes at once using the `bulkToggleable()` method:
+使用 `bulkToggleable()` 方法，你可以允许用户一次性切换所有复选框：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -131,11 +131,11 @@ CheckboxList::make('technologies')
 
 <AutoScreenshot name="forms/fields/checkbox-list/bulk-toggleable" alt="Bulk toggleable checkbox list" version="3.x" />
 
-## Integrating with an Eloquent relationship
+## 集成 Eloquent 关联
 
-> If you're building a form inside your Livewire component, make sure you have set up the [form's model](../adding-a-form-to-a-livewire-component#setting-a-form-model). Otherwise, Filament doesn't know which model to use to retrieve the relationship from.
+> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道应该使用哪个模型去检索关联。
 
-You may employ the `relationship()` method of the `CheckboxList` to point to a `BelongsToMany` relationship. Filament will load the options from the relationship, and save them back to the relationship's pivot table when the form is submitted. The `titleAttribute` is the name of a column that will be used to generate a label for each option:
+你可以使用 `CheckboxList` 上的 `relationship()` 方法配置 `BelongsToMany` 关联。Filament 将从关联中加载项目数据，并在表单提交后将其保存回关联的中间表中。`titleAttribute` 是用于为每个选项生成标签的字段名：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -144,9 +144,9 @@ CheckboxList::make('technologies')
     ->relationship(titleAttribute: 'name')
 ```
 
-### Customizing the relationship query
+### 自定义关联查询
 
-You may customize the database query that retrieves options using the `modifyOptionsQueryUsing` parameter of the `relationship()` method:
+你可以使用 `relationship()` 方法的 `modifyOptionsQueryUsing` 参数，自定义检索选项的数据库查询：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -159,9 +159,9 @@ CheckboxList::make('technologies')
     )
 ```
 
-### Customizing the relationship option labels
+### 自定义关联选项标签
 
-If you'd like to customize the label of each option, maybe to be more descriptive, or to concatenate a first and last name, you could use a virtual column in your database migration:
+如果你想要自定义每个选项的标签，比如使之更具描述性，或者将姓和名组合，你可以在数据库迁移中使用虚拟字段：
 
 ```php
 $table->string('full_name')->virtualAs('concat(first_name, \' \', last_name)');
@@ -174,7 +174,7 @@ CheckboxList::make('authors')
     ->relationship(titleAttribute: 'full_name')
 ```
 
-Alternatively, you can use the `getOptionLabelFromRecordUsing()` method to transform an option's Eloquent model into a label:
+另外，你也可以使用 `getOptionLabelFromRecordUsing()` 方法将选项的 Eloquent 模型转换成标签：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -188,9 +188,9 @@ CheckboxList::make('authors')
     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
 ```
 
-## Setting a custom no search results message
+## 设置没有搜索结果的自定义消息
 
-When you're using a searchable checkbox list, you may want to display a custom message when no search results are found. You can do this using the `noSearchResultsMessage()` method:
+使用可搜索的复选框列表时，你可能希望在没有找到搜索结果时显示一条自定义消息。为此，请使用 `noSearchResultsMessage()` 方法：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -203,9 +203,9 @@ CheckboxList::make('technologies')
     ->noSearchResultsMessage('No technologies found.')
 ```
 
-## Setting a custom search prompt
+## 设置自定义搜索提示
 
-When you're using a searchable checkbox list, you may want to tweak the search input's placeholder when the user has not yet entered a search term. You can do this using the `searchPrompt()` method:
+使用可搜索的复选框列表时，你可能希望在用户还未输入搜索条件时显示自定义消息。为此，请使用 `searchPrompt()` 方法：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -218,9 +218,9 @@ CheckboxList::make('technologies')
     ->searchPrompt('Search for a technology')
 ```
 
-## Tweaking the search debounce
+## 调整搜索抖动
 
-By default, Filament will wait 1000 milliseconds (1 second) before searching for options when the user types in a searchable checkbox list. It will also wait 1000 milliseconds between searches if the user is continuously typing into the search input. You can change this using the `searchDebounce()` method:
+默认情况下，当用户输入到可搜索的复选框列表时，Filament 会在搜索选项之前等待 1000 毫秒(1 秒)。如果用户持续输入到搜索框，搜索之间也会等待 1000 毫秒。你可以使用 `searchDebounce()` 方法，对此进行修改：
 
 ```php
 use Filament\Forms\Components\CheckboxList;
@@ -233,14 +233,14 @@ CheckboxList::make('technologies')
     ->searchDebounce(500)
 ```
 
-## Customizing the checkbox list action objects
+## 自定义复选框列表 Action 对象
 
-This field uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button). The following methods are available to customize the actions:
+该字段使用 action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
 
 - `selectAllAction()`
 - `deselectAllAction()`
 
-Here is an example of how you might customize an action:
+下面是一个如何自定义 action 的示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;

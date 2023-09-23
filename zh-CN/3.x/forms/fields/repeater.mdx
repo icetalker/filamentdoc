@@ -207,9 +207,9 @@ Repeater::make('qualifications')
 
 ## 集成 Eloquent 关联
 
-> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不直到使用哪个模型去检索关联。
+> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道应该使用哪个模型去检索关联。
 
-你可以使用 `Repeater` 上 `relationship()` 方法去配置 `HasMany` 关联。Filament 将从关联中加载项目数据，并在表单提交后将其保存回关联。如果没有将自定义关联名传入到 `relationship()`，Filament 将回使用字段名作为关联名：
+你可以使用 `Repeater` 上的 `relationship()` 方法去配置 `HasMany` 关联。Filament 将从关联中加载项目数据，并在表单提交后将其保存回关联。如果没有将自定义关联名传入到 `relationship()`，Filament 将回使用字段名作为关联名：
 
 ```php
 use Filament\Forms\Components\Repeater;

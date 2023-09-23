@@ -1,7 +1,8 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/03-columns/10-custom.md"
-title: 自定义列字段
+title: Custom columns
+---
 
 ## 视图列
 
@@ -17,7 +18,7 @@ ViewColumn::make('status')->view('filament.tables.columns.status-switcher')
 
 ## 自定义类
 
-你可以创建自定义的 Column 类和单元格视图，使之可以在整个应用中重用，甚至将其作为插件发布到社区：
+你可以创建自定义的 Column 类和单元格视图，使之可以在整个应用中重用，甚至将其作为插件发布到社区。
 
 > 如果你只是创建一个使用一次的简单自定义列，你可以使用[视图列](#视图列)来渲染自定义 Blade 文件。
 

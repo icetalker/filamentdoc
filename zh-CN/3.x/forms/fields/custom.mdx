@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/forms/docs
 title: 自定义字段
 ---
 
-## View fields
+## 视图字段
 
-Aside from [building custom fields](custom), you may create "view" fields which allow you to create custom fields without extra PHP classes.
+除了[创建自定义字段](custom)，你可以创建 "view" 字段，允许你在不使用额外的 PHP 类的情况下，创建自定义字段。
 
 ```php
 use Filament\Forms\Components\ViewField;
@@ -15,21 +15,21 @@ ViewField::make('rating')
     ->view('filament.forms.components.range-slider')
 ```
 
-This assumes that you have a `resources/views/filament/forms/components/range-slider.blade.php` file.
+这假定你有一个 `resources/views/filament/forms/components/range-slider.blade.php` 文件。
 
-## Custom field classes
+## 自定义字段类
 
-You may create your own custom field classes and views, which you can reuse across your project, and even release as a plugin to the community.
+你可以创建自定义的字段类和视图，使之可以在整个应用中重用，甚至将其作为插件发布到社区。
 
-> If you're just creating a simple custom field to use once, you could instead use a [view field](#view) to render any custom Blade file.
+> 如果你只是创建一个使用一次的简单自定义字段，你可以使用[视图字段](#视图字段)来渲染自定义 Blade 文件。
 
-To create a custom field class and view, you may use the following command:
+要创建自定义字段类和视图，请使用如下命令：
 
 ```bash
 php artisan make:form-field RangeSlider
 ```
 
-This will create the following field class:
+该命令将会创建如下字段类：
 
 ```php
 use Filament\Forms\Components\Field;
@@ -40,13 +40,13 @@ class RangeSlider extends Field
 }
 ```
 
-It will also create a view file at `resources/views/filament/forms/components/range-slider.blade.php`.
+同时会新建一个 `resources/views/filament/forms/components/range-slider.blade.php` 视图文件。
 
-## How fields work
+## 字段工作原理
 
-Livewire components are PHP classes that have their state stored in the user's browser. When a network request is made, the state is sent to the server, and filled into public properties on the Livewire component class, where it can be accessed in the same way as any other class property in PHP can be.
+Livewire 组件是将状态(state)存储在用户浏览器中的 PHP 类。当发起网络请求时，将状态发送给服务器，并填入到 Livewire 组件类的公共属性中，在那里可以像 PHP 中的任何其他类属性一样访问它。
 
-Imagine you had a Livewire component with a public property called `$name`. You could bind that property to an input field in the HTML of the Livewire component in one of two ways: by a the [`wire:model` attribute](https://livewire.laravel.com/docs/properties#data-binding), or by [entangling](https://livewire.laravel.com/docs/2.x/alpine-js#sharing-state) it with an Alpine.js property:
+假设 Livewire 组件中有一个公共属性叫做 `$name`。你可以以两种方式将该属性绑定到 Livewire 组件的 HTML 输入框字段中：使用 [`wire:model` 属性](https://livewire.laravel.com/docs/properties#data-binding)，或者使用 Alpine.js 的 [entangling](https://livewire.laravel.com/docs/2.x/alpine-js#sharing-state)：
 
 ```blade
 <input wire:model="name" />
@@ -58,9 +58,9 @@ Imagine you had a Livewire component with a public property called `$name`. You 
 </div>
 ```
 
-When the user types into the input field, the `$name` property is updated in the Livewire component class. When the user submits the form, the `$name` property is sent to the server, where it can be saved.
+当用户输入到输入框中时，`$name` 属性会在 Livewire 组件类中更新。用户提交表单后，`$name` 属性将提交到服务器保存。
 
-This is the basis of how fields work in Filament. Each field is assigned to a public property in the Livewire component class, which is where the state of the field is stored. We call the name of this property the "state path" of the field. You can access the state path of a field using the `$getStatePath()` function in the field's view:
+这就是字段在 Filament 中的基础工作原理。每个字段都分配到 Livewire 组件类公共属性，该属性是字段状态的存储位置。我们把该字段的名称称为字段的 "state path"。在字段视图中可以使用 `$getStatePath()` 函数访问字段的 state path：
 
 ```blade
 <input wire:model="{{ $getStatePath() }}" />
@@ -72,11 +72,11 @@ This is the basis of how fields work in Filament. Each field is assigned to a pu
 </div>
 ```
 
-If your component heavily relies on third party libraries, we advise that you asynchronously load the Alpine.js component using the Filament asset system. This ensures that the Alpine.js component is only loaded when it's needed, and not on every page load. To find out how to do this, check out our [Assets documentation](../common/assets#asynchronous-alpinejs-components).
+如果你的组件严重依赖第三方库，我们建议你使用 Filament 资源系统异步加载 Alpine.js 组件。这保证了 Alpine.js 组件只会在需要时加载，而不是每个页面都加载。要了解如何实现该功能，请查阅[资源文档](../support/assets#异步-alpinejs-组件)。
 
-## Rendering the field wrapper
+## 渲染字段包装器
 
-Filament includes a "field wrapper" component, which is able to render the field's label, validation errors, and any other text surrounding the field. You may render the field wrapper like this in the view:
+Filament 中有一个"字段包装器(field wrapper)"组件，可以渲染字段标签，验证错误及字段周围的其他文本。你可以在视图中像这样渲染字段 wrapper：
 
 ```blade
 <x-dynamic-component
@@ -87,11 +87,11 @@ Filament includes a "field wrapper" component, which is able to render the field
 </x-dynamic-component>
 ```
 
-It's encouraged to use the field wrapper component whenever appropriate, as it will ensure that the field's design is consistent with the rest of the form.
+鼓励在适当的时候使用字段包装器组件，因为它将确保字段的设计与表单的其余部分一致。
 
-## Accessing the Eloquent record
+## 访问 Eloquent 记录
 
-Inside your view, you may access the Eloquent record using the `$getRecord()` function:
+使用 `$getRecord()` 函数，你可以在视图中访问 Eloquent 记录：
 
 ```blade
 <div>
@@ -99,13 +99,13 @@ Inside your view, you may access the Eloquent record using the `$getRecord()` fu
 </div>
 ```
 
-## Obeying state binding modifiers
+## 遵守状态绑定修饰符
 
-When you bind a field to a state path, you may use the `defer` modifier to ensure that the state is only sent to the server when the user submits the form, or whenever the next Livewire request is made. This is the default behaviour.
+当你将字段绑定到 state path 时，你可以使用 `defer` 修饰符去确保该状态只在用户提交表单时(或者下个 Livewire 请求发起时)发送到服务器。这是默认行为。
 
-However, you may use the [`live()`](../advanced#the-basics-of-reactivity) on a field to ensure that the state is sent to the server immediately when the user interacts with the field. This allows for lots of advanced use cases as explained in the [advanced](../advanced) section of the documentation.
+不过，你也可以在字段上使用 [`live()`](../advanced#the-basics-of-reactivity)来确保状态在用户和字段交互时立即发送给服务器。这就允许了许多文档[高级](../advanced)部分中所介绍的高级用法。
 
-Filament provides a `$applyStateBindingModifiers()` function that you may use in your view to apply any state binding modifiers to a `wire:model` or `$wire.entangle()` binding:
+Filament 提供了一个 `$applyStateBindingModifiers()` 函数，你可以使用它在视图中将所有的状态绑定修饰应用到 `wire:model` 或 `$wire.entangle()` 绑定： 
 
 ```blade
 <input {{ $applyStateBindingModifiers('wire:model') }}="{{ $getStatePath() }}" />
