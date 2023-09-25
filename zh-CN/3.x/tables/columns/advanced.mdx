@@ -20,15 +20,15 @@ TextColumn::make('status')
     })
 ```
 
-This alone unlocks many customization possibilities.
+仅此一点就开启了许多自定义的可能性。
 
 The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
 
 These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
 
-### Injecting the current state of a column
+### 注入当前列状体
 
-If you wish to access the current state (value) of the column, define a `$state` parameter:
+如果你想访问列字段的当前状态(值)，请定义 `$state` 参数：
 
 ```php
 function ($state) {
@@ -36,9 +36,9 @@ function ($state) {
 }
 ```
 
-### Injecting the current Eloquent record
+### 注入当前 Eloquent 记录
 
-If you wish to access the current Eloquent record of the column, define a `$record` parameter:
+如果你想要访问列字段的当前 Eloquent 记录，请定义 `$record` 参数：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -48,11 +48,11 @@ function (Model $record) {
 }
 ```
 
-Be aware that this parameter will be `null` if the column is not bound to an Eloquent record. For instance, the `label()` method of a column will not have access to the record, as the label is not related to any table row.
+请注意，如果这个列没有绑定到 Eloquent 记录，则这个参数值为 `null`。比如，列字段的 `label()`方法将无法访问记录，因为标签没有关联到任何记录。
 
-### Injecting the current column instance
+### 注入当前列实例
 
-If you wish to access the current column instance, define a `$column` parameter:
+如果你想访问当前列实例，请定义 `$column` 参数：
 
 ```php
 use Filament\Tables\Columns\Column;
@@ -62,9 +62,9 @@ function (Column $column) {
 }
 ```
 
-### Injecting the current Livewire component instance
+### 注入当前 Livewire 组件实例
 
-If you wish to access the current Livewire component instance that the table belongs to, define a `$livewire` parameter:
+如果你想要访问表格所属的当前 Livewire 组件实例，请定义 `$livewire` 参数：
 
 ```php
 use Filament\Tables\Contracts\HasTable;
@@ -74,9 +74,10 @@ function (HasTable $livewire) {
 }
 ```
 
-### Injecting the current table instance
+### 注入当前表格实例
 
-If you wish to access the current table configuration instance that the column belongs to, define a `$table` parameter:
+
+如果你想要访问列字段所属的当前表格配置实例，请定义 `$livewire` 参数：
 
 ```php
 use Filament\Tables\Table;

@@ -58,7 +58,7 @@ TextInput::make('name')->label(__('fields.name'))
 ```php
 use Filament\Forms\Components\TextInput;
 
-TextInput::make('name')->translateLabel() // 相当于 `label(__('Name'))`
+TextInput::make('name')->translateLabel() // 相当于 label(__('Name'))
 ```
 
 ### 设置ID
@@ -675,11 +675,11 @@ Select::make('authorId')
     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
 ```
 
-#### 处理`MorphTo`关联
+#### 处理 `MorphTo` 关联
 
 `MorphTo` 关联比较特别，因为它使用户可以从一系列不同模型中选则记录。因此，有了 `MorphToSelect` 组件，实际上它不是一个 Select 字段，而是 Fieldset 中的两个 Select 字段。第一个 Select 字段允许你选择类型，第二个允许你选择对应类型的记录。
 
-要使用 `MorphToSelect`，你必须将 类型通过 `types()` 传入组件，使组件了解如何渲染不同类型选项：
+要使用 `MorphToSelect`，你必须将类型通过 `types()` 传入组件，使组件了解如何渲染不同类型选项：
 
 ```php
 use Filament\Forms\Components\MorphToSelect;
@@ -691,7 +691,7 @@ MorphToSelect::make('commentable')
     ])
 ```
 
-`titleColumnName()` 被用作从Product或者Post中提取出标题。你也可以使用 `getOptionLabelFromRecordUsing` 提取选项标签：
+`titleColumnName()` 被用作从 Product 或者 Post 中提取出标题。你也可以使用 `getOptionLabelFromRecordUsing()` 提取选项标签：
 
 ```php
 use Filament\Forms\Components\MorphToSelect;
@@ -760,7 +760,7 @@ Select::make('authorId')
 
 ## 复选框
 
-复选框(checkbox)组件，类似于[toggle](#toggle)，让你可以和布尔值交互。
+复选框(checkbox)组件，类似于 [toggle](#toggle)，让你可以和布尔值交互。
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -770,9 +770,9 @@ Checkbox::make('is_admin')
 
 ![](https://user-images.githubusercontent.com/41773797/147613098-db8d3571-1835-4714-b422-619755c0b722.png)
 
-复选框字段有两种布局模式，inline 和 stacked。默认为inline。
+复选框字段有两种布局模式，inline 和 stacked。默认为 inline。
 
-如果是inline，标签会紧邻着复选框：
+如果是 inline，标签会紧邻着复选框：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -782,7 +782,7 @@ Checkbox::make('is_admin')->inline()
 
 ![](https://user-images.githubusercontent.com/41773797/147613098-db8d3571-1835-4714-b422-619755c0b722.png)
 
-如果是stacked，标签会在复选框之上：
+如果是 stacked，标签会在复选框之上：
 
 ```php
 use Filament\Forms\Components\Checkbox;

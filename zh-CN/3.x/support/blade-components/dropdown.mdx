@@ -6,7 +6,7 @@ title: Dropdown Blade component
 
 ## 概述
 
-The dropdown component allows you to render a dropdown menu with a button that triggers it:
+下拉菜单组件允许你使用触发按钮渲染下拉菜单：
 
 ```blade
 <x-filament::dropdown>
@@ -32,9 +32,9 @@ The dropdown component allows you to render a dropdown menu with a button that t
 </x-filament::dropdown>
 ```
 
-## Using a dropdown item as an anchor link
+## 使用下拉菜单项作为锚链接
 
-By default, a dropdown item's underlying HTML tag is `<button>`. You can change it to be an `<a>` tag by using the `tag` attribute:
+默认情况下，下拉菜单项底层使用的 HTML 标签是 `<button>`。你可以使用 `tag` 属性，将其改成 `<a>` 标签：
 
 ```blade
 <x-filament::dropdown.list.item
@@ -45,9 +45,9 @@ By default, a dropdown item's underlying HTML tag is `<button>`. You can change 
 </x-filament::dropdown.list.item>
 ```
 
-## Changing the color of a dropdown item
+## 修改下拉菜单项目的颜色
 
-By default, the color of a dropdown item is "gray". You can change it to be `danger`, `info`, `primary`, `success` or `warning` by using the `color` attribute:
+默认情况下，下拉菜单项目的颜色是 "gray"。你可以使用 `color` 属性，将其改成 `danger`、`info`、`primary`、`success` 或 `warning`。
 
 ```blade
 <x-filament::dropdown.list.item color="danger">
@@ -71,9 +71,9 @@ By default, the color of a dropdown item is "gray". You can change it to be `dan
 </x-filament::button>
 ```
 
-## Adding an icon to a dropdown item
+## 添加图标到下拉菜单项目
 
-You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a dropdown item by using the `icon` attribute:
+使用 `icon` 属性，你可以为下拉菜单项目添加[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```blade
 <x-filament::dropdown.list.item icon="heroicon-m-pencil">
@@ -81,9 +81,9 @@ You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a dr
 </x-filament::dropdown.list.item>
 ```
 
-## Adding an image to a dropdown item
+## 添加图片到下拉菜单项目
 
-You can add a circular image to a dropdown item by using the `image` attribute:
+使用 `image` 属性，你可以为下拉菜单项目添加圆形图片：
 
 ```blade
 <x-filament::dropdown.list.item image="https://filamentphp.com/dan.jpg">
@@ -91,9 +91,9 @@ You can add a circular image to a dropdown item by using the `image` attribute:
 </x-filament::dropdown.list.item>
 ```
 
-## Adding a badge to a dropdown item
+## 添加徽章到下拉菜单项目
 
-You can render a [badge](badge) on top of a dropdown item by using the `badge` slot:
+使用 `badge` 插槽，你可以在下拉菜单项的顶部添加[徽章](badge)：
 
 ```blade
 <x-filament::dropdown.list.item>
@@ -105,7 +105,7 @@ You can render a [badge](badge) on top of a dropdown item by using the `badge` s
 </x-filament::dropdown.list.item>
 ```
 
-You can [change the color](badge#changing-the-color-of-the-badge) of the badge using the `badge-color` attribute:
+使用 `badge-color` 属性，你可以[修改徽章颜色](badge#修改徽章颜色)：
 
 ```blade
 <x-filament::dropdown.list.item badge-color="danger">
@@ -117,9 +117,9 @@ You can [change the color](badge#changing-the-color-of-the-badge) of the badge u
 </x-filament::dropdown.list.item>
 ```
 
-## Setting the placement of a dropdown
+## 设置下拉菜单位置
 
-The dropdown may be positioned relative to the trigger button by using the `placement` attribute:
+使用 `placement` 属性，可以设置下拉菜单相对于触发按钮的位置：
 
 ```blade
 <x-filament::dropdown placement="top-start">
@@ -127,9 +127,9 @@ The dropdown may be positioned relative to the trigger button by using the `plac
 </x-filament::dropdown>
 ```
 
-## Setting the width of a dropdown
+## 设置下拉菜单的宽度
 
-The dropdown may be set to a width by using the `width` attribute. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl` and `7xl`:
+使用 `width` 属性，可以设置下拉菜单的宽度。选项对应于 [Tailwind 最大宽度大小](https://tailwindcss.com/docs/max-width)，可用选项有 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 和 `7xl`：
 
 ```blade
 <x-filament::dropdown width="xs">
@@ -137,9 +137,9 @@ The dropdown may be set to a width by using the `width` attribute. Options corre
 </x-filament::dropdown>
 ```
 
-## Controlling the maximum height of a dropdown
+## 控制下拉菜单最大高度
 
-The dropdown content can have a maximum height using the `max-height` attribute, so that it scrolls. You can pass a [CSS length](https://developer.mozilla.org/en-US/docs/Web/CSS/length):
+使用 `max-height` 属性，可用设置下拉菜单内容的最大高度，当内容过长时显示滚动条。你可以传入一个 [CSS 长度](https://developer.mozilla.org/en-US/docs/Web/CSS/length)：
 
 ```blade
 <x-filament::dropdown max-height="400px">

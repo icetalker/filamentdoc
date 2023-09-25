@@ -6,7 +6,7 @@ title: Tabs Blade component
 
 ## 概述
 
-The tabs component allows you to render a set of tabs, which can be used to toggle between multiple sections of content:
+选项卡(Tabs)组件允许你渲染一组选项卡，用于切换多个区域内容：
 
 ```blade
 <x-filament::tabs label="Content tabs">
@@ -24,9 +24,9 @@ The tabs component allows you to render a set of tabs, which can be used to togg
 </x-filament::tabs>
 ```
 
-## Triggering the active state of the tab
+## 触发选项卡的激活状态
 
-By default, tabs do not appear "active". To make a tab appear active, you can use the `active` attribute:
+默认情况下，选项卡不显示 "active"。要让选项卡显示为激活，你可以使用 `active` 属性：
 
 ```blade
 <x-filament::tabs>
@@ -38,7 +38,7 @@ By default, tabs do not appear "active". To make a tab appear active, you can us
 </x-filament::tabs>
 ```
 
-You can also use the `active` attribute to make a tab appear active conditionally:
+你也可以使用 `active` 属性，让选项卡条件性显示为激活：
 
 ```blade
 <x-filament::tabs>
@@ -53,7 +53,7 @@ You can also use the `active` attribute to make a tab appear active conditionall
 </x-filament::tabs>
 ```
 
-Or you can use the `alpine-active` attribute to make a tab appear active conditionally using Alpine.js:
+或者使用 `alpine-active` 属性，让选项卡使用 Alpine.js 条件性地显示为激活：
 
 ```blade
 <x-filament::tabs x-data={ activeTab: 'tab1' }>
@@ -68,9 +68,9 @@ Or you can use the `alpine-active` attribute to make a tab appear active conditi
 </x-filament::tabs>
 ```
 
-## Setting a tab icon
+## 设置选项卡图标
 
-Tabs may have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search), which you can set using the `icon` attribute:
+使用 `icon` 属性，可以为选项卡设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```blade
 <x-filament::tabs>
@@ -82,9 +82,9 @@ Tabs may have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search), whic
 </x-filament::tabs>
 ```
 
-### Setting the tab icon position
+### 设置选项卡图标位置
 
-The icon of the tab may be positioned before or after the label using the `icon-position` attribute:
+使用 `icon-position` 你可以将选项卡的图标设置为在标签的前面(before)或者后面(after)：
 
 ```blade
 <x-filament::tabs>
@@ -99,9 +99,9 @@ The icon of the tab may be positioned before or after the label using the `icon-
 </x-filament::tabs>
 ```
 
-## Setting a tab badge
+## 设置选项卡徽章
 
-Tabs may have a [badge](badge), which you can set using the `badge` slot:
+使用 `badge` 插槽，可以为选项卡设置[徽章](badge)：
 
 ```blade
 <x-filament::tabs>
@@ -117,9 +117,9 @@ Tabs may have a [badge](badge), which you can set using the `badge` slot:
 </x-filament::tabs>
 ```
 
-## Using a tab as an anchor link
+## 将选项卡用作锚链接
 
-By default, a tab's underlying HTML tag is `<button>`. You can change it to be an `<a>` tag by using the `tag` attribute:
+默认情况下，选项卡底层的 HTML 标签是 `<button>`。你可以使用 `tag` 属性将其该为 `<a>` 标签：
 
 ```blade
 <x-filament::tabs>

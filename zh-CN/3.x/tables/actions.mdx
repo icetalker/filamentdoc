@@ -7,13 +7,13 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Filament's tables can use [Actions](../actions). They are buttons that can be added to the [end of any table row](#row-actions), or even in the [header](#header-actions) of a table. For instance, you may want an action to "create" a new record in the header, and then "edit" and "delete" actions on each row. [Bulk actions](#bulk-actions) can be used to execute code when records in the table are selected. Additionally, actions can be added to any [table column](#column-actions), such that each cell in that column is a trigger for your action.
+Filament 表格可以使用 [Actions](../actions)。Action 是添加到[表格行末](#行-action)或者表格[头部](#header-actions)的按钮。比如，如果你想在表格头部添加"新建"记录的 action，在每行中添加"编辑"和"删除" action。[批量 action](#bulk-actions)可用在记录选中时执行代码。另外，action 也可以添加到[表格列](#column-actions)，这样该列中的每个单元格都是 action 的触发器。
 
-It's highly advised that you read the documentation about [customizing action trigger buttons](../actions/trigger-button) and [action modals](../actions/modals) to that you are aware of the full capabilities of actions.
+强烈建议阅读[自定义 action 触发按钮](../actions/trigger-button) 和 [action 模态框](../actions/modals)文档，去了解 action 的全部功能。
 
-## Row actions
+## 行 action
 
-Action buttons can be rendered at the end of each table row. You can put them in the `$table->actions()` method:
+Action 按钮可以在每个表格行的末尾进行渲染。将其放入 `$table->actions()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -27,9 +27,9 @@ public function table(Table $table): Table
 }
 ```
 
-Actions may be created using the static `make()` method, passing its unique name.
+Action 可以使用静态 `make()` 方法创建，传入其唯一名称。
 
-You can then pass a function to `action()` which executes the task, or a function to `url()` which creates a link:
+然后将其传入到 `action()` 方法中执行任务，或者传入 `url()` 方法中创建链接：
 
 ```php
 use App\Models\Post;
@@ -44,13 +44,13 @@ Action::make('delete')
     ->action(fn (Post $record) => $record->delete())
 ```
 
-All methods on the action accept callback functions, where you can access the current table `$record` that was clicked.
+Action 上的所有方法都接收回调函数，在回调函数你可以访问当前表格的记录 `$record`。 
 
 <AutoScreenshot name="tables/actions/simple" alt="Table with actions" version="3.x" />
 
-### Positioning row actions before columns
+### 将行 action 放置到列的前面
 
-By default, the row actions in your table are rendered in the final cell of each row. You may move them before the columns by using the `position` argument:
+默认情况下，表格中的行 action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到列的前面： 
 
 ```php
 use Filament\Tables\Enums\ActionsPosition;
@@ -67,9 +67,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/actions/before-columns" alt="Table with actions before columns" version="3.x" />
 
-### Positioning row actions before the checkbox column
+### 将行 action 放置到复选框列前
 
-By default, the row actions in your table are rendered in the final cell of each row. You may move them before the checkbox column by using the `position` argument:
+默认情况下，表格中的行 action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到复选框列的前面： 
 
 ```php
 use Filament\Tables\Enums\ActionsPosition;
@@ -86,9 +86,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/actions/before-cells" alt="Table with actions before cells" version="3.x" />
 
-## Bulk actions
+## 批量操作
 
-Tables also support "bulk actions". These can be used when the user selects rows in the table. Traditionally, when rows are selected, a "bulk actions" button appears in the top left corner of the table. When the user clicks this button, they are presented with a dropdown menu of actions to choose from. You can put them in the `$table->bulkActions()` method:
+表格也支持批量操作(bulk actions)。当用户在表格中选择多行时，可使用该 action。通常，当行被选中后，会有一个批量操作按钮显示在表格的左上角。用户点击该按钮时，它会显示一个 action 的下拉菜单供选择。你可以将批量操作放到 `$table->bulkActions()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -102,7 +102,7 @@ public function table(Table $table): Table
 }
 ```
 
-Bulk actions may be created using the static `make()` method, passing its unique name. You should then pass a callback to `action()` which executes the task:
+BulkAction 可以使用静态的 `make()` 方法，传入唯一名称创建。然后传入一个回调到 `action()` 中执行任务：
 
 ```php
 use Filament\Tables\Actions\BulkAction;
@@ -113,13 +113,13 @@ BulkAction::make('delete')
     ->action(fn (Collection $records) => $records->each->delete())
 ```
 
-The function allows you to access the current table `$records` that are selected. It is an Eloquent collection of models.
+该函数允许你访问表格当前选中的记录 `$records`。它是一个 Eloquent 模型集合。
 
 <AutoScreenshot name="tables/actions/bulk" alt="Table with bulk action" version="3.x" />
 
-### Grouping bulk actions
+### 批量操作分组
 
-You may use a `BulkActionGroup` object to [group multiple bulk actions together](../actions/grouping-actions) in a dropdown. Any bulk actions that remain outside the `BulkActionGroup` will be rendered next to the dropdown's trigger button:
+使用 `BulkActionGroup` 对象，你可以将[多个批量操作一起分组到](../actions/grouping-actions)一个下拉菜单中。`BulkActionGroup` 外面的批量操作将紧挨着下拉触发按钮渲染：
 
 ```php
 use Filament\Tables\Actions\BulkAction;
@@ -143,7 +143,7 @@ public function table(Table $table): Table
 }
 ```
 
-Alternatively, if all of your bulk actions are grouped, you can use the shorthand `groupedBulkActions()` method:
+此外，如果所有批量操作都分组，你可以使用 `groupedBulkActions()` 方法：
 
 ```php
 use Filament\Tables\Actions\BulkAction;
@@ -164,9 +164,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Deselecting records once a bulk action has finished
+### 批量操作完成后取消记录选择
 
-You may deselect the records after a bulk action has been executed using the `deselectRecordsAfterCompletion()` method:
+使用 `deselectRecordsAfterCompletion()` 方法，你可以在批量按钮执行后取消记录选择：
 
 ```php
 use Filament\Tables\Actions\BulkAction;
@@ -177,9 +177,9 @@ BulkAction::make('delete')
     ->deselectRecordsAfterCompletion()
 ```
 
-### Disabling bulk actions for some rows
+### 某些行禁用批量操作
 
-You may conditionally disable bulk actions for a specific record:
+你可以条件性地禁用特定行的批量操作功能：
 
 ```php
 use Filament\Tables\Table;
@@ -197,9 +197,9 @@ public function table(Table $table): Table
 }
 ```
 
-## Header actions
+## 头部 action
 
-Both [row actions](#row-actions) and [bulk actions](#bulk-actions) can be rendered in the header of the table. You can put them in the `$table->headerActions()` method:
+[行 action](#行-action) 和[批量操作](#批量操作)都可以在表头中渲染。请将其放到 `$table->headerActions()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -213,17 +213,17 @@ public function table(Table $table): Table
 }
 ```
 
-This is useful for things like "create" actions, which are not related to any specific table row, or bulk actions that need to be more visible.
+这对于像 "create" 这种不依赖于特定表格行的 action 或者需要更为显眼的批量 action，非常有用，
 
 <AutoScreenshot name="tables/actions/header" alt="Table with header actions" version="3.x" />
 
-## Column actions
+## 列 action
 
-Actions can be added to columns, such that when a cell in that column is clicked, it acts as the trigger for an action. You can learn more about [column actions](columns/getting-started#running-actions) in the documentation.
+可以将 Action 添加到列中，这样点击该列的单元格时，它将充当 Action 的触发器。了解更多[列 action](columns/getting-started#运行-action)的相关信息，请查阅文档。
 
-## Prebuilt table actions
+## 预构建表格 action
 
-Filament includes several prebuilt actions and bulk actions that you can add to a table. Their aim is to simplify the most common Eloquent-related actions:
+Filament 中带有多个你可以添加到表格预构建 action 及批量 action。它们的目标是简化大部分通用 Eloquent 相关的操作：
 
 - [Create](../actions/prebuilt-actions/create)
 - [Edit](../actions/prebuilt-actions/edit)
@@ -233,9 +233,9 @@ Filament includes several prebuilt actions and bulk actions that you can add to 
 - [Force-delete](../actions/prebuilt-actions/force-delete)
 - [Restore](../actions/prebuilt-actions/restore)
 
-## Grouping actions
+## Action 分组
 
-You may use an `ActionGroup` object to group multiple table actions together in a dropdown:
+使用 `ActionGroup` 对象，你可以将多个 action 分组到一个下拉菜单中：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -260,11 +260,11 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/actions/group" alt="Table with action group" version="3.x" />
 
-### Choosing an action group button style
+### 选择 Action 分组按钮样式
 
-Out of the box, action group triggers have 3 styles - "button", "link", and "icon button".
+开箱即用，Action 分组触发器有三种样式 —— "按钮"、"链接"和"图标按钮"。
 
-"Icon button" triggers are circular buttons with an [icon](#setting-the-action-group-button-icon) and no label. Usually, this is the default button style, but you can use it manually with the `iconButton()` method:
+"图标按钮"触发器是带有[图标](#设置分组-action-按钮图标)、不带标签的圆形按钮。通常，这是默认的按钮样式，不过你可以手动使用 `iconButton()` 方法：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -276,7 +276,7 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-icon-button" alt="Table with icon button action group" version="3.x" />
 
-"Button" triggers have a background color, label, and optionally an [icon](#setting-the-action-group-button-icon). You can switch to that style with the `button()` method:
+"按钮"触发器有背景色、标签和可选的[图标](#设置分组-action-按钮图标)。使用 `button()` 方法，你可以切换到该样式：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -290,7 +290,7 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-button" alt="Table with button action group" version="3.x" />
 
-"Link" triggers have no background color. They must have a label and optionally an [icon](#setting-the-action-group-button-icon). They look like a link that you might find embedded within text. You can switch to that style with the `link()` method:
+"链接"触发器没有背景色。它有一个标签及可选的[图标](#设置分组-action-按钮图标)。她看起来像文本中嵌入的链接。你可以使用 `link()` 方法切换到该样式：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -304,9 +304,9 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-link" alt="Table with link action group" version="3.x" />
 
-### Setting the action group button icon
+### 设置 action 分组图标按钮
 
-You may set the [icon](https://blade-ui-kit.com/blade-icons?set=1#search) of the action group button using the `icon()` method:
+使用 `icon()` 方法，你可以为 Action 分组设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -318,9 +318,9 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-icon" alt="Table with customized action group icon" version="3.x" />
 
-### Setting the action group button color
+### 设置 action 分组图标颜色
 
-You may set the color of the action group button using the `color()` method:
+使用 `color()` 方法，你可以设置 action 分组按钮的颜色：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -332,9 +332,9 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-color" alt="Table with customized action group color" version="3.x" />
 
-### Setting the action group button size
+### 设置 action 分组按钮大小
 
-Buttons come in 3 sizes - `sm`, `md` or `lg`. You may set the size of the action group button using the `size()` method:
+按钮有三个大小 —— `sm`、`md` 或 `lg`。使用 `size()` 方法，你可以设置 action 分组按钮大小：
 
 ```php
 use Filament\Support\Enums\ActionSize;
@@ -347,9 +347,9 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-small" alt="Table with small action group" version="3.x" />
 
-### Setting the action group tooltip
+### 设置 action 分组 tooltip
 
-You may set the tooltip of the action group using the `tooltip()` method:
+使用 `tooltip()` 方法，你可以设置 action 分组的 tooltip：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;
@@ -365,9 +365,9 @@ ActionGroup::make([
 
 All actions, not just table actions, have access to [many utilities](../actions/advanced#action-utility-injection) within the vast majority of configuration methods. However, in addition to those, table actions have access to a few more:
 
-### Injecting the current Eloquent record
+### 注入当前 Eloquent 记录
 
-If you wish to access the current Eloquent record of the action, define a `$record` parameter:
+如果你像访问该 action 的当前 Eloquent 记录，请定义 `$record` 参数：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -377,11 +377,11 @@ function (Model $record) {
 }
 ```
 
-Be aware that bulk actions, header actions, and empty state actions do not have access to the `$record`, as they are not related to any table row.
+请注意，批量操作、头部 action 和空状态 action 不能访问 `$record`，因为它们与任何表格行都不相关。
 
-### Injecting the current Eloquent model class
+### 注入当前 Eloquent 模型类
 
-If you wish to access the current Eloquent model class of the table, define a `$model` parameter:
+如果你想访问表格的当前 Eloquent 模型类，请定义 `$model` 参数：
 
 ```php
 function (string $model) {
@@ -389,9 +389,9 @@ function (string $model) {
 }
 ```
 
-### Injecting the current table instance
+### 注入当前表格实例
 
-If you wish to access the current table configuration instance that the action belongs to, define a `$table` parameter:
+如果你想要访问列字段所属的当前表格配置实例，请定义 `$table` 参数：
 
 ```php
 use Filament\Tables\Table;

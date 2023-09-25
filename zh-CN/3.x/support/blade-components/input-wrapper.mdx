@@ -6,7 +6,7 @@ title: Input wrapper Blade component
 
 ## 概述
 
-The input wrapper component should be used as a wrapper around the [input](input) or [select](select) components. It provides a border and other elements such as a prefix or suffix.
+"Input Wrapper" 组件用于包装 [Input](input) 或 [Select](select)。它提供边框和像前后缀之类的其他元素。
 
 ```blade
 <x-filament::input.wrapper>
@@ -25,11 +25,11 @@ The input wrapper component should be used as a wrapper around the [input](input
 </x-filament::input.wrapper>
 ```
 
-## Triggering the error state of the input
+## 触发输入框状态错误
 
-The component has special styling that you can use if it is invalid. To trigger this styling, you can use either Blade or Alpine.js.
+如果组件无效，可以使用特殊样式表示。要触发该样式，你可以使用 Blade 或者 Alpine.js。
 
-To trigger the error state using Blade, you can pass the `valid` attribute to the component, which contains either true or false based on if the input is valid or not:
+要使用 Blade 触发错误状态，你可以传入 `valid` 属性到组件中，根据输入的是否有效，它将包含 true 或 false：
 
 ```blade
 <x-filament::input.wrapper :valid="! $errors->has('name')">
@@ -40,7 +40,7 @@ To trigger the error state using Blade, you can pass the `valid` attribute to th
 </x-filament::input.wrapper>
 ```
 
-Alternatively, you can use an Alpine.js expression to trigger the error state, based on if it evaluates to `true` or `false`:
+另外，你也可以使用 Alpine.js 表达式来触发错误状态：
 
 ```blade
 <div x-data="{ errors: ['name'] }">
@@ -53,9 +53,9 @@ Alternatively, you can use an Alpine.js expression to trigger the error state, b
 </div>
 ```
 
-## Disabling the input
+## 禁用输入
 
-To disable the input, you must also pass the `disabled` attribute to the wrapper component:
+要禁用输入，你也必须传入 `disabled` 属性到该 Wrapper 组件：
 
 ```blade
 <x-filament::input.wrapper disabled>
@@ -67,9 +67,9 @@ To disable the input, you must also pass the `disabled` attribute to the wrapper
 </x-filament::input.wrapper>
 ```
 
-## Adding affix text aside the input
+## 在输入框旁添加前后缀文本
 
-You may place text before and after the input using the `prefix` and `suffix` slots:
+你可以使用 `prefix` 或 `suffix` 插槽， 在输入框的前后放置文本：
 
 ```blade
 <x-filament::input.wrapper>
@@ -88,9 +88,9 @@ You may place text before and after the input using the `prefix` and `suffix` sl
 </x-filament::input.wrapper>
 ```
 
-### Using icons as affixes
+### 使用图标作为前后缀
 
-You may place an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) before and after the input using the `prefix-icon` and `suffix-icon` attributes:
+使用 `prefix-icon` 或 `suffix-icon` 属性，你也可以在输入框的前面或者后面放置图标：
 
 ```blade
 <x-filament::input.wrapper suffix-icon="heroicon-m-globe-alt">

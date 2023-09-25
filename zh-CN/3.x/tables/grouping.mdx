@@ -112,6 +112,24 @@ public function table(Table $table): Table
 }
 ```
 
+### 禁用标题标签前缀
+
+默认情况下，标题使用分组标签作为前缀。要禁用该前缀，请使用 `titlePrefixedWithLabel(false)` 方法：
+
+```php
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->groups([
+            Group::make('status')
+                ->titlePrefixedWithLabel(false),
+        ]);
+}
+```
+
 ## 设置分组描述
 
 你也可以为分组设置描述，它会展示在分组标题下面。为此，请在 `Group` 对象中使用 `getDescriptionFromRecordUsing()` 方法：
@@ -126,6 +144,42 @@ public function table(Table $table): Table
         ->groups([
             Group::make('status')
                 ->getDescriptionFromRecordUsing(fn (Post $record): string => $record->status->getDescription()),
+        ]);
+}
+```
+
+## 设置分组键
+
+默认情况下，分组的键是该属性的值。它在内部用作该分组的行标识符，而不是[标题](#设置分组标题)。使用 `Group` 对象的 `getKeyFromRecordUsing()` 方法，使之返回新的键，你可以对其进行自定义：
+
+```php
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->groups([
+            Group::make('status')
+                ->getKeyFromRecordUsing(fn (Post $record): string => $record->status->value),
+        ]);
+}
+```
+
+## 日期分组
+
+使用日期时间列作为分组时，你可能只想使用日期分组，而忽略时间。为此，请在 `Group` 对象中使用 `date()` 方法：
+
+```php
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->groups([
+            Group::make('created_at')
+                ->date(),
         ]);
 }
 ```

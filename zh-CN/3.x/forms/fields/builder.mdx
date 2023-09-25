@@ -7,9 +7,9 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Similar to a [repeater](repeater), the builder component allows you to output a JSON array of repeated form components. Unlike the repeater, which only defines one form schema to repeat, the builder allows you to define different schema "blocks", which you can repeat in any order. This makes it useful for building more advanced array structures.
+类似于 [Repeater](repeater)，Builder 组件允许你输出重复的表单组件的 JSON 数组。不像 Repeater 那样只定义一个表单 Schema，Builder 允许你定义不同的 Schema 块，你可以使用任何顺序重复。这对于创建更高级的数组结构非常有用。
 
-The primary use of the builder component is to build web page content using predefined blocks. This could be content for a marketing website, or maybe even fields in an online form. The example below defines multiple blocks for different elements in the page content. On the frontend of your website, you could loop through each block in the JSON and format it how you wish.
+Builder 主要用于通过预定义块创建网页内容。这可能是营销网站的内容，甚至可能是在线表单中的字段。下面的示例在页面内容中为不同元素定义了多个块。在网站的前端，您可以循环 JSON 中的每个块，并根据自己的意愿对其进行格式化。
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -58,9 +58,9 @@ Builder::make('content')
 
 <AutoScreenshot name="forms/fields/builder/simple" alt="Builder" version="3.x" />
 
-We recommend that you store builder data with a `JSON` column in your database. Additionally, if you're using Eloquent, make sure that column has an `array` cast.
+我们强烈推荐你在数据库中使用 `JSON` 类型存储 Builder 数据。此外，如果使用 Eloquent，请确保该列有 `array` cast。
 
-As evident in the above example, blocks can be defined within the `blocks()` method of the component. Blocks are `Builder\Block` objects, and require a unique name, and a component schema:
+如上例所示，块(Block)在组件的 `blocks()` 方法中定义。块是 `Builder\Block` 对象，需要传入一个唯一名称和一个组件 Schema：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -77,9 +77,9 @@ Builder::make('content')
     ])
 ```
 
-## Setting a block's label
+## 设置块标签
 
-By default, the label of the block will be automatically determined based on its name. To override the block's label, you may use the `label()` method. Customizing the label in this way is useful if you wish to use a [translation string for localization](https://laravel.com/docs/localization#retrieving-translation-strings):
+默认情况下，块的标签是基于块名自动生成。要重写块标签，请使用 `label()` 方法。如果你想使用[本地化翻译字符](https://laravel.com/docs/localization#retrieving-translation-strings)用这种方法自定义标签很有用。
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -88,9 +88,9 @@ Builder\Block::make('heading')
     ->label(__('blocks.heading'))
 ```
 
-### Labelling builder items based on their content
+### 基于内容创建项目标签
 
-You may add a label for a builder item using the same `label()` method. This method accepts a closure that receives the item's data in a `$state` variable. If `$state` is null, you should return the block label that should be displayed in the block picker. Otherwise, you should return a string to be used as the item label:
+使用同一个 `label()` 方法， 可以为 Builder 项目添加标签。该方法接受一个闭包，闭包以 `$state` 变量接收项目数据。如果 `$state` 为空，你应该返回在块选择器中显示的快标签。否则，请返回用作项目标签的字符串：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -112,13 +112,13 @@ Builder\Block::make('heading')
     })
 ```
 
-Any fields that you use from `$state` should be `live()` if you wish to see the item label update live as you use the form.
+如果你想在使用表单时，实时更新项目标签，那么任何 `$state` 用到的字段都应该是 `live()` 的。
 
 <AutoScreenshot name="forms/fields/builder/labelled" alt="Builder with labelled blocks based on the content" version="3.x" />
 
-### Numbering builder items
+### Builder 项目编号
 
-By default, items in the builder have a number next to their label. You may disable this using the `blockNumbers(false)` method:
+默认情况下，Builder 中的项目在其标签旁有一个数字。你可以使用 `blockNumbers(false)` 方法，禁用此编号：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -130,9 +130,9 @@ Builder::make('content')
     ->blockNumbers(false)
 ```
 
-## Setting a block's icon
+## 设置块图标
 
-Blocks may also have an [icon](https://blade-ui-kit.com/blade-icons?set=1#search), which is displayed next to the label. You can add an icon by passing its name to the `icon()` method:
+块也可以有[图标](https://blade-ui-kit.com/blade-icons?set=1#search)，显示在图标旁边。你可以将图标名传入到 `icon()` 方法中，添加图标：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -143,13 +143,13 @@ Builder\Block::make('paragraph')
 
 <AutoScreenshot name="forms/fields/builder/icons" alt="Builder with block icons in the dropdown" version="3.x" />
 
-## Adding items
+## 添加项目
 
-An action button is displayed below the builder to allow the user to add a new item.
+Builder 下面有一个 Action 按钮，用以允许用户添加新项目。
 
-## Setting the add action button's label
+### 设置添加按钮标签
 
-You may set a label to customize the text that should be displayed in the button for adding a builder item, using the `addActionLabel()` method:
+使用 `addActionLabel()` 方法，你可以自定义添加 Builder 项目的按钮的标签：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -161,9 +161,9 @@ Builder::make('content')
     ->addActionLabel('Add a new block')
 ```
 
-### Preventing the user from adding items
+### 防止用户添加新项目
 
-You may prevent the user from adding items to the builder using the `addable(false)` method:
+使用 `addable(false)` 方法，你可以阻止用户添加新项目到 Builder 中：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -175,13 +175,13 @@ Builder::make('content')
     ->addable(false)
 ```
 
-## Deleting items
+## 删除项目
 
-An action button is displayed on each item to allow the user to delete it.
+在每个项目中都有一个 action 按钮用于允许用户删除项目。
 
-### Preventing the user from deleting items
+### 防止用户删除项目
 
-You may prevent the user from deleting items from the builder using the `deletable(false)` method:
+使用 `deletable(false)` 方法，可以阻止用户从 Builder 中删除项目：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -193,13 +193,13 @@ Builder::make('content')
     ->deletable(false)
 ```
 
-## Reordering items
+## 项目重新排序
 
-A button is displayed on each item to allow the user to drag and drop to reorder it in the list.
+每个项目中都有一个按钮，用于允许用户拖拽对其重新排序。
 
-### Preventing the user from reordering items
+### 防止用户重新排序
 
-You may prevent the user from reordering items from the builder using the `reorderable(false)` method:
+使用 `reorderable(false)` 方法，可以阻止用户对 Builder 项目重新排序：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -211,9 +211,9 @@ Builder::make('content')
     ->reorderable(false)
 ```
 
-### Reordering items with buttons
+### 使用按钮重新排序项目
 
-You may use the `reorderableWithButtons()` method to enable reordering items with buttons to move the item up and down:
+使用 `reorderableWithButtons()` 方法，你可以启用通过按钮将项目上下移动进行排序：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -227,9 +227,9 @@ Builder::make('content')
 
 <AutoScreenshot name="forms/fields/builder/reorderable-with-buttons" alt="Builder that is reorderable with buttons" version="3.x" />
 
-### Preventing reordering with drag and drop
+### 阻止用户使用拖拽排序
 
-You may use the `reorderableWithDragAndDrop(false)` method to prevent items from being ordered with drag and drop:
+使用 `reorderableWithDragAndDrop(false)` 方法，你可以阻止项目通过拖拽进行排序：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -241,9 +241,9 @@ Builder::make('content')
     ->reorderableWithDragAndDrop(false)
 ```
 
-## Collapsing items
+## 折叠项目
 
-The builder may be `collapsible()` to optionally hide content in long forms:
+Builder 可以设为可折叠的 `collapsible()`，以在长表单中隐藏内容：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -255,7 +255,7 @@ Builder::make('content')
     ->collapsible()
 ```
 
-You may also collapse all items by default:
+你也可以默认折叠所有项目：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -269,9 +269,9 @@ Builder::make('content')
 
 <AutoScreenshot name="forms/fields/builder/collapsed" alt="Collapsed builder" version="3.x" />
 
-## Cloning items
+## 克隆项目
 
-You may allow builder items to be duplicated using the `cloneable()` method:
+使用 `cloneable()` 方法，你可以允许复制 Builder 项目：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -285,13 +285,14 @@ Builder::make('content')
 
 <AutoScreenshot name="forms/fields/builder/cloneable" alt="Builder repeater" version="3.x" />
 
-## Builder validation
+## Builder 验证
 
-As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to builders.
 
-### Number of items validation
+除了[验证](../validation)页面中列出的所有规则之外，还有一些其他专用于 Builder 的验证规则。
 
-You can validate the minimum and maximum number of items that you can have in a builder by setting the `minItems()` and `maxItems()` methods:
+### 项目数量验证
+
+使用 `minFiles()` 和 `maxFiles()` 方法，你可以验证 Builder 中项目的最小和最大数量：
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -304,9 +305,9 @@ Builder::make('content')
     ->maxItems(5)
 ```
 
-## Customizing the builder action objects
+## 自定义 Builder action 对象
 
-This field uses action objects for easy customization of buttons within it. You can customize these buttons by passing a function to an action registration method. The function has access to the `$action` object, which you can use to [customize it](../../actions/trigger-button). The following methods are available to customize the actions:
+该字段使用 action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
 
 - `addAction()`
 - `addBetweenAction()`
@@ -320,7 +321,7 @@ This field uses action objects for easy customization of buttons within it. You 
 - `moveUpAction()`
 - `reorderAction()`
 
-Here is an example of how you might customize an action:
+下面是一个如何自定义 action 的示例：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -335,9 +336,9 @@ Builder::make('content')
     )
 ```
 
-### Confirming builder actions with a modal
+### 使用模态框确认 Builder Action
 
-You can confirm actions with a modal by using the `requiresConfirmation()` method on the action object. You may use any [modal customization method](../../actions/modals) to change its content and behaviour:
+在 action 对象中使用 `requiresConfirmation()` 方法，你可以使用模态框确认 action。你可以使用所有[模态框自定义方法](../../actions/modals)来修改其内容和行为：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -352,4 +353,4 @@ Builder::make('content')
     )
 ```
 
-> The `addAction()`, `addBetweenAction()`, `collapseAction()`, `collapseAllAction()`, `expandAction()`, `expandAllAction()` and `reorderAction()` methods do not support confirmation modals, as clicking their buttons does not make the network request that is required to show the modal.
+> `addAction()`、`addBetweenAction()`、`collapseAction()`、`collapseAllAction()`、`expandAction()`、`expandAllAction()` and `reorderAction()` 方法不支持确认模态框，因为点击这些按钮不会发起要求显示模态框的网络请求。

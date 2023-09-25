@@ -6,7 +6,7 @@ title: Section Blade 组件
 
 ## 概述
 
-A section can be used to group content together, with an optional heading:
+Section 可用于将内容分组到一起，并且可以选择使用标题：
 
 ```blade
 <x-filament::section>
@@ -18,9 +18,9 @@ A section can be used to group content together, with an optional heading:
 </x-filament::section>
 ```
 
-## Adding a description to the section
+## 添加描述到 Section
 
-You can add a description below the heading to the section by using the `description` slot:
+使用 `description` 插槽，你可以在 Section 的标题下面添加描述：
 
 ```blade
 <x-filament::section>
@@ -36,9 +36,9 @@ You can add a description below the heading to the section by using the `descrip
 </x-filament::section>
 ```
 
-## Adding an icon to the section header
+## 添加图标到 Section 头部
 
-You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a section by using the `icon` attribute:
+使用 `icon` 属性，你可以为 Section 添加一个[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```blade
 <x-filament::section icon="heroicon-o-user">
@@ -50,9 +50,9 @@ You can add an [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to a se
 </x-filament::section>
 ```
 
-### Changing the color of the section icon
+### 修改 Section 图标的颜色
 
-By default, the color of the section icon is "gray". You can change it to be `danger`, `info`, `primary`, `success` or `warning` by using the `icon-color` attribute:
+默认情况下，Section 图标的颜色是 "primary"。你可以使用 `icon-color` 属性，将其改成 `danger`、`info`、`primary`、`success` 或 `warning`。
 
 ```blade
 <x-filament::section
@@ -67,9 +67,9 @@ By default, the color of the section icon is "gray". You can change it to be `da
 </x-filament::section>
 ```
 
-### Changing the size of the section icon
+## 修改 Section 图标大小
 
-By default, the size of the section icon is "large". You can change it to be "small" or "medium" by using the `icon-size` attribute:
+默认情况下，Section 图标的大小为 "large"。使用 `icon-size` 属性，你可以将其改为 "small" 或者 "medium"：
 
 ```blade
 <x-filament::section
@@ -95,9 +95,9 @@ By default, the size of the section icon is "large". You can change it to be "sm
 </x-filament::section>
 ```
 
-## Adding content to the end of the header
+## 在头部末尾添加内容
 
-You may render additional content at the end of the header, next to the heading and description, using the `headerEnd` slot:
+使用 `headerEnd` 插槽，你可以在头部的末尾渲染任何内容，在标题和描述旁边：
 
 ```blade
 <x-filament::section>
@@ -113,9 +113,9 @@ You may render additional content at the end of the header, next to the heading 
 </x-filament::section>
 ```
 
-## Making a section collapsible
+## 使 Section 可折叠
 
-You can make the content of a section collapsible by using the `collapsible` attribute:
+使用 `collapsible` 属性，你可以将 Section 内容设为可折叠：
 
 ```blade
 <x-filament::section collapsible>
@@ -127,9 +127,9 @@ You can make the content of a section collapsible by using the `collapsible` att
 </x-filament::section>
 ```
 
-### Making a section collapsed by default
+### 将 Section 设为默认折叠
 
-You can make a section collapsed by default by using the `collapsed` attribute:
+使用 `collapsed` 属性，你可以将 Section 设为默认折叠：
 
 ```blade
 <x-filament::section
@@ -144,9 +144,9 @@ You can make a section collapsed by default by using the `collapsed` attribute:
 </x-filament::section>
 ```
 
-## Adding the section header aside the content instead of above it
+## 在 Setion Header 改为在内容旁边而非在其上面
 
-You can change the position of the section header to be aside the content instead of above it by using the `aside` attribute:
+使用 `aside` 属性，你可以将 Section Header 的位置该为在内容旁边，而不是在其上面：
 
 ```blade
 <x-filament::section aside>
@@ -158,9 +158,9 @@ You can change the position of the section header to be aside the content instea
 </x-filament::section>
 ```
 
-### Positioning the content before the header
+### 将内容放置到 Header 前面
 
-You can change the position of the content to be before the header instead of after it by using the `content-before` attribute:
+使用 `content-before` 属性，你可以把原本在后面的内容改成为在其 header 前面：
 
 ```blade
 <x-filament::section
