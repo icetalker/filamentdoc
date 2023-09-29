@@ -357,7 +357,6 @@ Panel::make([
 有时，你会发现，比起列表格式，数据更适合于以网格格式排列。Filament 也能处理这种情况！
 
 只需使用 `$table->contentGrid()` 方法：
-Simply use the `$table->contentGrid()` method:
 
 ```php
 use Filament\Tables\Table;
@@ -377,7 +376,6 @@ public function table(Table $table): Table
 - 在移动端，它只会显示为 1 列。
 - 从 `md` [临界点](https://tailwindcss.com/docs/responsive-design#overview)开始，会显示为 2 列。
 - 从 `xl` [临界点](https://tailwindcss.com/docs/responsive-design#overview)以上，会显示为 3 列。
-- On mobile, they will be displayed in 1 column only.
 
 这些设置完全是可自定义的，从 `sm` 到 `2xl` 的任何[临界点](https://tailwindcss.com/docs/responsive-design#overview)都能包含 `1` 到 `12` 列。
 
