@@ -10,7 +10,7 @@ title: 枚举
 
 由于枚举中的 case 是枚举类的实例，在枚举中添加接口会很有用。Filament 提供了一些你可以添加到枚举的接口，用来提升使用枚举时的体验。
 
-> When using an enum with an attribute on your Eloquent model, please [ensure that it is cast correctly](https://laravel.com/docs/eloquent-mutators#enum-casting).
+> 当在 Eloquent 模型的属性中使用 Enum，请[确保它强制转换正确](https://laravel.com/docs/eloquent-mutators#enum-casting)。
 
 ## 枚举标签
 
@@ -116,11 +116,11 @@ enum Status: string implements HasColor
 
 ### 在表格文本列中使用枚举颜色
 
-如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口以其颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#displaying-as-a-badge) 方法则效果最佳。
+如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口以其颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ### 在信息列表文本栏中使用枚举颜色
 
-如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口按对应的颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#displaying-as-a-badge) 方法则效果最佳。
+如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口按对应的颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ## 枚举图标
 
@@ -150,8 +150,8 @@ enum Status: string implements HasIcon
 
 ### 表格文本列中使用枚举图标
 
-如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#displaying-as-a-badge) 方法则效果最佳。
+如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ### 在信息列表文本栏中使用枚举图标
 
-如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁边展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#displaying-as-a-badge) 方法则效果最佳。
+如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁边展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。

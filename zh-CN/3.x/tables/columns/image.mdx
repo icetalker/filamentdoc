@@ -120,9 +120,9 @@ ImageColumn::make('colleagues.avatar')
     ->ring(5)
 ```
 
-### Customizing the stacked overlap
+### 自定义层叠数
 
-The default overlap is `4`, but you may customize it to be from `0` to `8`:
+默认层叠数为 `4`，但您可以将其自定义为 `0` 到 `8`：
 
 ```php
 ImageColumn::make('colleagues.avatar')
@@ -146,9 +146,9 @@ ImageColumn::make('colleagues.avatar')
 
 <AutoScreenshot name="tables/columns/image/limited" alt="Limited image column" version="3.x" />
 
-### Showing the remaining images count
+### 显示剩余图片数
 
-When you set a limit you may also display the count of remaining images by passing `limitedRemainingText()`. 
+当设置限制时，你也可以传递 `limitedRemainingText()` 显示剩余的图片数量：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -162,9 +162,9 @@ ImageColumn::make('colleagues.avatar')
 
 <AutoScreenshot name="tables/columns/image/limited-remaining-text" alt="Limited image column with remaining text" version="3.x" />
 
-#### Showing the limited remaining text separately
+#### 剩余数文本分开显示
 
-By default, `limitedRemainingText()` will display the count of remaining images as a number stacked on the other images. If you prefer to show the count as a number after the images, you may use the `isSeparate: true` parameter:
+默认情况下，`limitedRemainingText()` 会将剩余图片的数量以数字的形式显示在其他图片上。如果你希望将数量显示在图片后面，你可以使用 `isSeparate: true` 参数：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -178,9 +178,9 @@ ImageColumn::make('colleagues.avatar')
 
 <AutoScreenshot name="tables/columns/image/limited-remaining-text-separately" alt="Limited image column with remaining text separately" version="3.x" />
 
-#### Customizing the limited remaining text size
+#### 自定义剩余数文本大小
 
-By default, the size of the remaining text is `sm`. You can customize this to be `xs`, `md` or `lg` using the `size` parameter:
+默认情况下，剩余文本的大小是 `sm`。你可以使用 `size` 参数将其自定义为 `xs`、`md` 或 `lg`： 
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -192,9 +192,9 @@ ImageColumn::make('colleagues.avatar')
     ->limitedRemainingText(size: 'lg')
 ```
 
-## Custom attributes
+## 自定义属性
 
-You may customize the extra HTML attributes of the image using `extraImgAttributes()`:
+使用 `extraImgAttributes()`，你可以自定义图片的额外属性：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -203,7 +203,7 @@ ImageColumn::make('logo')
     ->extraImgAttributes(['loading' => 'lazy']),
 ```
 
-You can access the current record using a `$record` parameter:
+使用 `$record` 参数，你可以访问当前记录：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
