@@ -6,13 +6,13 @@ title: 高级表单
 
 ## 概述
 
-Filament Form Builder are designed to be flexible and customizable. Many existing form builders allow users to define a form schema, but don't provide a great interface for defining inter-field interactions, or custom logic. Since all Filament forms are built on top of [Livewire](https://livewire.laravel.com), the form can adapt dynamically to user input, even after it has been initially rendered. Developers can use [parameter injection](#form-component-utility-injection) to access many utilities in real time and build dynamic forms based on user input. The [lifecycle](#field-lifecycle) of fields is open to extension using hook functions to define custom functionality for each field. This allows developers to build complex forms with ease.
+Filament 表单构造器的设计具有灵活性且可自定义.许多现有的表单构造器器允许用户定义表单 Schema，但没有为字段间交互或自定义逻辑提供良好的接口。由于所有 Filament 表单都建立在 [Livewire](https://livewire.laravel.com) 之上，表单可以动态地适配用户输入，即使在初始化渲染之后也是如此。开发者通过[参数注入](#表单组件-utility-注入)实时访问许多 utilities，并且基于用户输入创建动态表单。字段的[生命周期](#字段生命周期)使用钩子函数开放给扩展,用来定义每个字段的自定义功能。这就允许开发者轻松创建复杂表单。
 
-## The basics of reactivity
+## 字段动态响应基础
 
-[Livewire](https://livewire.laravel.com) is a tool that allows Blade-rendered HTML to dynamically re-render without requiring a full page reload. Filament forms are built on top of Livewire, so they are able to re-render dynamically, allowing their layout to adapt after they are initially rendered.
+[Livewire](https://livewire.laravel.com) 是一个工具，它允许使用 Blade 渲染的 HTML 在不要求整页重载的情况下，动态地重新渲染。Filament 表单是建立在 Livewire 基础上的，因此它们可以动态地重新渲染，以在初始化渲染之后适配它们的布局。
 
-By default, when a user uses a field, the form will not re-render. Since rendering requires a round-trip to the server, this is a performance optimization. However, if you wish to re-render the form after the user has interacted with a field, you can use the `live()` method:
+默认情况下，用户使用字段时，表单将不再重新渲染。由于渲染需要往返于服务器，因此这是一种性能优化。但是，如果您希望在用户与字段交互后重新渲染表单，可以使用 `live()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -26,11 +26,11 @@ Select::make('status')
     ->live()
 ```
 
-In this example, when the user changes the value of the `status` field, the form will re-render. This allows you to then make changes to fields in the form based on the new value of the `status` field. Also, you can [hook in to the field's lifecycle](#field-updates) to perform custom logic when the field is updated.
+本例中，用户修改 `status` 字段的值后，表单会重新渲染。这就允许你基于 `status` 字段的新值，在表单中对字段进行修改。同时，你也可以[深入字段的生命周期](#字段更新)，在字段更新时执行自定义逻辑。
 
-### Reactive fields on blur
+### 动态响应字段失焦
 
-By default, when a field is set to `live()`, the form will re-render every time the field is interacted with. However, this may not be appropriate for some fields like the text input, since making network requests while the user is still typing results in suboptimal performance. You may wish to re-render the form only after the user has finished using the field, when it becomes out of focus. You can do this using the `live(onBlur: true)` method:
+默认情况下,如果字段设为 `live()`，表单将在每次字段交互时重新渲染。不过，对于某些字段，比如文本输入，这可能不合适，因为在用户输入区间发送网络请求会导致性能不佳。你可以让表单只有在用户完成字段输入后再重新渲染，也就是表单失去焦点后。使用 `live(onBlur: true)` 方法可以实现该功能:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -39,9 +39,9 @@ TextInput::make('username')
     ->live(onBlur: true)
 ```
 
-### Debouncing reactive fields
+### 动态响应字段防抖
 
-You may with to find a middle ground between `live()` and `live(onBlur: true)`, using "debouncing". Debouncing will prevent a network request from being sent until a user has finished typing for a certain period of time. You can do this using the `live(debounce: 500)` method:
+使用 "debouncing"，你可以再 `live()` 和 `livewire(onBlur: true)` 之间找到一个中间方案。Debouncing(防抖) 将会阻止网络请求，直至用户输入停止一段特定时间。你可以使用 `live(debounce: 500)` 方法来实现该功能:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -50,11 +50,11 @@ TextInput::make('username')
     ->live(debounce: 500) // Wait 500ms before re-rendering the form.
 ```
 
-In this example, `500` is the number of milliseconds to wait before sending a network request. You can customize this number to whatever you want, or even use a string like `'1s'`.
+本例中，`500` 是发送请求前等待的毫秒数。你可以自定义该数字，甚至使用 `'1s'` 这样的字符串。
 
-## Form component utility injection
+## 表单组件 utility 注入
 
-The vast majority of methods used to configure [fields](fields/getting-started) and [layout components](layout/getting-started) accept functions as parameters instead of hardcoded values:
+用于配置[字段](fields/getting-started)和[布局组件](layout/getting-started)的绝大多数方法都接受函数作为参数，替代硬编码值：
 
 ```php
 use App\Models\User;
@@ -80,15 +80,15 @@ TextInput::make('middle_name')
     ->required(fn (): bool => auth()->user()->hasMiddleName())
 ```
 
-This alone unlocks many customization possibilities.
+这就解锁了许多自定义的可能。
 
-The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
+本包也可以将许多 utilities 作为参数注入到这些函数中。所有接收函数作为参数的自定义方法都可以注入 utilities。
 
-These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
+这些注入的 utilities 要求使用特定的参数名。否则 Filament 不会知道注入的是什么。
 
-### Injecting the current state of a field
+### 注入字段的当前状态
 
-If you wish to access the current state (value) of the field, define a `$state` parameter:
+如果你想访问字段的当前状态(值)，请定义 `$state` 参数:
 
 ```php
 function ($state) {
@@ -96,9 +96,9 @@ function ($state) {
 }
 ```
 
-### Injecting the current form component instance
+### 注入当前表单实例
 
-If you wish to access the current component instance, define a `$component` parameter:
+如果你想访问当前组件实例，请定义 `$component` 参数:
 
 ```php
 use Filament\Forms\Components\Component;
@@ -108,9 +108,9 @@ function (Component $component) {
 }
 ```
 
-### Injecting the current Livewire component instance
+### 注入当前 Livewire 组件实例
 
-If you wish to access the current Livewire component instance, define a `$livewire` parameter:
+如果你想访问当前 Livewire 组件实例，请定义 `$livewire` 参数:
 
 ```php
 use Livewire\Component as Livewire;
@@ -120,9 +120,9 @@ function (Livewire $livewire) {
 }
 ```
 
-### Injecting the current form record
+### 注入当前表单记录
 
-If your form is associated with an Eloquent model instance, define a `$record` parameter:
+如果表单与 Eloquent 模型实例相关联，请定义 `$record` 参数:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -132,9 +132,9 @@ function (?Model $record) {
 }
 ```
 
-### Injecting the state of another field
+### 注入另一个字段的状态
 
-You may also retrieve the state (value) of another field from within a callback, using a `$get` parameter:
+使用 `$get` 参数，你也可以在回调函数中检索零一个字段的状态(值):
 
 ```php
 use Filament\Forms\Get;
@@ -145,9 +145,9 @@ function (Get $get) {
 }
 ```
 
-### Injecting a function to set the state of another field
+### 注入函数设置另一个字段的状态
 
-In a similar way to `$get`, you may also set the value of another field from within a callback, using a `$set` parameter:
+与 `$get` 类似的方式，你可以使用 `$set` 参数，在回调中设置另一个字段的值:
 
 ```php
 use Filament\Forms\Set;
@@ -158,11 +158,11 @@ function (Set $set) {
 }
 ```
 
-When this function is run, the state of the `title` field will be updated, and the form will re-render with the new title. This is useful inside the [`afterStateUpdated`](#field-updates) method.
+当该函数运行时，`title` 字段的状态将会更新，表单将会使用新 title 重新渲染。这在 [`afterStateUpdated`](#字段更新) 方法中很有用。
 
-### Injecting the current form operation
+### 注入当前表单操作
 
-If you're writing a form for a panel resource or relation manager, and you wish to check if a form is `create`, `edit` or `view`, use the `$operation` parameter:
+如果你为面板资源或者关联管理器编写表单，你想检测表单为 `create`、`edit` 或者 `view` 时，请使用 `$operation` 参数:
 
 ```php
 function (string $operation) {
@@ -170,11 +170,11 @@ function (string $operation) {
 }
 ```
 
-> Outside the panel, you can set a form's operation by using the `operation()` method on the form definition.
+> 在面板之外，在表单定义中使用 `operation()` 方法，你可以设置表单的操作。
 
-### Injecting multiple utilities
+### 注入多个 utilities
 
-The parameters are injected dynamically using reflection, so you are able to combine multiple parameters in any order:
+参数使用反射动态注入，因此你可以以任何顺序联合使用多个参数:
 
 ```php
 use Filament\Forms\Get;
@@ -186,9 +186,9 @@ function (Livewire $livewire, Get $get, Set $set) {
 }
 ```
 
-### Injecting dependencies from Laravel's container
+### 注入 Laravel 容器的依赖
 
-You may inject anything from Laravel's container like normal, alongside utilities:
+你也可以注入来自 Laravel 容器的任何东西:
 
 ```php
 use Filament\Forms\Set;
@@ -199,15 +199,15 @@ function (Request $request, Set $set) {
 }
 ```
 
-## Field lifecycle
+## 字段生命周期
 
-Each field in a form has a lifecycle, which is the process it goes through when the form is loaded, when it is interacted with by the user, and when it is submitted. You may customize what happens at each stage of this lifecycle using a function that gets run at that stage.
+表单的每个字段都有生命周期，即表单加载后，与用户交互以及表单提交后的处理过程。使用各运行阶段的函数，你可以自定义生命周期每个阶段要做的事情。
 
-### Field hydration
+### 字段 hydration
 
-Hydration is the process that fills fields with data. It runs when you call the form's `fill()` method. You may customize what happens after a field is hydrated using the `afterStateHydrated()` method.
+Hydration 是使用数据填充字段的处理过程。它在表单调用 `fill()` 方法运行。使用 `afterStateHydrated()` 方法，你可以自定义字段填充后的操作。
 
-In this example, the `name` field will always be hydrated with the correctly capitalized name:
+本例中，`name` 字段总是使用正确的大写名称进行填充:
 
 ```php
 use Closure;
@@ -220,7 +220,7 @@ TextInput::make('name')
     })
 ```
 
-As a shortcut for formatting the field's state like this when it is hydrated, you can use the `formatStateUsing()` method:
+你也可以使用 `formatStateUsing()` 方法作为填充数据时格式化字段状态的快捷方式:
 
 ```php
 use Closure;
@@ -230,11 +230,11 @@ TextInput::make('name')
     ->formatStateUsing(fn (string $state): string => ucwords($state))
 ```
 
-### Field updates
+### 字段更新
 
-You may use the `afterStateUpdated()` method to customize what happens after a field is updated by the user. Only changes from the user on the frontend will trigger this function, not manual changes to the state from `$set()` or another PHP function.
+你也可以使用 `afterStateUpdated` 方法，自定义用户更新字段后的操作。只有由用户在前端修改才会触发该函数，使用 `$set()` 或者其他 PHP 函数不会手动更改状态。
 
-Inside this function, you can also inject the `$old` value of the field before it was updated, using the `$old` parameter:
+在此函数中，你也可以使用 `$old` 参数注入字段更新前的旧值: 
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -245,13 +245,13 @@ TextInput::make('name')
     })
 ```
 
-For an example of how to use this method, learn how to [automatically generate a slug from a title](#generating-a-slug-from-a-title).
+如何使用该函数的示例，请查询[使用标题自动生成 slug](#使用标题生成-slug)。
 
-### Field dehydration
+### 字段 dehydration
 
-Dehydration is the process that gets data from the fields in your forms, and transforms it. It runs when you call the form's `getState()` method.
+Dehydration 是在表单中从字段上获取数据，进行转换的处理过程。它在你调用表单的 `getState()` 方法时运行。 
 
-You may customize how the state is transformed when it is dehydrated using the `dehydrateStateUsing()` function. In this example, the `name` field will always be dehydrated with the correctly capitalized name:
+使用 `dehydrateStateUsing()` 函数，你可以自定义状态值如何转换。本例中，`name` 字段总是使用正确的大写名进行 dehydrated:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -261,9 +261,9 @@ TextInput::make('name')
     ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
 ```
 
-#### Preventing a field from being dehydrated
+#### 阻止字段被 dehydrated
 
-You may also prevent a field from being dehydrated altogether using `dehydrated(false)`. In this example, the field will not be present in the array returned from `getState()`:
+使用 `dehydrated(false)` 方法，你可以阻止字段被一起 dehydrated。本例中，该字段不会显示在从 `getState()` 返回的数组中：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -273,15 +273,15 @@ TextInput::make('password_confirmation')
     ->dehydrated(false)
 ```
 
-If your form auto-saves data to the database, like in a [resource](../panels/resources/getting-started) or [table action](../tables/actions), this is useful to prevent a field from being saved to the database if it is purely used for presentational purposes.
+如果你的表单将数据自动保存到数据库，比如[资源](../panels/resources/getting-started)和[表格 Action](../tables/actions)，这可以避免将纯粹用于展示的数据保存到数据库。
 
-## Reactive forms cookbook
+## 动态响应表单手册
 
-This section contains a collection of recipes for common tasks you may need to perform when building an advanced form.
+这一部分包含创建高级表单时，你可能需要执行的常见任务用法集合。
 
-### Conditionally hiding a field
+### 条件性隐藏字段
 
-To conditionally hide or show a field, you can pass a function to the `hidden()` method, and return `true` or `false` depending on whether you want the field to be hidden or not. The function can [inject utilities](#form-component-utility-injection) as parameters, so you can do things like check the value of another field:
+要条件性地隐藏或者展示一个字段，你可以传递一个参数到 `hidden()` 方法，并根据情况返回 `true` 或 `false`。该函数可以[将 utilities 作为参数注入](#表单组件-utility-注入)，因此你可以像检测另一个字段的值那样操作：
 
 ```php
 use Filament\Forms\Get;
@@ -295,9 +295,9 @@ TextInput::make('company_name')
     ->hidden(fn (Get $get): bool => ! $get('is_company'))
 ```
 
-In this example, the `is_company` checkbox is [`live()`](#the-basics-of-reactivity). This allows the form to rerender when the value of the `is_company` field changes. You can access the value of that field from within the `hidden()` function using the [`$get()` utility](#injecting-the-current-state-of-a-field). The value of the field is inverted using `!` so that the `company_name` field is hidden when the `is_company` field is `false`.
+本例中，`is_company` 复选框是实时更新的[`live()`](#字段动态响应基础)。这允许表单在 `is_company` 字段值改变时重新渲染。你可以在 `hidden()` 函数中使用 [`$get()`](#注入字段的当前状态) 访问该字段的值。该字段的值使用 `!` 反转，因此，在 `is_company` 字段为 `false` 时，`company_name` 字段将隐藏起来。
 
-Alternatively, you can use the `visible()` method to show a field conditionally. It does the exact inverse of `hidden()`, and could be used if you prefer the clarity of the code when written this way:
+此外，你也可以使用 `visible()` 方法条件性地显示字段。它与 `hidden()` 正好相反：
 
 ```php
 use Filament\Forms\Get;
@@ -311,9 +311,9 @@ TextInput::make('company_name')
     ->visible(fn (Get $get): bool => $get('is_company'))
 ```
 
-### Conditionally making a field required
+### 条件性地使字段成为必需字段
 
-To conditionally make a field required, you can pass a function to the `required()` method, and return `true` or `false` depending on whether you want the field to be required or not. The function can [inject utilities](#form-component-utility-injection) as parameters, so you can do things like check the value of another field:
+要条件性地使字段成为必需，你可以传入一个函数到 `required()` 方法，并根据条件返回 `true` 或者 `false`。函数可以[将 utilities 作为参数注入](#表单组件-utility-注入)，这样你就可以像检测其他字段值那样进行操作。
 
 ```php
 use Filament\Forms\Get;
@@ -326,13 +326,13 @@ TextInput::make('vat_number')
     ->required(fn (Get $get): bool => filled($get('company_name')))
 ```
 
-In this example, the `company_name` field is [`live(onBlur: true)`](#reactive-fields-on-blur). This allows the form to rerender after the value of the `company_name` field changes and the user clicks away. You can access the value of that field from within the `required()` function using the [`$get()` utility](#injecting-the-current-state-of-a-field). The value of the field is checked using `filled()` so that the `vat_number` field is required when the `company_name` field is not `null` or an empty string. The result is that the `vat_number` field is only required when the `company_name` field is filled in.
+本例中，`company_name` 字段是实时更新的 [`live(onBlur: true)`](#reactive-fields-on-blur)。这允许表单在 `company_name` 字段值修改及用户点击离开后重新渲染。你可以在 `required()` 函数中使用 [`$get()`](#注入字段的当前状态)来访问字段值。字段值使用 `filled()`检测，这样当 `company_name` 字段不为 `null` 或者空字符串时，`vat_number` 字段是必需的。其结果是:只有在 `company_name` 字段填充时，`vat_number` 字段才是必需的。
 
-Using a function is able to make any other [validation rule](validation) dynamic in a similar way.
+使用函数能够以相同的方式让其他[验证规则](validation)动态化。
 
-### Generating a slug from a title
+### 使用标题生成 slug
 
-To generate a slug from a title while the user is typing, you can use the [`afterStateUpdated()` method](#field-updates) on the title field to [`$set()`](#injecting-a-function-to-set-the-state-of-another-field) the value of the slug field:
+要在用户输入标题时生成 slug，你可以在标题字段中使用 [`afterStateUpdated() 方法](#字段更新)，以设置 [`$set()`](#注入函数设置另一个字段的状态) slug 字段的值:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -346,9 +346,9 @@ TextInput::make('title')
 TextInput::make('slug')
 ```
 
-In this example, the `title` field is [`live()`](#the-basics-of-reactivity). This allows the form to rerender when the value of the `title` field changes. The `afterStateUpdated()` method is used to run a function after the state of the `title` field is updated. The function injects the [`$set()` utility](#injecting-a-function-to-set-the-state-of-another-field) and the new state of the `title` field. The `Str::slug()` utility method is part of Laravel and is used to generate a slug from a string. The `slug` field is then updated using the `$set()` function.
+本例中，`title` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许在 `title` 字段值修改时，重新渲染表单。 `afterStateUpdated()` 方法用于在 `title` 字段状态更新后运行函数。该函数注入 [`$set()`](#注入函数设置另一个字段的状态)和 `title` 字段的新状态。`Str::slug()` 方法是 Laravel 的一部分，它用于从字符串中生成 slug。然后使用 `$set()` 函数更新 `slug` 字段。
 
-One thing to note is that the user may customize the slug manually, and we don't want to overwrite their changes if the title changes. To prevent this, we can use the old version of the title to work out if the user has modified it themselves. To access the old version of the title, you can inject `$old`, and to get the current value of the slug before it gets changed, we can use the [`$get()` utility](#injecting-the-state-of-another-field):
+有一件需要注意的事情是，用户可能会手动自定义 slug，我们不想在标题修改时重写它们的更改。要阻止此，我们可以使用标题生成的老版本 slug 来计算用户是否对其做了修改。要访问老版本，你可以注入 `$old` 并获取修改前 slug 的当前值，我们可以使用 [`$get()`](#注入另一个字段的状态):
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -369,9 +369,9 @@ TextInput::make('title')
 TextInput::make('slug')
 ```
 
-### Dependant select options
+### 依赖 Select 选项
 
-To dynamically update the options of a [select field](fields/select) based on the value of another field, you can pass a function to the `options()` method of the select field. The function can [inject utilities](#form-component-utility-injection) as parameters, so you can do things like check the value of another field using the [`$get()` utility](#injecting-the-current-state-of-a-field):
+要基于另一个字段的值动态更新 [Select 字段](fields/select)选项，你可以传递一个函数到 Select 字段的 `options()` 方法中。该函数可以[将 utilities 作为参数注入](#表单组件-utility-注入)，这样你就可以使用 [`$get()`](#注入字段的当前状态)做像检测另一个字段值这样的事情：
 
 ```php
 use Filament\Forms\Get;
@@ -403,9 +403,9 @@ Select::make('sub_category')
     })
 ```
 
-In this example, the `category` field is [`live()`](#the-basics-of-reactivity). This allows the form to rerender when the value of the `category` field changes. You can access the value of that field from within the `options()` function using the [`$get()` utility](#injecting-the-current-state-of-a-field). The value of the field is used to determine which options should be available in the `sub_category` field. The `match ()` statement in PHP is used to return an array of options based on the value of the `category` field. The result is that the `sub_category` field will only show options relevant to the selected `category` field.
+本例中，`category` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许表单在 `category` 字段值修改时重新渲染。你可以在 `options()` 函数中使用 [`$get()`](#注入字段的当前状态)访问那个字段的值。字段的值用于确定哪些选项在 `sub_category` 字段中可用。PHP 中的 `match()` 语句用于基于 `category` 字段值返回选项数组。其结果是：`sub_category` 字段只会展示选中的 `category` 字段相关的值。
 
-You could adapt this example to use options loaded from an Eloquent model or other data source, by querying within the function:
+你可以修改这个例子，使之在函数中查询，从 Eloquent 模型或者其他数据源中加载选项选项：
 
 ```php
 use Filament\Forms\Get;
@@ -422,9 +422,9 @@ Select::make('sub_category')
         ->pluck('name', 'id'))
 ```
 
-### Dynamic fields based on a select option
+### 基于 Select 选项的动态字段
 
-You may wish to render a different set of fields based on the value of a field, like a select. To do this, you can pass a function to the `schema()` method of any [layout component](layout/getting-started), which checks the value of the field and returns a different schema based on that value. Also, you will need a way to initialise the new fields in the dynamic schema when they are first loaded.
+你可能希望基于字段值渲染不同的字段集，比如 Select。为此，你可传入一个函数到任何[布局组件](layout/getting-started)的 `schema()` 方法中，该函数检查字段值并基于该值返回不同的 Schema。同时，首次加载时，你需要在动态 Schema 中初始化这一新字段。 
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -467,20 +467,19 @@ Grid::make(2)
     ->key('dynamicTypeFields')
 ```
 
-In this example, the `type` field is [`live()`](#the-basics-of-reactivity). This allows the form to rerender when the value of the `type` field changes. The `afterStateUpdated()` method is used to run a function after the state of the `type` field is updated. In this case, we [inject the current select field instance](#injecting-the-current-form-component-instance), which we can then use to get the form "container" instance that holds both the select and the grid components. With this container, we can target the grid component using a unique key (`dynamicTypeFields`) that we have assigned to it. With that grid component instance, we can call `fill()`, just as we do on a normal form to initialise it. The `schema()` method of the grid component is then used to return a different schema based on the value of the `type` field. This is done by using the [`$get()` utility](#injecting-the-current-state-of-a-field), and returning a different schema array dynamically.
+本例中，`type` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许表单在 `type` 字段值修改时重新渲染。`afterStateUpdated()` 方法用于在 `type` 字段状态更新后运行函数。本例中，我们[注入了当前 Select 字段实例](#注入当前表单组件实例)，然后我们可以用它来获取持有 Select 组件和 Grid 组件的表单"容器"实例。使用该容器，我们可以使用唯一的键(`dynamicTypeFields`)锁定 Grid 组件。使用该 Grid 组件实例，我们可以调用 `fill()`，就像我们在普通表单中初始化一样。Grid 组件的 `schema()` 方法用于基于不同的 `type` 字段值返回不同的 schema。这是通过使用 [`$get()`](#注入字段的当前状态) 并动态返回不同的 schema 数组。
 
-### Auto-hashing password field
+### 自动哈希密码自动
 
-You have a password field:
+有一个密码自动:
 
 ```php
 use Filament\Forms\Components\TextInput;
 
 TextInput::make('password')
     ->password()
-```
 
-And you can use a [dehydration function](#field-dehydration) to hash the password when the form is submitted:
+你可以使用 [dehydration 函数](#field-dehydration), 在表单提交时哈希密码:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -491,7 +490,7 @@ TextInput::make('password')
     ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
 ```
 
-But if your form is used to change an existing password, you don't want to overwrite the existing password if the field is empty. You can [prevent the field from being dehydrated](#preventing-a-field-from-being-dehydrated) if the field is null or an empty string (using the `filled()` helper):
+不过如果表单用于修改密码，而你不希望字段为空时，修改现有密码。如果字段是 null 或空字符串(使用 `filled()` 判断)时，你可以[阻止字段 dehydrated](#阻止字段被-dehydrated):
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -503,7 +502,7 @@ TextInput::make('password')
     ->dehydrated(fn (?string $state): bool => filled($state))
 ```
 
-However, you want to require the password to be filled when the user is being created, by [injecting the `$operation` utility](#injecting-the-current-form-operation), and then [conditionally making the field required](#conditionally-making-a-field-required):
+不过，如果你想创建用户时，要求密码必填，请[注入 `operation` 参数](#注入当前表单操作)，然后[条件性地让字段必需](#条件性地使字段成为必需字段):
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -516,11 +515,11 @@ TextInput::make('password')
     ->required(fn (string $operation): bool => $operation === 'create')
 ```
 
-## Saving data to relationships
+## 保存数据到关联中
 
-> If you're building a form inside your Livewire component, make sure you have set up the [form's model](adding-a-form-to-a-livewire-component#setting-a-form-model). Otherwise, Filament doesn't know which model to use to retrieve the relationship from.
+> 如果你在 Livewire 组件中创建表单，请确保你设置好了[表单模型](adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道关联要使用哪个模型进行检索。
 
-As well as being able to give structure to fields, [layout components](layout/getting-started) are also able to "teleport" their nested fields into a relationship. Filament will handle loading data from a `HasOne`, `BelongsTo` or `MorphOne` Eloquent relationship, and then it will save the data back to the same relationship. To set this behaviour up, you can use the `relationship()` method on any layout component:
+除了能够为字段提供结构外，[布局组件](layout/getting-started)还能够将其嵌套字段"传送(teleport)"到关联中。Filament 将从 "HasOne"、"BelongsTo" 或 "MorphOne" Eloquent 关联中处理加载数据，然后将数据保存回关联中。要设置此行为，可以在任何布局组件上使用 "relationship()" 方法：
 
 ```php
 use Filament\Forms\Components\Fieldset;
@@ -537,9 +536,9 @@ Fieldset::make('Metadata')
     ])
 ```
 
-In this example, the `title`, `description` and `image` are automatically loaded from the `metadata` relationship, and saved again when the form is submitted. If the `metadata` record does not exist, it is automatically created.
+本例中，`title`、`description` 和 `image` 字段从 `metadata` 关联中自动加载并在字段提交后在此保存。如果 `metadata` 记录不存在，它将自动创建。
 
-This functionality is not just limited to fieldsets - you can use it with any layout component. For example, you could use a `Group` component which has no styling associated with it:
+该函功能不仅限于 fieldset - 你可以使用任何的布局组件。比如，你可以使用没有样式与之关联的 `Group` 组件:
 
 ```php
 use Filament\Forms\Components\Group;
