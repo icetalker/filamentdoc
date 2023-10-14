@@ -34,7 +34,7 @@ Filament 提供了许多方法用来在应用中管理关联。该使用哪个�
 
 > 兼容 `BelongsTo`、`HasOne` 和 `MorphOne` 关联。
 
-所有的布局组件([Grid](../../forms/layout/grid#grid-component)、[Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset)、[Section](../../forms/layout/section) 等)都有一个 `relationship()` 方法。使用该方法时，在该布局内的所有字段会被保存到关联模型中，而非所有者的模型： 
+所有的布局组件([Grid](../../forms/layout/grid#grid-component)、[Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset) 等)都有一个 `relationship()` 方法。使用该方法时，在该布局内的所有字段会被保存到关联模型中，而非所有者的模型： 
 
 ```php
 use Filament\Forms\Components\Fieldset;
@@ -104,6 +104,30 @@ public static function getRelations(): array
 ```
 
 当完成资源管理器的表格和表单定义后，可以访问资源的[编辑页](editing-records)或[查看页](viewing-records)，在 Action 中查看。
+
+### 只读模式
+
+关联管理器通常展示在资源的编辑或者查看页面。在查看页面上，Filament 自动隐藏所有修改关联的所有 Action，如创建、编辑及删除。我们称之为"只读模式"，因为默认情况下查看页面保留了只读行为。不过，你可以在关联管理器类上重写 `isReadOnly()` 方法，使之始终返回 `false`，来禁用该行为：
+
+```php
+public function isReadOnly(): bool
+{
+    return false;
+}
+```
+
+此外，如果讨厌该功能，你可以在面板[配置](../configuration)中一次性禁用所有关联管理器的只读功能：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->readOnlyRelationManagersOnResourceViewPagesByDefault(false);
+}
+```
 
 ### 非常规反转关联名
 
@@ -497,15 +521,16 @@ public function table(Table $table): Table
 
 要学会如何自定义 `DeleteAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/delete)。
 
+
 ## 访问关联拥有者的记录
 
-关联管理器是 Livewire 组件。当它们首次加载时，拥有者的记录(作为父级模型——即主资源模型——的 Eloquent 记录)在公用的 `$ownerRecord` 属性上挂载。因此，你可以这样访问拥有者记录：
+关联管理器是 Livewire 组件。当它们首次加载时，拥有者的记录(作为父级模型 —— 即主资源模型 —— 的 Eloquent 记录) 将保存到属性上。你可以这样读取该属性：
 
 ```php
-$this->ownerRecord
+$this->getOwnerRecord()
 ```
 
-不过，在静态方法，如 `form()` 或 `table()` 中，无法访问 `$this`。因此，你可以[使用回调函数](../../forms/advanced#form-component-utility-injection)获取 `$livewire` 示例：
+不过，在静态方法，如 `form()` 或 `table()` 中，无法访问 `$this`。因此，你可以[使用回调函数](../../forms/advanced#表单组件-utility-注入)访问 `$livewire` 实例：
 
 ```php
 use Filament\Forms;
@@ -518,7 +543,7 @@ public function form(Form $form): Form
         ->schema([
             Forms\Components\Select::make('store_id')
                 ->options(function (RelationManager $livewire): array {
-                    return $livewire->ownerRecord->stores()
+                    return $livewire->getOwnerRecord()->stores()
                         ->pluck('name', 'id')
                         ->toArray();
                 }),

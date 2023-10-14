@@ -135,9 +135,7 @@ public function panel(Panel $panel): Panel
 
 namespace App\Filament\Pages;
 
-use Filament\Pages\Dashboard as BasePage;
-
-class Dashboard extends BasePage
+class Dashboard extends \Filament\Pages\Dashboard
 {
     // ...
 }
@@ -158,9 +156,15 @@ public function panel(Panel $panel): Panel
 
 ### 创建多个仪表盘
 
-如果你需要创建多个仪表盘，你可以重复上面描述的过程。创建继承 `Dashboard` 类的新页面，你可以根据需要创建多个仪表盘。
+如果你需要创建多个仪表盘，你可以重复[上面描述的过程](#自定义仪表盘页面)。创建继承 `Dashboard` 类的新页面，你可以根据需要创建多个仪表盘。
 
-你可以重写 `$title` 属性修改仪表盘的标题：
+你也需要定义到面板的 URL 路径，否则它将会是 `/` :
+
+```php
+protected static string $routePath = 'finance';
+```
+
+你也可以重写 `$title` 属性修改仪表盘的标题：
 
 ```php
 protected static ?string $title = 'Finance dashboard';

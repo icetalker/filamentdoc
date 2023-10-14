@@ -123,7 +123,15 @@ php artisan make:filament-theme
 php artisan make:filament-theme admin
 ```
 
-该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。***、请遵照命令中的说明，完成安装过程**
+该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。***请遵照命令中的说明，完成安装过程**
+
+```
+⇂ First, add a new item to the `input` array of `vite.config.js`: `resources/css/filament/admin/theme.css`
+⇂ Next, register the theme in the admin panel provider using `->viteTheme('resources/css/filament/admin/theme.css')`
+⇂ Finally, run `npm run build` to compile the theme
+```
+
+Please reference the command to see the exact file names that you need to register, they may not be `admin/theme.css`.
 
 ## 非粘性顶部栏
 
@@ -133,16 +141,6 @@ php artisan make:filament-theme admin
 .fi-topbar {
     position: relative;
 }
-```
-
-## 修改Logo
-
-默认情况下，Filament 会在你使用你的应用名作为 Logo。
-
-你也可以创建 `resources/views/vendor/filament-panels/components/logo.blade.phpp` 文件，用来自定义 logo:
-
-```blade
-<img src="{{ asset('/images/logo.svg') }}" alt="Logo" class="h-10">
 ```
 
 ## 禁用暗黑模式
@@ -157,6 +155,77 @@ public function panel(Panel $panel): Panel
     return $panel
         // ...
         ->darkMode(false);
+}
+```
+
+## 添加 logo
+
+## 修改Logo
+
+默认情况下，Filament 使用你的应用名来渲染基于文本的简单 Logo。不过你可以对此进行自定义。
+
+如果你只想修改用于 Logo 的文本，可以使用 `brandName()` 方法：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->brandName('Filament Demo');
+}
+```
+
+要使用图片渲染 Logo 的话，你可以传入一个 URL 到 `brandLogo()` 方法：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->brandLogo(asset('images/logo.svg'));
+}
+```
+
+此外，你也可以之间传入 HTML 到 `brandLogo()` 方法，比如用于渲染行内 SVG 元素：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->brandLogo(fn () => view('filament.admin.logo'));
+}
+```
+
+```blade
+<svg
+    viewBox="0 0 128 26"
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-full fill-gray-500 dark:fill-gray-400"
+>
+    <!-- ... -->
+</svg>
+```
+
+如果你想在暗黑模式时使用不同的 Logo，请将其以同样的方式传给 `darkModeBrandLogo()` 方法：
+
+Logo 高度默认是一个合理值，不过不可能覆盖所有可能的纵横比。因此，你可以使用 `brandLogoHeight()` 方法自定义 logo 高度：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->brandLogo(fn () => view('filament.admin.logo'))
+        ->brandLogoHeight('2rem');
 }
 ```
 

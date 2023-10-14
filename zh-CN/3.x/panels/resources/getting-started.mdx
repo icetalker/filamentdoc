@@ -332,6 +332,14 @@ CustomerResource::getUrl('edit', ['record' => $customer]); // /admin/customers/e
 
 本例中，`$customer` 可以是一个 Eloquent 模型对象，或者 ID。
 
+如果你的应用中有多个面板，`getUrl()` 将会在当前面板生成一个 URL。你也可以传入面板给 `panel` 参数，说明该资源应该关联到哪个面板：
+
+```php
+use App\Filament\Resources\CustomerResource;
+
+CustomerResource::getUrl(panel: 'marketing');
+```
+
 ## 自定义资源 Eloquent 查询
 
 在 Filament 中，每个资源模型的查询都会从 `getEloquentQuery()` 方法开始。
