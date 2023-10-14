@@ -56,8 +56,7 @@ TextInput::make('cost')
 
 <AutoScreenshot name="forms/fields/actions/suffix" alt="Text input with suffix action" version="3.x" />
 
-请注意，本例中 `$set` 和 `$state` 被注入到 `action()` 函数中。这是[表单组件 Action 注入](#form-component-action-utility-injection)。
-Notice `$set` and `$state` injected into the `action()` function in this example. This is [form component action utility injection](#form-component-action-utility-injection).
+请注意，本例中 `$set` 和 `$state` 被注入到 `action()` 函数中。这是[表单组件 Action utility 注入](#表单组件-action-utility-注入)。
 
 #### 传入多个 Affix Action 到一个字段
 
@@ -101,7 +100,7 @@ TextInput::make('cost')
     )
 ```
 
-Notice `$set` and `$state` injected into the `action()` function in this example. This is [form component action utility injection](#form-component-action-utility-injection).
+请注意，本例中 `$set` 和 `$state` 被注入到 `action()` 函数中。这是[表单组件 Action utility 注入](#表单组件-action-utility-注入)。
 
 <AutoScreenshot name="forms/fields/actions/hint" alt="Text input with hint action" version="3.x" />
 
@@ -142,7 +141,7 @@ ViewField::make('rating')
     ])
 ```
 
-Notice `$set` injected into the `action()` function in this example. This is [form component action utility injection](#form-component-action-utility-injection).
+请注意，本例中 `$set` 和 `$state` 被注入到 `action()` 函数中。这是[表单组件 Action utility 注入](#表单组件-action-utility-注入)。
 
 现在，要在自定义组件的视图中渲染 Action，你需要调用 `$getAction()` 并传入你注册的 Action 名：
 
@@ -227,9 +226,9 @@ Actions::make([
 
 <AutoScreenshot name="forms/layout/actions/anonymous/vertically-aligned-end" alt="Anonymous actions vertically aligned to the end" version="3.x" />
 
-## Form component action utility injection
+## 表单组件 action utility 注入
 
-If an action is attached to a form component, the `action()` function is able to [inject utilities](advanced#form-component-utility-injection) directly from that form component. For instance, you can inject [`$set`](advanced#injecting-a-function-to-set-the-state-of-another-field) and [`$state`](advanced#injecting-the-current-state-of-a-field):
+如果 action 附到了表单组件，`action()` 函数可以直接从该表单组件中[注入 utilities](advanced#表单组件-utility-注入)。比如，你可以注入 [`$set`](advanced#注入函数设置另一个字段的状态) 和 [`$state`](advanced#注入字段当前状态)：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -243,4 +242,4 @@ Action::make('copyCostToPrice')
     })
 ```
 
-Form component actions also have access to [all utilities that apply to actions](../actions/advanced#action-utility-injection) in general.
+表单组件 Action 也可以访问[所有通常用于该 Action 的 utilities](../actions/advanced#action-utility-注入)。

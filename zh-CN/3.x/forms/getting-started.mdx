@@ -161,7 +161,7 @@ use Filament\Forms\Components\TextInput;
 
 由于所有 Filament 表单是基于 Livewire 创建的，表单 Schema 是完全动态的。其中有许多可能，此处是一些如何使用以对你有利的例子：
 
-字段可以依据其他字段的值隐藏或者显示。上面的表单中，我们可以 `published_at` 时间戳字段，直至 `status` 字段设置成 `published`。将闭包传递到 `hidden()` 方法，可以实现该功能；这将允许你在使用表单时动态隐藏或展示字段。闭包可以访问许多有用的参数，比如 `$get`，你可以[在此处](advanced#form-component-utility-injection)查看所有参数清单。你所依赖的字段(本例中的 `status`)需要设置成 `live()`，用来告知表单在每次修改时重载 schema。
+字段可以依据其他字段的值隐藏或者显示。上面的表单中，我们可以 `published_at` 时间戳字段，直至 `status` 字段设置成 `published`。将闭包传递到 `hidden()` 方法，可以实现该功能；这将允许你在使用表单时动态隐藏或展示字段。闭包可以访问许多有用的参数，比如 `$get`，你可以[在此处](advanced#表单-utility-注入)查看所有参数清单。你所依赖的字段(本例中的 `status`)需要设置成 `live()`，用来告知表单在每次修改时重载 schema。
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -184,7 +184,7 @@ use Filament\Forms\Get;
 
 不只是 `hidden()`，所有的 Filament 表单方法都支持像这样的闭包。你可以用它来基于其他字段修改标签、占位符，甚至于字段的选项。你甚至可以用它来为表单添加新字段或者删除字段。这是一个你可以用最小的努力来创建复杂表单的强大工具。
 
-字段也可以添加数据到其他字段。比如你可以设置标题，使之修改时自动生成 slug。该功能可以通过传递闭包到 `afterStateUpdated()` 方法实现，该方法会在每次标题改变时运行。该闭包可以方法标题(`$state`)以及一个用以设置 slug 字段值的函数(`$set`)。你可以到[此处查看闭包参数完整清单](advanced#form-component-utility-injection)。你所有依赖的字段(此处的 `title`)需要设置为 `live()`，用来告知表单在每次修改时重载并设置 slug。
+字段也可以添加数据到其他字段。比如你可以设置标题，使之修改时自动生成 slug。该功能可以通过传递闭包到 `afterStateUpdated()` 方法实现，该方法会在每次标题改变时运行。该闭包可以方法标题(`$state`)以及一个用以设置 slug 字段值的函数(`$set`)。你可以到[此处查看闭包参数完整清单](advanced#表单组件-utility-注入)。你所有依赖的字段(此处的 `title`)需要设置为 `live()`，用来告知表单在每次修改时重载并设置 slug。
 
 ```php
 use Filament\Forms\Components\TextInput;

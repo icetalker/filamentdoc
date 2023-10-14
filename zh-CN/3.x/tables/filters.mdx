@@ -543,7 +543,7 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/filters/custom-trigger-action" alt="Table with custom filters trigger action" version="3.x" />
 
-## Table filter utility injection
+## 表格过滤器 utility 注入
 
 用于配置过滤器器的绝大多数方法都接受函数作为参数，而不是硬编码值：
 
@@ -557,9 +557,9 @@ SelectFilter::make('author')
 
 仅此一点就开启了许多自定义的可能性。
 
-The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
+该包也能注入将许多 utilities 作为参数注入到这些函数中。所有接受函数作为参数的自定义方法都可以注入 utilities。 
 
-These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
+这些注入的 utilities 要求使用特定的参数名。否则，Filament 不清楚注入的是什么。
 
 ### 注入当前过滤器实例
 
@@ -597,7 +597,7 @@ function (Table $table) {
 }
 ```
 
-### Injecting multiple utilities
+### 注入多个 utilities
 
 参数使用反射动态注入，因此你可以按照任何顺序组合多个参数：
 
@@ -612,7 +612,7 @@ function (HasTable $livewire, Table $table) {
 
 ### Laravel 容器的注入依赖
 
-You may inject anything from Laravel's container like normal, alongside utilities:
+你可以像平常那样注入 Laravel 容器中的任何东西： 
 
 ```php
 use Filament\Tables\Table;

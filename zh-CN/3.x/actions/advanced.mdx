@@ -1,12 +1,12 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/08-advanced.md"
-title: Advanced actions
+title: 高级 actions
 ---
 
-## Action utility injection
+## Action utility 注入
 
-The vast majority of methods used to configure actions accept functions as parameters instead of hardcoded values:
+用于配置 Action 的大部分方法都接受函数作为参数，而不只是硬编码值：
 
 ```php
 Action::make('edit')
@@ -14,15 +14,15 @@ Action::make('edit')
     ->url(fn (): string => route('posts.edit', ['post' => $this->post]))
 ```
 
-This alone unlocks many customization possibilities.
+这就解锁了许多自定义的可能。
 
-The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
+该包也可以在这些函数里面以参数的形式注入许多 utilities。所有接受函数作为参数的自定义方法，都可以注入 utilities。
 
-These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
+这些注入的 utilities 需要使用特定的参数名。否则，Filament 不会知道注入的是什么。
 
-### Injecting the current modal form data
+### 注入当前模态框表单数据
 
-If you wish to access the current [modal form data](modals#modal-forms), define a `$data` parameter:
+如果你想要访问当前[模型表单数据](modals#模态框表单)，请定义 `$data` 参数：
 
 ```php
 function (array $data) {
@@ -30,11 +30,11 @@ function (array $data) {
 }
 ```
 
-Be aware that this will be empty if the modal has not been submitted yet.
+请注意，如果表单还未提交过，这就为空。
 
-### Injecting the current arguments
+### 注入当前参数
 
-If you wish to access the [current arguments](adding-an-action-to-a-livewire-component#passing-action-arguments) that have been passed to the action, define an `$arguments` parameter:
+如果你想访问被传入到该 Action 的[当前参数](adding-an-action-to-a-livewire-component#传递-action-参数)，请定义 `$arguments` 参数：
 
 ```php
 function (array $arguments) {
@@ -42,9 +42,9 @@ function (array $arguments) {
 }
 ```
 
-### Injecting the current Livewire component instance
+### 注入当前 Livewire 组件实例
 
-If you wish to access the current Livewire component instance that the action belongs to, define a `$livewire` parameter:
+如果你想访问该 Action 从属的当前 Livewire 组件实例，请定义 `$livewire` 参数：
 
 ```php
 use Livewire\Component;
@@ -54,9 +54,9 @@ function (Component $livewire) {
 }
 ```
 
-### Injecting the current action instance
+### 注入当前 Action 实例
 
-If you wish to access the current action instance, define a `$action` parameter:
+如果你想访问当前 action 实例，请定义 `$action` 参数：
 
 ```php
 function (Action $action) {
@@ -64,9 +64,9 @@ function (Action $action) {
 }
 ```
 
-### Injecting multiple utilities
+### 注入多个 utilities
 
-The parameters are injected dynamically using reflection, so you are able to combine multiple parameters in any order:
+参数使用反射动态注入，因此，你可以按任何顺序联合使用多个参数：
 
 ```php
 use Livewire\Component;
@@ -76,9 +76,9 @@ function (array $arguments, Component $livewire) {
 }
 ```
 
-### Injecting dependencies from Laravel's container
+### 从 Laravel 容器注入依赖
 
-You may inject anything from Laravel's container like normal, alongside utilities:
+你可以像平常一样注入 Laravel 容器中的其他对象：
 
 ```php
 use Illuminate\Http\Request;
