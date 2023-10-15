@@ -103,7 +103,7 @@ Filament 中有一个"字段包装器(field wrapper)"组件，可以渲染字段
 
 当你将字段绑定到 state path 时，你可以使用 `defer` 修饰符去确保该状态只在用户提交表单时(或者下个 Livewire 请求发起时)发送到服务器。这是默认行为。
 
-不过，你也可以在字段上使用 [`live()`](../advanced#the-basics-of-reactivity)来确保状态在用户和字段交互时立即发送给服务器。这就允许了许多文档[高级](../advanced)部分中所介绍的高级用法。
+不过，你也可以在字段上使用 [`live()`](../advanced#字段动态响应基础)来确保状态在用户和字段交互时立即发送给服务器。这就允许了许多文档[高级](../advanced)部分中所介绍的高级用法。
 
 Filament 提供了一个 `$applyStateBindingModifiers()` 函数，你可以使用它在视图中将所有的状态绑定修饰应用到 `wire:model` 或 `$wire.entangle()` 绑定： 
 

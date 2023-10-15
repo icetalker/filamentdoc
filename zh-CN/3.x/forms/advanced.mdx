@@ -326,7 +326,7 @@ TextInput::make('vat_number')
     ->required(fn (Get $get): bool => filled($get('company_name')))
 ```
 
-本例中，`company_name` 字段是实时更新的 [`live(onBlur: true)`](#reactive-fields-on-blur)。这允许表单在 `company_name` 字段值修改及用户点击离开后重新渲染。你可以在 `required()` 函数中使用 [`$get()`](#注入字段的当前状态)来访问字段值。字段值使用 `filled()`检测，这样当 `company_name` 字段不为 `null` 或者空字符串时，`vat_number` 字段是必需的。其结果是:只有在 `company_name` 字段填充时，`vat_number` 字段才是必需的。
+本例中，`company_name` 字段是实时更新的 [`live(onBlur: true)`](#动态响应字段失焦)。这允许表单在 `company_name` 字段值修改及用户点击离开后重新渲染。你可以在 `required()` 函数中使用 [`$get()`](#注入字段的当前状态)来访问字段值。字段值使用 `filled()`检测，这样当 `company_name` 字段不为 `null` 或者空字符串时，`vat_number` 字段是必需的。其结果是:只有在 `company_name` 字段填充时，`vat_number` 字段才是必需的。
 
 使用函数能够以相同的方式让其他[验证规则](validation)动态化。
 

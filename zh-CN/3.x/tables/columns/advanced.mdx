@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/doc
 title: 高级列
 ---
 
-## Table column utility injection
+## 表格列 utility 注入
 
-The vast majority of methods used to configure columns accept functions as parameters instead of hardcoded values:
+大部分用于配置的方法接受函数作为参数，而不只是硬编码值：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -22,11 +22,11 @@ TextColumn::make('status')
 
 仅此一点就开启了许多自定义的可能性。
 
-The package is also able to inject many utilities to use inside these functions, as parameters. All customization methods that accept functions as arguments can inject utilities.
+该包也将许多 utilities 作为参数注入到这些函数中。所有接受函数作为参数的自定义方法都可以注入 utilities。 
 
-These injected utilities require specific parameter names to be used. Otherwise, Filament doesn't know what to inject.
+这些注入的 utilities 要求使用特定的参数名。否则，Filament 不知道注入了什么。
 
-### 注入当前列状体
+### 注入当前列状态
 
 如果你想访问列字段的当前状态(值)，请定义 `$state` 参数：
 
@@ -87,9 +87,9 @@ function (Table $table) {
 }
 ```
 
-### Injecting the current table row loop
+### 注入当前表格行循环
 
-If you wish to access the current [Laravel Blade loop object](https://laravel.com/docs/blade#the-loop-variable) that the column is rendered part of, define a `$rowLoop` parameter:
+如果你想访问当前列中渲染的 [Laravel Blade loop 对象](https://laravel.com/docs/blade#the-loop-variable)，请定义 `$rowLoop` 参数：
 
 ```php
 function (stdClass $rowLoop) {
@@ -97,11 +97,11 @@ function (stdClass $rowLoop) {
 }
 ```
 
-As `$rowLoop` is [Laravel Blade's `$loop` object](https://laravel.com/docs/blade#the-loop-variable), you can access the current row index using `$rowLoop->index`. Similar to `$record`, this parameter will be `null` if the column is currently being rendered outside a table row.
+由于 `$rowLoop` 是 [Laravel Blade 的 `$loop` 对象](https://laravel.com/docs/blade#the-loop-variable)，你可以使用 `$rowLoop->index` 访问当前行索引。类似于 `$record`，如果该列当前在表格行之外渲染，这个参数将会是 `null`。
 
-### Injecting multiple utilities
+### 注入多个 utilities
 
-The parameters are injected dynamically using reflection, so you are able to combine multiple parameters in any order:
+参数使用反射动态注入，因此你可以以任何顺序联合使用多个参数：
 
 ```php
 use Filament\Tables\Contracts\HasTable;
@@ -112,9 +112,9 @@ function (HasTable $livewire, Model $record) {
 }
 ```
 
-### Injecting dependencies from Laravel's container
+### 从 Laravel 容器中注入依赖
 
-You may inject anything from Laravel's container like normal, alongside utilities:
+你可以从 Laravel 容器中注入任何东西，与 utilities 一起：
 
 ```php
 use Illuminate\Database\Eloquent\Model;

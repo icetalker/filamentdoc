@@ -9,7 +9,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 字段类在 `Filament\Form\Components` 命名空间下。
 
-字段和[布局组件](layout/getting-started)一样，在表单的 schema 中。
+字段和[布局组件](../layout/getting-started)一样，在表单的 schema 中。
 
 字段可以使用静态 `make()` 方法创建，并传入唯一名。字段名应该对应于 Livewire 组件上的属性名。你可以使用"点语法"将字段绑定到数组的键。
 
@@ -286,9 +286,9 @@ TextInput::make('name')
 
 <AutoScreenshot name="forms/fields/placeholder" alt="Form field with placeholder" version="3.x" />
 
-## 标记字段为必需d
+## 标记字段为必需
 
-默认情况下，[必需字段](validation#required)会在其标签旁显示星号 `*`。如果所有字段都是必需的，你可能想要在表单中隐藏型号，或者相反只在可选字段中添加 [hint 提示](#adding-a-hint-next-to-the-label)：
+默认情况下，[必需字段](../validation#required)会在其标签旁显示星号 `*`。如果所有字段都是必需的，你可能想要在表单中隐藏型号，或者相反只在可选字段中添加 [hint 提示](#添加提示文本到标签)：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -300,7 +300,7 @@ TextInput::make('name')
 
 ## 全局设置
 
-如果你想全局改变字段的默认行为，那么你可以在服务提供者的 `boot()` 方法中或者中间件里调用静态 `configureUsing()` 方法。传入一个可以修改组件的闭包。比如，如果你想让所有的 [checkbox `inline(false)`](checkbox#positioning-the-label-above)，你可以这样：
+如果你想全局改变字段的默认行为，那么你可以在服务提供者的 `boot()` 方法中或者中间件里调用静态 `configureUsing()` 方法。传入一个可以修改组件的闭包。比如，如果你想让所有的 [checkbox `inline(false)`](checkbox#标签置于其上)，你可以这样：
 
 ```php
 use Filament\Forms\Components\Checkbox;
