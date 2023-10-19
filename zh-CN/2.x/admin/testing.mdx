@@ -362,7 +362,7 @@ it('can send invoices', function () {
 });
 ```
 
-If you ever need to only set a page action's data without immediately calling it, you can use `setPageActionData()`:
+如果你只需要设置页面 Action 数据，而不需要立即调用，你可以使用 `setPageActionData()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -380,9 +380,9 @@ it('can send invoices', function () {
 });
 ```
 
-### Execution
+### 执行
 
-To check if an action has been halted, you can use `assertPageActionHalted()`:
+要检测 Action 是否被中断，你可以使用 `assertPageActionHalted()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -398,7 +398,7 @@ it('stops sending if invoice has no email address', function () {
 });
 ```
 
-### Errors
+### 错误
 
 `assertHasNoPageActionErrors()` 用于断言提交操作表单时没有出现验证错误。
 
@@ -420,7 +420,7 @@ it('can validate invoice recipient email', function () {
 });
 ```
 
-### Pre-filled data
+### 预填充数据
 
 使用 `assertPageActionDataSet()` 断言页面操作是否预装了数据：
 
@@ -447,9 +447,9 @@ it('can send invoices to the primary contact by default', function () {
 });
 ```
 
-### Action State
+### Action 状态
 
-To ensure that an action exists or doesn't in a table, you can use the `assertPageActionExists()` or  `assertPageActionDoesNotExist()` method:
+要断言一个 Action 存在或者不在表格中，你可以使用 `assertPageActionExists()` 或者 `assertPageActionDoesNotExist()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -481,7 +481,7 @@ it('can not send invoices', function () {
 });
 ```
 
-To ensure a page action is enabled or disabled for a user, you can use the `assertPageActionEnabled()` or `assertPageActionDisabled()` methods:
+要断言一个页面 Action 对某个用户启用或者禁用，你可以使用 `assertPageActionEnabled` 或者 `assertPageActionDisabled()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -497,7 +497,7 @@ it('can only print a sent invoice', function () {
 });
 ```
 
-To ensure sets of actions exist in the correct order, you can use `assertPageActionsExistInOrder()`:
+要断言一套 Action 以正确的顺序排列，你可以使用 `assertPageActionsExistInOrder()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -512,9 +512,9 @@ it('can not send invoices', function () {
 });
 ```
 
-### Button appearance
+### 按钮外观
 
-To ensure an action has the correct label, you can use `assertPageActionHasLabel()` and `assertPageActionDoesNotHaveLabel()`:
+使用 `assertPageActionHasLabel()` 及 `assertPageActionDoesNotHaveLabel()`，可以断言 Action 标签是否正确：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -530,7 +530,8 @@ it('send action has correct label', function () {
 });
 ```
 
-To ensure an action's button is showing the correct icon, you can use `assertPageActionHasIcon()` or `assertPageActionDoesNotHaveIcon()`:
+
+使用 `assertPageActionHasIcon()` 及 `assertPageActionDoesNotHaveIcon()`，可以断言 Action 按钮是否正确显示图标：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -547,7 +548,7 @@ it('when enabled the send button has correct icon', function () {
 });
 ```
 
-To ensure an action's button is displaying the right color, you can use `assertPageActionHasColor()` or `assertPageActionDoesNotHaveColor()`:
+使用 `assertPageActionHasColor()` 及 `assertPageActionDoesNotHaveColor()`，可以断言 Action 按钮是否显示正确颜色：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -565,7 +566,7 @@ it('actions display proper colors', function () {
 
 ### URL
 
-To ensure an action has the correct URL, you can use `assertPageActionHasUrl()`, `assertPageActionDoesNotHaveUrl()`, `assertPageActionShouldOpenUrlInNewTab()`, and `assertPageActionShouldNotOpenUrlInNewTab()`:
+使用 `assertPageActionHasUrl()`、`assertPageActionDoesNotHaveUrl()`、`assertPageActionShouldOpenUrlInNewTab()` 和 `assertPageActionShouldNotOpenUrlInNewTab()`，你可以断言 Action 的 URL 是否正确。
 
 ```php
 use function Pest\Livewire\livewire;

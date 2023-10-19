@@ -97,9 +97,9 @@ ImageEntry::make('avatar')
     ->defaultImageUrl(url('/images/placeholder.png'))
 ```
 
-## Stacking images
+## 堆叠图片
 
-You may display multiple images as a stack of overlapping images by using `stacked()`:
+使用 `stacked()` 你可以将多个图像显示为重叠图像的堆栈：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -112,9 +112,9 @@ ImageEntry::make('colleagues.avatar')
 
 <AutoScreenshot name="infolists/entries/image/stacked" alt="Stacked image entry" version="3.x" />
 
-### Customizing the stacked ring width
+### 自定义堆叠环宽度
 
-The default ring width is `3`, but you may customize it to be from `0` to `8`:
+默认环宽度为 `3`，不过你可以自定义将其设为 `0` 到 `8`：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -126,9 +126,9 @@ ImageEntry::make('colleagues.avatar')
     ->ring(5)
 ```
 
-### Customizing the stacked overlap
+### 自定义层叠数
 
-The default overlap is `4`, but you may customize it to be from `0` to `8`:
+默认层叠数为 `4`，但您可以将其自定义为 `0` 到 `8`：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -140,9 +140,9 @@ ImageEntry::make('colleagues.avatar')
     ->overlap(2)
 ```
 
-## Setting a limit
+## 设置限制
 
-You may limit the maximum number of images you want to display by passing `limit()`:
+使用 `limit()`，你可以限制你要显示的最大图片数量：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -156,9 +156,9 @@ ImageEntry::make('colleagues.avatar')
 
 <AutoScreenshot name="infolists/entries/image/limited" alt="Limited image entry" version="3.x" />
 
-### Showing the remaining images count
+### 显示剩余图片数
 
-When you set a limit you may also display the count of remaining images by passing `limitedRemainingText()`.
+当设置限制时，你也可以传递 `limitedRemainingText()` 显示剩余的图片数量：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -173,9 +173,9 @@ ImageEntry::make('colleagues.avatar')
 
 <AutoScreenshot name="infolists/entries/image/limited-remaining-text" alt="Limited image entry with remaining text" version="3.x" />
 
-#### Showing the limited remaining text separately
+#### 剩余数分开显示
 
-By default, `limitedRemainingText()` will display the count of remaining images as a number stacked on the other images. If you prefer to show the count as a number after the images, you may use the `isSeparate: true` parameter:
+默认情况下，`limitedRemainingText()` 会将剩余图片的数量以数字的形式显示在其他图片上。如果你希望将数量显示在图片后面，你可以使用 `isSeparate: true` 参数：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -190,9 +190,9 @@ ImageEntry::make('colleagues.avatar')
 
 <AutoScreenshot name="infolists/entries/image/limited-remaining-text-separately" alt="Limited image entry with remaining text separately" version="3.x" />
 
-#### Customizing the limited remaining text size
+#### 自定义剩余数文本大小
 
-By default, the size of the remaining text is `sm`. You can customize this to be `xs`, `md` or `lg` using the `size` parameter:
+默认情况下，剩余文本的大小是 `sm`。你可以使用 `size` 参数将其自定义为 `xs`、`md` 或 `lg`： 
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
