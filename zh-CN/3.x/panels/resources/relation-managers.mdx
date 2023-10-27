@@ -167,7 +167,6 @@ php artisan make:filament-relation-manager CategoryResource posts title --soft-d
 此外，你也可以使用[表格构造器](../../tables)的其他所有特性，来自定义关联管理器。
 
 ### 使用中间属性展示列表
-### Listing with pivot attributes
 
 对于 `BelongsToMany` 和 `MorphToMany` 关联，你也可以添加中间表属性。比如，如果你的资源 `UserResource` 有一个关联管理器 `TeamsRelationManager`，而且你想要将 `role` 中间属性添加到表中，你可以：
 
@@ -278,6 +277,7 @@ public function table(Table $table): Table
         ]);
 }
 ```
+
 ### 预加载附加模态框的下拉列表选项
 
 默认情况下，当你搜索记录进行附加时，选项会通过 AJAX 从数据库中加载。如果你希望表单加载时就直接预载这些选项，你可以使用 `AttachAction` 的 `preloadRecordSelect()` 方法:
@@ -520,7 +520,6 @@ public function table(Table $table): Table
 ### 自定义 `DeleteAction`
 
 要学会如何自定义 `DeleteAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/delete)。
-
 
 ## 访问关联拥有者的记录
 

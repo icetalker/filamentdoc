@@ -121,7 +121,7 @@ public function table(Table $table): Table
 
 ## 定义表格 Action
 
-Filament 表格使用 [Action](../actions/overview)。它是可以添加到[任何表格行尾部的按钮](actions#行-action)，或者表格[头部](actions#头部-action)。比如，你可以在头部中使用 Action 来创建新记录，然后再每一行中使用编辑和删除 Action。[批量操作 Action](actions#bulk-actions)可用于表格记录选中时执行代码。
+Filament 表格使用 [Action](../actions/overview)。它是可以添加到[任何表格行尾部的按钮](actions#行-action)，或者表格[头部](actions#头部-action)。比如，你可以在头部中使用 Action 来创建新记录，然后再每一行中使用编辑和删除 Action。[批量操作 Action](actions#批量操作)可用于表格记录选中时执行代码。
 
 ```php
 use App\Models\Post;
@@ -161,7 +161,7 @@ public function table(Table $table): Table
 
 本例中，我们为表格行定义了两个 Action。第一个为 "feature" Action。点击时，它会将该记录的 `is_featured` 属性设置为 `true` - 将其写在 `action()` 方法中。使用 `hidden()` 方法，如果记录已经是 featured 了，则该 Action 会被隐藏。第二个则是 `unfeature` Action。点击时，`is_featured` 属性设置为 `false`。使用 `visible()` 方法，如果该记录没有被 featured，该 Action 将被隐藏。
 
-同时，我们定义了一个批量操作 Action。定义了批量操作后，表格中的每一行中都有一个 Checkbox。该批量操作 Action 为 [Filament 预制](../actions/prebuilt-actions/delete#批量删除)，将会删除选中的记录。不过，你也可以[编写自定义批量操作 Action](actions#批量-action)。
+同时，我们定义了一个批量操作 Action。定义了批量操作后，表格中的每一行中都有一个 Checkbox。该批量操作 Action 为 [Filament 预制](../actions/prebuilt-actions/delete#批量删除)，将会删除选中的记录。不过，你也可以[编写自定义批量操作 Action](actions#批量操作)。
 
 <AutoScreenshot name="tables/getting-started/actions-modal" alt="Table with action modal open" version="3.x" />
 
