@@ -17,6 +17,23 @@ ViewField::make('rating')
 
 这假定你有一个 `resources/views/filament/forms/components/range-slider.blade.php` 文件。
 
+### 传入数据到视图字段中
+
+使用 `viewData()` 你可以传入视图数据的简单数组：
+
+```php
+use Filament\Forms\Components\ViewField;
+
+ViewField::make('rating')
+    ->view('filament.forms.components.range-slider')
+    ->viewData([
+        'min' => 1,
+        'max' => 5,
+    ])
+```
+
+此外，更复杂的配置请查阅[自定义字段类](#自定义字段类)
+
 ## 自定义字段类
 
 你可以创建自定义的字段类和视图，使之可以在整个应用中重用，甚至将其作为插件发布到社区。

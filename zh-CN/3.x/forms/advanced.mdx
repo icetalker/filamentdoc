@@ -41,7 +41,7 @@ TextInput::make('username')
 
 ### 动态响应字段防抖
 
-使用 "debouncing"，你可以再 `live()` 和 `livewire(onBlur: true)` 之间找到一个中间方案。Debouncing(防抖) 将会阻止网络请求，直至用户输入停止一段特定时间。你可以使用 `live(debounce: 500)` 方法来实现该功能:
+使用 "debouncing"，你可以在 `live()` 和 `livewire(onBlur: true)` 之间找到一个中间方案。Debouncing(防抖)将会阻止网络请求，直至用户输入停止一段特定时间。你可以使用 `live(debounce: 500)` 方法来实现该功能:
 
 ```php
 use Filament\Forms\Components\TextInput;

@@ -284,6 +284,8 @@ class OrderProduct extends Pivot
 }
 ```
 
+> 请确保中间模型有一个主键，比如 `id`，以允许 Filament 跟踪哪个 Repeater 项创建、更新及删除。
+
 现在，你可以在 Repeater 上使用 `orderProducts` 关联，并将数据保存到 `order_product` 中间表中：
 
 ```php
@@ -321,7 +323,7 @@ Repeater::make('qualifications')
 
 ### 新建前修改关联项目数据
 
-使用 `mutateRelationshipDataBeforeCreateUsing()` 方法，你可以在数据库中新建记录之前修改关联项数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你必须返回修改过的数据数组：
+使用 `mutateRelationshipDataBeforeCreateUsing()` 方法，你可以在数据库中新建记录之前修改关联项数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你可以返回修改过的数据数组，或者用于避免该项被创建的 `null`：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -331,7 +333,7 @@ Repeater::make('qualifications')
     ->schema([
         // ...
     ])
-    ->mutateRelationshipDataBeforeCreateUsing(fn (array $data): array {
+    ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
         $data['user_id'] = auth()->id();
 
         return $data;
@@ -340,7 +342,7 @@ Repeater::make('qualifications')
 
 ### 保存前修改关联项目数据
 
-使用 `mutateRelationshipDataBeforeSaveUsing()` 方法，你可以在数据保存到数据库之前修改已有关联项目的数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你必须返回修改过的数据数组：
+使用 `mutateRelationshipDataBeforeSaveUsing()` 方法，你可以在数据保存到数据库之前修改已有关联项目的数据。该方法接收一个闭包，闭包使用 `$data` 变量接收当前项目的数据。你可以返回修改过的数据数组，或者用于避免该项被保存的 `null`：：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -350,7 +352,7 @@ Repeater::make('qualifications')
     ->schema([
         // ...
     ])
-    ->mutateRelationshipDataBeforeSaveUsing(fn (array $data): array {
+    ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
         $data['user_id'] = auth()->id();
 
         return $data;
@@ -388,7 +390,7 @@ Repeater::make('members')
     ->schema([
         TextInput::make('name')
             ->required()
-            ->blur(),
+            ->live(onBlur: true),
         Select::make('role')
             ->options([
                 'member' => 'Member',
@@ -404,6 +406,35 @@ Repeater::make('members')
 如果你希望在使用表单时实时更新项目标签，你在 `$state` 中使用的任何字段都应该是 `live()` 实时的。 
 
 <AutoScreenshot name="forms/fields/repeater/labelled" alt="Repeater with item labels" version="3.x" />
+
+## 单个字段的简单 Repeater
+
+你可以使用 `simple()` 方法，使用单个字段来创建 Repeater，最小化设计
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
+
+Repeater::make('invitations')
+    ->simple(
+        TextInput::make('email')
+            ->email()
+            ->required(),
+    )
+```
+
+<AutoScreenshot name="forms/fields/repeater/simple-one-field" alt="Simple repeater design with only one field" version="3.x" />
+
+不再使用嵌套数组存储数据，简单 Repeater 使用平面数组值。这意味着，上例的数据结构像这样：
+
+```php
+[
+    'invitations' => [
+        'dan@filamentphp.com',
+        'ryan@filamentphp.com',
+    ],
+],
+```
 
 ## 使用 `$get()` 访问父级字段值
 

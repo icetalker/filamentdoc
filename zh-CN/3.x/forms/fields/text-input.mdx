@@ -147,6 +147,19 @@ TextInput::make('domain')
 
 <AutoScreenshot name="forms/fields/text-input/suffix-icon" alt="Text input with suffix icon" version="3.x" />
 
+#### 设置前后缀图标颜色
+
+前后缀图标默认是灰色，不过你可以使用 `prefixIconColor()` 和 `suffixIconColor()` 方法将其设为不同颜色：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('domain')
+    ->url()
+    ->suffixIcon('heroicon-m-check-circle')
+    ->suffixIconColor('success')
+```
+
 ## 输入遮罩
 
 输入遮罩(Input Masking)定义了一种输入值必须遵守的格式。

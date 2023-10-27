@@ -121,11 +121,11 @@ DateTimePicker::make('published_at')
 use Filament\Forms\Components\DateTimePicker;
 
 DateTimePicker::make('published_at')
-    ->native()
+    ->native(false)
     ->weekStartsOnMonday()
 
 DateTimePicker::make('published_at')
-    ->native()
+    ->native(false)
     ->weekStartsOnSunday()
 ```
 
@@ -203,6 +203,18 @@ TimePicker::make('at')
 
 <AutoScreenshot name="forms/fields/date-time-picker/prefix-icon" alt="Date time picker with prefix icon" version="3.x" />
 
+#### 设置前后缀图标颜色
+
+前后缀图标默认是灰色，不过你可以使用 `prefixIconColor()` 和 `suffixIconColor()` 方法将其设为不同颜色：
+
+```php
+use Filament\Forms\Components\TimePicker;
+
+TimePicker::make('at')
+    ->prefixIcon('heroicon-m-check-circle')
+    ->prefixIconColor('success')
+```
+
 ## 日期时间选择器验证
 
 除了[验证](../validation)页面中的所有规则，还有一些专门用于日期时间选择器的规则。
@@ -215,6 +227,7 @@ TimePicker::make('at')
 use Filament\Forms\Components\DatePicker;
 
 DatePicker::make('date_of_birth')
+    ->native(false)
     ->minDate(now()->subYears(150))
     ->maxDate(now())
 ```

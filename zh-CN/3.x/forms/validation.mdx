@@ -479,9 +479,24 @@ TextInput::make('slug')->rules([
     function () {
         return function (string $attribute, $value, Closure $fail) {
             if ($value === 'foo') {
-                $fail("The {$attribute} is invalid.");
+                $fail('The :attribute is invalid.');
             }
         };
+    },
+])
+```
+
+你也可以[注入 utilities](advanced#表单组件-utility-注入)(比如，[`$get`](advanced#注入另一个字段的状态))到自定义规则，比如你需要在表单中用到其他字段：
+
+```php
+use Closure;
+use Filament\Forms\Get;
+
+TextInput::make('slug')->rules([
+    fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+        if ($get('other_field') === 'foo' && $value !== 'bar') {
+            $fail("The {$attribute} is invalid.");
+        }
     },
 ])
 ```

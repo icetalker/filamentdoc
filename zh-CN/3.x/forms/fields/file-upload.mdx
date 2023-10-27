@@ -320,6 +320,17 @@ FileUpload::make('attachment')
     ->orientImagesFromExif(false)
 ```
 
+## 隐藏移除文件按钮
+
+使用 `deletable(false)`，可以隐藏移除已上传的文件按钮：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->deletable(false)
+```
+
 ## 文件上传验证
 
 除了[验证](../validation)页面中列出的所有规则之外，还有一些其他专用于文件上传的验证规则。

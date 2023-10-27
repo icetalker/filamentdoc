@@ -339,19 +339,6 @@ MorphToSelect::make('commentable')
 
 > Select 字段中许多方法同样可以用在 `MorphToSelect` 中，比如 `searchable()`、`preload()`、`allowHtml()` 和 `optionsLimit()`。
 
-### 强制大小写不敏感搜索
-
-默认情况下，搜索将使用数据库表字段中的敏感度设置。这是为了避免在搜索大型数据集时出现不必要的性能开销，如果我们强制所有用户不敏感，就会出现这种情况。但是，如果数据库默认大小写不敏感搜索，则可以使用 "forceSearchCaseInsensive()" 方法强制进行不敏感搜索：
-
-```php
-use Filament\Forms\Components\Select;
-
-Select::make('author_id')
-    ->relationship(name: 'author', titleAttribute: 'name')
-    ->searchable()
-    ->forceSearchCaseInsensitive()
-```
-
 ## 在选项标签中允许 HTML
 
 默认情况下，Filament 会在选项标签中转移 HTML。如果你想允许 HTML，你可以使用 `allowHtml()` 方法：
@@ -448,6 +435,18 @@ Select::make('domain')
 ```
 
 <AutoScreenshot name="forms/fields/select/suffix-icon" alt="Select with suffix icon" version="3.x" />
+
+#### 设置前后缀图标颜色
+
+前后缀图标默认是灰色，不过你可以使用 `prefixIconColor()` 和 `suffixIconColor()` 方法将其设为不同颜色：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('domain')
+    ->suffixIcon('heroicon-m-check-circle')
+    ->suffixIconColor('success')
+```
 
 ## 设置自定义加载信息
 

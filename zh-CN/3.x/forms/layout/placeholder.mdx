@@ -10,10 +10,11 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 占位符(Placeholder)可用于在表单中渲染只读字段。每个占位符都有其内容(`content()`)，用户不能修改。
 
 ```php
+use App\Models\Post;
 use Filament\Forms\Components\Placeholder;
 
 Placeholder::make('created')
-    ->content($this->getRecord()->created_at->toFormattedDateString())
+    ->content(fn (Post $record): string => $record->created_at->toFormattedDateString())
 ```
 
 <AutoScreenshot name="forms/layout/placeholder/simple" alt="Placeholder" version="3.x" />

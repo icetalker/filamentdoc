@@ -100,3 +100,19 @@ title: Input wrapper Blade component
     />
 </x-filament::input.wrapper>
 ```
+
+#### 设置前后缀图标颜色
+
+默认的前后缀图标颜色是灰色，你可以使用 `prefix-icon-color` 和 `affix-icon-color` 属性设置不同的颜色：
+
+```blade
+<x-filament::input.wrapper
+    suffix-icon="heroicon-m-check-circle"
+    suffix-icon-color="success"
+>
+    <x-filament::input
+        type="url"
+        wire:model="domain"
+    />
+</x-filament::input.wrapper>
+`
