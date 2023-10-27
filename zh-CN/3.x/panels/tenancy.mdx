@@ -10,6 +10,48 @@ title: 多租户(Multi-tenancy)
 
 多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
 
+## 一对多租户
+
+术语"多租户"是宽泛的，在不同语境下可能有不同意思。Filament 的多租户系统指的是用户属于**多个**租户(*组织、团队、公司等*)，并且可能会在租户间切换。
+
+如果你的用例较为简单，不需要多对多关联，那么你不需要在 Filament 中安装多租户。你可以使用[观察者](https://laravel.com/docs/eloquent#observers)和[全局查询范围设置](https://laravel.com/docs/eloquent#global-scopes)。
+
+比如你有一个数据库字段 `users.team_id`，你可以让用户使用[全局查询范围](https://laravel.com/docs/eloquent#global-scopes)，将所有记录查询范围设置为同一个 `team_id`:
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+
+class Post extends Model
+{
+    protected static function booted(): void
+    {
+        if (auth()->check()) {
+            static::addGlobalScope('team', function (Builder $query) {
+                $query->where('team_id', auth()->user()->team_id);
+                // or with a `team` relationship defined:
+                $query->whereBelongsTo(auth()->user()->team);
+            });
+        }
+    }
+}
+```
+
+要在创建时自动设置 `team_id`，你可以使用[观察者](https://laravel.com/docs/eloquent#observers)：
+
+```php
+class PostObserver
+{
+    public function creating(Post $post): void
+    {
+        if (auth()->check()) {
+            $post->team_id = auth()->user()->team_id;
+            // or with a `team` relationship defined:
+            $post->team()->associate(auth()->user()->team);
+        }
+    }
+}
+```
+
 ## 设置租户
 
 要设置租户，你需要在[配置](configuration)中指定"租户"(比如-团队team或组织organization)模型:
@@ -36,6 +78,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
@@ -53,10 +96,17 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->belongsToMany(Team::class);
     }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->teams->contains($tenant);
+    }
 }
 ```
 
 上例中，用户属于多个团队，因此它有一个 `teams()` 关联。`getTenants()` 方法返回用户所属的团队。Filament 使用它来罗列出用户有权访问的租户。
+
+为安全起见，你也需要实现 `HasTenants` 接口的 `canAccessTenant()`，以防止用户通过猜测租户 ID 并将其放入到 URL 来访问租户数据。
 
 你可能希望用户可以[注册新团队](#添加租户注册页面).
 
@@ -180,6 +230,8 @@ public function panel(Panel $panel): Panel
 在应用的任何地方，你都可以使用 `Filament::getTenant()` 方法访问当前请求的租户模型：
 
 ```php
+use Filament\Facades\Filament;
+
 $tenant = Filament::getTenant();
 ```
 
@@ -189,7 +241,7 @@ $tenant = Filament::getTenant();
 
 Filament 提供 [Laravel Spark](https://spark.laravel.com) 的账单集成。你的用户可以开始定义并管理它们的账单信息。
 
-要安装该集成，首先[安装 Spark](https://spark.laravel.com/docs/2.x/installation.html) 并为你的租户模型配置它。
+要安装该集成，首先要[安装 Spark](https://spark.laravel.com/docs/2.x/installation.html) 并为你的租户模型配置它。
 
 现在，你可以使用 Composer 安装 Filament 的 spark billing provider:
 
@@ -281,6 +333,7 @@ class ExampleBillingProvider implements Provider
 要注册新菜单项到租户菜单中，你可以使用[配置](configuration):
 
 ```php
+use App\Filament\Pages\Settings;
 use Filament\Navigation\MenuItem;
 use Filament\Panel;
 
@@ -291,7 +344,7 @@ public function panel(Panel $panel): Panel
         ->tenantMenuItems([
             MenuItem::make()
                 ->label('Settings')
-                ->url(route('filament.pages.settings'))
+                ->url(fn (): string => Settings::getUrl())
                 ->icon('heroicon-m-cog-8-tooth'),
             // ...
         ]);
@@ -310,8 +363,27 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         // ...
-        ->userMenuItems([
+        ->tenantMenuItems([
             'register' => MenuItem::make()->label('Register new team'),
+            // ...
+        ]);
+}
+```
+
+### 自定义 Profile 链接
+
+要在租户按钮上自定义 Profile 链接，请使用 `profile` 作为数组键注册新的项目：
+
+```php
+use Filament\Navigation\MenuItem;
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->tenantMenuItems([
+            'profile' => MenuItem::make()->label('Edit team profile'),
             // ...
         ]);
 }
@@ -329,11 +401,25 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         // ...
-        ->userMenuItems([
+        ->tenantMenuItems([
             'billing' => MenuItem::make()->label('Manage subscription'),
             // ...
         ]);
 }
+```
+
+### 条件性隐藏租户菜单项
+
+使用 `visible()` 或者 `hidden()` 方法，并传入条件，你也可以条件性地隐藏租户菜单项。传入函数则会推迟条件求值，直到菜单被实际渲染：
+
+```php
+use Filament\Navigation\MenuItem;
+
+MenuItem::make()
+    ->label('Settings')
+    ->visible(fn (): bool => auth()->user()->can('manage-team'))
+    // or
+    ->hidden(fn (): bool => ! auth()->user()->can('manage-team'))
 ```
 
 ## 设置头像
@@ -362,7 +448,7 @@ class Team extends Model implements HasAvatar
 
 这个 `getFilamentAvatarUrl()` 方法用于检索当前用户的头像。如果该方法返回的是 `null`，那么 Filament 将会回退到 [ui-avatars.com](https://ui-avatars.com)。
 
-你可以创建新的头像 Provider，将 [ui-avatars.com](https://ui-avatars.com) 替换成其他服务。[点击此处学习如何替换头像服务提供者](users#using-a-different-avatar-provider)
+你可以创建新的头像 Provider，将 [ui-avatars.com](https://ui-avatars.com) 替换成其他服务。[点击此处学习如何替换头像服务提供者](users#使用其他头像-provider)
 
 ## 配置租户关联
 
@@ -490,6 +576,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasDefaultTenant;
 use Filament\Models\Contracts\HasTenants;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -497,7 +584,7 @@ class User extends Model implements FilamentUser, HasDefaultTenant, HasTenants
 {
     // ...
     
-    public function getDefaultTenant(): ?Model
+    public function getDefaultTenant(Panel $panel): ?Model
     {
         return $this->latestTeam;
     }

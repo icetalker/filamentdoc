@@ -34,6 +34,32 @@ class User extends Authenticatable implements FilamentUser
 
 `canAccessPanel()` 方法返回 `true` 还是 `false`，取决于用户是否被授权允许访问该面板 `$panel`。本例中会检查用户的邮箱后缀是否为 `@yourdomain.com` 以及用户是否验证过该邮箱。 
 
+既然你可以访问当前 `$panel` ，你可以为不同的面板编写条件。比如，只对管理面板进行严格限权，而所有用户都可以访问其他的面板：
+
+```php
+<?php
+
+namespace App\Models;
+
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable implements FilamentUser
+{
+    // ...
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail()
+        }
+
+        return true;
+    }
+}
+```
+
 ## 设置头像
 
 Filament 使用可开箱即用的[ui-avatars.com](https://ui-avatars.com) 生成基于用户名的头像。你也可以实现 `HasAvatar` 合约接口，自定义用户头像 URL：

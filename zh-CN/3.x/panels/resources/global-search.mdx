@@ -20,7 +20,7 @@ protected static ?string $recordTitleAttribute = 'title';
 
 > 你的资源中需要有编辑页或查看页，这样全局搜索结果才可以链接到对应页面，否则不会返回该资源的结果。
 
-你可以重写 `getGlobalSearchResultTitle()` 方法进一步自定义 title：
+你可以重写 `getGlobalSearchResultTitle()` 方法进一步自定义标题。它将返回普通文本字符串，或者 `Illuminate\Support\HtmlString` 或 `Illuminate\Contacts\Support\Htmlable` 实例。这就允许你在搜索结果标题中渲染 HTML 或者 Markdown。
 
 ```php
 public static function getGlobalSearchResultTitle(Model $record): string

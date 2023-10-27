@@ -790,3 +790,12 @@ class CommentsRelationManager extends RelationManager
 ```
 
 现在，你可以 `$this->status` 在关联管理器中访问 `status`。
+
+## 禁用延迟加载
+
+默认情况下，关联管理器使用延迟加载。这意味着只有在页面可见时数据才会被加载出来。
+
+要禁用该行为，你可以在关联管理器类上重写 `$isLazy` 属性：
+
+```php
+protected static bool $isLazy = false;
