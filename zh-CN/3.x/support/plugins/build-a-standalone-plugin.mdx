@@ -197,7 +197,7 @@ class Heading extends Component
 
 接下来，我们需要为组件创建视图。创建新文件 `resources/views/heading.blade.php` 并添加如下代码。
 
-我们使用 x-load 来异步加载样式表，因此它只在需要时加载。你可以在本文档的[核心概念](docs/zh-CN/3.x/support/assets#lazy-loading-css)章节中了解更多相关信息。
+我们使用 x-load 来异步加载样式表，因此它只在需要时加载。你可以在本文档的[核心概念](docs/zh-CN/3.x/support/assets#懒加载-css)章节中了解更多相关信息。
 
 ```blade
 @php
@@ -216,10 +216,10 @@ class Heading extends Component
                     'gray' => 'text-gray-600 dark:text-gray-400',
                     default => 'text-custom-500',
                 },
-                ])
-                ->style([
-                    \Filament\Support\get_color_css_variables($color, [500]) => $color !== 'gray',
-                ])
+            ])
+            ->style([
+                \Filament\Support\get_color_css_variables($color, [500]) => $color !== 'gray',
+            ])
     }}
 >
     {{ $getContent() }}
@@ -237,23 +237,23 @@ class Heading extends Component
          letter-spacing: -.025em;
          line-height: 1.1;
      }
-    
+
     &h1 {
          font-size: 2rem;
      }
-    
+
     &h2 {
          font-size: 1.75rem;
      }
-    
+
     &h3 {
          font-size: 1.5rem;
      }
-    
+
     &h4 {
          font-size: 1.25rem;
      }
-    
+
     &h5,
     &h6 {
          font-size: 1rem;

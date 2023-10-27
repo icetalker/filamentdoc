@@ -70,19 +70,21 @@ FilamentIcon::register([
 
 ### 后台面板图标别名
 
-- `panels::database-notifications.open-button` - 用来打开数据库通知模态框的按钮
 - `panels::global-search.field` - 全局搜索字段
 - `panels::pages.dashboard.navigation-item` - 仪表盘导航项
-- `panels::pages.tenancy.register-tenant.open-tenant-button` - 从租户注册页面打开租户的按钮
-- `panels::sidebar.collapse-button` - 可部分折叠的桌面端侧边栏折叠按钮
-- `panels::sidebar.collapse-button.full` - 可完全折叠的桌面端侧边栏折叠按钮
-- `panels::sidebar.group.collapse-button` - 侧边栏分钟的折叠按钮
-- `panels::tenant-menu.toggle-button` - 切换租户菜单的按钮u
-- `panels::theme-switcher.light-button` - 主题切换器中切换到light主题的按钮
-- `panels::theme-switcher.dark-button` - 主题切换器中切换到dark主题的按钮
+- `panels::sidebar.collapse-button` - 折叠侧边栏的按钮
+- `panels::sidebar.collapse-button.rtl` - 折叠侧边栏的按钮 (right-to-left direction)
+- `panels::sidebar.expand-button` - 展开侧边栏的按钮
+- `panels::sidebar.expand-button.rtl` - 展开侧边栏的按钮 (right-to-left direction)
+- `panels::sidebar.group.collapse-button` - 侧边栏分组的折叠按钮
+- `panels::tenant-menu.toggle-button` - 切换租户菜单的按钮
+- `panels::theme-switcher.light-button` - 主题切换器中切换到 light 主题的按钮
+- `panels::theme-switcher.dark-button` - 主题切换器中切换到 dark 主题的按钮
 - `panels::theme-switcher.system-button` - 主题切换器中切换系统主题的按钮
-- `panels::topbar.close-mobile-sidebar-button` - 关闭移动侧边栏的按钮
-- `panels::topbar.open-mobile-sidebar-button` - 打开移动侧边栏的按钮
+- `panels::topbar.close-sidebar-button` - 关闭侧边栏的按钮
+- `panels::topbar.open-sidebar-button` - 打开侧边栏的按钮
+- `panels::topbar.group.toggle-button` - 顶部菜单分组切换按钮
+- `panels::topbar.open-database-notifications-button` - 打开数据库通知模态框的按钮
 - `panels::user-menu.profile-item` - 用户菜单中的 Profile 项
 - `panels::user-menu.logout-button` - 用户菜单中的退出按钮
 - `panels::widgets.account.logout-button` - 账号插件中的退出按钮
@@ -96,7 +98,10 @@ FilamentIcon::register([
 
 ### 表格构造器中的图标别名
 
-- `tables::columns.collapse-button`
+- `tables::columns.collapse-button` - 折叠列的按钮
+- `tables::columns.icon-column.false` - 图标列的 False 状态
+- `tables::columns.icon-column.true` - 图标列的真值状态
+- `tables::empty-state` - 空状态图标
 - `tables::filters.remove-all-button` - 删除所有过滤器的按钮
 - `tables::grouping.collapse-button` - 用于折叠一组记录的按钮
 - `tables::header-cell.sort-asc-button` - 以升序排列的排序按钮
@@ -109,11 +114,37 @@ FilamentIcon::register([
 - `notifications::database.modal.empty-state` - 数据库通知模态框的空状态
 - `notifications::notification.close-button` - 关闭通知的按钮
 
+### Action 图标别名
+
+- `actions::delete-action` - Trigger button of a delete action
+- `actions::delete-action.grouped` - Trigger button of a grouped delete action
+- `actions::delete-action.modal` - Modal of a delete action
+- `actions::detach-action` - Trigger button of a detach action
+- `actions::detach-action.modal` - Modal of a detach action
+- `actions::dissociate-action` - Trigger button of a dissociate action
+- `actions::dissociate-action.modal` - Modal of a dissociate action
+- `actions::force-delete-action` - Trigger button of a force delete action
+- `actions::force-delete-action.grouped` - Trigger button of a grouped force delete action
+- `actions::force-delete-action.modal` - Modal of a force delete action
+- `actions::replicate-action` - Trigger button of a replicate action
+- `actions::replicate-action.grouped` - Trigger button of a grouped replicate action
+- `actions::restore-action` - Trigger button of a restore action
+- `actions::restore-action.grouped` - Trigger button of a grouped restore action
+- `actions::restore-action.modal` - Modal of a restore action
+
+### Infolist Builder icon aliases
+
+- `infolists::components.icon-entry.false` - Falsy state of an icon entry
+- `infolists::components.icon-entry.true` - Truthy state of an icon entry
+
 ### UI 组件中的图标别名
 
 - `badge.delete-button` - 删除徽章的按钮
 - `breadcrumbs.separator` - 面包屑之间的分隔符
+- `breadcrumbs.separator.rtl` - Separator between breadcrumbs (right-to-left direction)
 - `modal.close-button` - 关闭模态框的按钮
 - `pagination.previous-button` - 上一页按钮
+- `pagination.previous-button.rtl` - Button to go to the previous page (right-to-left direction)
 - `pagination.next-button` - 下一页按钮
+- `pagination.next-button.rtl` - Button to go to the next page (right-to-left direction)
 - `section.collapse-button` - 折叠区域的按钮

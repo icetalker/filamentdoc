@@ -96,12 +96,14 @@ protected function getStats(): array
             ->color('success')
             ->extraAttributes([
                 'class' => 'cursor-pointer',
-                'wire:click' => '$dispatch("setStatusFilter", "processed")',
+                'wire:click' => "\$dispatch('setStatusFilter', { filter: 'processed' })",
             ]),
         // ...
     ];
 }
 ```
+
+本例中，我们刻意转义了 `$dispatch()` 中的 `$`，因为它不是 PHP 变量，需要直接传入到 HTML 中。
 
 ## 添加图表到 Stat
 
@@ -144,5 +146,5 @@ protected static ?string $pollingInterval = null;
 要禁用该行为，你可以在 Widget 类中重写 `$isLazy` 属性：
 
 ```php
-protected static bool $isLazy = true;
+protected static bool $isLazy = false;
 ```

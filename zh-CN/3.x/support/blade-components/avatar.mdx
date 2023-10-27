@@ -6,12 +6,24 @@ title: 头像 Blade 组件
 
 ## 概述
 
-头像组件用作渲染圆形图片，通常作为头像用来表示用户或者实体：
+头像组件用作渲染圆形图片或正方形图片，通常作为头像用来表示用户或者实体：
 
 ```blade
 <x-filament::avatar
     src="https://filamentphp.com/dan.jpg"
     alt="Dan Harrin"
+/>
+```
+
+## 设置头像圆角
+
+头像通常默认为圆形，不过你也可以将 `circular` 属性设置为 `false` 使之成正方形：
+
+```blade
+<x-filament::avatar
+    src="https://filamentphp.com/dan.jpg"
+    alt="Dan Harrin"
+    :circular="false"
 />
 ```
 
