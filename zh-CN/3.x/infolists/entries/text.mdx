@@ -102,10 +102,10 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('description')
     ->limit(50)
-    ->tooltip(function (TextEntry $entry): ?string {
-        $state = $entry->getState();
+    ->tooltip(function (TextEntry $component): ?string {
+        $state = $component->getState();
 
-        if (strlen($state) <= $entry->getCharacterLimit()) {
+        if (strlen($state) <= $component->getCharacterLimit()) {
             return null;
         }
 
@@ -209,17 +209,6 @@ TextEntry::make('status')
     ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
 ```
 
-## 当 Entry 为空时添加占位符
-
-有时候如果 Entry 值为空，你可能想要显示占位符：
-
-```php
-use Filament\Infolists\Components\TextEntry;
-
-TextEntry::make('updated_at')
-    ->placeholder('Never')
-```
-
 ## 自定义颜色
 
 你可以为文本设置颜色，可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
@@ -249,7 +238,8 @@ TextEntry::make('email')
 你可以使用 `iconPosition()` 设置图标的位置：
 
 ```php
-use Filament\Infolists\Components\TextEntry;use Filament\Support\Enums\IconPosition;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Enums\IconPosition;
 
 TextEntry::make('email')
     ->icon('heroicon-m-envelope')
@@ -278,13 +268,14 @@ TextEntry 默认情况下使用常规字粗，不过你可以将其修改为以�
 比如，你可以使用 `weight(FontWeight::Bold)` 让字体变粗：
 
 ```php
-use Filament\Infolists\Components\TextEntry;use Filament\Support\Enums\FontWeight;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Enums\FontWeight;
 
 TextEntry::make('title')
     ->weight(FontWeight::Bold)
 ```
 
-<AutoScreenshot name="infolists/entries/text/bolt" alt="Text entry in a bold font" version="3.x" />
+<AutoScreenshot name="infolists/entries/text/bold" alt="Text entry in a bold font" version="3.x" />
 
 ## 自定义字体
 

@@ -89,7 +89,7 @@ TextEntry::make('title')
 
 ## 设置默认值
 
-要为状态为 `null` 的字段设置默认值，你可以使用 `default()` 方法：
+要为状态为 `null` 的字段设置默认值，你可以使用 `default()` 方法。该方法将会将默认状态视为真实状态，因此，像[图片](image)或者[颜色](color)这些 Entry 将会显示默认图片或者颜色。
 
 ```php
 use Filament\Infolists\Components\TextEntry;
@@ -97,6 +97,19 @@ use Filament\Infolists\Components\TextEntry;
 TextEntry::make('title')
     ->default('Untitled')
 ```
+
+## 如果 Entry 为空添加占位符文本
+
+有时，你想在 Entry 为空状态值式显示占位符文本，其使用青灰色文本。这与[默认值](#设置默认值)不同，因为占位符永远是文本，且不会被当作真实状态。
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('title')
+    ->placeholder('Untitled')
+```
+
+<AutoScreenshot name="infolists/entries/placeholder" alt="Entry with a placeholder for empty state" version="3.x" />
 
 ## 在 Entry 下添加帮助文本
 
@@ -121,7 +134,7 @@ TextEntry::make('name')
     ->helperText(new HtmlString('Your <strong>full name</strong> here, including any middle names.'))
 
 TextEntry::make('name')
-    ->helperText(str('Your **full name** here, including any middle names.')->markdown()->toHtmlString())
+    ->helperText(str('Your **full name** here, including any middle names.')->inlineMarkdown()->toHtmlString())
 
 TextEntry::make('name')
     ->helperText(view('name-helper-text'))
@@ -154,7 +167,7 @@ TextEntry::make('apiKey')
 
 TextEntry::make('apiKey')
     ->label('API key')
-    ->hint(str('[Documentation](/documentation)')->markdown()->toHtmlString())
+    ->hint(str('[Documentation](/documentation)')->inlineMarkdown()->toHtmlString())
 
 TextEntry::make('apiKey')
     ->label('API key')
@@ -172,7 +185,7 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('apiKey')
     ->label('API key')
-    ->hint('[Documentation](/documentation)')
+    ->hint(str('[Documentation](/documentation)')->inlineMarkdown()->toHtmlString())
     ->hintColor('primary')
 ```
 
@@ -187,7 +200,7 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('apiKey')
     ->label('API key')
-    ->hint('[Documentation](/documentation)')
+    ->hint(str('[Documentation](/documentation)')->inlineMarkdown()->toHtmlString())
     ->hintIcon('heroicon-m-question-mark-circle')
 ```
 
@@ -202,7 +215,7 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('apiKey')
     ->label('API key')
-    ->hint('[Documentation](/documentation)')
+    ->hint(str('[Documentation](/documentation)')->inlineMarkdown()->toHtmlString())
     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Read it!')
 ```
 
