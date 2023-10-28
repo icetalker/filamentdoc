@@ -177,10 +177,26 @@ TextColumn::make('full_name')
     })
 ```
 
+#### 自定义表格搜索字段占位符
+
+在 $table` 上使用 `searchPlaceholder()` 方法，可以自定义搜索字段的占位符：
+
+```php
+use Filament\Tables\Table;
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->searchPlaceholder('Search (ID, Name)');
+}
+```
+
 ### 单独搜索
 
 使用 `isIndividual` 参数，你可以启用每列搜索文本字段：
-You can choose to enable a per-column search input field using the `isIndividual` parameter:
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -230,18 +246,6 @@ public function table(Table $table): Table
         ->persistSearchInSession()
         ->persistColumnSearchesInSession();
 }
-```
-
-### 强制大小写不敏感列搜索
-
-默认情况下，搜索将使用数据库表列中的敏感度设置。这是为了避免在搜索大型数据集时出现不必要的性能开销，如果我们强制所有用户不敏感，就会出现这种情况。但是，如果数据库默认大小写不敏感搜索，则可以使用 "forceSearchCaseInsensive()" 方法强制进行搜索：
-
-```php
-use Filament\Tables\Columns\TextColumn;
-
-TextColumn::make('name')
-    ->searchable()
-    ->forceSearchCaseInsensitive()
 ```
 
 ## 列 Action 及 URL
@@ -312,6 +316,19 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('title')
     ->default('Untitled')
 ```
+
+## 如果列为空添加占位符文本
+
+有时，你可能想在空状态的列中显示占位符文本，其样式为轻灰色文本。这与[默认值](#设置默认值)不同，因为占位符始终都是文本且不会被当作真实状态。
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')
+    ->placeholder('No description.')
+```
+
+<AutoScreenshot name="tables/columns/placeholder" alt="Column with a placeholder for empty state" version="3.x" />
 
 ## 隐藏列字段
 

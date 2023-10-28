@@ -35,6 +35,20 @@ public function table(Table $table): Table
 }
 ```
 
+### 自定义默认分页页面选项
+
+使用 `defaultPaginationPageOption()` 方法，可以自定义所显示记录的默认记录数：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->defaultPaginationPageOption(25);
+}
+```
+
 ### 防止查询字符串与分页页面冲突
 
 默认情况下，Livewire 将分页状态保存在查询字符串的 `page` 参数里。如果你在同个页面中有多个表格，那么表格的分页状态可能会被其他表格覆盖。
@@ -117,6 +131,18 @@ public function table(Table $table): Table
 {
     return $table
         ->reorderable('order_column');
+}
+```
+
+`reorderable()` 方法也接受布尔值条件作为其第二个参数，这样就可以条件性地启用重新排序：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->reorderable('sort', auth()->user()->isAdmin());
 }
 ```
 
@@ -288,6 +314,14 @@ public function table(Table $table): Table
 ```
 
 这些类不会被 Tailwind CSS 自动编译。如果你想要使用还未 Blade 文件中使用过的 Tailwind CSS 类，你应该更新 `tailwind.config.js` 文件中的 `content` 配置，使其在目录中同时扫描 `'./app/Filament/**/*.php'` 中 CSS 类。 
+
+## 重置表格
+
+如果你在 Livewire 请求期间修改表格的定义，比如在 `table()` 方法中消费一个公共属性，你可能需要重置表格，确保该修改被应用。为此，你可以在 Livewire 组件中调用 `resetTable()` 方法：
+
+```php
+$this->resetTable();
+```
 
 ## 全局设置
 

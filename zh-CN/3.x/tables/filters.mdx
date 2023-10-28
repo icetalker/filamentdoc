@@ -309,6 +309,8 @@ Filter::make('is_admin')
     ->indicator('Administrators')
 ```
 
+如果你使用[自定义过滤器表单](#自定义过滤器表单)，你应该使用 [`indicateUsing()`](#自定义激活指示器)来展示激活的指示器。
+
 ### 自定义激活指示器
 
 并非所有的指示器都很简单，因此您可能需要使用 `indicateUsing()` 来自定义在哪个时候显示哪个指示器。
@@ -410,6 +412,25 @@ public function table(Table $table): Table
         ->filtersFormMaxHeight('400px');
 }
 ```
+
+## 在模态框中显示过滤器
+
+要在模态框而非下拉菜单中显示过滤器，可以这样：
+
+```php
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ], layout: FiltersLayout::Modal);
+}
+```
+
+你可以使用[触发 Action API](#自定义过滤器触发-action)，来[自定义模态框](../actions/modals)，包括[使用 `slideOver()`](../actions/modals#使用-slide-over-替代模态框)。
 
 ## 在表格内容上面显示过滤器
 
@@ -519,9 +540,9 @@ TernaryFilter::make('trashed')
     ]))
 ```
 
-## 自定义过滤器下来菜单触发 Action
+## 自定义过滤器触发 Action
 
-要自定义过滤器下拉触发按钮，你可以使用 `filtersTriggerAction()` 方法，并传入一个返回 Action 的闭包。[自定义 Action 触发按钮](../actions/trigger-button)中的所有方法都可以用于此处：
+要自定义过滤器触发按钮，你可以使用 `filtersTriggerAction()` 方法，并传入一个返回 Action 的闭包。[自定义 Action 触发按钮](../actions/trigger-button)中的所有方法都可以用于此处：
 
 ```php
 use Filament\Tables\Actions\Action;

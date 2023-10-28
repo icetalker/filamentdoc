@@ -151,7 +151,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 
 Split::make([
-    ImageColumn::make('avatar') 
+    ImageColumn::make('avatar')
         ->circular(),
     TextColumn::make('name')
         ->weight(FontWeight::Bold)
@@ -415,7 +415,7 @@ use Filament\Tables\Columns\TextColumn;
     <span class="font-medium">
         Email address:
     </span>
-    
+
     <span>
         {{ $getRecord()->email }}
     </span>
