@@ -72,11 +72,19 @@ FilamentIcon::register([
 
 - `panels::global-search.field` - 全局搜索字段
 - `panels::pages.dashboard.navigation-item` - 仪表盘导航项
+- `panels::resources.pages.edit-record.navigation-item` - 资源编辑记录页面导航项
+- `panels::resources.pages.manage-related-records.navigation-item` - 资源管理关联记录页面导航项
+- `panels::resources.pages.view-record.navigation-item` - 资源查看记录页面导航项
+- `panels::pages.password-reset.request-password-reset.actions.login` - 请求密码重置页面的登录触发按钮
+- `panels::pages.password-reset.request-password-reset.actions.login.rtl` - 请求密码重置页面的登录触发按钮(right-to-left direction)
 - `panels::sidebar.collapse-button` - 折叠侧边栏的按钮
 - `panels::sidebar.collapse-button.rtl` - 折叠侧边栏的按钮 (right-to-left direction)
 - `panels::sidebar.expand-button` - 展开侧边栏的按钮
 - `panels::sidebar.expand-button.rtl` - 展开侧边栏的按钮 (right-to-left direction)
 - `panels::sidebar.group.collapse-button` - 侧边栏分组的折叠按钮
+- `panels::tenant-menu.billing-button` - 租户菜单的账单按钮
+- `panels::tenant-menu.profile-button` - 租户菜单页面的 Profile 按钮
+- `panels::tenant-menu.registration-button` - 租户菜单的注册按钮
 - `panels::tenant-menu.toggle-button` - 切换租户菜单的按钮
 - `panels::theme-switcher.light-button` - 主题切换器中切换到 light 主题的按钮
 - `panels::theme-switcher.dark-button` - 主题切换器中切换到 dark 主题的按钮
@@ -93,11 +101,48 @@ FilamentIcon::register([
 
 ### 表单构造器中的图标别名
 
-- `forms:components.checkbox-list.search-field` - 复选框列表中的搜索输入框
+- `forms::components.builder.actions.clone` - Builder 项目的克隆触发按钮
+- `forms::components.builder.actions.collapse` - Builder 项目的折叠触发按钮
+- `forms::components.builder.actions.delete` - Builder 项目的删除触发按钮
+- `forms::components.builder.actions.expand` - Builder 项目的展开触发按钮
+- `forms::components.builder.actions.move-down` - Builder 项目的向下移动触发按钮
+- `forms::components.builder.actions.move-up` - Builder 项目的向上移动触发按钮
+- `forms::components.builder.actions.reorder` - Builder 项目的重新排序触发按钮
+- `forms::components.checkbox-list.search-field` - 复选框列表中的搜索输入框
+- `forms::components.file-upload.editor.actions.drag-crop` - 文件上传编辑器的拖动裁切触发按钮
+- `forms::components.file-upload.editor.actions.drag-move` - 文件上传编辑器的拖拽移动触发按钮
+- `forms::components.file-upload.editor.actions.flip-horizontal` - 文件上传编辑器的水平翻转触发按钮
+- `forms::components.file-upload.editor.actions.flip-vertical` - 文件上传编辑器的垂直翻转触发按钮
+- `forms::components.file-upload.editor.actions.move-down` - 文件上传编辑器的向下移动触发按钮
+- `forms::components.file-upload.editor.actions.move-left` - 文件上传编辑器的向左移动触发按钮
+- `forms::components.file-upload.editor.actions.move-right` - 文件上传编辑器的向右移动触发按钮
+- `forms::components.file-upload.editor.actions.move-up` - 文件上传编辑器的向上移动触发按钮
+- `forms::components.file-upload.editor.actions.rotate-left` - 文件上传编辑器的向左旋转触发按钮
+- `forms::components.file-upload.editor.actions.rotate-right` - 文件上传编辑器的向右旋转触发按钮
+- `forms::components.file-upload.editor.actions.zoom-100` - 文件上传编辑器的 zoom 100 触发按钮
+- `forms::components.file-upload.editor.actions.zoom-in` - 文件上传编辑器的放大触发按钮
+- `forms::components.file-upload.editor.actions.zoom-out` - 文件上传编辑器的缩小旋转触发按钮
+- `forms::components.key-value.actions.delete` - Key-value 字段项目的删除触发按钮
+- `forms::components.key-value.actions.reorder` - Key-value 字段项目的重新排序触发按钮
+- `forms::components.repeater.actions.clone` - Repeater 项目的克隆触发按钮
+- `forms::components.repeater.actions.collapse` - Repeater 项目的折叠触发按钮
+- `forms::components.repeater.actions.delete` - Repeater 项目的删除触发按钮
+- `forms::components.repeater.actions.expand` - Repeater 项目的展开触发按钮
+- `forms::components.repeater.actions.move-down` - Repeater 项目的向下移动触发按钮
+- `forms::components.repeater.actions.move-up` - Repeater 项目的向上移动触发按钮
+- `forms::components.repeater.actions.reorder` - Repeater 项目的重新排序触发按钮
+- `forms::components.select.actions.create-option` - Select 字段的新建选项触发按钮
+- `forms::components.select.actions.edit-option` - Select 字段的编辑选项触发按钮
 - `forms::components.wizard.completed-step` - 向导卡中的完成步骤
 
 ### 表格构造器中的图标别名
 
+- `tables::actions.disable-reordering` - 重新排序禁用触发按钮
+- `tables::actions.enable-reordering` - 重新排序启用触发按钮
+- `tables::actions.filter` - 过滤器操作的触发按钮
+- `tables::actions.group` - 分组记录 action 的触发按钮
+- `tables::actions.open-bulk-actions` - 打开批量操作的触发按钮
+- `tables::actions.toggle-columns` - 切换列操作的触发按钮
 - `tables::columns.collapse-button` - 折叠列的按钮
 - `tables::columns.icon-column.false` - 图标列的 False 状态
 - `tables::columns.icon-column.true` - 图标列的真值状态
@@ -113,26 +158,37 @@ FilamentIcon::register([
 
 - `notifications::database.modal.empty-state` - 数据库通知模态框的空状态
 - `notifications::notification.close-button` - 关闭通知的按钮
+- `notifications::notification.danger` - 危险通知
+- `notifications::notification.info` - 信息通知
+- `notifications::notification.success` - 成功通知
+- `notifications::notification.warning` - 警告通知
 
 ### Action 图标别名
 
-- `actions::delete-action` - Trigger button of a delete action
-- `actions::delete-action.grouped` - Trigger button of a grouped delete action
-- `actions::delete-action.modal` - Modal of a delete action
+- `actions::action-group` - Action 分组的触发按钮
+- `actions::create-action.grouped` - 分组新建 Action 的触发按钮
+- `actions::delete-action` - 删除 Action 的触发按钮
+- `actions::delete-action.grouped` - 分组删除 Action 的触发按钮
+- `actions::delete-action.modal` - 删除 Action 的模态框
 - `actions::detach-action` - Trigger button of a detach action
 - `actions::detach-action.modal` - Modal of a detach action
 - `actions::dissociate-action` - Trigger button of a dissociate action
 - `actions::dissociate-action.modal` - Modal of a dissociate action
-- `actions::force-delete-action` - Trigger button of a force delete action
-- `actions::force-delete-action.grouped` - Trigger button of a grouped force delete action
-- `actions::force-delete-action.modal` - Modal of a force delete action
-- `actions::replicate-action` - Trigger button of a replicate action
-- `actions::replicate-action.grouped` - Trigger button of a grouped replicate action
-- `actions::restore-action` - Trigger button of a restore action
-- `actions::restore-action.grouped` - Trigger button of a grouped restore action
-- `actions::restore-action.modal` - Modal of a restore action
+- `actions::edit-action` - 编辑 Action 的触发按钮
+- `actions::edit-action.grouped` - 分组编辑 Action 的触发按钮
+- `actions::force-delete-action` - 强制删除 Action 的触发按钮
+- `actions::force-delete-action.grouped` - 分组强制删除 Action 的触发按钮
+- `actions::force-delete-action.modal` - 强制删除 Action 的模态框
+- `actions::modal.confirmation` - 需要确认的 Action 的模态框
+- `actions::replicate-action` - 复制 Action 的触发按钮
+- `actions::replicate-action.grouped` - 分组复制 Action 的触发按钮
+- `actions::restore-action` - 恢复 Action 的触发按钮
+- `actions::restore-action.grouped` - 分组恢复 Action 的触发按钮
+- `actions::restore-action.modal` - 恢复 Action 的模态框
+- `actions::view-action` - 查看 Action 的触发按钮
+- `actions::view-action.grouped` - 分组查看 Action 的触发按钮
 
-### Infolist Builder icon aliases
+### 信息列表图标别名
 
 - `infolists::components.icon-entry.false` - Falsy state of an icon entry
 - `infolists::components.icon-entry.true` - Truthy state of an icon entry
@@ -141,10 +197,10 @@ FilamentIcon::register([
 
 - `badge.delete-button` - 删除徽章的按钮
 - `breadcrumbs.separator` - 面包屑之间的分隔符
-- `breadcrumbs.separator.rtl` - Separator between breadcrumbs (right-to-left direction)
+- `breadcrumbs.separator.rtl` - 面包屑之间的分隔符(right-to-left direction)
 - `modal.close-button` - 关闭模态框的按钮
 - `pagination.previous-button` - 上一页按钮
-- `pagination.previous-button.rtl` - Button to go to the previous page (right-to-left direction)
+- `pagination.previous-button.rtl` - 上一页按钮(right-to-left direction)
 - `pagination.next-button` - 下一页按钮
-- `pagination.next-button.rtl` - Button to go to the next page (right-to-left direction)
+- `pagination.next-button.rtl` - 下一页按钮(right-to-left direction)
 - `section.collapse-button` - 折叠区域的按钮

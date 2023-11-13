@@ -628,6 +628,14 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## 禁用某个资源的租户
+
+默认情况下，面板中的所有资源将租约范围设置为当前租户。如果你的资源要在不同租户之间共享，你可以通过在资源类上将 `$isScopedToTenant` 静态属性设置成 `false` 禁用租约：
+
+```php
+protected static bool $isScopedToTenant = false;
+```
+
 ## 租户安全
 
 理解多租户的安全含义以及如何实现合理地实现是很重要的。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。

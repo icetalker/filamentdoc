@@ -173,7 +173,7 @@ TextColumn::make('full_name')
     ->searchable(query: function (Builder $query, string $search): Builder {
         return $query
             ->where('first_name', 'like', "%{$search}%")
-            ->where('last_name', 'like', "%{$search}%");
+            ->orWhere('last_name', 'like', "%{$search}%");
     })
 ```
 
@@ -282,6 +282,18 @@ TextColumn::make('title')
             }),
     )
 ```
+
+The icon color defaults to the text color, but you may customize the icon color separately using `iconColor()`:
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->icon('heroicon-m-envelope')
+    ->iconColor('primary')
+```
+
+<AutoScreenshot name="tables/columns/text/icon-color" alt="Text column with icon in the primary color" version="3.x" />
 
 Action objects passed into the `action()` method must have a unique name to distinguish it from other actions within the table.
 

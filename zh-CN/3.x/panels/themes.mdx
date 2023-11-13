@@ -123,25 +123,21 @@ php artisan make:filament-theme
 php artisan make:filament-theme admin
 ```
 
+默认情况下，该命令将使用 npm 安装依赖。如果你想使用不同的包管理器，你可以使用 `--pm` 选项：
+
+```bash
+php artisan make:filament-theme --pm=bun
+````
+
 该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。***请遵照命令中的说明，完成安装过程**
 
 ```
-⇂ First, add a new item to the `input` array of `vite.config.js`: `resources/css/filament/admin/theme.css`
-⇂ Next, register the theme in the admin panel provider using `->viteTheme('resources/css/filament/admin/theme.css')`
-⇂ Finally, run `npm run build` to compile the theme
+⇂ 首先，添加新项目到 `vite.config.js` 中的 `input` 数组中：`resources/css/filament/admin/theme.css`
+⇂ 接下来，在后台面板提供者使用 `->viteTheme('resources/css/filament/admin/theme.css')` 注册主题 
+⇂ 最后，运行 `npm run build` 编译主题
 ```
 
-Please reference the command to see the exact file names that you need to register, they may not be `admin/theme.css`.
-
-## 非粘性顶部栏
-
-默认情况下，顶部导航栏粘贴固定在页面顶部。你可以将下面样式使之可以滚动滑出视图之外：
-
-```css
-.fi-topbar {
-    position: relative;
-}
-```
+请参考命令以查看您需要注册的准确的文件名，它们可能不是 `admin/theme.css`。
 
 ## 禁用暗黑模式
 
@@ -159,8 +155,6 @@ public function panel(Panel $panel): Panel
 ```
 
 ## 添加 logo
-
-## 修改Logo
 
 默认情况下，Filament 使用你的应用名来渲染基于文本的简单 Logo。不过你可以对此进行自定义。
 

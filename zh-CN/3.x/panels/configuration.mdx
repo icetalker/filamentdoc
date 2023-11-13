@@ -115,6 +115,23 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## 生命周期钩子
+
+钩子可用于在面板的生命周期区间执行代码。`bootUsing()` 是在面板内每个请求上运行。如果你有多个面板，只有当前面板的 `bootUsing()` 会运行。该函数在所有服务提供者启动之后，在中间件中运行：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->bootUsing(function (Panel $panel) {
+            // ...
+        });
+}
+```
+
 ## SPA 模式
 
 > 警告：该特性为实验性质，使用时可能会碰到 Bug。如果发现任何问题，请 PR 报告给 [Livewire](https://github.com/livewire/livewire)。

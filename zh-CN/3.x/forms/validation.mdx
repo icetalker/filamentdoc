@@ -511,6 +511,20 @@ use Filament\Forms\Components\TextInput;
 TextInput::make('name')->validationAttribute('full name')
 ```
 
+## 验证消息
+
+默认使用 Laravel 的验证错误消息。要自定义错误消息，请使用 `validationMessages()` 方法：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('email')
+    ->unique(// ...)
+    ->validationMessages([
+        'unique' => 'The :attribute has already been registered.',
+    ])
+```
+
 ## 发送验证通知
 
 如果你想在验证失败时发送通知，可以在 Livewire 组件中使用 `onValidationError()` 方法：

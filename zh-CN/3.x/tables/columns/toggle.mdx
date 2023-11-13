@@ -16,3 +16,17 @@ ToggleColumn::make('is_admin')
 ```
 
 <AutoScreenshot name="tables/columns/toggle/simple" alt="Toggle column" version="3.x" />
+
+## 生命周期钩子
+
+钩子可用于在 Toggle 生命周期的各个点中执行代码：
+
+```php
+ToggleColumn::make()
+    ->beforeStateUpdated(function ($record, $state) {
+        // Runs before the state is saved to the database.
+    })
+    ->afterStateUpdated(function ($record, $state) {
+        // Runs after the state is saved to the database.
+    })
+```

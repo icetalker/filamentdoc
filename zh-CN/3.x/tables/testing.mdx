@@ -177,6 +177,22 @@ it('has an author column', function () {
 });
 ```
 
+你可以传递函数作为额外的参数，用以断言列通过给定的"真值测试"。这对于有特定配置的列的断言有用。你也可以传入记录作为第三个参数，如果你的检测是基于哪一个表格行被渲染，这很有用：
+
+```php
+use function Pest\Livewire\livewire;
+use Filament\Tables\Columns\TextColumn;
+
+it('has an author column', function () {
+    $post = Post::factory()->create();
+    
+    livewire(PostResource\Pages\ListPosts::class)
+        ->assertTableColumnExists('author', function (TextColumn $column): bool {
+            return $column->getDescriptionBelow() === $post->subtitle;
+        }, $post);
+});
+```
+
 ### 授权
 
 要断言特定用户不能看见某个列，你可以使用 `assertTableColumnVisible()` 和 `assertTableColumnHidden()` 方法：
@@ -593,6 +609,7 @@ it('delete actions have correct colors', function () {
 
 ```php
 use function Pest\Livewire\livewire;
+
 it('links to the correct Filament sites', function () {
     $post = Post::factory()->create();
 

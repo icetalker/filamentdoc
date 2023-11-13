@@ -281,9 +281,25 @@ TextColumn::make('email')
 
 <AutoScreenshot name="tables/columns/text/icon-after" alt="Text column with icon after" version="3.x" />
 
+图标颜色默认为文本颜色，你可以使用 `iconColor()` 自定义图标颜色：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('email')
+    ->icon('heroicon-m-envelope')
+    ->iconColor('primary')
+```
+
+<AutoScreenshot name="tables/columns/text/icon-color" alt="Text column with icon in the primary color" version="3.x" />
+
+<AutoScreenshot name="tables/columns/text/icon-after" alt="Text column with icon after" version="3.x" />
+
 ## 自定义文本大小
 
-使用 `size(TextColumnSize::Large)` 你可以让文本变大：
+文本列默认使用 small 字体，你可以将其改为 `TextColumnSize::ExtraSmall`、`TextColumnSize::Medium` 或 `TextColumnSize::Large`.
+
+比如，使用 `size(TextColumnSize::Large)` 你可以让文本变大：
 
 ```php
 use Filament\Tables\Columns\TextColumn;

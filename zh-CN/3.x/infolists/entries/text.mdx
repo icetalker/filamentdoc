@@ -248,6 +248,17 @@ TextEntry::make('email')
 
 <AutoScreenshot name="infolists/entries/text/icon-after" alt="Text entry with icon after" version="3.x" />
 
+图标颜色默认为文本颜色，如果要自定义图标颜色，请使用 `iconColor()`：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('email')
+    ->icon('heroicon-m-envelope')
+    ->iconColor('primary')
+
+<AutoScreenshot name="infolists/entries/text/icon-color" alt="Text entry with icon in the primary color" version="3.x" />
+
 ## 自定义文本大小
 
 你可以使用 `size(TextEntrySize::Large)` 让文本变大：

@@ -62,9 +62,9 @@ class ManagePost extends Component implements HasForms, HasActions
 {
     use InteractsWithActions;
     use InteractsWithForms;
-    
+
     public Post $post;
-    
+
     public function deleteAction(): Action
     {
         return Action::make('delete')
@@ -81,7 +81,7 @@ class ManagePost extends Component implements HasForms, HasActions
 ```blade
 <div>
     {{ $this->deleteAction }}
-    
+
     <x-filament-actions::modals />
 </div>
 ```
@@ -99,7 +99,7 @@ class ManagePost extends Component implements HasForms, HasActions
         
         {{ ($this->delete)(['post' => $post->id]) }}
     @endforeach
-    
+
     <x-filament-actions::modals />
 </div>
 ```
@@ -116,7 +116,7 @@ public function deleteAction(): Action
         ->requiresConfirmation()
         ->action(function (array $arguments) {
             $post = Post::find($arguments['post']);
-            
+
             $post?->delete();
         });
 }
@@ -133,7 +133,7 @@ public function deleteAction(): Action
         $this->viewAction,
         $this->deleteAction,
     ]" />
-    
+
     <x-filament-actions::modals />
 </div>
 ```
@@ -155,7 +155,7 @@ public function deleteAction(): Action
         tooltip="More actions"
         dropdown-placement="bottom-start"
     />
-    
+
     <x-filament-actions::modals />
 </div>
 ```
@@ -179,7 +179,7 @@ public function editAction(): Action
             $post = Post::find($arguments['post']);
             
             // ...
-            
+
             $this->replaceMountedAction('publish', $arguments);        
         });
 }
@@ -191,7 +191,7 @@ public function publishAction(): Action
         // ...
         ->action(function (array $arguments) {
             $post = Post::find($arguments['post']);
-            
+
             $post->publish();
         });
 }

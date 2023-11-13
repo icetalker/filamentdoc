@@ -7,9 +7,9 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Filament 表格可以使用 [Actions](../actions)。Action 是添加到[表格行末](#行-action)或者表格[头部](#头部-action)的按钮。比如，如果你想在表格头部添加"新建"记录的 action，在每行中添加"编辑"和"删除" action。[批量 action](#批量操作)可用在记录选中时执行代码。另外，action 也可以添加到[表格列](#列-action)，这样该列中的每个单元格都是 action 的触发器。
+Filament 表格可以使用 [Action](../actions/installation)。Action 是添加到[表格行末](#行-action)或者表格[头部](#头部-action)的按钮。比如，如果你想在表格头部添加"新建"记录的 Action，在每行中添加"编辑"和"删除" Action。[批量 Action](#批量操作)可用在记录选中时执行代码。另外，Action 也可以添加到[表格列](#列-action)，这样该列中的每个单元格都是 action 的触发器。
 
-强烈建议阅读[自定义 action 触发按钮](../actions/trigger-button) 和 [action 模态框](../actions/modals)文档，去了解 action 的全部功能。
+强烈建议阅读[自定义 Action 触发按钮](../actions/trigger-button) 和 [Action 模态框](../actions/modals)文档，去了解 Action 的全部功能。
 
 ## 行 action
 
@@ -48,9 +48,9 @@ Action 上的所有方法都接收回调函数，在回调函数你可以访问�
 
 <AutoScreenshot name="tables/actions/simple" alt="Table with actions" version="3.x" />
 
-### 将行 action 放置到列的前面
+### 将行 Action 放置到列的前面
 
-默认情况下，表格中的行 action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到列的前面： 
+默认情况下，表格中的行 Action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到列的前面： 
 
 ```php
 use Filament\Tables\Enums\ActionsPosition;
@@ -67,9 +67,9 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/actions/before-columns" alt="Table with actions before columns" version="3.x" />
 
-### 将行 action 放置到复选框列前
+### 将行 Action 放置到复选框列前
 
-默认情况下，表格中的行 action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到复选框列的前面： 
+默认情况下，表格中的行 Action 渲染在每一行的最后一个单元格中。你可以使用 `position` 参数将其移动到复选框列的前面： 
 
 ```php
 use Filament\Tables\Enums\ActionsPosition;
@@ -88,7 +88,7 @@ public function table(Table $table): Table
 
 ## 批量操作
 
-表格也支持批量操作(bulk actions)。当用户在表格中选择多行时，可使用该 action。通常，当行被选中后，会有一个批量操作按钮显示在表格的左上角。用户点击该按钮时，它会显示一个 action 的下拉菜单供选择。你可以将批量操作放到 `$table->bulkActions()` 方法中：
+表格也支持批量操作(bulk actions)。当用户在表格中选择多行时，可使用该 Action。通常，当行被选中后，会有一个批量操作按钮显示在表格的左上角。用户点击该按钮时，它会显示一个 Action 的下拉菜单供选择。你可以将批量操作放到 `$table->bulkActions()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -199,7 +199,7 @@ public function table(Table $table): Table
 
 ## 头部 action
 
-[行 action](#行-action) 和[批量操作](#批量操作)都可以在表头中渲染。请将其放到 `$table->headerActions()` 方法中：
+[行 Action](#行-action) 和[批量操作](#批量操作)都可以在表头中渲染。请将其放到 `$table->headerActions()` 方法中：
 
 ```php
 use Filament\Tables\Table;
@@ -213,17 +213,17 @@ public function table(Table $table): Table
 }
 ```
 
-这对于像 "create" 这种不依赖于特定表格行的 action 或者需要更为显眼的批量 action，非常有用，
+这对于像 "create" 这种不依赖于特定表格行的 Action 或者需要更为显眼的批量 Action，非常有用，
 
 <AutoScreenshot name="tables/actions/header" alt="Table with header actions" version="3.x" />
 
-## 列 action
+## 列 Action
 
-可以将 Action 添加到列中，这样点击该列的单元格时，它将充当 Action 的触发器。了解更多[列 action](columns/getting-started#运行-action)的相关信息，请查阅文档。
+可以将 Action 添加到列中，这样点击该列的单元格时，它将充当 Action 的触发器。了解更多[列 Action](columns/getting-started#运行-action)的相关信息，请查阅文档。
 
-## 预构建表格 action
+## 预构建表格 Action
 
-Filament 中带有多个你可以添加到表格预构建 action 及批量 action。它们的目标是简化大部分通用 Eloquent 相关的操作：
+Filament 中带有多个你可以添加到表格预构建 Action 及批量 Action。它们的目标是简化大部分通用 Eloquent 相关的操作：
 
 - [Create](../actions/prebuilt-actions/create)
 - [Edit](../actions/prebuilt-actions/edit)

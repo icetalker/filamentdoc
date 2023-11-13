@@ -162,8 +162,6 @@ php artisan make:filament-relation-manager CategoryResource posts title --soft-d
 
 关联记录会在一个表格中展示。整个关联管理器都是基于这个表格，包括[新建](#新建记录)、[编辑](#编辑记录)、[附加/分离记录](#附加和分离记录)、[关联/取消关联](#关联和取消关联记录)和删除记录等操作(Action)。
 
-按照[列表页](listing-records)中的文档，你可以在关联管理器类中使用所有的自定义功能：
-
 此外，你也可以使用[表格构造器](../../tables)的其他所有特性，来自定义关联管理器。
 
 ### 使用中间属性展示列表
@@ -351,10 +349,14 @@ AttachAction::make()
 
 同时，要确保 关联 *和* 反向关联 的 `withPivot()` 方法中使用了 `id` 属性。
 
-最后，请在关联管理器中添加 `$allowsDuplicates` 属性：
+最后，请在将 `$allowDuplicates()` 方法添加到表格中：
 
 ```php
-protected bool $allowsDuplicates = true;
+public function table(Table $table): Table
+{
+    return $table
+        ->allowDuplicates();
+}
 ```
 
 ## 关联和取消关联记录
@@ -748,17 +750,6 @@ AttachAction::make()
     ->recordSelectSearchColumns(['title', 'id'])
 ```
 
-## 只读模式
-
-资源管理器通常在资源的编辑页或查看页中展示。在查看页中，Filament 会自动隐藏所有用于修改关联的 Action，比如创建、编辑及删除。不过你可以重写资源管理器的 `isReadOnly()` 方法使之返回 `false`，来禁用该行为：
-
-```php
-public function isReadOnly(): bool
-{
-    return false;
-}
-```
-
 ## 传递属性到关联管理器
 
 在资源中注册关联管理器时，你可以使用 `make()` 方法，传递一个 [Livewire 属性](https://livewire.laravel.com/docs/properties)数组到关联管理器中：
@@ -799,3 +790,4 @@ class CommentsRelationManager extends RelationManager
 
 ```php
 protected static bool $isLazy = false;
+```
