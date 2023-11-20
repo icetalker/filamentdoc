@@ -359,7 +359,7 @@ public static function table(Table $table): Table
 
 ##### 使列可搜索
 
-随着兽医业务的增长，在表格中直接[搜索](/tables/columns/getting-started#搜索)患者的能力很有用。你可以在列中链式调用 `searchable()` 方法使之可查询。让我们将患者名称和主人名称设成可搜索。
+随着兽医业务的增长，在表格中直接[搜索](../tables/columns/getting-started#搜索)患者的能力很有用。你可以在列中链式调用 `searchable()` 方法使之可查询。让我们将患者名称和主人名称设成可搜索。
 
 ```php
 use Filament\Tables;
@@ -383,7 +383,7 @@ public static function table(Table $table): Table
 
 ##### 使这些列可排序
 
-要让 `patients` 表格可以按照年龄[排序](../tables/columns/getting-started#sorting)，请将 `sortable()` 方法添加到 `date_of_birth` 表格列：
+要让 `patients` 表格可以按照年龄[排序](../tables/columns/getting-started#排序)，请将 `sortable()` 方法添加到 `date_of_birth` 表格列：
 
 ```php
 use Filament\Tables;
@@ -412,7 +412,7 @@ public static function table(Table $table): Table
 
 Filament 表格可以设置[过滤器](../tables/filters)，过滤器是一个允许你限制 Eloquent 查询范围来减少表格记录的组件。过滤器过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
 
-Filament 包含了一个预制的 [`SelectFilter`](../tables/filters#select-filters)，你可以将其添加到表格的 `filters()` 中：
+Filament 包含了一个预制的 [`SelectFilter`](../tables/filters#select-过滤器)，你可以将其添加到表格的 `filters()` 中：
 
 ```php
 use Filament\Tables;

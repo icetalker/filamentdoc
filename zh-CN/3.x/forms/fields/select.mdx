@@ -91,7 +91,7 @@ Select::make('technologies')
 
 <AutoScreenshot name="forms/fields/select/multiple" alt="Multi-select" version="3.x" />
 
-这些选项以 JSON 格式返回。如果你使用 Eloquent 保存，请确保将 `array` [cast] 添加到对应的模型属性上：
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存，请确保将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到对应的模型属性上：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -141,7 +141,7 @@ Select::make('status')
 
 ## 集成 Eloquent 关联
 
-> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型]](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道应该使用哪个模型来检索关联。
+> 如果你在 Livewire 组件内创建表单，请确保设置好[表单模型](../adding-a-form-to-a-livewire-component#设置表单模型)。否则，Filament 不知道应该使用哪个模型来检索关联。
 
 你可以使用 `Select` 的 `relationship()` 方法来配置 `BelongsTo` 关联，以自动检索选项。`titleAttribute` 是用于为每个选项生成标签的字段名：
 
