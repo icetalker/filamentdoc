@@ -10,7 +10,7 @@ Filament 插件的基础是 Laravel 包。它们通过 Composer 安装到 Filame
 
 - [Laravel 文档的包开发章节](https://laravel.com/docs/packages) 是一个很好的参考指南。
 - [Spatie 的包训练教程](https://spatie.be/products/laravel-package-training) 是一个很好的说明视频，一步步教你处理过程。
-- [Spatie'的包工具](https://github.com/spatie/laravel-package-tools) 允许你使用 Fluent 配置对象简化服务提供者类。
+- [Spatie 的包工具](https://github.com/spatie/laravel-package-tools) 允许你使用 Fluent 配置对象简化服务提供者类。
 
 Filament 插件是基于 Laravel 包的概念构建的，允许您为任何 Filament 面板提供和使用可重复使用的功能。它们可以一次添加到每个面板中，每个面板也可以进行不同的配置。
 
@@ -185,7 +185,7 @@ BlogPlugin::get()->hasAuthorResource()
 
 以 Laravel 包的方式发布整个面板很简单。通过这种方法，用户可以轻松安装插件并拥有整个预制应用。
 
-配置(configuration)面板时，配置类继承了 `PanelProvider` 类，且它是一个标准的 Laravel 服务提供者。你可以在包中以服务提供者的方式使用它：
+[配置](configuration)面板时，配置类继承了 `PanelProvider` 类，且它是一个标准的 Laravel 服务提供者。你可以在包中以服务提供者的方式使用它：
 
 ```php
 <?php
