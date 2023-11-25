@@ -65,3 +65,23 @@ it('sends a notification', function () {
         );
 });
 ```
+
+与之相反，你也可以断言通知未发生：
+
+```php
+use Filament\Notifications\Notification;
+use function Pest\Livewire\livewire;
+
+it('does not send a notification', function () {
+    livewire(CreatePost::class)
+        ->assertNotNotified()
+        // or
+        ->assertNotNotified('Unable to create post')
+        // or
+        ->assertNotified(
+            Notification::make()
+                ->danger()
+                ->title('Unable to create post')
+                ->body('Something went wrong.'),
+        );
+```

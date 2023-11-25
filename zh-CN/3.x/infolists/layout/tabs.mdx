@@ -166,6 +166,23 @@ Tabs::make('Label')
 
 <AutoScreenshot name="infolists/layout/tabs/badges" alt="Tabs with badges" version="3.x" />
 
+如果你想修改徽章颜色，可用使用 `badgeColor()` 方法：
+
+```php
+use Filament\Infolists\Components\Tabs;
+
+Tabs::make('Label')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->badge(5)
+            ->badgeColor('success')
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
 ## 在选项卡中使用网格 columns
 
 你可以在 Tab 中使用 `columns()` 自定义 [Grid](grid)：

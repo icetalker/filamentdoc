@@ -14,7 +14,7 @@ Filament 带有许多图表 Widget 模板，可用来展示实时、交互式图
 php artisan make:filament-widget BlogPostsChart --chart
 ```
 
-有一个 `ChartWidget` 类用于所有图表继承。图表的类型由 `getType()` 方法设置。本例中，该方法返回字符串 `'line'`。
+有一个 `ChartWidget` 类用于所有图表。图表的类型由 `getType()` 方法设置。本例中，该方法返回字符串 `'line'`。
 
 `protected static ?string $heading` 变量用于设置描述该图表的标题。如果你想设置动态标题，你可以重写 `getHeading()` 方法。
 
@@ -57,14 +57,14 @@ class BlogPostsChart extends ChartWidget
 
 以下是你可以继承的图表 Widget 类清单，以及他们对应的 [Chart.js](https://www.chartjs.org/docs) 文档页面，从中你可以了解 `getData()` 应该怎么返回哪些值。
 
-- `Filament\Widgets\BarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bar)
-- `Filament\Widgets\BubbleChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bubble)
-- `Filament\Widgets\DoughnutChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\LineChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/line)
-- `Filament\Widgets\PieChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/polar)
-- `Filament\Widgets\RadarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/radar)
-- `Filament\Widgets\ScatterChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/scatter)
+- Bar chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bar)
+- Bubble chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bubble)
+- Doughnut chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
+- Line chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/line)
+- Pie chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
+- Polar area chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/polar)
+- Radar chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/radar)
+- Scatter chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/scatter)
 
 ## 自定义图表颜色
 
@@ -186,7 +186,7 @@ protected static ?string $maxHeight = '300px';
 
 ## 设置图表配置项
 
-你可以在图表类中指定 `$options` 属性，用以控制 Chart.js 库提供的多个配置项。比如，你想让 `LineChartWidget` 类关闭 [legend](https://www.chartjs.org/docs/latest/configuration/legend.html)。
+你可以在图表类中指定 `$options` 属性，用以控制 Chart.js 库提供的多个配置项。比如，你想让 Line Chart 关闭 [legend](https://www.chartjs.org/docs/latest/configuration/legend.html)。
 
 ```php
 protected static ?array $options = [

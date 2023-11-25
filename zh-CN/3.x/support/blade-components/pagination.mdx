@@ -30,12 +30,13 @@ class ListUsers extends Component
 <x-filament::pagination :paginator="$users" />
 ```
 
-此外，你也可以使用简单分页，简单分页只会渲染"上一页"及"下一页"按钮：
+此外，你也可以使用简单分页或者 cursor 分页，这只会渲染"上一页"及"下一页"按钮：
 
 ```php
 use App\Models\User;
 
 User::query()->simplePaginate(10)
+User::query()->cursorPaginate(10)
 ```
 
 ## 允许用户自定义每页展示数量

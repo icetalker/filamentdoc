@@ -14,7 +14,7 @@ title: Upgrading from v2.x
 Please upgrade Filament before upgrading to Livewire v3. Instructions on how to upgrade Livewire can be found [here](https://livewire.laravel.com/docs/upgrading).
 
 > **Livewire v3 is recently released!**<br />
-> The livewire team have done a great job in mking it stable,but it was a complete rewrite of Livewire v2.You may encounter issuses,so we recommend testing your application thoroughly before using Filament v3 in production.
+> The Livewire team have done a great job in making it stable, but it was a complete rewrite of Livewire v2. You may encounter issues, so we recommend testing your application thoroughly before using Filament v3 in production.
 
 ## Upgrading automatically
 
@@ -38,7 +38,7 @@ You can now `composer remove filament/upgrade` as you don't need it anymore.
 
 ## Upgrading manually
 
-After upgrading dependency via Composer, you should execute `php artisan filament:upgrade` in order to clear any Laravel caches and publish new frontend assets.
+After upgrading the dependency via Composer, you should execute `php artisan filament:upgrade` in order to clear any Laravel caches and publish the new frontend assets.
 
 ### High-impact changes
 
@@ -128,7 +128,7 @@ Edit and View resource pages:
 Relation managers:
 
 - `form()` is no longer static
-- `getInverseRelationshipName()`
+- `getInverseRelationshipName()` return type is now `?string`
 - `table()` is no longer static
 
 Custom dashboard pages:
@@ -208,3 +208,15 @@ Some Blade components have been moved to different namespaces:
 - `<x-filament::widget>` is now `<x-filament-widgets::widget>`
 
 However, aliases have been set up so that you don't need to change your code.
+
+#### Resource pages without a `$resource` property
+
+Filament v2 allowed for resource pages to be created without a `$resource` property. In v3 you must declare this, else you may end up with the error:
+
+`Typed static property Filament\Resources\Pages\Page::$resource must not be accessed before initialization`
+
+You should ensure that the `$resource` property is set on all resource pages:
+
+```php
+protected static string $resource = PostResource::class;
+```

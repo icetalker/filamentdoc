@@ -126,7 +126,7 @@ User 模型(实现 `FilamentUser` 接口)：
 管理管理器：
 
 - `form()` 不再是静态
-- `getInverseRelationshipName()`
+- `getInverseRelationshipName()` 返回值现在为 `?string`
 - `table()` 不再是静态
 
 自定义仪表盘页：
@@ -190,7 +190,7 @@ Filament v3 有了一个新的通用插件系统，它打破了面板的约束�
 
 > 如果你在 v2.13 之后开始接触 Filament 项目，可以跳过此部分。从那之后，新的资源和关联管理器已经使用新语法生成。
 
-自 v2.13 起，资源和关联管理器在 `table()` 方法中定义 Action，而不再默认情况下假定 resources and relation managers now define actions within the `table()` method instead of them being assumed by default.
+自 v2.13 起，资源和关联管理器在 `table()` 方法中定义 Action，而不再是默认的假定操作。
 
 使用简单资源时，请在管理页面中删除 `CanCreateRecords`、`CanDeleteRecords`、`CanEditRecords` 及 `CanViewRecords` trait。
 
@@ -206,3 +206,15 @@ Filament v3 有了一个新的通用插件系统，它打破了面板的约束�
 - `<x-filament::widget>` 现在改为 `<x-filament-widgets::widget>`
 
 不过，也同时设置了别名，以便你不用修改代码。
+
+#### 没有 `$resource` 属性的资源页面
+
+Filament v2 允许不带 `$resource` 属性创建资源页面。在 v3 中，你必须对其进行声明，否则将出现错误：
+
+`Typed static property Filament\Resources\Pages\Page::$resource must not be accessed before initialization`
+
+请确保所有的资源页上都设置了 `$resource` 属性：
+
+```php
+protected static string $resource = PostResource::class;
+```

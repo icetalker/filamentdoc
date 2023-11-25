@@ -100,17 +100,15 @@ export default {
 </div>
 ```
 
-为避免 CSS 文件自动加载，你可以对 `FilamentAsset::register()` 调用进行包装，检查控制台是否需要这些资源。如果控制台对其有请求，可以猜想用户正在发布资源而非真正请求：
+为防止 CSS 文件被自动加载，可以使用 `loadedOnRequest()` 方法：
 
 ```php
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 
-if (app()->runningInConsole()) {
-    FilamentAsset::register([
-        Css::make('custom-stylesheet', __DIR__ . '/../../resources/css/custom.css'),
-    ]);
-}
+FilamentAsset::register([
+    Css::make('custom-stylesheet', __DIR__ . '/../../resources/css/custom.css')->loadedOnRequest(),
+]);
 ```
 
 如果 CSS 文件[被注册到插件](#为插件注册资源)，你必须将插件包传入作为 `FilamentAsset::getStyleHref()` 方法的第二个参数。
@@ -137,6 +135,24 @@ FilamentAsset::register([
     Css::make('example-external-stylesheet', 'https://example.com/external.css'),
     Css::make('example-local-stylesheet', asset('css/local.css')),
 ]);
+```
+
+### 注册 CSS 变量
+
+有时，你想在 CSS 文件后台使用动态数据。为此你可以在服务提供者的 `boot()` 方法中使用 `FilamentAsset::registerCssVariables()` 方法：
+
+```php
+use Filament\Support\Facades\FilamentAsset;
+
+FilamentAsset::registerCssVariables([
+    'background-image' => asset('images/background.jpg'),
+]);
+```
+
+现在，你可以从任何的 CSS 文件中访问这个变量：
+
+```css
+background-image: var(--background-image);
 ```
 
 ## 注册 JavaScript 文件
@@ -316,7 +332,7 @@ FilamentAsset::register([
     ax-load
     ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('test-component') }}"
     x-data="testComponent({
-        state: $wire.{{ $applyStateBindingModifiers("entangle('{$statePath}')") }},
+        state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
     })"
 >
     <input x-model="state" />

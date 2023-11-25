@@ -218,3 +218,14 @@ ImageEntry::make('logo')
         'loading' => 'lazy',
     ]),
 ```
+
+## 阻止检测文件存在与否
+
+当 Infolist 加载完后，它将自动检测图片是否存在。这全部在后台完成。当远程存储许多图片时，这可能会非常耗时。您可以使用 `checkFileExistence(false)` 方法禁用此功能：
+
+```php
+use Filament\Infolists\Components\ImageEntry;
+
+ImageEntry::make('attachment')
+    ->checkFileExistence(false)
+```

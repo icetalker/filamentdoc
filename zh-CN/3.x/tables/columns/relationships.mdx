@@ -26,6 +26,17 @@ TextColumn::make('users_count')->counts('users')
 
 本例中，`users` 是要计数的关联名。列名必须是 `users_count`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)
 
+如果你想在计算之前设置关联查询范围，你可以传递一个数组到该方法中，其中键名是关联名，值是设置 Eloquent 查询范围的函数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('users_count')->counts([
+    'users' => fn (Builder $query) => $query->where('is_active', true),
+])
+```
+
 ## 判断关联是否存在
 
 使用 `exists()` 方法，你可以说明列中的关联记录是否存在：
@@ -38,6 +49,17 @@ TextColumn::make('users_exists')->exists('users')
 
 本例中，`users` 是要检查是否存在的关联名。列名必须是 `users_exists`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)
 
+如果你想在计算之前设置关联查询范围，你可以传递一个数组到该方法中，其中键名是关联名，值是设置 Eloquent 查询范围的函数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('users_exists')->exists([
+    'users' => fn (Builder $query) => $query->where('is_active', true),
+])
+```
+
 ## 聚合关联
 
 Filament 提供了几种用于聚合关联的字段，包括 `avg()`、`max()`、`min()` 和 `min()`。比如，如果你想在列中显示所有关联记录中某个字段的平均值，你可以使用 `avg()` 方法：
@@ -49,3 +71,14 @@ TextColumn::make('users_avg_age')->avg('users', 'age')
 ```
 
 本例中，`users` 是关联名，`age` 是要平均的字段。列名必须是 `users_avg_age`，因为这是 Laravel 用来存储结果的[命名规范](https://laravel.com/docs/eloquent-relationships#counting-related-models)
+
+如果你想在计算之前设置关联查询范围，你可以传递一个数组到该方法中，其中键名是关联名，值是设置 Eloquent 查询范围的函数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('users_avg_age')->avg([
+    'users' => fn (Builder $query) => $query->where('is_active', true),
+], 'age')
+```

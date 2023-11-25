@@ -324,3 +324,18 @@ public function table(Table $table): Table
         ->groupsInDropdownOnDesktop();
 }
 ```
+
+## 隐藏分组设置
+
+使用 `groupingSettingsHidden()` 方法，你可以隐藏分组设置界面：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+		->defaultGroup('status');
+        ->groupingSettingsHidden();
+}
+```
