@@ -98,6 +98,37 @@ Section::make('Cart')
 
 <AutoScreenshot name="forms/layout/section/collapsed" alt="Collapsed section" version="3.x" />
 
+### 持久化折叠 Section
+
+使用 `persistCollapsed()` 方法，你可以在本地存储中对一个 Section 是否折叠进行持久化，使之在用户刷新页面后保持折叠：
+
+```php
+use Filament\Infolists\Components\Section;
+
+Section::make('Cart')
+    ->description('The items you have selected for purchase')
+    ->schema([
+        // ...
+    ])
+    ->collapsible()
+    ->persistCollapsed()
+```
+
+要持久化折叠状态，本地存储需要一个唯一 ID 来储存状态。该 ID 基于 Section 的标题生成。如果该 Section 没有标题，或者你有多个想要折叠的 Section 使用了同一个标题，你可以手动指定 `id()` 以防止 ID 冲突：
+
+```php
+use Filament\Infolists\Components\Section;
+
+Section::make('Cart')
+    ->description('The items you have selected for purchase')
+    ->schema([
+        // ...
+    ])
+    ->collapsible()
+    ->persistCollapsed()
+    ->id('order-cart')
+```
+
 ## 压缩 Section 样式
 
 当嵌套 Section 时，你可以使用更加紧凑的样式：

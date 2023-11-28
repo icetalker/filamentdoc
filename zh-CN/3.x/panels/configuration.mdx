@@ -102,7 +102,7 @@ public function panel(Panel $panel): Panel
 
 ## 自定义最大内容宽度
 
-默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以使用 `maxContentWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl`、`7xl`、`prose`、`screen-sm`、`screen-md`、`screen-lg`、`screen-xl`、`screen-2xl` 以及 `full`。默认值为 `7xl`：
+默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Prose`、`ScreenSmall`、`ScreenMedium`、`ScreenLarge`、`ScreenExtraLarge`、`ScreenTwoExtraLarge` 及 `Full`。默认值为 `SevenExtraLarge`。
 
 ```php
 use Filament\Panel;
@@ -111,7 +111,7 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         // ...
-        ->maxContentWidth('full');
+        ->maxContentWidth(MaxWidth::Full);
 }
 ```
 

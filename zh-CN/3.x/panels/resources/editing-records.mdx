@@ -300,7 +300,7 @@ protected static string $view = 'filament.resources.users.pages.edit-user';
 
     @if (count($relationManagers = $this->getRelationManagers()))
         <x-filament-panels::resources.relation-managers
-            :active-manager="$activeRelationManager"
+            :active-manager="$this->activeRelationManager"
             :managers="$relationManagers"
             :owner-record="$record"
             :page-class="static::class"

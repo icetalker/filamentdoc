@@ -9,7 +9,7 @@ title: 展示记录
 你可以在表格上面添加标签页，使之基于预定义条件过滤记录。每个标签页以不同的方式设置表格的 Eloquent 查询范围。要注册标签页，在列表页类中添加 `getTabs()` 方法，并返回一个 `Tab` 对象数组：
 
 ```php
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 public function getTabs(): array
@@ -29,7 +29,7 @@ public function getTabs(): array
 数组的键将用作选项卡的标识符，因此它们可以持久化在 URL 的查询字符串中。每个选项卡的标签也是由键生成的，但您可以通过将标签传递到选项卡的 `make()` 方法来覆盖它：
 
 ```php
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 public function getTabs(): array
@@ -49,7 +49,7 @@ public function getTabs(): array
 你可以将[图标](https://blade-ui-kit.com/blade-icons?set=1#search)传递到标签页的 `icon` 方法，将图标添加到标签页中：
 
 ```php
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Components\Tab;
 
 Tab::make()
     ->icon('heroicon-m-user-group')
@@ -70,13 +70,45 @@ Tab::make()
 你可以将字符串传递给标签页的 `badge()` 方法，在标签页中添加徽章：
 
 ```php
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Components\Tab;
 
 Tab::make()
     ->badge(Customer::query()->where('active', true)->count())
 ```
 
-如上例所示，该方法对于统计过滤器中的记录数量非常有用。
+#### 修改过滤器标签页徽章颜色
+
+使用 `badgeColor()` 方法，可以修改徽章颜色：
+
+```php
+use Filament\Resources\Components\Tab;
+
+Tab::make()
+    ->badge(Customer::query()->where('active', true)->count())
+    ->badgeColor('success')
+```
+
+### 自定义默认标签页
+
+要自定义页面加载时选中的默认标签页，你可以在 `getDefaultActiveTab()` 方法中，返回该标签页对应的数组键名：
+
+```php
+use Filament\Resources\Components\Tab;
+
+public function getTabs(): array
+{
+    return [
+        'all' => Tab::make(),
+        'active' => Tab::make(),
+        'inactive' => Tab::make(),
+    ];
+}
+
+public function getDefaultActiveTab(): string | int | null
+{
+    return 'active';
+}
+```
 
 ## 授权
 
@@ -88,13 +120,13 @@ Tab::make()
 
 ## 自定义表格 Eloquent 查询
 
-尽管你可以[为整个资源自定义 Eloquent 查询](getting-started#自定义资源-eloquent-查询)，你也可以为列表页表格进行特定修改。为此，请在列表页类中使用 `modifyQueryUsing()` 方法：
+尽管你可以[为整个资源自定义 Eloquent 查询](getting-started#自定义资源-eloquent-查询)，你也可以为列表页表格进行特定修改。为此，请在资源的 `table()` 方法中使用 `modifyQueryUsing()` 方法：
 
 ```php
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-public function table(Table $table): Table
+public static function table(Table $table): Table
 {
     return $table
         ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes());

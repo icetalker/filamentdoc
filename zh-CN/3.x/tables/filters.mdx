@@ -335,11 +335,12 @@ Filter::make('created_at')
 
 ### 多个激活指示器
 
-你甚至可以通过返回数组，一次性渲染多个指示器。如果你有关联不同指示器的不同字段，你应该使用字段名作为数组键，以确保过滤器移除时重置的字段正确：
+你甚至可以通过返回 `Indicator` 对象数组，一次性渲染多个指示器。如果你有关联不同指示器的不同字段，你应该在 `Indicator` 对象上使用 `removeField()` 方法，以确保过滤器移除时重置正确的字段：
 
 ```php
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Indicator;
 
 Filter::make('created_at')
     ->form([
@@ -351,11 +352,13 @@ Filter::make('created_at')
         $indicators = [];
 
         if ($data['from'] ?? null) {
-            $indicators['from'] = 'Created from ' . Carbon::parse($data['from'])->toFormattedDateString();
+            $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['from'])->toFormattedDateString())
+                ->removeField('from');
         }
 
         if ($data['until'] ?? null) {
-            $indicators['until'] = 'Created until ' . Carbon::parse($data['until'])->toFormattedDateString();
+            $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['until'])->toFormattedDateString())
+                ->removeField('until');
         }
 
         return $indicators;
@@ -381,7 +384,7 @@ public function table(Table $table): Table
 
 ## 控制过滤器下拉菜单的宽度
 
-要自定义下拉菜单的宽度，你可以使用 `filtersFormWidth()` 方法，并指定一个宽度 - `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 或 `7xl`。默认宽度是 `xs`：
+要自定义下拉菜单的宽度，你可以使用 `filtersFormWidth()` 方法，并指定一个宽度 - `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge` 或 `SevenExtraLarge`。默认宽度是 `ExtraSmall`：
 
 ```php
 use Filament\Tables\Table;
@@ -392,7 +395,7 @@ public function table(Table $table): Table
         ->filters([
             // ...
         ])
-        ->filtersFormWidth('4xl');
+        ->filtersFormWidth(MaxWidth::FourExtraLarge);
 }
 ```
 

@@ -18,7 +18,7 @@ Filament 包含多个[专用验证方法](#可用规则)，不过你也可用使
 
 ### Active URL
 
-字段值必须经过PHP函数 `dns_get_record()` 验证返回有效的 A 或 AAAA 记录。(即具有 A 记录的网址)[参考Laravel文档](https://laravel.com/docs/validation#rule-active-url)
+字段值必须经过PHP函数 `dns_get_record()` 验证返回有效的 A 或 AAAA 记录。(即具有 A 记录的网址)[参考 Laravel 文档](https://laravel.com/docs/validation#rule-active-url)
 
 ```php
 Field::make('name')->activeUrl()
@@ -26,7 +26,7 @@ Field::make('name')->activeUrl()
 
 ### After (date)
 
-字段值必须在给定日期之后。[参考Laravel文档](https://laravel.com/docs/validation#rule-after)
+字段值必须在给定日期之后。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-after)
 
 ```php
 Field::make('start_date')->after('tomorrow')
@@ -41,7 +41,7 @@ Field::make('end_date')->after('start_date')
 
 ### After or equal to (date)
 
-字段值必须晚于或者等于给定日期。[参考Laravel文档](https://laravel.com/docs/validation#rule-after-or-equal)
+字段值必须晚于或者等于给定日期。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-after-or-equal)
 
 ```php
 Field::make('start_date')->afterOrEqual('tomorrow')
@@ -56,7 +56,7 @@ Field::make('end_date')->afterOrEqual('start_date')
 
 ### Alpha
 
-字段值必须全部由英文字母组成。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha)
+字段值必须全部由英文字母组成。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-alpha)
 
 ```php
 Field::make('name')->alpha()
@@ -64,7 +64,7 @@ Field::make('name')->alpha()
 
 ### Alpha Dash
 
-字段值可以包含英文字母、数字、中横线(-)或下划线(_)。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha-dash)
+字段值可以包含英文字母、数字、中横线(-)或下划线(_)。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-alpha-dash)
 
 ```php
 Field::make('name')->alphaDash()
@@ -72,7 +72,7 @@ Field::make('name')->alphaDash()
 
 ### Alpha Numeric
 
-字段值必须是英文字母或数字组成。[参考Laravel文档](https://laravel.com/docs/validation#rule-alpha-num)
+字段值必须是英文字母或数字组成。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-alpha-num)
 
 ```php
 Field::make('name')->alphaNum()
@@ -80,7 +80,7 @@ Field::make('name')->alphaNum()
 
 ### ASCII
 
-字段值必须是 7 位 ASCII 字符。[参考Laravel文档](https://laravel.com/docs/10.x/validation#rule-ascii)
+字段值必须是 7 位 ASCII 字符。[参考 Laravel 文档](https://laravel.com/docs/10.x/validation#rule-ascii)
 
 ```php
 Field::make('name')->ascii()
@@ -88,7 +88,7 @@ Field::make('name')->ascii()
 
 ### Before (date)
 
-字段值必须在给定日期之前。[参考Laravel文档](https://laravel.com/docs/validation#rule-before)
+字段值必须在给定日期之前。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-before)
 
 ```php
 Field::make('start_date')->before('first day of next month')
@@ -103,7 +103,7 @@ Field::make('end_date')
 
 ### Before or equal to (date)
 
-字段值必须早于或者等于给定日期。[参考Laravel文档](https://laravel.com/docs/validation#rule-before-or-equal)
+字段值必须早于或者等于给定日期。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-before-or-equal)
 
 ```php
 Field::make('start_date')->beforeOrEqual('end of this month')
@@ -118,7 +118,7 @@ Field::make('end_date')
 
 ### Confirmed
 
-字段值必须与字段 `{field}_confirmation` 匹配。[参考Laravel文档](https://laravel.com/docs/validation#rule-confirmed)
+字段值必须与字段 `{field}_confirmation` 匹配。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-confirmed)
 
 ```php
 Field::make('password')->confirmed()
@@ -127,7 +127,7 @@ Field::make('password_confirmation')
 
 ### Different
 
-字段值必须与另一个字段的之不同。[参考Laravel文档](https://laravel.com/docs/validation#rule-different)
+字段值必须与另一个字段的之不同。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-different)
 
 ```php
 Field::make('backup_email')->different('email')
@@ -135,7 +135,7 @@ Field::make('backup_email')->different('email')
 
 ### Doesnt Start With
 
-字段值不能以给定的其中一个值开头。[参考Laravel文档](https://laravel.com/docs/validation#rule-doesnt-start-with)
+字段值不能以给定的其中一个值开头。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-doesnt-start-with)
 
 ```php
 Field::make('name')->doesntStartWith(['admin'])
@@ -143,7 +143,7 @@ Field::make('name')->doesntStartWith(['admin'])
 
 ### Doesnt End With
 
-字段值不能以给定的其中一个值结尾。 [参考Laravel文档](https://laravel.com/docs/validation#rule-doesnt-end-with)
+字段值不能以给定的其中一个值结尾。 [参考 Laravel 文档](https://laravel.com/docs/validation#rule-doesnt-end-with)
 
 ```php
 Field::make('name')->doesntEndWith(['admin'])
@@ -151,7 +151,7 @@ Field::make('name')->doesntEndWith(['admin'])
 
 ### Ends With
 
-字段值必须以给定的其中一个值开头。[参考Laravel文档](https://laravel.com/docs/validation#rule-ends-with)
+字段值必须以给定的其中一个值开头。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-ends-with)
 
 ```php
 Field::make('name')->endsWith(['bot'])
@@ -159,7 +159,7 @@ Field::make('name')->endsWith(['bot'])
 
 ### Enum
 
-给定的字段必须是一个有效的 Enum 值。[参考Laravel文档](https://laravel.com/docs/validation#rule-enum)
+给定的字段必须是一个有效的 Enum 值。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-enum)
 
 ```php
 Field::make('status')->enum(MyStatus::class)
@@ -167,7 +167,7 @@ Field::make('status')->enum(MyStatus::class)
 
 ### Exists
 
-字段值必须在数据库中存在。[参考Laravel文档](https://laravel.com/docs/validation#rule-exists)
+字段值必须在数据库中存在。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-exists)
 
 ```php
 Field::make('invitation')->exists()
@@ -200,7 +200,7 @@ Field::make('invitation')
 
 ### Filled
 
-当字段存在时，字段值不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-filled)
+当字段存在时，字段值不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-filled)
 
 ```php
 Field::make('name')->filled()
@@ -208,7 +208,7 @@ Field::make('name')->filled()
 
 ### Greater than
 
-验证的字段值必须比另一个字段的值大。[参考Laravel文档](https://laravel.com/docs/validation#rule-gt)
+验证的字段值必须比另一个字段的值大。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-gt)
 
 ```php
 Field::make('newNumber')->gt('oldNumber')
@@ -216,7 +216,7 @@ Field::make('newNumber')->gt('oldNumber')
 
 ### Greater than or equal to
 
-验证的字段值必须大于或等于给定字段的值。[参考Laravel文档](https://laravel.com/docs/validation#rule-gte)
+验证的字段值必须大于或等于给定字段的值。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-gte)
 
 ```php
 Field::make('newNumber')->gte('oldNumber')
@@ -224,7 +224,7 @@ Field::make('newNumber')->gte('oldNumber')
 
 ### In
 
-验证字段必须包含在给定的值列表中。[参考Laravel文档](https://laravel.com/docs/validation#rule-in)
+验证字段必须包含在给定的值列表中。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-in)
 
 ```php
 Field::make('status')->in(['pending', 'completed'])
@@ -232,7 +232,7 @@ Field::make('status')->in(['pending', 'completed'])
 
 ### Ip Address
 
-字段值必须是 IP 地址。[参考Laravel文档](https://laravel.com/docs/validation#rule-ip)
+字段值必须是 IP 地址。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-ip)
 
 ```php
 Field::make('ip_address')->ip()
@@ -242,7 +242,7 @@ Field::make('ip_address')->ipv6()
 
 ### JSON
 
-字段值必须是有效的 JSON 字符串。[参考Laravel文档](https://laravel.com/docs/validation#rule-json)
+字段值必须是有效的 JSON 字符串。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-json)
 
 ```php
 Field::make('ip_address')->json()
@@ -250,7 +250,7 @@ Field::make('ip_address')->json()
 
 ### Less than
 
-验证的字段值必须比另一个字段的值小。[参考Laravel文档](https://laravel.com/docs/validation#rule-lt)
+验证的字段值必须比另一个字段的值小。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-lt)
 
 ```php
 Field::make('newNumber')->lt('oldNumber')
@@ -258,7 +258,7 @@ Field::make('newNumber')->lt('oldNumber')
 
 ### Less than or equal to
 
-验证的字段值必须大于或等于给定字段的值。[参考Laravel文档](https://laravel.com/docs/validation#rule-lte)
+验证的字段值必须大于或等于给定字段的值。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-lte)
 
 ```php
 Field::make('newNumber')->lte('oldNumber')
@@ -266,7 +266,7 @@ Field::make('newNumber')->lte('oldNumber')
 
 ### Mac Address
 
-字段值必须是 MAC 地址。[参考Laravel文档](https://laravel.com/docs/validation#rule-mac)
+字段值必须是 MAC 地址。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-mac)
 
 ```php
 Field::make('mac_address')->macAddress()
@@ -274,7 +274,7 @@ Field::make('mac_address')->macAddress()
 
 ### Multiple Of
 
-字段值必须是给定值的倍数。[参考Laravel文档](https://laravel.com/docs/validation#multiple-of)
+字段值必须是给定值的倍数。[参考 Laravel 文档](https://laravel.com/docs/validation#multiple-of)
 
 ```php
 Field::make('number')->multipleOf(2)
@@ -282,7 +282,7 @@ Field::make('number')->multipleOf(2)
 
 ### Not In
 
-验证字段不包含在给定的值列表中 [参考Laravel文档](https://laravel.com/docs/validation#rule-not-in)
+验证字段不包含在给定的值列表中 [参考 Laravel 文档](https://laravel.com/docs/validation#rule-not-in)
 
 ```php
 Field::make('status')->notIn(['cancelled', 'rejected'])
@@ -290,7 +290,7 @@ Field::make('status')->notIn(['cancelled', 'rejected'])
 
 ### Not Regex
 
-字段值必须不能匹配给定的正则表达式。[参考Laravel文档](https://laravel.com/docs/validation#rule-not-regex)
+字段值必须不能匹配给定的正则表达式。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-not-regex)
 
 ```php
 Field::make('email')->notRegex('/^.+$/i')
@@ -298,7 +298,7 @@ Field::make('email')->notRegex('/^.+$/i')
 
 ### Nullable
 
-字段值可以为空。如果没有使用 `required` 规则，这个规则会被默认使用。[参考Laravel文档](https://laravel.com/docs/validation#rule-nullable)
+字段值可以为空。如果没有使用 `required` 规则，这个规则会被默认使用。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-nullable)
 
 ```php
 Field::make('name')->nullable()
@@ -306,15 +306,41 @@ Field::make('name')->nullable()
 
 ### Prohibited
 
-字段值必须是空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required)
+字段值必须是空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required)
 
 ```php
 Field::make('name')->prohibited()
 ```
 
+### Prohibited If
+
+只要其他指定字段有任何给定值，该字段就必须为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-prohibited-if)
+
+```php
+Field::make('name')->prohibitedIf('field', 'value')
+```
+
+### Prohibited Unless
+
+除非其他指定字段有任何给定值，否则给字段必须为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-prohibited-unless)
+
+```php
+Field::make('name')->prohibitedUnless('field', 'value')
+```
+
+### Prohibits
+
+如果该字段不为空，所有其他指定字段必须为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-prohibits)
+
+```php
+Field::make('name')->prohibits('field')
+
+Field::make('name')->prohibits(['field', 'another_field'])
+```
+
 ### Required
 
-字段值不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required)
+字段值不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required)
 
 ```php
 Field::make('name')->required()
@@ -322,7 +348,7 @@ Field::make('name')->required()
 
 ### Required If
 
-只有在指定字段有给定值时，该字段才不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-if)。
+只有在指定字段有给定值时，该字段才不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-if)。
 
 ```php
 Field::make('name')->requiredIf('field', 'value')
@@ -330,7 +356,7 @@ Field::make('name')->requiredIf('field', 'value')
 
 ### Required Unless
 
-字段值不能为空，_除非_其他自定字段有给定值。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-unless)。
+字段值不能为空，_除非_其他自定字段有给定值。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-unless)。
 
 ```php
 Field::make('name')->requiredUnless('field', 'value')
@@ -338,7 +364,7 @@ Field::make('name')->requiredUnless('field', 'value')
 
 ### Required With
 
-其他指定的任一字段不为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-with)
+其他指定的任一字段不为空时，该字段不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-with)
 
 ```php
 Field::make('name')->requiredWith('field,another_field')
@@ -346,7 +372,7 @@ Field::make('name')->requiredWith('field,another_field')
 
 ### Required With All
 
-只有当其他指定的字段都不为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-with-all)
+只有当其他指定的字段都不为空时，该字段不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-with-all)
 
 ```php
 Field::make('name')->requiredWithAll('field,another_field')
@@ -354,7 +380,7 @@ Field::make('name')->requiredWithAll('field,another_field')
 
 ### Required Without
 
-只有当其他指定的任一字段为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-without)
+只有当其他指定的任一字段为空时，该字段不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-without)
 
 ```php
 Field::make('name')->requiredWithout('field,another_field')
@@ -362,7 +388,7 @@ Field::make('name')->requiredWithout('field,another_field')
 
 ### Required Without All
 
-只有当其他指定的字段都为空时，该字段不能为空。[参考Laravel文档](https://laravel.com/docs/validation#rule-required-without-all)
+只有当其他指定的字段都为空时，该字段不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-without-all)
 
 ```php
 Field::make('name')->requiredWithoutAll('field,another_field')
@@ -370,7 +396,7 @@ Field::make('name')->requiredWithoutAll('field,another_field')
 
 ### Regex
 
-字段值必须匹配给定的正则表达式。[参考Laravel文档](https://laravel.com/docs/validation#rule-regex)
+字段值必须匹配给定的正则表达式。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-regex)
 
 ```php
 Field::make('email')->regex('/^.+@.+$/i')
@@ -378,7 +404,7 @@ Field::make('email')->regex('/^.+@.+$/i')
 
 ### Same
 
-字段值必须与另一个给定字段的值相同。[参考Laravel文档](https://laravel.com/docs/validation#rule-same)
+字段值必须与另一个给定字段的值相同。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-same)
 
 ```php
 Field::make('password')->same('passwordConfirmation')
@@ -386,7 +412,7 @@ Field::make('password')->same('passwordConfirmation')
 
 ### Starts With
 
-字段值必须以其中一个给定值开始。[参考Laravel文档](https://laravel.com/docs/validation#rule-starts-with)
+字段值必须以其中一个给定值开始。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-starts-with)
 
 ```php
 Field::make('name')->startsWith(['a'])
@@ -394,7 +420,7 @@ Field::make('name')->startsWith(['a'])
 
 ### String
 
-字段值必须是字符串。[参考Laravel文档](https://laravel.com/docs/validation#rule-string)
+字段值必须是字符串。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-string)
 
 ```php
 Field::make('name')->string()
@@ -402,7 +428,7 @@ Field::make('name')->string()
 
 ### Unique
 
-字段值必须在数据库中不存在。[参考Laravel文档](https://laravel.com/docs/validation#rule-unique)
+字段值必须在数据库中不存在。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-unique)
 
 ```php
 Field::make('email')->unique()
@@ -447,7 +473,7 @@ Field::make('email')
 
 ### UUID
 
-字段必须是有效的 RFC 4122 (版本 1、3、4 或 5) UUID。[参考Laravel文档](https://laravel.com/docs/validation#rule-uuid)
+字段必须是有效的 RFC 4122 (版本 1、3、4 或 5) UUID。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-uuid)
 
 ```php
 Field::make('identifer')->uuid()

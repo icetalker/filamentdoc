@@ -221,6 +221,19 @@ Repeater::make('qualifications')
     ])
 ```
 
+当 `disabled()` 和 `relationship()` 一起使用时，请确保 `disabled()` 的调用在 `relationship()` 之前。这可以确保在 `relationship()` 中进行 `dehydrated()` 调用不会被 `disabled()` 调用覆盖：
+
+```php
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->disabled()
+    ->relationship()
+    ->schema([
+        // ...
+    ])
+```
+
 ### 在关联中重排项目
 
 默认情况下，Repeater 项目 [重新排序](#项目重新排序)是禁用的。这是因为关联模型需要有一个 `sort` 字段用来存储关联记录的排序。要启用重新排序功能，你需要使用 `orderColumn()` 方法，传入关联模型的用于排序的字段名：

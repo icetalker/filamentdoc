@@ -179,6 +179,16 @@ CheckboxList::make('technologies')
     ->relationship(titleAttribute: 'name')
 ```
 
+当 `disabled()` 和 `relationship()` 一起使用时，请确保 `disabled()` 的调用在 `relationship()` 之前。这可以确保在 `relationship()` 中进行 `dehydrated()` 调用不会被 `disabled()` 调用覆盖：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technologies')
+    ->disabled()
+    ->relationship(titleAttribute: 'name')
+```
+
 ### 自定义关联查询
 
 你可以使用 `relationship()` 方法的 `modifyOptionsQueryUsing` 参数，自定义检索选项的数据库查询：

@@ -14,8 +14,10 @@ Action 可能会在运行前要求额外确认或者用户输入。你可以在 
 使用  `requiresConfirmation()` 方法，你可以在 Action 运行之前请求确认。这对于破坏性操作，比如删除记录，特别有用。
 
 ```php
+use App\Models\Post;
+
 Action::make('delete')
-    ->action(fn () => $this->record->delete())
+    ->action(fn (Post $record) => $record->delete())
     ->requiresConfirmation()
 ```
 
@@ -30,6 +32,7 @@ Action::make('delete')
 你可以使用[表单构造器](../forms)中的组件来创建自定义模态框表单。表单中的数据可以通过 `action()` 闭包中的 `$data` 数组获取：
 
 ```php
+use App\Models\Post;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 
@@ -40,9 +43,9 @@ Action::make('updateAuthor')
             ->options(User::query()->pluck('name', 'id'))
             ->required(),
     ])
-    ->action(function (array $data): void {
-        $this->record->author()->associate($data['authorId']);
-        $this->record->save();
+    ->action(function (array $data, Post $record): void {
+        $record->author()->associate($data['authorId']);
+        $record->save();
     })
 ```
 
@@ -53,13 +56,14 @@ Action::make('updateAuthor')
 通过 `fillForm()` 方法，你可以使用现有数据填充表单：
 
 ```php
+use App\Models\Post;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 
 Action::make('updateAuthor')
-    ->fillForm([
-        'authorId' => $this->record->author->id,
+    ->fillForm(fn (Post $record): array => [
+        'authorId' => $record->author->id,
     ])
     ->form([
         Select::make('authorId')
@@ -67,9 +71,9 @@ Action::make('updateAuthor')
             ->options(User::query()->pluck('name', 'id'))
             ->required(),
     ])
-    ->action(function (array $data): void {
-        $this->record->author()->associate($data['authorId']);
-        $this->record->save();
+    ->action(function (array $data, Post $record): void {
+        $record->author()->associate($data['authorId']);
+        $record->save();
     })
 ```
 
@@ -120,6 +124,7 @@ Action::make('create')
 你可以使用 `disabledForm()` 方法，禁用模态框中的所有表单字段，确保用户不能对其进行编辑：
 
 ```php
+use App\Models\Post;
 use App\Models\User;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -129,13 +134,13 @@ Action::make('approvePost')
         TextInput::make('title'),
         Textarea::make('content'),
     ])
-    ->fillForm([
-        'title' => $this->record->title,
-        'content' => $this->record->content,
+    ->fillForm(fn (Post $record): array => [
+        'title' => $record->title,
+        'content' => $record->content,
     ])
     ->disabledForm()
-    ->action(function (): void {
-        $this->record->approve();
+    ->action(function (Post $record): void {
+        $record->approve();
     })
 ```
 
@@ -144,8 +149,10 @@ Action::make('approvePost')
 你可以自定义模态框的标题、描述及提交按钮标签：
 
 ```php
+use App\Models\Post;
+
 Action::make('delete')
-    ->action(fn () => $this->record->delete())
+    ->action(fn (Post $record) => $record->delete())
     ->requiresConfirmation()
     ->modalHeading('Delete post')
     ->modalDescription('Are you sure you\'d like to delete this post? This cannot be undone.')
@@ -159,8 +166,10 @@ Action::make('delete')
 使用 `modalIcon()` 方法，你可以在模态框中添加[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
 
 ```php
+use App\Models\Post;
+
 Action::make('delete')
-    ->action(fn () => $this->record->delete())
+    ->action(fn (Post $record) => $record->delete())
     ->requiresConfirmation()
     ->modalIcon('heroicon-o-trash')
 ```
@@ -170,8 +179,10 @@ Action::make('delete')
 默认情况下，图标继承了 Action 按钮的颜色。你可以使用 `modalIconColor()` 方法自定义图标颜色：
 
 ```php
+use App\Models\Post;
+
 Action::make('delete')
-    ->action(fn () => $this->record->delete())
+    ->action(fn (Post $record) => $record->delete())
     ->requiresConfirmation()
     ->color('danger')
     ->modalIcon('heroicon-o-trash')
@@ -200,8 +211,10 @@ Action::make('updateAuthor')
 你可以将 Blade 视图传入 `modalContent()` 函数，在模态框中渲染自定义内容。
 
 ```php
+use App\Models\Post;
+
 Action::make('advance')
-    ->action(fn () => $this->record->advance())
+    ->action(fn (Post $record) => $record->advance())
     ->modalContent(view('filament.pages.actions.advance'))
 ```
 
@@ -225,8 +238,10 @@ Action::make('advance')
 默认情况下，如果有自定义内容的话，它们会展示在模态框表单之上，不过你可以使用 `modalContentFooter()` 将内容添加到表单下面：
 
 ```php
+use App\Models\Post;
+
 Action::make('advance')
-    ->action(fn () => $this->record->advance())
+    ->action(fn (Post $record) => $record->advance())
     ->modalContentFooter(view('filament.pages.actions.advance'))
 ```
 
@@ -235,15 +250,16 @@ Action::make('advance')
 你可以添加 Action 按钮到自定义模态框内容，如果你想添加按钮执行一个 Action(非主 Action)，这就有用。你可以使用 `registerModalActions()` 方法注册 Action，并将其传入到视图中：
 
 ```php
+use App\Models\Post;
 use Illuminate\Contracts\View\View;
 
 Action::make('advance')
     ->registerModalActions([
         Action::make('report')
             ->requiresConfirmation()
-            ->action(fn () => $this->record->report()),
+            ->action(fn (Post $record) => $record->report()),
     ])
-    ->action(fn () => $this->record->advance())
+    ->action(fn (Post $record) => $record->advance())
     ->modalContent(fn (Action $action): View => view(
         'filament.pages.actions.advance',
         ['action' => $action],
@@ -309,7 +325,7 @@ Action::make('updateAuthor')
 
 ## 修改模态框宽度
 
-使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl`、`7xl` 和 `screen`：
+使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `ExtraSmall`, `Small`, `Medium`, `Large`, `ExtraLarge`, `TwoExtraLarge`, `ThreeExtraLarge`, `FourExtraLarge`, `FiveExtraLarge`, `SixExtraLarge`, `SevenExtraLarge`, `Screen`：
 
 ```php
 Action::make('updateAuthor')
@@ -319,7 +335,7 @@ Action::make('updateAuthor')
     ->action(function (array $data): void {
         // ...
     })
-    ->modalWidth('5xl')
+    ->modalWidth(MaxWidth::FiveExtraLarge)
 ```
 
 ## 条件性隐藏模态框

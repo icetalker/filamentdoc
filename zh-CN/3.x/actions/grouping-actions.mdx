@@ -42,13 +42,13 @@ ActionGroup::make([
 
 ## 设置下拉菜单的位置
 
-使用 `placement()` 方法，可以设置下拉菜单相对于触发按钮的位置：
+使用 `dropdownPlacement()` 方法，可以设置下拉菜单相对于触发按钮的位置：
 
 ```php
 ActionGroup::make([
     // Array of actions
 ])
-    ->placement('top-start')
+    ->dropdownPlacement('top-start')
 ```
 
 <AutoScreenshot name="actions/group/placement" alt="Action group with top placement style" version="3.x" />
@@ -72,13 +72,13 @@ ActionGroup::make([
 
 ## 设置下拉菜单的宽度
 
-使用 `width()` 方法，可以为下拉菜单设置宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 和 `7xl`：
+使用 `dropdownWidth()` 方法，可以为下拉菜单设置宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 和 `7xl`：
 
 ```php
 ActionGroup::make([
     // Array of actions
 ])
-    ->width('xs')
+    ->dropdownWidth('xs')
 ```
 
 ## 控制下拉菜单最大高度

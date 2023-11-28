@@ -162,6 +162,17 @@ Select::make('technologies')
     ->relationship(titleAttribute: 'name')
 ```
 
+当 `disabled()` 和 `relationship()` 一起使用时，请确保 `disabled()` 的调用在 `relationship()` 之前。这可以确保在 `relationship()` 中进行 `dehydrated()` 调用不会被 `disabled()` 调用覆盖：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('technologies')
+    ->multiple()
+    ->disabled()
+    ->relationship(titleAttribute: 'name')
+```
+
 ### 在多个字段中搜索关联选项
 
 默认情况下，如果 Select 也是可搜索的，Filament 将会基于关联的标题字段返回关联的搜索结果。如果你想在多个列中搜索，你可以将字段数组传递给 `searchable()` 方法：

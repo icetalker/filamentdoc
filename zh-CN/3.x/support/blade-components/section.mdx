@@ -144,6 +144,25 @@ Section 可用于将内容分组到一起，并且可以选择使用标题：
 </x-filament::section>
 ```
 
+### 持久化折叠 Section
+
+使用  `persist-collapsed` 属性，你可以对是否在本地存储中折叠 Section 进行持久化，使之在用户刷新页面时保持折叠。同时需要一个唯一的 `id` 属性，以区分于其他 Section，使得每个 Section 都能持久化自己的折叠状态：
+
+```blade
+<x-filament::section
+    collapsible
+    collapsed
+    persist-collapsed
+    id="user-details"
+>
+    <x-slot name="heading">
+        User details
+    </x-slot>
+
+    {{-- Content --}}
+</x-filament::section>
+```
+
 ## 在 Setion Header 改为在内容旁边而非在其上面
 
 使用 `aside` 属性，你可以将 Section Header 的位置该为在内容旁边，而不是在其上面：
