@@ -1,0 +1,84 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/04-filters/03-ternary.md"
+title: 三元过滤器
+---
+
+## 概述
+
+三元过滤器(TernaryFilter)允许你创建一个拥有三个状态(通常为 true、false 及空白)的 [Select 过滤器]。要将名为 `is_admin` 的字段过滤为 `true` 或 `false`，你可以使用三元过滤器：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('is_admin')
+```
+
+## nullable 字段使用三元过滤器
+
+另一个通用的模式是使用 nullable 字段。比如，使用 `email_verified_at` 来过滤验证及未验证的用户，未验证的用户在本字段中为空时间戳。要应用该逻辑，你可以使用 `nullable()` 方法：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('email_verified_at')
+    ->nullable()
+```
+
+## 自定义三元过滤器使用的列字段
+
+用于设置查询范围的字段名是过滤器的名称。要自定义字段名，你可以使用 `attribute()` 方法：
+
+```php
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('verified')
+    ->nullable()
+    ->attribute('status_id')
+```
+
+## 自定义三元过滤器选项标签
+
+你可以自定义三元过滤器每个状态的标签。true 选项的标签可以使用 `trueLabel()` 方法自定义。false 选项可以使用 `falseLabel()` 方法自定义。空白(默认)选项的标签可以使用 `placeholder()` 方法自定义：
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('email_verified_at')
+    ->label('Email verification')
+    ->nullable()
+    ->placeholder('All users')
+    ->trueLabel('Verified users')
+    ->falseLabel('Not verified users')
+```
+
+## 自定义三元过滤器修改查询的方式
+
+使用 `queries()` 方法，你可以自定义三元过滤器的每个状态查询的修改方式：
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('email_verified_at')
+    ->label('Email verification')
+    ->placeholder('All users')
+    ->trueLabel('Verified users')
+    ->falseLabel('Not verified users')
+    ->queries(
+        true: fn (Builder $query) => $query->whereNotNull('email_verified_at'),
+        false: fn (Builder $query) => $query->whereNull('email_verified_at'),
+        blank: fn (Builder $query) => $query, // 本例中，当它为空时，我们不想过滤查询数据。
+    )
+```
+
+## 过滤可软删除的记录
+
+`TrashedFilter` 用于过滤可软删除的记录。它是一种 Filament 预制的三元过滤器。你可以这样使用：
+
+```php
+use Filament\Tables\Filters\TrashedFilter;
+
+TrashedFilter::make()
+```

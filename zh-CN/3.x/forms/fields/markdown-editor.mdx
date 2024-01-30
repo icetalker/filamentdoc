@@ -19,7 +19,7 @@ MarkdownEditor::make('content')
 
 ## 自定义工具栏按钮
 
-使用 `toolbarButtons()` 方法，你可以设置编辑器的工具栏按钮：
+使用 `toolbarButtons()` 方法，你可以设置编辑器的工具栏按钮。此例中展示的是默认选项：
 
 ```php
 use Filament\Forms\Components\MarkdownEditor;
@@ -53,6 +53,8 @@ MarkdownEditor::make('content')
         'strike',
     ])
 ```
+
+要禁用所有工具栏按钮，请将 `toolbarButtons([])` 设置为空数组或者使用 `disableAllToolbarButtons()`。
 
 ## 上传图片到编辑器
 

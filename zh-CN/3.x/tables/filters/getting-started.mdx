@@ -1,0 +1,254 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/04-filters/01-getting-started.md"
+title: 开始
+---
+import AutoScreenshot from "@components/AutoScreenshot.astro"
+import LaracastsBanner from "@components/LaracastsBanner.astro"
+
+## 概述
+
+过滤器允许你在数据上定义特定的约束条件，允许用户设置查询范围，以查找他们需要的信息。你可以将其放在 `$table->filters()` 中：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ]);
+}
+```
+
+<AutoScreenshot name="tables/filters/simple" alt="Table with filter" version="3.x" />
+
+过滤器可以使用静态的 `make()` 方法，并传入唯一名称创建。然后，你需要传递一个回调函数给 `query()`，设置过滤器的查询范围：
+
+```php
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+Filter::make('is_featured')
+    ->query(fn (Builder $query): Builder => $query->where('is_featured', true))
+```
+
+## 可用过滤器
+
+默认情况下，使用 `Filter::make()` 方法将会渲染一个复选框表单组件。当复选框选中时，查询(`query()`) 会被激活。
+
+- 你也可以[使用 Toggle 替换 checkbox ](#使用切换按钮替代复选框)。
+- 你可以使用带有 Select 字段的[三元过滤器](ternary)替换复选框，允许用户在三种状态(通常为 "true"、"false" 及 "空值")之间选择。这对于过滤 nullable 的布尔字段非常有用。
+- [垃圾过滤器](ternary#过滤可软删除记录)是一个预制的三元过滤器，允许你过滤可软删除的记录。
+- [select 过滤器](select)，允许用户从选项列表中选择，并使用选中的值进行过滤。
+- [查询构造器(Query builder)](query-builder)允许用户使用高级用户界面联合约束条件创建复杂的过滤器。
+- 你也可以使用其他表单字段[自定义过滤器](custom)。
+
+## 设置标签
+
+默认情况下，过滤器的标签是基于过滤器名生成。使用 `label()` 方法，可以自定义标签：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')
+    ->label('Featured')
+```
+
+可选地，使用 `translateLabel()`，你也可以使用 [Laravel 本地化特性](https://laravel.com/docs/localization)让标签自动翻译：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')
+    ->translateLabel() // Equivalent to `label(__('Is featured'))`
+```
+
+## 自定义过滤器表单
+
+默认情况下，使用 `Filter` 类创建过滤器将会渲染一个[复选框(checkbox)表单组件](../../forms/fields/checkbox)。点击复选框时，`query()` 函数会被应用到表格查询中，设置表格中查询记录的范围。如果取消复选框勾选，`query()` 函数会从表格查询中移除。
+
+过滤器完全是基于 Filament 表单字段创建的。它们可以渲染表单字段的任何组合，使得用户可以与之交互过滤表格。
+
+### 使用切换按钮替代复选框
+
+管理用于过滤器的表单字段的最简单示例是，使用 `toogle()` 方法，将[复选框(checkbox)]替换成[切换按钮(toogle)](../../forms/fields/toggle)
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')
+    ->toggle()
+```
+
+<AutoScreenshot name="tables/filters/toggle" alt="Table with toggle filter" version="3.x" />
+
+### 默认应用过滤器
+
+使用 `default()` 方法，你可以设置默认启用过滤器：
+
+```php
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')
+    ->default()
+```
+
+## 在 Session 中持久化过滤器
+
+要在用户 Session 中持久化表格过滤器，请使用 `persistFiltersInSession()` 方法：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->persistFiltersInSession();
+}
+```
+
+## 过滤器改变后取消记录选择
+
+默认情况下，过滤器修改后，所有记录都会被取消选择。使用 `deselectAllRecordsWhenFiltered(false)` 方法，可以禁用该行为：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->deselectAllRecordsWhenFiltered(false);
+}
+```
+
+## 修改基础查询
+
+默认情况下，对 `query()` 方法执行的 Eloquent 查询所做的修改将会应用到设置查询范围的 `where()` 子句中。这是为了保证查询不会与其他可能应用的过滤器产生冲突，特别时那些使用 `orWhere()` 的查询。
+
+不过，这样做的缺点是，不能使用 `query()` 方法以其他方式修改查询，比如移除全局查询范围设置，因为需要直接修改基础查询，而非范围查询。
+
+要直接修改基础查询，请使用 `baseQuery()`，传入一个接收基础查询的闭包：
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\TernaryFilter;
+
+TernaryFilter::make('trashed')
+    // ...
+    ->baseQuery(fn (Builder $query) => $query->withoutGlobalScopes([
+        SoftDeletingScope::class,
+    ]))
+```
+
+## 自定义过滤器触发 Action
+
+要自定义过滤器触发按钮，你可以使用 `filtersTriggerAction()` 方法，传入一个返回 Action 的闭包。所有可用于[自定义 Action 触发按钮](../../actions/trigger-button)的方法也可在此处使用：
+
+```php
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->filtersTriggerAction(
+            fn (Action $action) => $action
+                ->button()
+                ->label('Filter'),
+        );
+}
+```
+
+<AutoScreenshot name="tables/filters/custom-trigger-action" alt="Table with custom filters trigger action" version="3.x" />
+
+## 表格过滤器 utility 注入
+
+用于配置过滤器的绝大多数方法都接受函数作为参数，而不是硬编码值：
+
+```php
+use App\Models\Author;
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('author')
+    ->options(fn (): array => Author::query()->pluck('name', 'id')->all())
+```
+
+仅此一点就开启了许多自定义的可能性
+
+该包也能将许多 utilities 作为参数注入到这些函数中。所有接受函数作为参数的自定义方法都可以注入 utilities。
+
+这些注入的 utilities 要求使用特定的参数名。否则，Filament 不清楚注入的是什么。
+
+### 注入当前过滤器实例
+
+如果你想访问当前过滤器实例，请定义 `$filter` 参数：
+
+```php
+use Filament\Tables\Filters\BaseFilter;
+
+function (BaseFilter $filter) {
+    // ...
+}
+```
+
+### 注入当前 Livewire 组件实例
+
+如果你想访问表格所属的当前 Livewire 组件实例，请定义 $livewire 参数：
+
+```php
+use Filament\Tables\Contracts\HasTable;
+
+function (HasTable $livewire) {
+    // ...
+}
+```
+
+### 注入当前表格实例
+
+如果你希望访问过滤器所属的当前表格实例，请定义 `$table` 参数：
+
+```php
+use Filament\Tables\Table;
+
+function (Table $table) {
+    // ...
+}
+```
+
+### 注入多个 utilities
+
+这些参数使用反射动态注入，因此你可以按照任何顺序组合多个参数：
+
+```php
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+
+function (HasTable $livewire, Table $table) {
+    // ...
+}
+```
+
+### Laravel 容器的注入依赖
+
+你可以像平常那样注入来自 Laravel 容器中的任何东西：
+
+```php
+use Filament\Tables\Table;
+use Illuminate\Http\Request;
+
+function (Request $request, Table $table) {
+    // ...
+}
+```

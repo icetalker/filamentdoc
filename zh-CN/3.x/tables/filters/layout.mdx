@@ -1,0 +1,131 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/04-filters/06-layout.md"
+title: 过滤器布局
+---
+import AutoScreenshot from "@components/AutoScreenshot.astro"
+
+## 将过滤器定位到网格列中
+
+要修改过滤器占用的列数，你可以使用 `filtersFormColumns()` 方法：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->filtersFormColumns(3);
+}
+```
+
+## 控制过滤器下拉菜单的宽度
+
+要自定义下拉菜单的宽度，你可以使用 `filtersFormWidth()` 方法，并指定一个宽度 - `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge` 或者 `SevenExtraLarge`。默认宽度是 `ExtraSmall`：
+
+```php
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->filtersFormWidth(MaxWidth::FourExtraLarge);
+}
+```
+
+## 控制过滤器下拉菜单的最大高度
+
+使用 `filtersFormMaxHeight()` 方法，并传入一个 [CSS 长度](https://developer.mozilla.org/en-US/docs/Web/CSS/length)，可以为过滤器下拉菜单内容添加最大高度，使之在内容溢出时滚动：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->filtersFormMaxHeight('400px');
+}
+```
+
+## 在模态框中显示过滤器
+
+要在模态框中显示过滤器，替换原来的下拉方式，你可以：
+
+```php
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ], layout: FiltersLayout::Modal);
+}
+```
+
+你可以使用[触发 Action API](getting-started#自定义过滤器触发-action) 来[自定义该模态框](../actions/modals)，包括[使用 `slideOver()`](../actions/modals#使用-slideover-替代模态框)。
+
+## 在表格内容上面显示过滤器
+
+要在表格内容之上渲染过滤器，而非使用下拉菜单，你可以这样使用：
+
+```php
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ], layout: FiltersLayout::AboveContent);
+}
+```
+
+<AutoScreenshot name="tables/filters/above-content" alt="Table with filters above content" version="3.x" />
+
+### 允许表格内容上面的过滤器折叠
+
+要使内容之上的过滤器折叠，你可以这样使用：
+
+```php
+use Filament\Tables\Enums\FiltersLayout;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ], layout: FiltersLayout::AboveContentCollapsible);
+}
+```
+
+## 在表格内容下面显示过滤器
+
+要在表格内容之下渲染过滤器，而非使用下拉菜单中渲染，你可以这样使用：
+
+```php
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ], layout: FiltersLayout::BelowContent);
+}
+```
+
+<AutoScreenshot name="tables/filters/below-content" alt="Table with filters below content" version="3.x" />

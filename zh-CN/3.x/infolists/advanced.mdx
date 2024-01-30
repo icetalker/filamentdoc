@@ -1,0 +1,79 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/06-advanced.md"
+title: 高级信息列表
+---
+
+## 插入 Livewire 组件到信息列表
+
+你可以将一个 Livewire 组件插入到信息列表中：
+
+```php
+use Filament\Infolists\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)
+```
+
+### 传递参数给 Livewire 组件
+
+你可以传递一个参数数组到一个 Livewire 组件中：
+
+```php
+use Filament\Infolists\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class, ['bar' => 'baz'])
+```
+
+现在，这些参数将传递给 Livewire 组件的 `mount()` 方法：
+
+```php
+class Foo extends Component
+{
+    public function mount(string $bar): void
+    {       
+        // ...
+    }
+}
+```
+
+此外，它们可以作为该 Livewire 组件的 public 属性：
+
+```php
+class Foo extends Component
+{
+    public string $bar;
+}
+```
+
+#### 访问该 Livewire 组件的当前记录
+
+在 `mount()` 方法中使用 `$record` 参数，或者通过 `$record` 属性，你可以访问 Livewire 组件的当前记录：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Foo extends Component
+{
+    public function mount(Model $record): void
+    {       
+        // ...
+    }
+    
+    // or
+    
+    public Model $record;
+}
+```
+
+### 懒加载 Livewire 组件
+
+使用 `lazy()` 方法，你可以允许组件[懒加载](https://livewire.laravel.com/docs/lazy#rendering-placeholder-html)：
+
+```php
+use Filament\Infolists\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)->lazy()       
+```

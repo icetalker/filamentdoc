@@ -34,7 +34,7 @@ class Post extends Model
 }
 ```
 
-> Filament 也支持 [`spatie/laravel-tags`](https://github.com/spatie/laravel-tags) 包。更多信息请查看[插件文档](/plugins/spatie-tags)
+> Filament 也支持 [`spatie/laravel-tags`](https://github.com/spatie/laravel-tags) 包。更多信息请查看[插件文档](/plugins/filament-spatie-tags)。
 
 ## 逗号分隔标签
 
@@ -99,4 +99,15 @@ TagsInput::make('tags')
         'min:3',
         'max:255',
     ])
+```
+
+## 标签重新排序
+
+使用 `reorderable()` 方法，你可以允许用户在字段中对标签重新排序：
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')
+    ->reorderable()
 ```

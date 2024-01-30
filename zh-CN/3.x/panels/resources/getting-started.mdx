@@ -74,6 +74,18 @@ php artisan make:filament-resource Customer --soft-deletes
 php artisan make:filament-resource Customer --view
 ```
 
+### 指定自定义模型命名空间
+
+默认情况下，Filament 会假定你的模型在 `App\Models` 目录中。你可以使用 `--model-namspace` 标志，传入不同的模型命名空间：
+
+```bash
+php artisan make:filament-resource Customer --model-namespace=Custom\\Path\\Models
+```
+
+本例中，模型在 `Custom\Path\Models\Customer`。请注意命令行中要求使用双反斜杆 `\\`。 
+
+[生成资源](#自动生成表单和表格)时，Filament 将能够定位模型并读取数据库 schema。
+
 ## 记录标题
 
 你可以为资源设置 `$recordTitleAttribute` 属性，该属性对应模型上的字段名，可以用于将其与其他模型区别开来。*(译者：此处直译，意思是大体是在搜索时用以确认某条记录的唯一性。)*
@@ -224,12 +236,21 @@ protected static ?string $pluralModelLabel = 'clientes';
 
 此外，你可以在 `getPluralModelLabel()` 方法中设置动态复数标签：
 
-
 ```php
 public static function getPluralModelLabel(): string
 {
     return __('filament/resources/customer.plural_label');
 }
+```
+
+### 模型标签自动大写
+
+默认情况下，对于 UI 的某些部分，Filament 将自动将模型标签中的每个单词大写。例如，在页面标题、导航菜单和面包屑中。
+
+如果你想在资源中禁用该行为，你可以在资源中设置 `$hasTitleCaseModelLabel`：
+
+```php
+protected static bool $hasTitleCaseModelLabel = false;
 ```
 
 ## 资源导航项
@@ -302,6 +323,27 @@ public static function getNavigationGroup(): ?string
 }
 ```
 
+#### 将资源导航项分组到一个项目下
+
+将父级项目的标签传入到 `$navigationParentItem`，你可以将导航项作为其他项目的子项目进行分组：
+
+```php
+protected static ?string $navigationParentItem = 'Products';
+
+protected static ?string $navigationGroup = 'Shop';
+```
+
+如上所示，如果父级项目有一个导航分组，则必须定义该导航组，这样才能正确识别父级项目。
+
+你也可以调用 `$getNavigationParentItem()` 方法，动态设置父级项目标签：
+
+```php
+public static function getNavigationParentItem(): ?string
+{
+    return __('filament/navigation.groups.shop.items.products');
+}
+```
+
 ## 为资源页生成 URL
 
 Filament 在资源类中使用 `getUrl()` 静态方法，用来为资源和特定页面生成 URL。一般来说，你需要手动或使用 Laravel 的 `route()` 帮助函数来构建 URL，而这些方法依赖于对资源的 slug 或路由命名规范的了解。
@@ -331,6 +373,35 @@ CustomerResource::getUrl('edit', ['record' => $customer]); // /admin/customers/e
 ```
 
 本例中，`$customer` 可以是一个 Eloquent 模型对象，或者 ID。
+
+### 资源模态框生成 URL
+
+如果您只在一个页面上使用[简单资源](#简易模态框资源)，这将特别有用。
+
+要为资源表中的 Action 生成 URL，应将 `tableAction` 和 `tableActionRecord` 作为 URL 参数传递：
+
+```php
+use App\Filament\Resources\CustomerResource;
+use Filament\Tables\Actions\EditAction;
+
+CustomerResource::getUrl(parameters: [
+    'tableAction' => EditAction::getDefaultName(),
+    'tableActionRecord' => $customer,
+]); // /admin/customers?tableAction=edit&tableActionRecord=1
+```
+
+或者如果你想为页面的 Action(如页面头部的 `createAcion`) 生成 URL，你可以将其传到 `action` 参数中：
+
+```php
+use App\Filament\Resources\CustomerResource;
+use Filament\Actions\CreateAction;
+
+CustomerResource::getUrl(parameters: [
+    'action' => CreateAction::getDefaultName(),
+]); // /admin/customers?action=create
+```
+
+### 为其他面板中的资源生成 URL
 
 如果你的应用中有多个面板，`getUrl()` 将会在当前面板生成一个 URL。你也可以传入面板给 `panel` 参数，说明该资源应该关联到哪个面板：
 
@@ -383,6 +454,46 @@ public static function getEloquentQuery(): Builder
 
 ```php
 protected static ?string $slug = 'pending-orders';
+```
+
+## 资源子导航
+
+子导航允许用户在资源中的不同页面之间跳转。通常，所有子导航中的页面与资源中的同一个记录相关联。比如，在 Customer 资源中，你可能有以下页面的子导航：
+
+- 查看客户，一个 [`ViewRecord` 页面](viewing-records)提供了客户详细的只读视图。
+- 编辑客户，一个 [`EditRecord` 页面](editing-records)允许用户编辑客户详情。
+- 编辑用户联系方式，一个允许用户编辑客户联系方式的 [`EditRecord` 页面](editing-records)。[学习如何创建多个编辑页](editing-records#creating-another-edit-page)。
+- 管理地址，一个允许用户管理客户地址的 [`ManageRelatedRecords` 页面](relation-managers#关联页面)。
+- 管理支付，一个允许用户管理用户付款的 [`ManageRelatedRecords` 页面](relation-managers#关联页面)。
+
+要在资源的每个"单个记录"页面中添加子导航，你可以添加 `getRecordSubNavigation()` 方法到资源类中：
+
+```php
+use App\Filament\Resources\CustomerResource\Pages;
+use Filament\Resources\Pages\Page;
+
+public static function getRecordSubNavigation(Page $page): array
+{
+    return $page->generateNavigationItems([
+        Pages\ViewCustomer::class,
+        Pages\EditCustomer::class,
+        Pages\EditCustomerContact::class,
+        Pages\ManageCustomerAddresses::class,
+        Pages\ManageCustomerPayments::class,
+    ]);
+}
+```
+
+子导航中的每一项都可以使用[与正常页面相同的导航方法](../navigation)进行自定义。
+
+### 子导航位置
+
+默认情况下，子导航在页面的开始位置进行渲染。你可以在资源的 `$subNavigationPosition` 属性上设置修改其位置。值可以是`SubNavigationPosition::Start`、`SubNavigationPosition::End` 或  `SubNavigationPosition::Top`，用来将子导航渲染成选项卡：
+
+```php
+use Filament\Pages\SubNavigationPosition;
+
+protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
 ```
 
 ## 删除资源页

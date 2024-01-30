@@ -308,9 +308,9 @@ public function table(Table $table): Table
 }
 ```
 
-## 在桌面端启用分组下拉功能
+## 在桌面端启用分组设置下拉功能
 
-默认情况下，分组下拉按钮只会在移动端显示。在桌面设备中，分组下拉列表在表格的头部、使用 `groupsInDropdownOnDesktop()` 方法，你也可以启用桌面端的下拉菜单：
+默认情况下，分组设置的下拉按钮只会在移动端显示。在桌面设备中，分组下拉列表在表格的头部，使用 `groupingSettingsInDropdownOnDesktop()` 方法，你也可以启用桌面端的下拉菜单：
 
 ```php
 use Filament\Tables\Table;
@@ -321,7 +321,7 @@ public function table(Table $table): Table
         ->groups([
             // ...
         ])
-        ->groupsInDropdownOnDesktop();
+        ->groupingSettingsInDropdownOnDesktop();
 }
 ```
 

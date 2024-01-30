@@ -102,7 +102,7 @@ public function panel(Panel $panel): Panel
 
 ## 自定义最大内容宽度
 
-默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Prose`、`ScreenSmall`、`ScreenMedium`、`ScreenLarge`、`ScreenExtraLarge`、`ScreenTwoExtraLarge` 及 `Full`。默认值为 `SevenExtraLarge`。
+默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Full`、`MinContent`、`MaxContent`、`FitContent`、`Prose`、`ScreenSmall`、`ScreenMedium`、`ScreenLarge`、`ScreenExtraLarge` 及 `ScreenTwoExtraLarge`。默认值为 `SevenExtraLarge`。
 
 ```php
 use Filament\Panel;
@@ -133,8 +133,6 @@ public function panel(Panel $panel): Panel
 ```
 
 ## SPA 模式
-
-> 警告：该特性为实验性质，使用时可能会碰到 Bug。如果发现任何问题，请 PR 报告给 [Livewire](https://github.com/livewire/livewire)。
 
 SPA 模式使用 [Livewire 的 `wire:navigate` 特性](https://livewire.laravel.com/docs/navigate)，使得你的服务器渲染的面板感觉像单页应用那样，使用更少的页面加载延迟并对长请求使用加载条。要启用面板的 SPA 模式，请使用 `spa()` 方法：
 

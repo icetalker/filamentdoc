@@ -25,13 +25,13 @@ class Post extends Model
 {
     protected static function booted(): void
     {
-        if (auth()->check()) {
-            static::addGlobalScope('team', function (Builder $query) {
+        static::addGlobalScope('team', function (Builder $query) {
+            if (auth()->check()) {
                 $query->where('team_id', auth()->user()->team_id);
                 // or with a `team` relationship defined:
                 $query->whereBelongsTo(auth()->user()->team);
-            });
-        }
+            }
+        });
     }
 }
 ```
@@ -422,6 +422,23 @@ MenuItem::make()
     ->hidden(fn (): bool => ! auth()->user()->can('manage-team'))
 ```
 
+### 隐藏租户菜单
+
+通过 `tenantMenu(false)` 方法，你可以隐藏租户菜单：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->tenantMenu(false);
+}
+```
+
+不过这是 Filament 租户特性不适用于你的项目的一个信号。如果每个用户只属于一个租户，你应该使用[一对多租户](#一对多租户)。
+
 ## 设置头像
 
 开箱即用，Filament 使用 [ui-avatars.com](https://ui-avatars.com) 去生成基于用户名的头像。不过，如果你的用户模型中有一个 `avatar_url` 属性，则会使用该属性。要自定义 Filament 如何获取用户头像 URL，你可以实现 `HasAvatar` 契约：
@@ -628,12 +645,47 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## 添加租户路由前缀
+
+默认情况下，URL 结构会将 tenant ID 或 slug 放在面板路径之后。如果你想使用其他 URL 分段加上前缀，请使用 `tenantRoutePrefix()` 方法：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->path('admin')
+        ->tenant(Team::class)
+        ->tenantRoutePrefix('team');
+}
+```
+
+此前，租户 1 的 URL 结构是 `/admin/1`。现在，是 `/admin/team/1`。
+
 ## 禁用某个资源的租户
 
 默认情况下，面板中的所有资源将租约范围设置为当前租户。如果你的资源要在不同租户之间共享，你可以通过在资源类上将 `$isScopedToTenant` 静态属性设置成 `false` 禁用租约：
 
 ```php
 protected static bool $isScopedToTenant = false;
+```
+
+### 禁用所有资源的租赁
+
+如果你想让每个资源的租赁使用 opt-in 而非 opt-out，你可以在服务提供者的 `boot()` 方法或中间件中调用 `Resource::scopeToTenant(false)`：
+
+```php
+use Filament\Resources\Resource;
+
+Resource::scopeToTenant(false);
+```
+
+现在，你可以在资源类中将 `$isScopedToTenant` 静态属性设置为 `true` 来让每个资源手动加入(opt-in)租赁：
+
+```php
+protected static bool $isScopedToTenant = true;
 ```
 
 ## 租户安全

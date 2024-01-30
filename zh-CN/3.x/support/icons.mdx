@@ -28,14 +28,14 @@ php artisan vendor:publish --tag=blade-icons
 
 Filament 包含一个图标管理系统，让你可用替换任何在你自己的 UI 中使用的默认图标。在服务提供者(比如 `AppServiceProvider`、或者图标专用的服务提供者)的 `boot()` 方法中实现。如果你想创建一个插件使用不同的图标集替换 Heroicon，你应该创建一个带有类似服务提供者的 Laravel 包实现。
 
-要替换图标，你可以使用 `FilamentIcon` 门面。它有个 `register()` 方法，接收一个图标数组用以替换。数组的键是唯一的[图标别名](#可用图标别名)，用以在 Filament UI 中识别该图标，值是 Blade 图标的名称：
+替换图标可以使用 `FilamentIcon` 门面。它有个 `register()` 方法，接收一个图标数组用以替换。数组的键是唯一的[图标别名](#可用图标别名)，用以在 Filament UI 中识别该图标，值是要替换的 Blade 图标的名称。此外，你可以使用 HTML 替代图标名，在 Blade 视图中渲染图标：
 
 ```php
 use Filament\Support\Facades\FilamentIcon;
 
 FilamentIcon::register([
     'panels::topbar.global-search.field' => 'fas-magnifying-glass',
-    'panels::sidebar.group.collapse-button' => 'fas-chevron-up',
+    'panels::sidebar.group.collapse-button' => view('icons.chevron-up'),
 ]);
 ```
 
@@ -71,12 +71,13 @@ FilamentIcon::register([
 ### 后台面板图标别名
 
 - `panels::global-search.field` - 全局搜索字段
+- `panels::pages.dashboard.actions.filter` - 仪表盘过滤 Action 的触发按钮
 - `panels::pages.dashboard.navigation-item` - 仪表盘导航项
+- `panels::pages.password-reset.request-password-reset.actions.login` - 请求密码重置页面的登录 Action 触发按钮
+- `panels::pages.password-reset.request-password-reset.actions.login.rtl` - 请求密码重置页面的登录 Action 触发按钮 (right-to-left direction)
 - `panels::resources.pages.edit-record.navigation-item` - 资源编辑记录页面导航项
 - `panels::resources.pages.manage-related-records.navigation-item` - 资源管理关联记录页面导航项
 - `panels::resources.pages.view-record.navigation-item` - 资源查看记录页面导航项
-- `panels::pages.password-reset.request-password-reset.actions.login` - 请求密码重置页面的登录触发按钮
-- `panels::pages.password-reset.request-password-reset.actions.login.rtl` - 请求密码重置页面的登录触发按钮(right-to-left direction)
 - `panels::sidebar.collapse-button` - 折叠侧边栏的按钮
 - `panels::sidebar.collapse-button.rtl` - 折叠侧边栏的按钮 (right-to-left direction)
 - `panels::sidebar.expand-button` - 展开侧边栏的按钮
@@ -147,6 +148,12 @@ FilamentIcon::register([
 - `tables::columns.icon-column.false` - 图标列的 False 状态
 - `tables::columns.icon-column.true` - 图标列的真值状态
 - `tables::empty-state` - 空状态图标
+- `tables::filters.query-builder.constraints.boolean` - 查询构造器中布尔值约束的默认图标
+- `tables::filters.query-builder.constraints.date` - 查询构造器中日期约束的默认图标
+- `tables::filters.query-builder.constraints.number` - 查询构造器中数字约束的默认图标
+- `tables::filters.query-builder.constraints.relationship` - 查询构造器中关联约束的默认图标
+- `tables::filters.query-builder.constraints.select` - 查询构造器中下拉选择约束的默认图标
+- `tables::filters.query-builder.constraints.text` - 查询构造器中文本约束的默认图标
 - `tables::filters.remove-all-button` - 删除所有过滤器的按钮
 - `tables::grouping.collapse-button` - 用于折叠一组记录的按钮
 - `tables::header-cell.sort-asc-button` - 以升序排列的排序按钮
@@ -179,6 +186,7 @@ FilamentIcon::register([
 - `actions::force-delete-action` - 强制删除 Action 的触发按钮
 - `actions::force-delete-action.grouped` - 分组强制删除 Action 的触发按钮
 - `actions::force-delete-action.modal` - 强制删除 Action 的模态框
+- `actions::import-action.grouped` - 分组导入 Action 的触发按钮
 - `actions::modal.confirmation` - 需要确认的 Action 的模态框
 - `actions::replicate-action` - 复制 Action 的触发按钮
 - `actions::replicate-action.grouped` - 分组复制 Action 的触发按钮
@@ -190,8 +198,8 @@ FilamentIcon::register([
 
 ### 信息列表图标别名
 
-- `infolists::components.icon-entry.false` - Falsy state of an icon entry
-- `infolists::components.icon-entry.true` - Truthy state of an icon entry
+- `infolists::components.icon-entry.false` - Icon Entry 的 false 状态
+- `infolists::components.icon-entry.true` - Icon Entry 的真值状态
 
 ### UI 组件中的图标别名
 

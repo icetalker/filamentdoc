@@ -29,6 +29,8 @@ public function panel(Panel $panel): Panel
 
 `Filament\Support\Colors\Color` 类包含了所有 [Tailwind CSS 调色板](https://tailwindcss.com/docs/customizing-colors)中的所有颜色选项：
 
+你也可以将一个函数传递给 `register()`，该函数只会在应用渲染时调用。如果你从服务提供者中调用 `register()`，并希望当前授权用户访问对象(对象会在稍后的中间件中初始化)，这非常有用。
+
 此外，你也可以用一个 RGB 值数组的格式，传入你自己的颜色：
 
 ```php
@@ -109,7 +111,7 @@ $panel->font(
 
 Filament 允许你通过编译自定义样式表替换默认的样式，修改 CSS 用以渲染 UI。自定义的样式表称为 "主题"。
 
-主题使用 [Tailwind CSS](https://tailwindcss.com)、Tailwind Forms 插件、Tailwind Typography 插件和 [Autoprefixer](https://github.com/postcss/autoprefixer)。
+主题使用了 [Tailwind CSS](https://tailwindcss.com)、Tailwind Forms 插件、Tailwind Typography 插件、[PostCSS Nesting plugin](https://www.npmjs.com/package/postcss-nesting) 和 [Autoprefixer](https://github.com/postcss/autoprefixer)。
 
 要在面板中创建自定义主题，你可以使用 `php artisan make:filament-theme` 命令：
 

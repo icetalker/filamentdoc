@@ -29,3 +29,40 @@ public static function getPages(): array
 > 在此方法中注册的页面顺序很重要 —— 在硬编码路由之前先定义的通配符路由，Laravel 路由器都会优先匹配。
 
 路由路径下定义的所有[参数](https://laravel.com/docs/routing#route-parameters)，在页面类中都是可用的。和 [Livewire](https://laravel-livewire.com/docs/rendering-components#route-params) 中的路由参数采用相同的方式。
+
+## 使用资源记录
+
+如果你想创建一个类似于[编辑页](editing-records)或[查看页](viewing-records)使用记录的页面，你可以使用 `InteractsWithRecord` trait：
+
+```php
+use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+
+class ManageUser extends Page
+{
+    use InteractsWithRecord;
+    
+    public function mount(int | string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+
+        static::authorizeResourceAccess();
+    }
+
+    // ...
+}
+```
+
+`mount()` 方法将解析 URL 中的记录并将其保存到 `$this->record`。任何时候在类或视图中使用 `$this->getRecord()` 都能访问该记录。
+
+要添加记录作为路由参数，你必须在 `getPages()` 中定义 `{record}`：
+
+```php
+public static function getPages(): array
+{
+    return [
+        // ...
+        'manage' => Pages\ManageUser::route('/{record}/manage'),
+    ];
+}
+```

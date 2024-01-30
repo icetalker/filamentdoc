@@ -60,9 +60,13 @@ class User extends Authenticatable implements FilamentUser
 }
 ```
 
+## 授权访问资源
+
+请查阅资源文档的[授权](resources/getting-started#授权)部分，了解如何控制资源页面以及其数据记录的的访问。
+
 ## 设置头像
 
-Filament 使用可开箱即用的 [ui-avatars.com](https://ui-avatars.com) 生成基于用户名的头像。你也可以实现 `HasAvatar` 合约接口，自定义用户头像 URL：
+Filament 使用可开箱即用的 [ui-avatars.com](https://ui-avatars.com) 生成基于用户名的头像。不过，如果你的模型中有 `avatar_url` 属性，则会使用该属性。要自定义 Filament 获取用户头像 URL，你也可以实现 `HasAvatar` 合约接口：
 
 ```php
 <?php

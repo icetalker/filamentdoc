@@ -275,6 +275,60 @@ class EditUser extends EditRecord
 
 要查看 Action 的整个 API，请访问[页面部分](../pages#添加-action-到页面)。
 
+## 创建另一个编辑页面
+
+一个编辑页可能空间不过，无法让用户浏览多个表单字段。你为资源创建任意数量的编辑页。如果你正在使用[资源子导航](getting-started#资源子导航)，这一点尤其有用，因为您可以轻松地在不同的编辑页面之间切换。
+
+要创建编辑页，你可以使用 `make:filament-page` 命令：
+
+```bash
+php artisan make:filament-page EditCustomerContact --resource=CustomerResource --type=EditRecord
+```
+
+你必须在资源的 `getPages()` 方法中注册这个新页面：
+
+```php
+public static function getPages(): array
+{
+    return [
+        'index' => Pages\ListCustomers::route('/'),
+        'create' => Pages\CreateCustomer::route('/create'),
+        'view' => Pages\ViewCustomer::route('/{record}'),
+        'edit' => Pages\EditCustomer::route('/{record}/edit'),
+        'edit-contact' => Pages\EditCustomerContact::route('/{record}/edit/contact'),
+    ];
+}
+```
+
+现在，你可以为这个页面定义表单 `form()`，它可以包含其他所有未在主编辑页中显示的字段：
+
+```php
+use Filament\Forms\Form;
+
+public function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            // ...
+        ]);
+}
+```
+
+如果你使用[资源子导航](getting-started#资源子导航)，你可以在该资源的 `getRecordSubNavigation()` 中注册该页面： 
+
+```php
+use App\Filament\Resources\CustomerResource\Pages;
+use Filament\Resources\Pages\Page;
+
+public static function getRecordSubNavigation(Page $page): array
+{
+    return $page->generateNavigationItems([
+        // ...
+        Pages\EditCustomerContact::class,
+    ]);
+}
+```
+
 ## 自定义视图
 
 要进一步自定义，你可以重写页面类的静态 `$view` 属性：

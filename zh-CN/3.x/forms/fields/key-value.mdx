@@ -17,6 +17,21 @@ KeyValue::make('meta')
 
 <AutoScreenshot name="forms/fields/key-value/simple" alt="Key-value" version="3.x" />
 
+如果你在 Eloquent 中保存数据，请确保在模型属性上添加 `array` [强制转换(cast)](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
+    // ...
+}
+```
+
 ## 添加行
 
 该字段下面有一个 Action 按钮，允许用户添加新行。

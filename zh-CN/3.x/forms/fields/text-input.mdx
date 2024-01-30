@@ -160,9 +160,9 @@ TextInput::make('domain')
     ->suffixIconColor('success')
 ```
 
-## 输入遮罩
+## 输入掩码
 
-输入遮罩(Input Masking)定义了一种输入值必须遵守的格式。
+输入掩码(Input Masking)定义了一种输入值必须遵守的格式。
 
 在 Filament 中，你可以使用 `mask()` 方法来配置 [Alpine 的 mask](https://alpinejs.dev/plugins/mask#x-mask)：
 
@@ -174,7 +174,7 @@ TextInput::make('birthday')
     ->placeholder('MM/DD/YYYY')
 ```
 
-要使用[动态遮罩](https://alpinejs.dev/plugins/mask#mask-functions)，请在 `RawJs` 对象中包裹 JavaScript：
+要使用[动态掩码](https://alpinejs.dev/plugins/mask#mask-functions)，请在 `RawJs` 对象中包裹 JavaScript：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -184,6 +184,18 @@ TextInput::make('cardNumber')
     ->mask(RawJs::make(<<<'JS'
         $input.startsWith('34') || $input.startsWith('37') ? '9999 999999 99999' : '9999 9999 9999 9999'
     JS))
+```
+
+Alpine.js 将整个掩码值发送给服务器，因此在验证字段并保存它之前，你可能需要从状态中删除某些字符。你可以使用 `stripCharacters()` 方法来执行此操作，传入一个字符或一个字符数组以将其从掩码值中删除：
+
+```php
+use Filament\Forms\Components\TextInput;
+use Filament\Support\RawJs;
+
+TextInput::make('amount')
+    ->mask(RawJs::make('$money($input)'))
+    ->stripCharacters(',')
+    ->numeric()
 ```
 
 ## 文本输入验证

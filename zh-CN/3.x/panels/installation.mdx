@@ -22,7 +22,7 @@ title: 安装
 安装 Filament 面板构造器，在 Laravl 项目目录下运行如下命令：
 
 ```bash
-composer require filament/filament:"^3.0-stable" -W
+composer require filament/filament:"^3.1" -W
 php artisan filament:install --panels
 ```
 
@@ -47,6 +47,8 @@ php artisan make:filament-user
 Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/3.x/forms/installation)、[表格构造器](/docs/zh-CN/3.x/tables/installation)、[通知生成器](/docs/zh-CN/3.x/notifications/installation)、[Action](/docs/zh-CN/3.x/actions/installation)、[信息列表](/docs/zh-CN/3.x/infolists/installation)及 [Widget](/docs/zh-CN/3.x/widgets/installation) 包。因此在面板中无需再行安装就能使用。
 
 ## 部署到生成环境
+
+### 允许用户访问面板
 
 默认情况下，所有的 `App\Models\User` 在本地下都可以访问 Filament。要允许用户在生成环境中访问，你还需要采取一些额外的措施来确保只有授权的用户可以访问该应用。
 
@@ -73,6 +75,10 @@ class User extends Authenticatable implements FilamentUser
 > 如果你没有完成这些步骤，当你在生产环境中试图访问应用时，会出现 403 错误。
 
 了解更多[用户](users)相关信息。
+
+### 缓存 Blade 图标
+
+部署是，你可以考虑使用 `php artisan icons:cache` 缓存图标，Filament 使用的是 [Blade Icons](https://blade-ui-kit.com/blade-icons) 包，缓存后将更具性能。不过，这非常依赖于硬件，许多服务器不需要此命令 Filament 就能顺利运行。
 
 ## 发布配置
 

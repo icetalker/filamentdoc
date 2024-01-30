@@ -359,11 +359,17 @@ Panel::make([
 只需使用 `$table->contentGrid()` 方法：
 
 ```php
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Table;
 
 public function table(Table $table): Table
 {
     return $table
+        ->columns([
+            Stack::make([
+                // Columns
+            ]),
+        ])
         ->contentGrid([
             'md' => 2,
             'xl' => 3,

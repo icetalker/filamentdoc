@@ -22,7 +22,7 @@ title: 安装
 首先，使用 Composer 导入此包：
 
 ```bash
-composer require filament/widgets:"^3.0-stable" -W
+composer require filament/widgets:"^3.1" -W
 ```
 
 ## 全新 Laravel 项目
@@ -52,41 +52,23 @@ php artisan filament:install --widgets
 首先，使用 npm 安装 Tailwind CSS 及它的 `forms` 和 `typography` 插件：
 
 ```bash
-npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
+npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss postcss-nesting autoprefixer --save-dev
 ```
 
 新建一个 `tailwind.config.js` 文件。确保添加了 Filament 的 `preset`，它配置了颜色和安装的插件： 
 
 ```js
-import colors from 'tailwindcss/colors'
-import forms from '@tailwindcss/forms'
-import typography from '@tailwindcss/typography'
+import preset from './vendor/filament/support/tailwind.config.preset'
 
 export default {
+    presets: [preset],
     content: [
-        './resources/**/*.blade.php',
+        './app/Filament/**/*.php',
+        './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
-    ],
-    darkMode: 'class',
-    theme: {
-        extend: {
-            colors: {
-                danger: colors.red,
-                info: colors.blue,
-                primary: colors.amber,
-                success: colors.green,
-                warning: colors.amber,
-            },
-        },
-    },
-    plugins: [
-        forms,
-        typography,
     ],
 }
 ```
-
-当然，你也可以指定自定义的 `danger`、`gray`、`info`、`primary`、`success` 及 `warning` 颜色。不过每个颜色必须是 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference)，或者指定所有 50 - 950 变形体 ———— 单个 16 进制码或 RGB 值并不能生效。
 
 ### 配置样式
 
@@ -98,11 +80,12 @@ export default {
 @tailwind utilities;
 ```
 
-在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS 和 Autoprefixer 注册成插件：
+在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS、 PostCSS Nesting 和 Autoprefixer 注册成插件：
 
 ```js
 export default {
     plugins: {
+        'tailwindcss/nesting': 'postcss-nesting',
         tailwindcss: {},
         autoprefixer: {},
     },

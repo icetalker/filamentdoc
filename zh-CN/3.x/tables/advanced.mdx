@@ -197,6 +197,53 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/reordering/custom-trigger-action" alt="Table with reorderable rows and a custom trigger action" version="3.x" />
 
+## 自定义表格头
+
+使用 `$table->heading()` 方法，你可以为表格添加标题：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->heading('Clients')
+        ->columns([
+            // ...
+        ]);
+```
+
+使用 `$table->description()` 方法，可以在标题下添加描述：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->heading('Clients')
+        ->description('Manage your clients here.')
+        ->columns([
+            // ...
+        ]);
+```
+
+将视图传递给 `$table->header()` 方法，可以自定义整个表格头部：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->header(view('tables.header', [
+            'heading' => 'Clients',
+        ]))
+        ->columns([
+            // ...
+        ]);
+```
+
 ## 轮询表格内容
 
 使用 `$table->poll()` 方法，你可以轮询表的内容，使之在设定的间隔内刷新：

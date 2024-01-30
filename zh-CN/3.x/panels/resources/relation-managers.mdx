@@ -523,6 +523,40 @@ public function table(Table $table): Table
 
 要学会如何自定义 `DeleteAction`，包括更改表单数据、修改通知及添加生命周期钩子，请查阅 [Action 文档](../../actions/prebuilt-actions/delete)。
 
+## 导入关联记录
+
+[`ImportAction`](../../actions/prebuilt-actions/import) 可以加到关联管理器的头部，用以导入记录。这种情况下，你可能想告知 importer，这些记录属于谁。你可以使用[导入选项](../../actions/prebuilt-actions/import#使用导入选项)去传递所有者的 ID：
+
+```php
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->options(['categoryId' => $this->getOwnerRecord()->getKey()])
+```
+
+现在，在 importer 类中，你可以将所有者以一对多关联导入记录：
+
+```php
+public function resolveRecord(): ?Product
+{
+    $product = Product::firstOrNew([
+        'sku' => $this->data['sku'],
+    ]);
+    
+    $product->category()->associate($this->options['categoryId']);
+    
+    return $product;
+}
+```
+
+此外，你可以使用 importer 的 `afterSave()` 钩子将记录附加到多对多关联上：
+
+```php
+protected function afterSave(): void
+{
+    $this->record->categories()->syncWithoutDetaching([$this->options['categoryId']]);
+}
+```
+
 ## 访问关联拥有者的记录
 
 关联管理器是 Livewire 组件。当它们首次加载时，拥有者的记录(作为父级模型 —— 即主资源模型 —— 的 Eloquent 记录) 将保存到属性上。你可以这样读取该属性：
@@ -709,6 +743,40 @@ public function table(Table $table): Table
 }
 ```
 
+## 自定义关联管理器标题
+
+使用关联管理器类的 `$title` 属性，可以设置关联管理器的标题：
+
+```php
+protected static string $title = 'Posts';
+```
+
+如果要动态设置关联管理器的标题，可以重写关联管理器类的 `getTitle()` 方法：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+public static function getTitle(Model $ownerRecord, string $pageClass): string
+{
+    return __('relation-managers.posts.title');
+}
+```
+
+该标题将会反映到[表格的标题](../../tables/advanced#自定义表格标题)上，并且当关联管理器多于一个时，反映在选项卡中。如果要单独自定义表格标题，你仍然可以使用 `$table->heading()` 方法：
+
+```php
+use Filament\Tables;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->heading('Posts')
+        ->columns([
+            // ...
+        ]);
+}
+```
+
 ## 自定义关联管理器的记录标题
 
 关联管理器使用"记录标题属性"的概念去决定关联模型应该使用哪个属性进行识别、创建关联管理器时，该属性是 `make:filament-relation-manager` 命令的第三个参数：
@@ -748,6 +816,54 @@ AssociateAction::make()
 
 AttachAction::make()
     ->recordSelectSearchColumns(['title', 'id'])
+```
+
+## 关联页面
+
+如果你想将管理关联的功能与编辑或查看所有者记录分开，`ManageRelatedRecords` 页面是一个替代关联管理器的方法。
+
+如果你使用了[资源子导航](getting-started#资源子导航)，这是一个理想的功能，因为你可以轻松地在查看页或编辑页和关联页之间切换。
+
+要创建关联页，请使用 `make:filament-page` 命令：
+
+```bash
+php artisan make:filament-page ManageCustomerAddresses --resource=CustomerResource --type=ManageRelatedRecords
+```
+
+运行该命令时，需要回答一系列问题，以自定义页面，比如，关联名及其 title 属性。
+
+你必须在资源的 `getPages()` 方法中注册该新页面：
+
+```php
+public static function getPages(): array
+{
+    return [
+        'index' => Pages\ListCustomers::route('/'),
+        'create' => Pages\CreateCustomer::route('/create'),
+        'view' => Pages\ViewCustomer::route('/{record}'),
+        'edit' => Pages\EditCustomer::route('/{record}/edit'),
+        'addresses' => Pages\ManageCustomerAddresses::route('/{record}/addresses'),
+    ];
+}
+```
+
+> 使用关联页时，你无需使用 `make:filament-relation-manager` 生成关联管理器，也无需在资源的 `getRelations()` 方法中将其注册。
+
+现在，你可以使用与关联管理器方式，同样在 `table()` 及 `form()` 中自定义页面。  
+
+如果你使用[资源子导航](getting-started#资源子导航)，你可以在资源的 `getRecordSubNavigation()` 中注册该页面：
+
+```php
+use App\Filament\Resources\CustomerResource\Pages;
+use Filament\Resources\Pages\Page;
+
+public static function getRecordSubNavigation(Page $page): array
+{
+    return $page->generateNavigationItems([
+        // ...
+        Pages\ManageCustomerAddresses::class,
+    ]);
+}
 ```
 
 ## 传递属性到关联管理器

@@ -12,7 +12,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 ```php
 use Filament\Forms\Components\Tabs;
 
-Tabs::make('Label')
+Tabs::make('Tabs')
     ->tabs([
         Tabs\Tab::make('Tab 1')
             ->schema([
@@ -38,7 +38,7 @@ Tabs::make('Label')
 ```php
 use Filament\Forms\Components\Tabs;
 
-Tabs::make('Label')
+Tabs::make('Tabs')
     ->tabs([
         Tabs\Tab::make('Tab 1')
             ->schema([
@@ -56,14 +56,151 @@ Tabs::make('Label')
     ->activeTab(2)
 ```
 
-## 在 URL 查询字符串中将当前 Tab 持久化
+## 设置 Tab 图标
+
+使用 `icon()` 方法，可以为 Tab 设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->icon('heroicon-m-bell')
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+<AutoScreenshot name="forms/layout/tabs/icons" alt="Tabs with icons" version="3.x" />
+
+### 设置 Tab 图标位置
+
+使用 `iconPosition()` 方法可以将图标放在标签的前后：
+
+```php
+use Filament\Forms\Components\Tabs;
+use Filament\Support\Enums\IconPosition;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->icon('heroicon-m-bell')
+            ->iconPosition(IconPosition::After)
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+<AutoScreenshot name="forms/layout/tabs/icons-after" alt="Tabs with icons after their labels" version="3.x" />
+
+## 设置 Tab 徽章
+
+使用 `badge()` 方法，可以为选项卡设置徽章：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->badge(5)
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+<AutoScreenshot name="forms/layout/tabs/badges" alt="Tabs with badges" version="3.x" />
+
+使用 `badgeColor()` 方法，你可以修改徽章颜色：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Notifications')
+            ->badge(5)
+            ->badgeColor('success')
+            ->schema([
+                // ...
+            ]),
+        // ...
+    ])
+```
+
+## 在选项卡中使用网格 columns
+
+你可以在 Tab 中使用 `columns()` 自定义 [Grid](grid)：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Tab 1')
+            ->schema([
+                // ...
+            ])
+            ->columns(3),
+        // ...
+    ])
+```
+
+## 移除样式容器
+
+默认情况下，Tabs 及其内容被包装在一个样式为卡片的容器中，你可以使用 `contained()` 移除样式容器：
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        Tabs\Tab::make('Tab 1')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Tab 2')
+            ->schema([
+                // ...
+            ]),
+        Tabs\Tab::make('Tab 3')
+            ->schema([
+                // ...
+            ]),
+    ])
+    ->contained(false)
+```
+
+## 持久化当前 Tab
+
+默认情况下，当前 Tab 不会再浏览器的本地存储中持久化。你可以使用 `persistTab()` 方法修改该行为。你也必需为 Tab 组件传入唯一 `id()`，以在 App 中和其它组的 Tab 区分开来。该 ID 会被用坐本地存储的键，保存当前标签： 
+
+```php
+use Filament\Forms\Components\Tabs;
+
+Tabs::make('Tabs')
+    ->tabs([
+        // ...
+    ])
+    ->persistTab()
+    ->id('order-tabs')
+```
+
+### 在 URL 查询字符串中将当前 Tab 持久化
 
 默认情况下，当前 Tab 不会再 URL 查询字符串中持久化，你可以使用 `persistTabInQueryString()` 方法修改此行为：
 
 ```php
 use Filament\Forms\Components\Tabs;
 
-Tabs::make('Label')
+Tabs::make('Tabs')
     ->tabs([
         Tabs\Tab::make('Tab 1')
             ->schema([
@@ -86,7 +223,7 @@ Tabs::make('Label')
 ```php
 use Filament\Forms\Components\Tabs;
 
-Tabs::make('Label')
+Tabs::make('Tabs')
     ->tabs([
         Tabs\Tab::make('Tab 1')
             ->schema([
@@ -103,109 +240,3 @@ Tabs::make('Label')
     ])
     ->persistTabInQueryString('settings-tab')
 ```
-
-## 设置 Tab 图标
-
-使用 `icon()` 方法，可以为 Tab 设置[图标](https://blade-ui-kit.com/blade-icons?set=1#search)：
-
-```php
-use Filament\Forms\Components\Tabs;
-
-Tabs::make('Label')
-    ->tabs([
-        Tabs\Tab::make('Notifications')
-            ->icon('heroicon-m-bell')
-            ->schema([
-                // ...
-            ]),
-        // ...
-    ])
-```
-
-<AutoScreenshot name="forms/layout/tabs/icons" alt="Tabs with icons" version="3.x" />
-
-### 设置 Tab 图标位置
-
-使用 `iconPosition()` 方法可以将图标放在标签的前后：
-
-```php
-use Filament\Forms\Components\Tabs;
-use Filament\Support\Enums\IconPosition;
-
-Tabs::make('Label')
-    ->tabs([
-        Tabs\Tab::make('Notifications')
-            ->icon('heroicon-m-bell')
-            ->iconPosition(IconPosition::After)
-            ->schema([
-                // ...
-            ]),
-        // ...
-    ])
-```
-
-<AutoScreenshot name="forms/layout/tabs/icons-after" alt="Tabs with icons after their labels" version="3.x" />
-
-## 设置 Tab 徽章
-
-使用 `badge()` 方法，可以为选项卡设置徽章：
-
-```php
-use Filament\Forms\Components\Tabs;
-
-Tabs::make('Label')
-    ->tabs([
-        Tabs\Tab::make('Notifications')
-            ->badge(5)
-            ->schema([
-                // ...
-            ]),
-        // ...
-    ])
-```
-
-<AutoScreenshot name="forms/layout/tabs/badges" alt="Tabs with badges" version="3.x" />
-
-## 在选项卡中使用网格 columns
-
-你可以在 Tab 中使用 `columns()` 自定义 [Grid](grid)：
-
-```php
-use Filament\Forms\Components\Tabs;
-
-Tabs::make('Label')
-    ->tabs([
-        Tabs\Tab::make('Tab 1')
-            ->schema([
-                // ...
-            ])
-            ->columns(3),
-        // ...
-    ])
-```
-
-## 移除样式容器
-
-默认情况下，Tabs 及其内容被包装在一个样式为卡片的容器中，你可以使用 `contained()` 移除样式容器：
-
-```php
-use Filament\Forms\Components\Tabs;
-
-Tabs::make('Label')
-    ->tabs([
-        Tabs\Tab::make('Tab 1')
-            ->schema([
-                // ...
-            ]),
-        Tabs\Tab::make('Tab 2')
-            ->schema([
-                // ...
-            ]),
-        Tabs\Tab::make('Tab 3')
-            ->schema([
-                // ...
-            ]),
-    ])
-    ->contained(false)
-```
-

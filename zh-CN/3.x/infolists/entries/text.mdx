@@ -164,6 +164,21 @@ TextEntry::make('authors.name')
     ->limitList(3)
 ```
 
+#### 展开限制列表
+
+使用 `expandableLimitedList()` 方法，你可以允许受限制项目展开或者折叠：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('authors.name')
+    ->listWithLineBreaks()
+    ->limitList(3)
+    ->expandableLimitedList()
+```
+
+请注意这只是 `listWithLineBreaks()` 或 `bulleted()` 的一个功能，其中每一项都由自己的功能。
+
 ### 使用列表分隔符
 
 如果你想将模型中的文本字符串打散(explode)成多个列表项，你可以使用 `separator()` 方法。这对于显示以逗号分隔的标签(#显示成徽章)很有用。比如：

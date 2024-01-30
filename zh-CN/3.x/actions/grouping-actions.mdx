@@ -72,13 +72,15 @@ ActionGroup::make([
 
 ## 设置下拉菜单的宽度
 
-使用 `dropdownWidth()` 方法，可以为下拉菜单设置宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。选项包括 `xs`、`sm`、`md`、`lg`、`xl`、`2xl`、`3xl`、`4xl`、`5xl`、`6xl` 和 `7xl`：
+使用 `dropdownWidth()` 方法，可以为下拉菜单设置宽度。选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。选项包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge` 和 `SevenExtraLarge`
 
 ```php
+use Filament\Support\Enums\MaxWidth;
+
 ActionGroup::make([
     // Array of actions
 ])
-    ->dropdownWidth('xs')
+    ->dropdownWidth(MaxWidth::ExtraSmall)
 ```
 
 ## 控制下拉菜单最大高度
@@ -86,8 +88,20 @@ ActionGroup::make([
 使用 `maxHeight()` 方法，下拉菜单可以设置最大高度，内容超过此高度则使用滚动条。你可以传入[CSS 长度](https://developer.mozilla.org/en-US/docs/Web/CSS/length)：
 
 ```php
+
 ActionGroup::make([
     // Array of actions
 ])
     ->maxHeight('400px')
+```
+
+## 控制下拉菜单的 offset
+
+使用 `dropdownOffset()` 方法，你可以控制下拉菜单的 offset，默认为 `8`。
+
+```php
+ActionGroup::make([
+    // Array of actions
+])
+    ->dropdownOffset(16)
 ```

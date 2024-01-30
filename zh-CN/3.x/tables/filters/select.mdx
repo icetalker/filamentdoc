@@ -1,0 +1,104 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/tables/docs/04-filters/02-select.md"
+title: 下拉选择过滤器
+---
+import AutoScreenshot from "@components/AutoScreenshot.astro"
+import LaracastsBanner from "@components/LaracastsBanner.astro"
+
+## 概述
+
+通常，你可能希望使用[下拉选择(Selcet)字段](../../forms/fields/select)而非复选框。您希望用户可以根据一组预定义选项过滤列字段时，尤其如此。为此，您可以使用 `SelectFilter`` 类创建一个过滤器
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+通过 options() 传递给过滤器的选项，与传递给 [Select 字段](../../forms/fields/select)的方式一致：
+
+## 自定义 Select 过滤器使用的字段
+
+Select 过滤器不要求自定义 `query()` 方法。用于设置查询范围的字段名是过滤器的名称。要对此进行自定义，请使用 `attribute()` 方法：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->attribute('status_id')
+```
+
+## 多选 SelectFilter
+
+这将允许用户选择多个选项，将其应用到过滤器。比如，状态过滤器可能向用户展示一些状态选项供用户选取及表格过滤使用。当用户选择多个选项时，表格会过滤显示匹配所选选项的记录。你可以使用 `multiple()` 方法启用该行为：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->multiple()
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+```
+
+## 关联 SelectFilter
+
+SelectFilter 也能够基于关联自动填充。比如，如果表有一个 `author` 关联，它有一个 `name` 字段，你可以使用 `relationship()` 过滤属于某个作者(author)的记录：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('author')
+    ->relationship('author', 'name')
+```
+
+### 预加载 SelectFilter 关联选项
+
+如果你想在页面加载时填充可搜索选项，而不是在用户搜索时加载，你可以使用 `preload()` 方法：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('author')
+    ->relationship('author', 'name')
+    ->searchable()
+    ->preload()
+```
+
+### 自定义 SelectFilter 关联查询
+
+使用 `relationship()` 方法的第三个参数，你可以自定义用于检索选项的数据库查询：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
+SelectFilter::make('author')
+    ->relationship('author', 'name', fn (Builder $query) => $query->withTrashed())
+```
+
+### SelectFilter 搜索选项
+
+使用 `searchable()` 方法，你可以启用搜索输入框，以方便访问选项：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('author')
+    ->relationship('author', 'name')
+    ->searchable()
+```

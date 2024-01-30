@@ -22,7 +22,7 @@ title: 安装
 使用 Composer 引入安装此包：
 
 ```bash
-composer require filament/forms:"^3.0-stable" -W
+composer require filament/forms:"^3.1" -W
 ```
 
 ## 全新 Laravel 项目
@@ -52,7 +52,7 @@ php artisan filament:install --forms
 运行如下命令安装 Tailwind CSS 及 Tailwind Forms 和 Typography 插件：
 
 ```bash
-npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer --save-dev
+npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss postcss-nesting autoprefixer --save-dev
 ```
 
 新建一个 `tailwind.config.js` 文件，并添加 Filament 的 `preset` *(引入 Filament color scheme 及必要的 Tailwind 插件)*： 
@@ -80,11 +80,12 @@ export default {
 @tailwind utilities;
 ```
 
-在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS 和 Autoprefixer 注册成插件：
+在应用根目录中创建一个 `postcss.config.js` 文件，并将 Tailwind CSS、PostCSS Nesting 和 Autoprefixer 注册成插件：
 
 ```js
 export default {
     plugins: {
+        'tailwindcss/nesting': 'postcss-nesting',
         tailwindcss: {},
         autoprefixer: {},
     },

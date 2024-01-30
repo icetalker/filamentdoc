@@ -1,0 +1,690 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/docs/07-prebuilt-actions/08-import.md"
+title: Import action
+---
+
+## 概览
+
+Filament v3.1 引入了一个可以从 CSV 导入数据的预制 Action。点击触发按钮后，模态框向用户请求文件。文件上传后，可以将 CSV 中的每一列映射到数据库的字段中。如果有任何行验证失败，这些行将被编译到一个可下载的 CSV 中，在其他的行导入后，供用户进行查阅。用户也可以下载包含可被导入的所有列信息的 CSV 示例文件。
+
+该特性使用了[批量队列作业](https://laravel.com/docs/queues#job-batching)及[数据库通知](../../notifications/database-notifications#overview)，因此你需要发布这些迁移到 Laravel 中。同时，也需要发布 Filament 用于存储导入数据的迁移表：
+
+```bash
+php artisan queue:batches-table
+php artisan notifications:table
+php artisan vendor:publish --tag=filament-actions-migrations
+
+php artisan migrate
+```
+
+> 如果你使用的是 PostgreSQL，请确保通知迁移中的 `data` 字段使用 `json()`: `$table->json('data')`。
+
+> 如果 `User` 模型使用了 UUID，请确保通知迁移的 `notifiable` 字段使用 `uuidMorphs()`: `$table->uuidMorphs('notifiable')`。
+
+`ImportAction` 可以像这样使用：
+
+```php
+use App\Filament\Imports\ProductImporter;
+use Filament\Actions\ImportAction;
+
+ImportAction::make()
+    ->importer(ProductImporter::class)
+```
+
+如果你想添加 Action 到表格头部，可以使用 `Filament\Tables\Actions\ImportAction`：
+
+```php
+use App\Filament\Imports\ProductImporter;
+use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->headerActions([
+            ImportAction::make()
+                ->importer(ProductImporter::class)
+        ]);
+}
+```
+
+[需要创建 "importer" 类](#创建-importer)，告知 Filament 如何导入 CSV 的每一行。
+
+## 创建 importer
+
+要为模型创建 importer 类，可以使用 `make:filament-importer` 命令，并传入模型名称：
+
+```bash
+php artisan make:filament-importer Product
+```
+
+该命令将在 `app/Filament/Imports` 目录下创建一个新的类。你需要定义可被导入的[字段](#定义-importer-字段)。
+
+### 自动生成 importer 字段
+
+如果你想节省时间，Filament 可以使用 `--generate`，基于模型的数据库字段，为你自动生成[字段](#定义-importer-字段)：
+
+```bash
+php artisan make:filament-importer Product --generate
+```
+
+> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the columns for your importer if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
+
+## 定义 importer 字段
+
+要定义可被导入的字段，你需要在 importer 类中重写 `getColumns()` 方法，返回 `ImportColumn` 对象数组：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+public function getColumns(): array
+{
+    return [
+        ImportColumn::make('name')
+            ->requiredMapping()
+            ->rules(['required', 'max:255']),
+        ImportColumn::make('sku')
+            ->label('SKU')
+            ->requiredMapping()
+            ->rules(['required', 'max:32']),
+        ImportColumn::make('price')
+            ->numeric()
+            ->rules(['numeric', 'min:0']),
+    ];
+}
+```
+
+### 自定义导入字段的标签
+
+每个字段的标签将由该字段名自动生成，不过你也可以调用 `label()` 方法对其进行重写：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->label('SKU')
+```
+
+### 要求 importer 字段映射到 CSV 字段
+
+你可以调用 `requiredMapping()` 方法，使得一个映射到 CSV 中的字段为必需。数据库中必需的字段也应该是映射时必需的：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->requiredMapping()
+```
+
+如果数据库中的字段是必需的，你也需要确保它的验证规则有 [['required'] 验证规则](#验证-csv-数据)。
+
+### 验证 CSV 数据
+
+可以调用 `rules()` 方法将验证规则添加到字段中。这些规则将在 CSV 中的每一行中的数据保存到数据库之前对其进行检查：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->rules(['required', 'max:32'])
+```
+
+任何未通过验证的行都不会被导入。相反，它们将被编译成一个新的 "失败行" CSV，用户可以在导入完成后下载。用户将看到每一行失败的验证错误列表。
+
+### 强制转换状态
+
+在[验证](#验证-csv-数据)之前，CSV 数据可以被转换。这对于将字符串强制转换为正确的数据类型很有用，否则验证可能会失败。比如，如果你的 CSV 中有一个 `price` 字段，你可能想将其强制转换成浮点型：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('price')
+    ->castStateUsing(function (string $state): ?float {
+        if (blank($state)) {
+            return null;
+        }
+        
+        $state = preg_replace('/[^0-9.]/', '', $state);
+        $state = floatval($state);
+    
+        return round($state, precision: 2);
+    })
+```
+
+本例中，我们传入一个用于强制转换 `$state` 的函数。此函数从字符串中删除任何非数字字符，将其强制转换为浮点值，并将其四舍五入到小数点后两位。
+
+> 请注意，如果字段在验证中不是必需的，且字段为空，它不会被转换。
+
+Filament 也同时附带了一些预制的转换方法：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('price')
+    ->numeric() // Casts the state to a float.
+
+ImportColumn::make('price')
+    ->numeric(decimalPlaces: 2) // Casts the state to a float, and rounds it to 2 decimal places.
+
+ImportColumn::make('quantity')
+    ->integer() // Casts the state to an integer.
+
+ImportColumn::make('is_visible')
+    ->boolean() // Casts the state to a boolean.
+```
+
+#### 强制转换后改变状态
+
+如果你使用了[内置转 方法](#强制转换状态)或者[数组转换](#以数组的方式在单个字段中处理多个值)，将函数传入到 `castStateUsing()` 方法，你可以在转换后改变其状态：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('price')
+    ->numeric()
+    ->castStateUsing(function (float $state): ?float {
+        if (blank($state)) {
+            return null;
+        }
+    
+        return round($state * 100);
+    })
+```
+
+通过在函数中定义一个 `$originalState` 参数，你甚至可以访问强制转换之前原始状态：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('price')
+    ->numeric()
+    ->castStateUsing(function (float $state, mixed $originalState): ?float {
+        // ...
+    })
+```
+
+### 导入关联
+
+你可以使用 `relationship()` 方法导入关联。目前只支持 `BelongsTo` 关联。比如，你的 CSV 中有一个 `category` 字段，你想导入到 category 关联：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('author')
+    ->relationship()
+```
+
+本例中，CSV 中的 `author` 字段会与数据库中的 `author_id` 映射。该 CSV 中应该包含 author 的主键，通常为 `id`。
+
+如果字段有值，但找不到作者(author)，则导入将无法通过验证。Filament 会自动向所有关联列添加验证，以确保关联在必需时不为空。
+
+#### 自定义关联导入解析
+
+如果你想使用不同的字段查询关联记录，你可以将字段名传入到 `resolveUsing`：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('author')
+    ->relationship(resolveUsing: 'email')
+```
+
+你可以传入多个字段到 `resolveUsing` 中，这些字段将被用于以 "or" 方式查找作者。比如，如果你传入 `['email', 'username']`，将通过邮箱(email)或用户名(username)查询记录：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('author')
+    ->relationship(resolveUsing: ['email', 'username'])
+```
+
+你也可以传入函数到 `resolveUsing` 自定义解析过程，该函数返回带有关联的记录：
+
+```php
+use App\Models\Author;
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('author')
+    ->relationship(resolveUsing: function (array $state): ?Author {
+        return Author::query()
+            ->where('email', $state)
+            ->orWhere('username', $state)
+            ->first();
+    })
+```
+
+你甚至可以使用该函数，动态确定哪个字段用于解析记录：
+
+```php
+use App\Models\Author;
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('author')
+    ->relationship(resolveUsing: function (array $state): ?Author {
+        if (filter_var($state, FILTER_VALIDATE_EMAIL)) {
+            return 'email';
+        }
+    
+        return 'username';
+    })
+```
+
+### 以数组的方式在单个字段中处理多个值
+
+你可以使用 `array()` 方法，将字段中的值强制转换到数组中。它接受分隔符作为第一个参数，用于将列中的值拆分为数组。例如，如果 CSV 中有一个 `documentation_urls` 列，则可能需要将其强制转换为 URL 数组：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('documentation_urls')
+    ->array(',')
+```
+
+本例中，我传入一个逗号作为分隔符，因此字段的值将用逗号分隔，并强制转换为数组。
+
+#### 在数组中强制转换每一项
+
+如果想在数组将每一项强制转换成不同的数据类型，你可以链式调用[内置强制转换方法](#强制转换状态)：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('customer_ratings')
+    ->array(',')
+    ->integer() // Casts each item in the array to an integer.
+```
+
+#### 数组中验证每一项
+
+如果你想在数组中验证每一项，你可以链式调用 `nestedRecursiveRules()` 方法：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('customer_ratings')
+    ->array(',')
+    ->integer()
+    ->rules(['array'])
+    ->nestedRecursiveRules(['integer', 'min:1', 'max:5'])
+```
+
+### 自定义字段填入记录的方式
+
+如果要自定义字段状态填入记录的方式，你可以将一个函数传入到 `fillRecordUsing()` 方法：
+
+```php
+use App\Models\Product;
+
+ImportColumn::make('sku')
+    ->fillRecordUsing(function (Product $record, string $state): void {
+        $record->sku = strtoupper($state);
+    })
+```
+
+## 导入时更新现有记录
+
+生成 importer 类时，其中有一个 `resolveRecord()` 方法：
+
+```php
+use App\Models\Product;
+
+public function resolveRecord(): ?Product
+{
+    // return Product::firstOrNew([
+    //     // Update existing records, matching them by `$this->data['column_name']`
+    //     'email' => $this->data['email'],
+    // ]);
+
+    return new Product();
+}
+```
+
+该方法在 CSV 的每一行中调用，负责返回要从 CSV 中填入的数据的模型实例，并保存到数据库中。默认情况下，它将为每一行创建新记录。不过，你可以自定义该行为，用以更新现有记录。比如，如果一个产品已经存在，你可能想对其进行更新；如果不存在，则新建一条记录。为此，你可以取消 `firstOrNew()` 行的注释，并你想匹配的传递字段名。对于产品，你可能会匹配 `sku` 字段：
+
+```php
+use App\Models\Product;
+
+public function resolveRecord(): ?Product
+{
+    return Product::firstOrNew([
+        'sku' => $this->data['sku'],
+    ]);
+}
+```
+
+### 导入时只更新现有记录
+
+如果你要编写一个只更新现有记录的 importer，而不想创建新纪录，如果没找到记录，你可以返回 `null`：
+
+```php
+use App\Models\Product;
+
+public function resolveRecord(): ?Product
+{
+    return Product::query()
+        ->where('sku', $this->data['sku'])
+        ->first();
+}
+```
+
+### 为导入字段忽视空状态
+
+默认情况下，如果 CSV 中的字段是空的，并且由用户映射，并且验证不需要该字段，则该列字段作为 `null` 导入数据库。如果您想忽略空白状态，而使用数据库中的现有值，可以调用 `ignoreBlankState()` 方法：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('price')
+    ->ignoreBlankState()
+```
+
+## 使用导入选项
+
+导入操作可以渲染额外的表单组件，用户可以在导入 CSV 时与之交互。这对于允许用户自定义 importer 的行为非常有用。例如，你可能希望用户能够选择是在导入时更新现有记录，还是仅创建新记录。为此，可以从 importer 类的 `getOptionsFormComponents()` 方法返回选项表单组件：
+
+```php
+use Filament\Forms\Components\Checkbox;
+
+public static function getOptionsFormComponents(): array
+{
+    return [
+        Checkbox::make('updateExisting')
+            ->label('Update existing records'),
+    ];
+}
+```
+
+此外，你可以通过该 Action 的 `options()` 方法将一组静态选项传递给 importer：
+
+```php
+use Filament\Actions\ImportAction;
+
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->options([
+        'updateExisting' => true,
+    ])
+```
+
+现在，你可以通过调用 `$this->options` 在 importer 类中从这些选项中访问数据。比如，你可能想在 `resolveRecord()` 中使用它来[更新现有产品](#导入时更新现有记录)：
+
+```php
+use App\Models\Product;
+
+public function resolveRecord(): ?Product
+{
+    if ($this->options['updateExisting'] ?? false) {
+        return Product::firstOrNew([
+            'sku' => $this->data['sku'],
+        ]);
+    }
+
+    return new Product();
+}
+```
+
+## 改进导入字段映射猜测
+
+默认情况下，Filament 会尝试猜想(guess) CSV 中的那一个字段匹配数据库中的哪一个字段，以节约用户时间。它通过尝试查找字段名的不同组合来做到这一点，这些组合带有空格、`-`、`_`，所有大小写都不区分。但是，如果想改进猜测，可以调用 `guess()` 方法，并提供 CSV 中可能存在的字段名的更多示例：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->guess(['id', 'number', 'stock-keeping unit'])
+```
+
+## 提供示例 CSV 数据
+
+在用户上传 CSV 之前，他们可以选择下载一个示例 CSV 文件，其中包含可以导入的所有可用字段。这很有用，因为它允许用户将此文件直接导入到他们的电子表格软件中并填写。
+
+你也可以添加一个示例行到 CSV 中，向用户展示数据应该是怎么样的。要填入示例行，你可以传递示例字段的值到 `example()` 方法中：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->example('ABC123')
+```
+
+## 使用自定义用户模型
+
+默认情况下，`imports` 表格有一个 `user_id` 字段。该字段约束到 `users` 表：
+
+```php
+$table->foreignId('user_id')->constrained()->cascadeOnDelete();
+```
+
+在 `Import` 模型中，`user()` 关联定义为 `App\Models\User` 的 `BelongsTo` 关联。如果 `App\Models\User` 模型不存在，或你想使用不同的模型，你可以在服务提供者的 `register()` 方法中将新的 `Authenticatable` 模型绑定到容器中：
+
+```php
+use App\Models\Admin;
+use Illuminate\Contracts\Auth\Authenticatable;
+
+$this->app->bind(Authenticatable::class, Admin::class);
+```
+
+如果你的 authenticatable 模型使用了不同于 `users` 的表，你应该将表格名传入到 `constrained()`：
+
+```php
+$table->foreignId('user_id')->constrained('admins')->cascadeOnDelete();
+```
+
+### 使用多态用户关联
+
+使用多态 `MorphTo` 关联，你可以将导入与多个用户模型关联。为此，你需要在 `imports` 表格中替换 `user_id` 字段：
+
+```php
+$table->morphs('user');
+```
+
+然后，在服务提供者的 `boot()` 模型，你可以调用 `Import::polymorphicUserRelationship()`，以将 `Import` 模型中的 `user()` 关联换成 `MorphTo` 关联：
+
+```php
+use Filament\Actions\Imports\Models\Import;
+
+Import::polymorphicUserRelationship();
+```
+
+## 限制可被导入的最大行数
+
+为避免服务器过载，您、你可能希望限制从 CSV 文件导入的最大行数。您可以在 Action 上调用 `maxRows()` 方法来完成此操作：
+
+```php
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->maxRows(100000)
+```
+
+## 更改导入区块大小
+
+Filament  将对 CSV 进行分块(chunk)，并在不同的队列作业中处理每个分块。默认情况下，块一次是 100 行。可以通过在 Action 上调用 `chunkSize()` 方法来更改这一点：
+
+```php
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->chunkSize(250)
+```
+
+如果在导入大型 CSV 文件时遇到内存问题，你可能希望减小块大小。
+
+## 修改 CSV 分隔符
+
+CSV 的默认分隔符是逗号(`,`)。如果要使用其他分隔符导入，你可以在 CSV 上调用 `csvDelimiter()` 方法，传入新的分隔符：
+
+```php
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->csvDelimiter(';')
+```
+
+你只能指定一个字符，否则会抛出异常。
+
+## 自定义导入作业
+
+处理导入的默认 job 是 `Filament\Actions\imports\Jobs\ImportCsv`。如果你想扩展这个类并重写它的方法，你可以替换服务提供者的 `register()` 方法中的原始类：
+
+```php
+use App\Jobs\ImportCsv;
+use Filament\Actions\Imports\Jobs\ImportCsv::class as BaseImportCsv;
+
+$this->app->bind(BaseImportCsv::class, ImportCsv::class);
+```
+
+或者，也可以传递新的 Job 类到 Action 的 `job()` 方法中， 以为特定的导入自定义 job：
+
+```php
+use App\Jobs\ImportCsv;
+
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->job(ImportCsv::class)
+```
+
+### 自定义导入 Job 中间件
+
+默认情况下，导入系统每次只处理每次导入的一个作业。这是为了防止服务器过载，也为了防止其他作业因大量导入而延迟。该功能在 importer 类的 `WithoutOverlapping` 中间件中定义：
+
+```php
+public function getJobMiddleware(): array
+{
+    return [
+        (new WithoutOverlapping("import{$this->import->id}"))->expireAfter(600),
+    ];
+}
+```
+
+如果你想自定义应用于某个 importer 的作业的中间件，你可以在导入程序中重写此方法。更多关于 Job 中间件的信息，请查询 [Laravel 文档](https://laravel.com/docs/queues#job-middleware)。
+
+### 自定义导入 Job 的重试
+
+默认情况下，导入系统会在 24 小时内重试一次 Job。这是为了解决临时问题，比如数据库不可用。该功能在 importer 类的 `getJobRetryUntil()` 方法中定义：
+
+```php
+use Carbon\CarbonInterface;
+
+public function getJobRetryUntil(): CarbonInterface
+{
+    return now()->addDay();
+}
+```
+
+如果你想为特定的 importer 自定义重试时间，你可以在 importer 类中重写该方法。更多关于 Job 重试的信息，请查询 [Laravel 文档](hhttps://laravel.com/docs/queues#time-based-attempts)。
+
+### 自定义导入 Job 标签
+
+默认情况下，导入系统将使用导入的 ID 为每个 Job 打上标签。这将让你更容易找到所有关联到特定导入的 Job。该功能在 importer 类中定义 `getJobTags()` 方法：
+
+```php
+public function getJobTags(): array
+{
+    return ["import{$this->import->id}"];
+}
+```
+
+如果你想为特定的 importer 自定义使用的标签，可以在 importer 类中重写该方法。
+
+## 自定义导入验证消息
+
+导入系统将在导入前自动验证 CSV 文件。如果有任何错误，会向用户展示错误列表，并且不会处理该导入。如果你想重写默认的验证消息，你可以重写 importer 类的 `getValidationMessages()` 方法：
+
+```php
+public function getValidationMessages(): array
+{
+    return [
+        'name.required' => 'The name column must not be empty.',
+    ];
+}
+```
+
+更多自定义验证消息，请阅读相关 [Laravel 文档](https://laravel.com/docs/validation#customizing-the-error-messages)。
+
+### 自定义导入验证属性
+
+当字段验证失败，其标签会在错误消息中使用。要自定义字段错误消息中使用的标签，请使用 `validationAttribute()` 方法：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('name')
+    ->validationAttribute('full name')
+```
+
+## 生命周期钩子
+
+钩子(Hook)被用于 importer 生命周期内的多个节点执行代码，比如在记录保存之前。要设置钩子，请在 importer 类的中使用钩子名创建一个 protected 方法：
+
+```php
+protected function beforeSave(): void
+{
+    // ...
+}
+```
+
+本例中，`beforeSave()` 方法中的代码将会在 CSV 验证过的数据保存到数据库之前调用。
+
+Importer 中有多个可用钩子：
+
+```php
+use Filament\Actions\Imports\Importer;
+
+class ProductImporter extends Importer
+{
+    // ...
+
+    protected function beforeValidate(): void
+    {
+        // Runs before the CSV data for a row is validated.
+    }
+
+    protected function afterValidate(): void
+    {
+        // Runs after the CSV data for a row is validated.
+    }
+
+    protected function beforeFill(): void
+    {
+        // Runs before the validated CSV data for a row is filled into a model instance.
+    }
+
+    protected function afterFill(): void
+    {
+        // Runs after the validated CSV data for a row is filled into a model instance.
+    }
+
+    protected function beforeSave(): void
+    {
+        // Runs before a record is saved to the database.
+    }
+
+    protected function beforeCreate(): void
+    {
+        // Similar to `beforeSave()`, but only runs when creating a new record.
+    }
+
+    protected function beforeUpdate(): void
+    {
+        // Similar to `beforeSave()`, but only runs when updating an existing record.
+    }
+
+    protected function afterSave(): void
+    {
+        // Runs after a record is saved to the database.
+    }
+    
+    protected function afterCreate(): void
+    {
+        // Similar to `afterSave()`, but only runs when creating a new record.
+    }
+    
+    protected function afterUpdate(): void
+    {
+        // Similar to `afterSave()`, but only runs when updating an existing record.
+    }
+}
+```
+
+在钩子中，你可以使用 `$this->data` 访问当前行数据。使用 `$this->originalData`，你也可以在[强制转换](#强制转换状态)或者映射之前访问来自 CSV 的原始行数据，
+
+当前记录(如果已经存在)可以使用 `$this->record` 访问，并且可以使用 `$this->options` 访问[导入表单选项](#使用导入选项)。

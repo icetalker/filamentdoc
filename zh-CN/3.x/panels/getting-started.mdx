@@ -410,9 +410,9 @@ public static function table(Table $table): Table
 
 虽然你可以将 `type` 字段设置成可搜索的 searchable，不过使之可过滤会有更好的用户体验。
 
-Filament 表格可以设置[过滤器](../tables/filters)，过滤器是一个允许你限制 Eloquent 查询范围来减少表格记录的组件。过滤器过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
+Filament 表格可以设置[过滤器](../tables/filters/getting-started)，过滤器是一个允许你设置 Eloquent 查询范围来减少表格记录的组件。过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
 
-Filament 包含了一个预制的 [`SelectFilter`](../tables/filters#select-过滤器)，你可以将其添加到表格的 `filters()` 中：
+Filament 包含了一个预制的 [`SelectFilter`](../tables/filters/select)，你可以将其添加到表格的 `filters()` 中：
 
 ```php
 use Filament\Tables;
@@ -460,7 +460,7 @@ php artisan make:filament-relation-manager PatientResource treatments descriptio
 该命令将新建一个 `PatientResource/RelationManagers/TreatmentsRelationManager` 文件。你需要到 `PatientResource` 的 `getRelations()` 方法中注册新的关联管理器。
 
 ```php
-use App\Filament\PatientResource\RelationManagers;
+use App\Filament\Resources\PatientResource\RelationManagers;
 
 public static function getRelations(): array
 {

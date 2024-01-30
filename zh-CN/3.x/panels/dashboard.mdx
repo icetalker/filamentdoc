@@ -111,6 +111,112 @@ php artisan make:filament-widget BlogPostsOverview
 
 该命令会创建两个文件 - 一个插件类文件位于 Filament 目录下的 `/Widgets` 文件夹中，以及一个位于 Filament 视图目录 `/widgets` 文件夹中的视图文件。
 
+## 过滤 widget 数据
+
+你可以添加表单到仪表盘，以允许用户过滤所有 widget 上显示的数据。过滤器更新时，Widget 会使用新数据重新加载。
+
+首先，你需要[替换原有的仪表盘页面](#自定义仪表盘页面)。
+
+现在，在新的 `app/Filament/Pages/Dashboard.php` 文件中，你可以添加 `HasFiltersForm` trait，并添加 `filtersForm()` 方法以返回表单组件： 
+
+```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
+
+class Dashboard extends BaseDashboard
+{
+    use HasFiltersForm;
+
+    public function filtersForm(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Section::make()
+                    ->schema([
+                        DatePicker::make('startDate'),
+                        DatePicker::make('endDate'),
+                        // ...
+                    ])
+                    ->columns(3),
+            ]);
+    }
+}
+```
+
+在需要过滤器的数据的 Widget 类中，你需要添加 `InteractsWithPageFilters` trait，以允许使用 `$this->filters` 属性来访问过滤器表单那的原始数据：
+
+```php
+use App\Models\BlogPost;
+use Carbon\CarbonImmutable;
+use Filament\Widgets\StatsOverviewWidget;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
+use Illuminate\Database\Eloquent\Builder;
+
+class BlogPostsOverview extends StatsOverviewWidget
+{
+    use InteractsWithPageFilters;
+
+    public function getStats(): array
+    {
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
+
+        return [
+            StatsOverviewWidget\Stat::make(
+                label: 'Total posts',
+                value: BlogPost::query()
+                    ->when($startDate, fn (Builder $query) => $query->whereDate('created_at', '>=', $startDate))
+                    ->when($endDate, fn (Builder $query) => $query->whereDate('created_at', '<=', $endDate))
+                    ->count(),
+            ),
+            // ...
+        ];
+    }
+}
+```
+
+`$this->filters` 数组总是反射当前表单数据。请注意，这个数据是未经验证的，因为它是实时且不会用于查询数据库之外的其他用途。你必须在使用前确保这个数据是有效。本例中，我们会在查询中使用前检测开始日期是否已设置。
+
+### 使用 Action 模态框过滤 widget 数据
+
+此外，你可以将过滤器表单换成 Action 模态框，通过单击页面标题中的按钮可以打开该模态框。使用这种方法有很多好处：
+
+- 过滤器表单不总是可见，这样允许你让 Widget 使用页面的全高。
+- 过滤器不会更新 Wiget，除非用户点击了"应用(Apply)"按钮，这意味着过滤器不会重新加载，除非用户准备好了。如果 widget 加载的开销大，这可以改进性能。
+- 验证可以在过滤器表单上执行，这意味着 widget 可以依赖于有效的数据 —— 用户在验证有效之前无法提交表单。取消模态框将丢弃用户的更改。
+
+要将过滤器表单替换成 Action 模态框，你可以使用 `HasFiltersAction` trait 替换 `HasFiltersForm`。然后在 `getHeaderActions()` 中注册 `FilterAction` 类：
+
+```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Form;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Pages\Dashboard\Actions\FilterAction;
+use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
+
+class Dashboard extends BaseDashboard
+{
+    use HasFiltersAction;
+    
+    protected function getHeaderActions(): array
+    {
+        return [
+            FilterAction::make()
+                ->form([
+                    DatePicker::make('startDate'),
+                    DatePicker::make('endDate'),
+                    // ...
+                ]),
+        ];
+    }
+}
+```
+
+处理来自过滤器 Action 的数据根处理来自过滤器头部表单那的数据一样，只是数据在传递到 widget 之前要经过验证。`InteractsWithPageFilters` trait 仍然适用。
+
 ## 禁用默认 Widget
 
 默认情况下，仪表盘上展示了两个 Widget。这些插件可以通过更新[配置](configuration)的 `widgets()` 数组禁用:
@@ -168,4 +274,12 @@ protected static string $routePath = 'finance';
 
 ```php
 protected static ?string $title = 'Finance dashboard';
+```
+
+显示给用户的主仪表盘是，根据排序，用户有权访问(由 `canView()` 控制，见上)的第一个仪表盘。
+
+仪表盘的默认排序为 `-2`。你可以使用 `$navigationSort` 控制自定义仪表盘的排序：
+
+```php
+protected static ?int $navigationSort = 15;
 ```

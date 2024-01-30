@@ -298,7 +298,7 @@ public function getFooter(): ?View
 
 ## 自定义最大内容宽度
 
-默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Prose`、`ScreenSmall`、`ScreenMedium`、`ScreenLarge`、`ScreenExtraLarge`、`ScreenTwoExtraLarge` 及 `Full`。默认值为 `SevenExtraLarge`。
+默认情况下，Filament 会在页面中限制内容的宽度，这样在大屏幕中才不会变动过宽。你可以重写 `getContentMaxWidth()` 方法来修改它。选项对应于 [Tailwind 的 max-width 尺度](https://tailwindcss.com/docs/max-width)。选项值包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Full`、`MinContent`、`MaxContent`、`FitContent`、`Prose`、`ScreenSmall`、`ScreenMedium`、`ScreenLarge`、`ScreenExtraLarge` 及 `ScreenTwoExtraLarge`。默认值为 `SevenExtraLarge`。
 
 ```php
 use Filament\Support\Enums\MaxWidth;
@@ -307,4 +307,34 @@ public function getMaxContentWidth(): MaxWidth
 {
     return MaxWidth::Full;
 }
+```
+
+## 生成到页面的 URL
+
+Filament 在页面类中提供了 `getUrl()` 静态方法，用以为其生成 URL。传统上，你需要使用 Laravel 的 `route()` 辅助函数手动生成 URL，不过这些方法取决于对页面 slug 或路由命名规范的认知。
+
+`getUrl()` 方法，不带任何参数将会生成一个 URL：
+
+```php
+use App\Filament\Pages\Settings;
+
+Settings::getUrl(); // /admin/settings
+```
+
+如果你的页面使用 URL/查询参数，你应该使用这些参数：
+
+```php
+use App\Filament\Pages\Settings;
+
+Settings:::getUrl(['section' => 'notifications']); // /admin/settings?section=notifications
+```
+
+### 生成其他面板页面的 URL
+
+如果你的应用中有多个面板，`getUrl` 会在当前面板中生成 URL。你也可以传入面板 ID 到 `panel` 参数，说明页面关联的面板：
+
+```php
+use App\Filament\Pages\Settings;
+
+Settings::getUrl(panel: 'marketing');
 ```

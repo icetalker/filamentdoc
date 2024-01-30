@@ -6,7 +6,7 @@ title: 高级表单
 
 ## 概述
 
-Filament 表单构造器的设计具有灵活性且可自定义.许多现有的表单构造器器允许用户定义表单 Schema，但没有为字段间交互或自定义逻辑提供良好的接口。由于所有 Filament 表单都建立在 [Livewire](https://livewire.laravel.com) 之上，表单可以动态地适配用户输入，即使在初始化渲染之后也是如此。开发者通过[参数注入](#表单组件-utility-注入)实时访问许多 utilities，并且基于用户输入创建动态表单。字段的[生命周期](#字段生命周期)使用钩子函数开放给扩展,用来定义每个字段的自定义功能。这就允许开发者轻松创建复杂表单。
+Filament 表单构造器的设计具有灵活性且可自定义.许多现有的表单构造器允许用户定义表单 Schema，但没有为字段间交互或自定义逻辑提供良好的接口。由于所有 Filament 表单都建立在 [Livewire](https://livewire.laravel.com) 之上，表单可以动态地适配用户输入，即使在初始化渲染之后也是如此。开发者通过[参数注入](#表单组件-utility-注入)实时访问许多 utilities，并且基于用户输入创建动态表单。字段的[生命周期](#字段生命周期)使用钩子函数开放给扩展，用来定义每个字段的自定义功能。这就允许开发者轻松创建复杂表单。
 
 ## 字段动态响应基础
 
@@ -555,4 +555,88 @@ Group::make()
             ->email()
             ->required(),
     ])
+```
+
+## 在表单中插入 Livewire 组件
+
+你可以将 Livewire 组件中直接插入到表单中：
+
+```php
+use Filament\Forms\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)
+```
+
+### 传递参数到 Livewire 组件中
+
+你可以传递参数数组到 Livewire 组件：
+
+```php
+use Filament\Forms\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class, ['bar' => 'baz'])
+```
+
+现在，这些参数可以传递给 Livewire 组件的 `mount()` 方法：
+
+```php
+class Foo extends Component
+{
+    public function mount(string $bar): void
+    {       
+        // ...
+    }
+}
+```
+
+此外，这些参数将作为 Livewire 的 public 属性提供：
+
+```php
+class Foo extends Component
+{
+    public string $bar;
+}
+```
+
+#### 在 Livewire 组件中访问当前记录
+
+在 `mount()` 方法中使用 `$record` 参数，或者使用 `$record` 属性，你可用在 Livewire 组件中访问当前记录：
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+class Foo extends Component
+{
+    public function mount(?Model $record = null): void
+    {       
+        // ...
+    }
+    
+    // or
+    
+    public ?Model $record = null;
+}
+```
+
+请注意，当记录尚未创建时，它将为 `null`。如果你想在记录为 `null` 时隐藏 Livewire 组件，可以使用 `hidden()` 方法：
+
+```php
+use Filament\Forms\Components\Livewire;
+use Illuminate\Database\Eloquent\Model;
+
+Livewire::make(Foo::class)
+    ->hidden(fn (?Model $record): bool => $record === null)
+```
+
+### 延迟加载 Livewire 组件
+
+使用 `lazy()` 方法，你可用允许组件[延迟加载](https://livewire.laravel.com/docs/lazy#rendering-placeholder-html)：
+
+```php
+use Filament\Forms\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)->lazy()       
 ```
