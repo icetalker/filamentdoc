@@ -41,6 +41,7 @@ Filament 随带多类字段，适于编辑不同类型的数据：
 - [Textarea](textarea)
 - [Key-value](key-value)
 - [Color picker](color-picker)
+- [Toggle buttons](toggle-buttons)
 - [Hidden](hidden)
 
 你也可以根据需要[创建自定义字段](custom)。
@@ -296,6 +297,15 @@ use Filament\Forms\Components\TextInput;
 TextInput::make('name')
     ->required() // 添加验证确保该字段必需
     ->markAsRequired(false) // 移除星号
+```
+
+If your field is not `required()`, but you still wish to show an asterisk `*` you can use `markAsRequired()` too:
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('name')
+    ->markAsRequired()
 ```
 
 ## 全局设置

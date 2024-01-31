@@ -527,7 +527,7 @@ ImportAction::make()
 
 ```php
 use App\Jobs\ImportCsv;
-use Filament\Actions\Imports\Jobs\ImportCsv::class as BaseImportCsv;
+use Filament\Actions\Imports\Jobs\ImportCsv as BaseImportCsv;
 
 $this->app->bind(BaseImportCsv::class, ImportCsv::class);
 ```
@@ -542,6 +542,26 @@ ImportAction::make()
     ->job(ImportCsv::class)
 ```
 
+### Customizing the import queue and connection
+
+By default, the import system will use the default queue and connection. If you'd like to customize the queue used for jobs of a certain importer, you may override the `getJobQueue()` method in your importer class:
+
+```php
+public function getJobQueue(): ?string
+{
+    return 'imports';
+}
+```
+
+You can also customize the connection used for jobs of a certain importer, by overriding the `getJobConnection()` method in your importer class:
+
+```php
+public function getJobConnection(): ?string
+{
+    return 'sqs';
+}
+```
+
 ### 自定义导入 Job 中间件
 
 默认情况下，导入系统每次只处理每次导入的一个作业。这是为了防止服务器过载，也为了防止其他作业因大量导入而延迟。该功能在 importer 类的 `WithoutOverlapping` 中间件中定义：
@@ -550,7 +570,7 @@ ImportAction::make()
 public function getJobMiddleware(): array
 {
     return [
-        (new WithoutOverlapping("import{$this->import->id}"))->expireAfter(600),
+        (new WithoutOverlapping("import{$this->import->getKey()}"))->expireAfter(600),
     ];
 }
 ```
@@ -564,7 +584,7 @@ public function getJobMiddleware(): array
 ```php
 use Carbon\CarbonInterface;
 
-public function getJobRetryUntil(): CarbonInterface
+public function getJobRetryUntil(): ?CarbonInterface
 {
     return now()->addDay();
 }
@@ -579,7 +599,7 @@ public function getJobRetryUntil(): CarbonInterface
 ```php
 public function getJobTags(): array
 {
-    return ["import{$this->import->id}"];
+    return ["import{$this->import->getKey()}"];
 }
 ```
 

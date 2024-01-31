@@ -47,7 +47,7 @@ class ManagePost extends Component implements HasForms, HasActions
 
 ## 添加 Action
 
-添加一个返回 Action 的方法：
+添加一个返回 Action 的方法。该方法必须与 Action 的名称相同，或者在名称后面跟着 `Action`：
 
 ```php
 use App\Models\Post;
@@ -71,6 +71,12 @@ class ManagePost extends Component implements HasForms, HasActions
             ->requiresConfirmation()
             ->action(fn () => $this->post->delete());
     }
+
+    // This method name also works, since the action name is `delete`:
+    // public function delete(): Action
+    
+    // This method name does not work, since the action name is `delete`, not `deletePost`:
+    // public function deletePost(): Action
 
     // ...
 }
@@ -96,8 +102,8 @@ class ManagePost extends Component implements HasForms, HasActions
 <div>
     @foreach ($posts as $post)
         <h2>{{ $post->title }}</h2>
-        
-        {{ ($this->delete)(['post' => $post->id]) }}
+
+        {{ ($this->deleteAction)(['post' => $post->id]) }}
     @endforeach
 
     <x-filament-actions::modals />
@@ -120,6 +126,38 @@ public function deleteAction(): Action
             $post?->delete();
         });
 }
+```
+
+## Hiding actions in a Livewire view
+
+If you use `hidden()` or `visible()` to control if an action is rendered, you should wrap the action in an `@if` check for `isVisible()`:
+
+```blade
+<div>
+    @if ($this->deleteAction->isVisible())
+        {{ $this->deleteAction }}
+    @endif
+    
+    {{-- Or --}}
+    
+    @if (($this->deleteAction)(['post' => $post->id])->isVisible())
+        {{ ($this->deleteAction)(['post' => $post->id]) }}
+    @endif
+</div>
+```
+
+The `hidden()` and `visible()` methods also control if the action is `disabled()`, so they are still useful to protect the action from being run if the user does not have permission. Encapsulating this logic in the `hidden()` or `visible()` of the action itself is good practice otherwise you need to define the condition in the view and in `disabled()`.
+
+You can also take advantage of this to hide any wrapping elements that may not need to be rendered if the action is hidden:
+
+```blade
+<div>
+    @if ($this->deleteAction->isVisible())
+        <div>
+            {{ $this->deleteAction }}
+        </div>
+    @endif
+</div>
 ```
 
 ## 在 Livewire 视图中对 Action 进行分组
@@ -177,7 +215,7 @@ public function editAction(): Action
         // ...
         ->action(function (array $arguments) {
             $post = Post::find($arguments['post']);
-            
+
             // ...
 
             $this->replaceMountedAction('publish', $arguments);        

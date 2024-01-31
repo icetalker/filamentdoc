@@ -52,7 +52,7 @@ Radio::make('status')
 
 ```php
 Radio::make('feedback')
-    ->label('Do you like this post?')
+    ->label('Like this post?')
     ->boolean()
 ```
 
@@ -64,12 +64,26 @@ Radio::make('feedback')
 
 ```php
 Radio::make('feedback')
-    ->label('Do you like this post?')
+    ->label('Like this post?')
     ->boolean()
     ->inline()
 ```
 
 <AutoScreenshot name="forms/fields/radio/inline" alt="Inline radio" version="3.x" />
+
+## Positioning the options inline with each other but below the label
+
+You may wish to display the options `inline()` with each other but below the label:
+
+```php
+Radio::make('feedback')
+    ->label('Like this post?')
+    ->boolean()
+    ->inline()
+    ->inlineLabel(false)
+```
+
+<AutoScreenshot name="forms/fields/radio/inline-under-label" alt="Inline radio under label" version="3.x" />
 
 ## 禁用指定选项
 

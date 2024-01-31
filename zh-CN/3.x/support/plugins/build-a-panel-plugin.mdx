@@ -86,6 +86,8 @@ npm install
 
 既然已经清理完了，我们可以开始添加代码了。`src/ClockWidgetServiceProvider` 文件中的样板代码中有很多内容，因此，我们删除所有内容，从头开始。
 
+> In this example, we will be registering an [async Alpine component](../assets#asynchronous-alpinejs-components). Since these assets are only loaded on request, we can register them as normal in the `packageBooted()` method. If you are registering assets, like CSS or JS files, that get loaded on every page regardless of if they are used or not, you should register them in the `register()` method of the `Plugin` configuration object, using [`$panel->assets()`](../../panels/configuration#registering-assets-for-a-panel). Otherwise, if you register them in the `packageBooted()` method, they will be loaded in every panel, regardless of whether or not the plugin has been registered for that panel.
+
 我们需要在面板中注册 Widget 并且在使用 widget 时加载 Alpine 组件。为此，我们需要添加以下内容到服务提供者的 `packageBooted` 方法。这将会向 Livewire 注册 widget 组件并向 Filament 资源管理器注册 Alpine 组件。
 
 ```php

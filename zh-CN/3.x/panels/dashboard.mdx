@@ -276,7 +276,7 @@ protected static string $routePath = 'finance';
 protected static ?string $title = 'Finance dashboard';
 ```
 
-显示给用户的主仪表盘是，根据排序，用户有权访问(由 `canView()` 控制，见上)的第一个仪表盘。
+显示给用户的主仪表盘是，根据定义的导航排序，用户有权访问(由 [`canAccess()` 方法](pages#授权)控制)的第一个仪表盘。
 
 仪表盘的默认排序为 `-2`。你可以使用 `$navigationSort` 控制自定义仪表盘的排序：
 

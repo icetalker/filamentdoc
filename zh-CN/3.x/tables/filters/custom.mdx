@@ -85,6 +85,7 @@ Filter::make('is_admin')
 例如，如果您有一个自定义日期过滤器，您可以创建一个自定义指示器来格式化所选日期：
 
 ```php
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
 
@@ -105,6 +106,7 @@ Filter::make('created_at')
 你甚至可以通过返回 `Indicator` 对象数组，一次性渲染多个指示器。如果你有关联不同指示器的不同字段，你应该在 `Indicator` 对象上使用 `removeField()` 对字段进行设置，以确保过滤器移除时重置的字段正确：
 
 ```php
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
@@ -130,4 +132,16 @@ Filter::make('created_at')
 
         return $indicators;
     })
+```
+
+### Preventing indicators from being removed
+
+You can prevent users from removing an indicator using `removable(false)` on an `Indicator` object:
+
+```php
+use Carbon\Carbon;
+use Filament\Tables\Filters\Indicator;
+
+Indicator::make('Created from ' . Carbon::parse($data['from'])->toFormattedDateString())
+    ->removable(false)
 ```

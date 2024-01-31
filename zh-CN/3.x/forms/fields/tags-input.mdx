@@ -87,6 +87,28 @@ TagsInput::make('percentages')
     ->tagSuffix('%')
 ```
 
+## 标签重新排序
+
+使用 `reorderable()` 方法，可以允许用户在字段中对标签重新排序：
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')
+    ->reorderable()
+```
+
+## Changing the color of tags
+
+You can change the color of the tags by passing a color to the `color()` method. It may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+
+```php
+use Filament\Forms\Components\TagsInput;
+
+TagsInput::make('tags')
+    ->color('danger')
+```
+
 ## 标签验证
 
 将规则数组传入到 `nestedRecursiveRules()` 方法中，你可以为每个标签添加验证规则：
@@ -99,15 +121,4 @@ TagsInput::make('tags')
         'min:3',
         'max:255',
     ])
-```
-
-## 标签重新排序
-
-使用 `reorderable()` 方法，你可以允许用户在字段中对标签重新排序：
-
-```php
-use Filament\Forms\Components\TagsInput;
-
-TagsInput::make('tags')
-    ->reorderable()
 ```

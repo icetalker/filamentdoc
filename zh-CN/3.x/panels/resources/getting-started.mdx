@@ -344,6 +344,8 @@ public static function getNavigationParentItem(): ?string
 }
 ```
 
+> If you're reaching for a third level of navigation like this, you should consider using [clusters](clusters) instead, which are a logical grouping of resources and [custom pages](../pages), which can share their own separate navigation.
+
 ## 为资源页生成 URL
 
 Filament 在资源类中使用 `getUrl()` 静态方法，用来为资源和特定页面生成 URL。一般来说，你需要手动或使用 Laravel 的 `route()` 帮助函数来构建 URL，而这些方法依赖于对资源的 slug 或路由命名规范的了解。
@@ -485,6 +487,8 @@ public static function getRecordSubNavigation(Page $page): array
 ```
 
 子导航中的每一项都可以使用[与正常页面相同的导航方法](../navigation)进行自定义。
+
+> If you're looking to add sub-navigation to switch *between* entire resources and [custom pages](../pages), you might be looking for [clusters](../clusters), which are used to group these together. The `getRecordSubNavigation()` method is intended to construct a navigation between pages that relate to a particular record *inside* a resource.
 
 ### 子导航位置
 

@@ -107,6 +107,21 @@ FileUpload::make('attachments')
 
 `attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [cast] 添加到该 Eloquent 模型属性中。
 
+## Avatar mode
+
+You can enable avatar mode for your file upload field using the `avatar()` method:
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('avatar')
+    ->avatar()
+```
+
+This will only allow images to be uploaded, and when they are, it will display them in a compact circle layout that is perfect for avatars.
+
+This feature pairs well with the [circle cropper](#allowing-users-to-crop-images-as-a-circle).
+
 ## 图片编辑器
 
 你可以使用 `imageEditor()` 方法，为文件上传字段启用图片编辑器：
@@ -193,6 +208,22 @@ FileUpload::make('image')
     ->imageEditorViewportWidth('1920')
     ->imageEditorViewportHeight('1080')
 ```
+
+### Allowing users to crop images as a circle
+
+You can allow users to crop images as a circle using the `circleCropper()` method:
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('image')
+    ->image()
+    ->avatar()
+    ->imageEditor()
+    ->circleCropper()
+```
+
+This is perfectly accompanied by the [`avatar()` method](#avatar-mode), which renders the images in a compact circle layout.
 
 ### 不使用编辑器裁切和调整图标大小
 
@@ -307,7 +338,7 @@ FileUpload::make('attachment')
     ->storeFiles(false)
 ```
 
-表单提交后，会返回临时文件上传对象，而不是永久文件存储路径。这非常适合像导入的CSV这样的临时文件。
+表单提交后，会返回临时文件上传对象，而不是持久化的文件存储路径。这非常适合像导入的 CSV 这样的临时文件。
 
 ## 根据 EXIF 数据确定图像的方向
 
@@ -329,6 +360,28 @@ use Filament\Forms\Components\FileUpload;
 
 FileUpload::make('attachment')
     ->deletable(false)
+```
+
+## Prevent file information fetching
+
+While the form is loaded, it will automatically detect whether the files exist, what size they are, and what type of files they are. This is all done on the backend. When using remote storage with many files, this can be time-consuming. You can use the `fetchFileInformation(false)` method to disable this feature:
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->fetchFileInformation(false)
+```
+
+## Customizing the uploading message
+
+You may customize the uploading message that is displayed in the form's submit button using the `uploadingMessage()` method:
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachment')
+    ->uploadingMessage('Uploading attachment...')
 ```
 
 ## 文件上传验证

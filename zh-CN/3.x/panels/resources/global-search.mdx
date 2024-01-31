@@ -158,10 +158,17 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## 全局搜索强制大小写不敏感
+## Configuring the global search debounce
 
-默认情况下，搜索会使用数据库列的敏感设置。这是为了在搜索大量数据集的时候，避免非必要的性能开销。不过，如果你的数据库默认不搜索大小写不敏感，你可以使用 `$isGlobalSearchForcedCaseInsensitive` 属性强制它：
+Global search has a default debounce time of 500ms, to limit the number of requests that are made while the user is typing. You can alter this by using the `globalSearchDebounce()` method in the [configuration](configuration):
 
 ```php
-protected static bool $isGlobalSearchForcedCaseInsensitive = true;
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchDebounce('750ms');
+}
 ```

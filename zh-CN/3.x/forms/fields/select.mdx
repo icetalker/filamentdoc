@@ -198,6 +198,19 @@ Select::make('author_id')
     ->preload()
 ```
 
+### Excluding the current record
+
+When working with recursive relationships, you will likely want to remove the current record from the set of results.
+
+This can be easily be done using the `ignoreRecord` argument:
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('parent_id')
+    ->relationship(name: 'parent', titleAttribute: 'name', ignoreRecord: true)
+```
+
 ### 自定义关联查询
 
 你可以使用 `relationship()` 的第三个参数，自定义检索选项的数据库查询：

@@ -18,25 +18,16 @@ php artisan make:filament-page Settings
 
 该命令会生成两个文件 - 一个位于Filament目录的 `/Pages` 文件夹中的页面类，以及一个位于 Filament 视图目录的 `/pages` 文件夹中的视图文件。
 
-页面类是全页[Livewire](https://laravel-livewire.com)组件，带有一些你可以在面板中使用的额外功能。
+页面类是全页 [Livewire](https://laravel-livewire.com)组件，带有一些你可以在面板中使用的额外功能。
 
-## 在导航中条件性隐藏页面
+## Authorization
 
-你可以通过重写页面类的 `shouldRegisterNavigation()` 方法来隐藏菜单。这对于控制哪些用户可以在侧边栏中查看页面非常有用。
+You can prevent pages from appearing in the menu by overriding the `canAccess()` method in your Page class. This is useful if you want to control which users can see the page in the navigation, and also which users can visit the page directly:
 
 ```php
-public static function shouldRegisterNavigation(): bool
+public static function canAccess(): bool
 {
     return auth()->user()->canManageSettings();
-}
-```
-
-请注意，此时所有用户仍然可以直接通过 URL 访问该页面，因此你必须同时检查页面的 `mount()` 方法进行全面限制:
-
-```php
-public function mount(): void
-{
-    abort_unless(auth()->user()->canManageSettings(), 403);
 }
 ```
 
@@ -326,7 +317,7 @@ Settings::getUrl(); // /admin/settings
 ```php
 use App\Filament\Pages\Settings;
 
-Settings:::getUrl(['section' => 'notifications']); // /admin/settings?section=notifications
+Settings::getUrl(['section' => 'notifications']); // /admin/settings?section=notifications
 ```
 
 ### 生成其他面板页面的 URL
@@ -337,4 +328,27 @@ Settings:::getUrl(['section' => 'notifications']); // /admin/settings?section=no
 use App\Filament\Pages\Settings;
 
 Settings::getUrl(panel: 'marketing');
+```
+
+## Adding sub-navigation between pages
+
+You may want to add a common sub-navigation to multiple pages, to allow users to quickly navigate between them. You can do this by defining a [cluster](clusters). Clusters can also contain [resources](resources), and you can switch between multiple pages or resources within a cluster.
+
+## Adding extra attributes to the body tag of a page
+
+You may wish to add extra attributes to the `<body>` tag of a page. To do this, you can set an array of attributes in `$extraBodyAttributes`:
+
+```php
+protected array $extraBodyAttributes = [];
+```
+
+Or, you can return an array of attributes and their values from the `getExtraBodyAttributes()` method:
+
+```php
+public function getExtraBodyAttributes(): array
+{
+    return [
+        'class' => 'settings-page',
+    ];
+}
 ```

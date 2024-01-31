@@ -469,15 +469,16 @@ Grid::make(2)
 
 本例中，`type` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许表单在 `type` 字段值修改时重新渲染。`afterStateUpdated()` 方法用于在 `type` 字段状态更新后运行函数。本例中，我们[注入了当前 Select 字段实例](#注入当前表单组件实例)，然后我们可以用它来获取持有 Select 组件和 Grid 组件的表单"容器"实例。使用该容器，我们可以使用唯一的键(`dynamicTypeFields`)锁定 Grid 组件。使用该 Grid 组件实例，我们可以调用 `fill()`，就像我们在普通表单中初始化一样。Grid 组件的 `schema()` 方法用于基于不同的 `type` 字段值返回不同的 schema。这是通过使用 [`$get()`](#注入字段的当前状态) 并动态返回不同的 schema 数组。
 
-### 自动哈希密码自动
+### 自动哈希密码字段
 
-有一个密码自动:
+有一个密码字段:
 
 ```php
 use Filament\Forms\Components\TextInput;
 
 TextInput::make('password')
     ->password()
+```
 
 你可以使用 [dehydration 函数](#field-dehydration), 在表单提交时哈希密码:
 
@@ -555,6 +556,64 @@ Group::make()
             ->email()
             ->required(),
     ])
+```
+
+### Saving data to a `BelongsTo` relationship
+
+Please note that if you are saving the data to a `BelongsTo` relationship, then the foreign key column in your database must be `nullable()`. This is because Filament saves the form first, before saving the relationship. Since the form is saved first, the foreign ID does not exist yet, so it must be nullable. Immediately after the form is saved, Filament saves the relationship, which will then fill in the foreign ID and save it again.
+
+It is worth noting that if you have an observer on your form model, then you may need to adapt it to ensure that it does not depend on the relationship existing when it it created. For example, if you have an observer that sends an email to a related record when a form is created, you may need to switch to using a different hook that runs after the relationship is attached, like `updated()`.
+
+### Conditionally saving data to a relationship
+
+Sometimes, saving the related record may be optional. If the user fills out the customer fields, then the customer will be created / updated. Otherwise, the customer will not be created, or will be deleted if it already exists. To do this, you can pass a `condition` function as an argument to `relationship()`, which can use the `$state` of the related form to determine whether the relationship should be saved or not:
+
+```php
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\TextInput;
+
+Group::make()
+    ->relationship(
+        'customer',
+        condition: fn (?array $state): bool => filled($state['name']),
+    )
+    ->schema([
+        TextInput::make('name')
+            ->label('Customer'),
+        TextInput::make('email')
+            ->label('Email address')
+            ->email()
+            ->requiredWith('name'),
+    ])
+```
+
+In this example, the customer's name is not `required()`, and the email address is only required when the `name` is filled. The `condition` function is used to check whether the `name` field is filled, and if it is, then the customer will be created / updated. Otherwise, the customer will not be created, or will be deleted if it already exists.
+
+## Inserting Livewire components into a form
+
+You may insert a Livewire component directly into a form:
+
+```php
+use Filament\Forms\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)
+```
+
+If you are rendering multiple of the same Livewire component, please make sure to pass a unique `key()` to each:
+
+```php
+use Filament\Forms\Components\Livewire;
+use App\Livewire\Foo;
+
+Livewire::make(Foo::class)
+    ->key('foo-first')
+
+Livewire::make(Foo::class)
+    ->key('foo-second')
+
+Livewire::make(Foo::class)
+    ->key('foo-third')
 ```
 
 ## 在表单中插入 Livewire 组件

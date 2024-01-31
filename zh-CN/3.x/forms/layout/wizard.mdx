@@ -167,6 +167,27 @@ Wizard\Step::make('Order')
     ]),
 ```
 
+### Preventing the next step from being loaded
+
+Inside `afterValidation()` or `beforeValidation()`, you may throw `Filament\Support\Exceptions\Halt`, which will prevent the wizard from loading the next step:
+
+```php
+use Filament\Forms\Components\Wizard;
+use Filament\Support\Exceptions\Halt;
+
+Wizard\Step::make('Order')
+    ->afterValidation(function () {
+        // ...
+
+        if (true) {
+            throw new Halt();
+        }
+    })
+    ->schema([
+        // ...
+    ]),
+```
+
 ## 在步骤中使用网格列宽
 
 你可以使用 `columns()` 方法来自定义步骤中的[网格](grid)：

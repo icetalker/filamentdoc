@@ -149,7 +149,6 @@ class EditUser extends EditRecord
     protected function beforeFill(): void
     {
         // 数据库数据填充到表单之前运行
-        // Runs before the form fields are populated from the database.
     }
 
     protected function afterFill(): void
@@ -313,6 +312,8 @@ public function form(Form $form): Form
         ]);
 }
 ```
+
+## 将编辑页添加到资源子导航
 
 如果你使用[资源子导航](getting-started#资源子导航)，你可以在该资源的 `getRecordSubNavigation()` 中注册该页面： 
 

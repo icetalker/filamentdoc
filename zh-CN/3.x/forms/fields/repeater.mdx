@@ -519,8 +519,8 @@ Repeater::make('answers')
 
 `distinct()` 验证的行为取决于字段所处理的数据类型：
 
-- 如果字段返回的是布尔值，比如[复选框](checkbox)或[切换按钮]，验证将确保只有一项的值会是 `true`。Repeater 中可能有多个字段值为 `false`。
-- 此外，像[下拉列表](select)、[单选框](radio)或者[复选框列表](checkbox-list)这些字段，验证会确保每个选项只能被选择一次。
+- 如果字段返回的是布尔值，比如[复选框](checkbox)或[切换按钮](toggle)，验证将确保只有一项的值会是 `true`。Repeater 中可能有多个字段值为 `false`。
+- 此外，像[下拉列表](select)、[单选框](radio)、[复选框列表](checkbox-list)或[切换按钮组](toggle-buttons)这些字段，验证会确保每个选项只能被选择一次。
 
 #### 自动修复非 distinct 状态
 
@@ -542,12 +542,12 @@ Repeater::make('answers')
 
 取决于该字段所处理的数据类型，`fixIndistinctState()` 的行为适配：
 
-- 如果字段返回的是布尔值，比如[复选框](checkbox)或[切换按钮]，其中一个字段启用了，Filament 会自动禁用所有其他已启用的字段。
-- 此外，像[下拉列表](select)、[单选框](radio)或者[复选框列表](checkbox-list)这些字段，当用户选择一个选项时，Filament 会自动取消选择所有已选该选项的地方。
+- 如果字段返回的是布尔值，比如[复选框](checkbox)或[切换按钮](toggle)，并且其中一个字段启用了，Filament 会自动禁用所有其他已启用的字段。
+- 此外，像[下拉列表](select)、[单选框](radio)、[复选框列表](checkbox-list)或[切换按钮组](toggle-buttons)这些字段，当用户选择一个选项时，Filament 会自动取消选择所有已选该选项的地方。
 
 #### 禁用其他项目选中的选项
 
-如果你想在[下拉列表](select)、[单选框](radio)或者[复选框列表](checkbox-list)中禁用已被其他项目选中的选项，可以使用 `disableOptionsWhenSelectedInSiblingRepeaterItems()` 方法：
+如果你想在[下拉列表](select)、[单选框](radio)、[复选框列表](checkbox-list)或[切换按钮组](toggle-buttons)中禁用已被其他项目选中的选项，可以使用 `disableOptionsWhenSelectedInSiblingRepeaterItems()` 方法：
 
 ```php
 use Filament\Forms\Components\Repeater;

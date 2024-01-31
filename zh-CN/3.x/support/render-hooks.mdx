@@ -38,12 +38,22 @@ FilamentView::registerRenderHook(
 
 ### 面板渲染钩子
 
+- `panels::auth.login.form.after` - After login form
+- `panels::auth.login.form.before` - Before login form
+- `panels::auth.password-reset.request.form.after` - After password reset request form
+- `panels::auth.password-reset.request.form.before` - Before password reset request form
+- `panels::auth.password-reset.reset.form.after` - After password reset form
+- `panels::auth.password-reset.reset.form.before` - Before password reset form
+- `panels::auth.register.form.after` - After register form
+- `panels::auth.register.form.before` - Before register form
 - `panels::body.start` - `<body>` 之后
 - `panels::body.end` - `</body>` 之前
 - `panels::content.end` - 页面内容之后，在 `<main>` 里面
 - `panels::content.start` - 页面内容之前，在 `<main>` 里
 - `panels::footer` - 页面 footer
 - `panels::global-search.end` - [全局搜索](../panels/resources/global-search) 容器尾部
+- `panels::global-search.after` - After the [global search](../panels/resources/global-search) container, inside the topbar
+- `panels::global-search.before` - Before the [global search](../panels/resources/global-search) container, inside the topbar
 - `panels::global-search.start` - [全局搜索](../panels/resources/global-search) 容器开始处
 - `panels::head.end` - `</head>` 之前
 - `panels::head.start` - `<head>` 之后
