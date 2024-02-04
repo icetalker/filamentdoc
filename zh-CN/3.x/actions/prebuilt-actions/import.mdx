@@ -4,11 +4,11 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: Import action
 ---
 
-## 概览
+## 概述
 
 Filament v3.1 引入了一个可以从 CSV 导入数据的预制 Action。点击触发按钮后，模态框向用户请求文件。文件上传后，可以将 CSV 中的每一列映射到数据库的字段中。如果有任何行验证失败，这些行将被编译到一个可下载的 CSV 中，在其他的行导入后，供用户进行查阅。用户也可以下载包含可被导入的所有列信息的 CSV 示例文件。
 
-该特性使用了[批量队列作业](https://laravel.com/docs/queues#job-batching)及[数据库通知](../../notifications/database-notifications#overview)，因此你需要发布这些迁移到 Laravel 中。同时，也需要发布 Filament 用于存储导入数据的迁移表：
+该特性使用了[批量队列作业](https://laravel.com/docs/queues#job-batching)及[数据库通知](../../notifications/database-notifications#概述)，因此你需要发布这些迁移到 Laravel 中。同时，也需要发布 Filament 用于存储导入数据的迁移表：
 
 ```bash
 php artisan queue:batches-table
@@ -542,9 +542,9 @@ ImportAction::make()
     ->job(ImportCsv::class)
 ```
 
-### Customizing the import queue and connection
+### 自定义导入队列与连接
 
-By default, the import system will use the default queue and connection. If you'd like to customize the queue used for jobs of a certain importer, you may override the `getJobQueue()` method in your importer class:
+默认情况下，导入系统将使用默认队列和连接。如果你想自定义队列用于特定 importer 的 Job，你可以在 importer 类中重写 `getJobQueue()` 方法：
 
 ```php
 public function getJobQueue(): ?string
@@ -553,7 +553,7 @@ public function getJobQueue(): ?string
 }
 ```
 
-You can also customize the connection used for jobs of a certain importer, by overriding the `getJobConnection()` method in your importer class:
+重写 importer 类中的 `getJobConnection()` 方法，你也可以自定义用于某个导入程序的作业的连接：
 
 ```php
 public function getJobConnection(): ?string

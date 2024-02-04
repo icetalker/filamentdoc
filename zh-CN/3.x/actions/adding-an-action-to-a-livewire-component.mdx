@@ -72,10 +72,10 @@ class ManagePost extends Component implements HasForms, HasActions
             ->action(fn () => $this->post->delete());
     }
 
-    // This method name also works, since the action name is `delete`:
+    // 此方法名也有效，因为该 Action 名为 `delete`:
     // public function delete(): Action
     
-    // This method name does not work, since the action name is `delete`, not `deletePost`:
+    // 此方法名无效，因为 Action 名为 `delete`，而非 `deletePost`:
     // public function deletePost(): Action
 
     // ...
@@ -128,9 +128,9 @@ public function deleteAction(): Action
 }
 ```
 
-## Hiding actions in a Livewire view
+## 在 Livewire 视图中隐藏 Action
 
-If you use `hidden()` or `visible()` to control if an action is rendered, you should wrap the action in an `@if` check for `isVisible()`:
+如果使用 `hidden()` 或 `visible()` 控制 Action 是否渲染，应该此 Action 包装在 `@if` 中检测其是否可见(`isVisible()`)： 
 
 ```blade
 <div>
@@ -146,9 +146,9 @@ If you use `hidden()` or `visible()` to control if an action is rendered, you sh
 </div>
 ```
 
-The `hidden()` and `visible()` methods also control if the action is `disabled()`, so they are still useful to protect the action from being run if the user does not have permission. Encapsulating this logic in the `hidden()` or `visible()` of the action itself is good practice otherwise you need to define the condition in the view and in `disabled()`.
+`hidden()` 和 `visable()` 方法也控制着 Action 是否禁用 `disabled`，因此如果用户没有权限，它们仍然可以用来保护 Action 不被运行。将此逻辑封装在 Action 自己的 `hidden()` 或 `visible()` 中是一种很好的实践，否则你需要在视图和 `disabled()` 中定义条件。
 
-You can also take advantage of this to hide any wrapping elements that may not need to be rendered if the action is hidden:
+你还可以利用这一点来隐藏任何在隐藏 Action 时可能不需要渲染的环绕元素：
 
 ```blade
 <div>

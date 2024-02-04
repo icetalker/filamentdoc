@@ -38,22 +38,22 @@ FilamentView::registerRenderHook(
 
 ### 面板渲染钩子
 
-- `panels::auth.login.form.after` - After login form
-- `panels::auth.login.form.before` - Before login form
-- `panels::auth.password-reset.request.form.after` - After password reset request form
-- `panels::auth.password-reset.request.form.before` - Before password reset request form
-- `panels::auth.password-reset.reset.form.after` - After password reset form
-- `panels::auth.password-reset.reset.form.before` - Before password reset form
-- `panels::auth.register.form.after` - After register form
-- `panels::auth.register.form.before` - Before register form
+- `panels::auth.login.form.after` - 登录表单之后
+- `panels::auth.login.form.before` - 登录表单之前
+- `panels::auth.password-reset.request.form.after` - 密码重置请求表单之后
+- `panels::auth.password-reset.request.form.before` - 密码重置请求表单之前
+- `panels::auth.password-reset.reset.form.after` - 密码重置表单之后
+- `panels::auth.password-reset.reset.form.before` - 密码重置表单之前
+- `panels::auth.register.form.after` - 注册表单之后
+- `panels::auth.register.form.before` - 注册表单之前
 - `panels::body.start` - `<body>` 之后
 - `panels::body.end` - `</body>` 之前
 - `panels::content.end` - 页面内容之后，在 `<main>` 里面
 - `panels::content.start` - 页面内容之前，在 `<main>` 里
 - `panels::footer` - 页面 footer
 - `panels::global-search.end` - [全局搜索](../panels/resources/global-search) 容器尾部
-- `panels::global-search.after` - After the [global search](../panels/resources/global-search) container, inside the topbar
-- `panels::global-search.before` - Before the [global search](../panels/resources/global-search) container, inside the topbar
+- `panels::global-search.after` - [全局搜索](../panels/resources/global-search)容器之后，在顶部栏内
+- `panels::global-search.before` - [全局搜索](../panels/resources/global-search)容器之前，在顶部栏内
 - `panels::global-search.start` - [全局搜索](../panels/resources/global-search) 容器开始处
 - `panels::head.end` - `</head>` 之前
 - `panels::head.start` - `<head>` 之后
@@ -69,8 +69,8 @@ FilamentView::registerRenderHook(
 - `panels::resource.pages.list-records.tabs.start` - The start of the filter tabs (before the first tab), also [can be scoped](#scoping-render-hooks) to the page or resource class
 - `panels::resource.relation-manager.after` - After the relation manager table, also [can be scoped](#scoping-render-hooks) to the page or relation manager class
 - `panels::resource.relation-manager.before` - Before the relation manager table, also [can be scoped](#scoping-render-hooks) to the page or relation manager class
-- `panels::scripts.after` - After scripts are defined
-- `panels::scripts.before` - Before scripts are defined
+- `panels::scripts.after` - Scripts 脚本定义之后
+- `panels::scripts.before` - Scripts 脚本定义之前
 - `panels::sidebar.nav.end` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之前
 - `panels::sidebar.nav.start` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之后
 - `panels::sidebar.footer` - Pinned to the bottom of the sidebar, below the content

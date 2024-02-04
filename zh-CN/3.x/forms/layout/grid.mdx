@@ -21,7 +21,7 @@ Filament 的网格(Grid)系统，允许你使用任何布局组件创建响应�
 
 除了指定布局组件应该占有多少 columns 外，使用 `columnSpan()`方法，你也可以指定一个子组件在父网格中应该占有多少 columns。该方法接收一个整型数字或者一个临界点和占用列宽组成的数组：
 
-- `columnSpan(2)` 将会使组件在所有临界点中占用 2 个 columns。
+- `columnSpan(2)` 将会使组件在所有临界点中占用 2 个 column。
 - `columnSpan(['md' => 2, 'xl' => 4])` 将会使组件在中等设备中填满 2 个 column，并在超大设备中占用 4 个 column，小设备的默认临界点将占用 1 个 column，除非使用了 `default` 数组键。
 - `columnSpan('full')` 或 `columnSpanFull()` 或 `columnSpan(['default' => 'full'])` 会使组件占满父级网格的全部宽度，无论其占有多少 columns。
 

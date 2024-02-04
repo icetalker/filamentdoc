@@ -362,9 +362,9 @@ FileUpload::make('attachment')
     ->deletable(false)
 ```
 
-## Prevent file information fetching
+## 阻止文件信息获取
 
-While the form is loaded, it will automatically detect whether the files exist, what size they are, and what type of files they are. This is all done on the backend. When using remote storage with many files, this can be time-consuming. You can use the `fetchFileInformation(false)` method to disable this feature:
+表单加载后，会自动检测文件是否存在、文件大小和文件类型。这些都在后台实现。当使用具有许多文件的远程存储时，这一操作可能会消耗许多时间，你可以使用 `fetchFileInformation(false)` 方法禁用该特性：
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -373,9 +373,9 @@ FileUpload::make('attachment')
     ->fetchFileInformation(false)
 ```
 
-## Customizing the uploading message
+## 自定义上传消息
 
-You may customize the uploading message that is displayed in the form's submit button using the `uploadingMessage()` method:
+使用 `uploadingMessage()` 方法，你可以自定义显示在表单提交按钮中的上传消息：
 
 ```php
 use Filament\Forms\Components\FileUpload;

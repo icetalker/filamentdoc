@@ -344,7 +344,7 @@ public static function getNavigationParentItem(): ?string
 }
 ```
 
-> If you're reaching for a third level of navigation like this, you should consider using [clusters](clusters) instead, which are a logical grouping of resources and [custom pages](../pages), which can share their own separate navigation.
+> 如果要使用三级导航，应该考虑使用 [Cluster](clusters)，这是资源和[自定义页面](../pages)的逻辑分组，可以共享自己单独的导航。
 
 ## 为资源页生成 URL
 
@@ -488,7 +488,7 @@ public static function getRecordSubNavigation(Page $page): array
 
 子导航中的每一项都可以使用[与正常页面相同的导航方法](../navigation)进行自定义。
 
-> If you're looking to add sub-navigation to switch *between* entire resources and [custom pages](../pages), you might be looking for [clusters](../clusters), which are used to group these together. The `getRecordSubNavigation()` method is intended to construct a navigation between pages that relate to a particular record *inside* a resource.
+> 如果你想要在整个资源和[自定义页面](../pages)之间添加子导航，你可以使用 [Cluster](../clusters)，它用于将其分组到一起。`getRecordSubNavigation()` 方法旨在构建与资源内特定记录相关的页面之间的导航。
 
 ### 子导航位置
 

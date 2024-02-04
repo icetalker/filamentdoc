@@ -237,9 +237,9 @@ class EditProfile extends BaseEditProfile
 
 上例的 `form()` 方法中，我们调用了 `getNameFormComponent` 以获取页面的默认表单组件。你可以按需求自定义这些组件。所有可控的自定义选项，请查看 Filament 代码库中的基础 `EditProfile` 页面类 —— 它包含你可以重写修改的所有方法。
 
-#### Customizing an authentication field without needing to re-define the form
+#### 自定义授权字段，而无需重新定义表单
 
-If you'd like to customize a field in an authentication form without needing to define a new `form()` method, you could extend the specific field method and chain your customizations:
+如果你想自定义授权表单中的字段，而不必定义新的 `form() 方法，你` 可以扩展自定义的字段方法并链接你的自定义：
 
 ```php
 use Filament\Forms\Components\Component;
@@ -251,11 +251,11 @@ protected function getPasswordFormComponent(): Component
 }
 ```
 
-### Using a sidebar on the profile page
+### 在 Profile 页面使用侧边栏
 
-By default, the profile page does not use the standard page layout with a sidebar. This is so that it works with the [tenancy](tenancy) feature, otherwise it would not be accessible if the user had no tenants, since the sidebar links are routed to the current tenant.
+Profile 页面默认不会使用带有侧边栏的标准页面布局。这是为了使其与[租户](tenancy)特性合作，否则，如果用户没有租户，它将无法访问，因为侧边栏链接被路由到当前租户。
 
-If you aren't using [tenancy](tenancy) in your panel, and you'd like the profile page to use the standard page layout with a sidebar, you can pass the `isSimple: false` parameter to `$panel->profile()` when registering the page:
+如果没有在面板中使用[租户](tenancy)，并且想让 Profile 页面使用带侧边栏的标准页面布局，你可以在注册页面时，将 `isSimple: false` 参数传递给 `$panel->profile()`：
 
 ```php
 use Filament\Panel;
@@ -268,9 +268,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Customizing the authentication route slugs
+### 自定义认证路由 slug
 
-You can customize the URL slugs used for the authentication routes in the [configuration](configuration):
+你可以在[配置](configuration)中自定义用于身份认证路由的 URL slug：
 
 ```php
 use Filament\Panel;
@@ -320,9 +320,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Disabling revealable password inputs
+### 禁用可显示的密码输入
 
-By default, all password inputs in authentication forms are [`revealable()`](../forms/fields/text-input#revealable-password-inputs). This allows the user can see a plain text version of the password they're typing by clicking a button. To disable this feature, you can pass `false` to the `revealablePasswords()` [configuration](configuration) method:
+默认情况下，所有认证表单的密码输入是 [`revealable()`](../forms/fields/text-input#可显示密码输入)。这允许用户通过点击按钮查看其密码的明文版本。要禁用该特性，你可以传递 `false` 到 `revealablePasswords()` [配置](configuration)方法中：
 
 ```php
 use Filament\Panel;
@@ -335,16 +335,16 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-You could also disable this feature on a per-field basis by calling `->revealable(false)` on the field object when [extending the base page class](#customizing-an-authentication-field-without-needing-to-re-define-the-form).
+也可以在[扩展基本页面类](#自定义授权字段而无需重新定义表单)时，通过在字段对象上调用 `->reveable(false)`，按字段禁用此功能:
 
-## Setting up guest access to a panel
+## 设置访客访问面板
 
-By default, Filament expects to work with authenticated users only. To allow guests to access a panel, you need to avoid using components which expect a signed-in user (such as profiles, avatars), and remove the built-in Authentication middleware:
+默认情况下，Filament 只希望认证用户使用。要允许访客访问面板，你需要避免使用需要登录用户的组件(如配置文件、头像)，并删除内置的身份验证中间件：
 
-- Remove the default `Authenticate::class` from the `authMiddleware()` array in the panel configuration.
-- Remove `->login()` and any other [authentication features](#authentication-features) from the panel.
-- Remove the default `AccountWidget` from the `widgets()` array, because it reads the current user's data.
+- 从面板配置文件的 `authMiddleware()` 数组中移除默认的 `Authenticate::class`。
+- 移除 `->login()` 以及面板中任何其他[身份认证特性](#authentication-features)。
+- 从 `widgets()` 数组中移除默认的 `AccountWidget`，因为它会读取当前用户数据。
 
-### Authorizing guests in policies
+### 在策略中授权访客
 
-When present, Filament relies on [Laravel Model Policies](https://laravel.com/docs/authorization#generating-policies) for access control. To give read-access for [guest users in a model policy](https://laravel.com/docs/authorization#guest-users), create the Policy and update the `viewAny()` and `view()` methods, changing the `User $user` param to `?User $user` so that it's optional, and `return true;`. Alternatively, you can remove those methods from the policy entirely.
+如果存在，Filament 依赖于 [Laravel 模型策略](https://laravel.com/docs/authorization#generating-policies)用于访问控制。为[模型策略中的访客用户]授予读取权限(https://laravel.com/docs/authorization#guest-users)，创建策略并更新 `viewAny()` 和 `view()` 方法，将 `User $user`参数更改为 `?User $user`，以使其可选，并 `return true;'。或者，可以从策略中完全删除这些方法。

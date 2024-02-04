@@ -558,15 +558,15 @@ Group::make()
     ])
 ```
 
-### Saving data to a `BelongsTo` relationship
+### 保存数据到 `BelongsTo` 关联
 
-Please note that if you are saving the data to a `BelongsTo` relationship, then the foreign key column in your database must be `nullable()`. This is because Filament saves the form first, before saving the relationship. Since the form is saved first, the foreign ID does not exist yet, so it must be nullable. Immediately after the form is saved, Filament saves the relationship, which will then fill in the foreign ID and save it again.
+请注意，如果你要将数据保存到 `BelongsTo` 关联，那么数据库中的外键字段必须为 `nullable()` 类型。这是因为 Filament 在保存关联之前先保存表单。由于先保存表单，外键 ID 还不存在，因此它必须是 nullable 的。表单保存后，Filament 立即保存关联，然后再填入 外键 ID 并再次保存。
 
-It is worth noting that if you have an observer on your form model, then you may need to adapt it to ensure that it does not depend on the relationship existing when it it created. For example, if you have an observer that sends an email to a related record when a form is created, you may need to switch to using a different hook that runs after the relationship is attached, like `updated()`.
+值得注意的是，如果表单模型上有一个观察者，那么可能需要对其进行调整，以确保它不依赖于创建时存在的关联。例如，如果有一个观察者在创建表单时向相关记录发送电子邮件，那么你可能需要切换到使用附加关联后运行的其他挂钩，如 `updated()`。
 
-### Conditionally saving data to a relationship
+### 条件性地将数据保存到关联
 
-Sometimes, saving the related record may be optional. If the user fills out the customer fields, then the customer will be created / updated. Otherwise, the customer will not be created, or will be deleted if it already exists. To do this, you can pass a `condition` function as an argument to `relationship()`, which can use the `$state` of the related form to determine whether the relationship should be saved or not:
+有时，保存关联记录可能是可选的。如果用户填写客户字段，则将创建/更新客户。否则，将不会创建该客户，或者如果该客户已经存在，则会将其删除。为此，你可以将 `condition` 函数作为参数传递给 `relationship()`，该函数可以使用相关表单的 `$state` 来确定是否应保存关联：
 
 ```php
 use Filament\Forms\Components\Group;
@@ -587,11 +587,11 @@ Group::make()
     ])
 ```
 
-In this example, the customer's name is not `required()`, and the email address is only required when the `name` is filled. The `condition` function is used to check whether the `name` field is filled, and if it is, then the customer will be created / updated. Otherwise, the customer will not be created, or will be deleted if it already exists.
+本例中，客户名不是必填项(`required()`)，同时邮箱地址只有在 `name` 填充后才是必填的。`condition` 函数用于检测 `name` 字段是否填充，如果是将会创建/更新客户。否则，客户不会被创建，或者如果已存在则删除。
 
-## Inserting Livewire components into a form
+## 将 Livewire 组件插入到表单
 
-You may insert a Livewire component directly into a form:
+你可能会将 Livewire 组件直接插入到表单中：
 
 ```php
 use Filament\Forms\Components\Livewire;
@@ -600,7 +600,7 @@ use App\Livewire\Foo;
 Livewire::make(Foo::class)
 ```
 
-If you are rendering multiple of the same Livewire component, please make sure to pass a unique `key()` to each:
+如果你渲染了多个相同的 Livewire 组件，请确保将一个唯一的 `key()` 传给各个组件。
 
 ```php
 use Filament\Forms\Components\Livewire;

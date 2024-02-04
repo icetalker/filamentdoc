@@ -6,9 +6,9 @@ title: 导航
 
 ## 概述
 
-默认情况下，Filament 会为每一个 [资源类](resources/getting-started)、[自定义页面](pages) 和 [Clusters](clusters)注册导航菜单。这些类中包含一些你可以重写的静态属性和静态方法，用以配置导航菜单和显示顺序：
+默认情况下，Filament 会为每一个 [资源类](resources/getting-started)、[自定义页面](pages) 和 [Clusters](clusters) 注册导航菜单。这些类中包含一些你可以重写的静态属性和静态方法，用以配置导航菜单和显示顺序：
 
-If you're looking to add a second layer of navigation to your app, you can use [clusters](clusters). These are useful for grouping resources and pages together.
+如果想在应用中添加一层导航，可以使用 [Clusters](clusters)。这对于资源和页面分组很有用。
 
 ## 自定义导航项标签
 
@@ -35,7 +35,7 @@ public static function getNavigationLabel(): string
 protected static ?string $navigationIcon = 'heroicon-o-document-text';
 ```
 
-If you set `$navigationIcon = null` on all items within the same navigation group, those items will be joined with a vertical bar below the group label.
+如果你在同一个导航组内的所有项目都设置了 `$navigationIcon = null`，这些项目将会通过分组标签下方的竖条(vertical bar)连接。
 
 ### 激活时切换导航菜单图标
 
@@ -51,7 +51,7 @@ protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
 
 ```php
 protected static ?int $navigationSort = 3;
-```
+c```
 
 限制，使用低数值导航项会出现在高数值的前面 - 排序是升序的。
 
@@ -66,7 +66,7 @@ public static function getNavigationBadge(): ?string
 }
 ```
 
-If a badge value is returned by `getNavigationBadge()`, it will display using the primary color by default. To style the badge contextually, return either `danger`, `gray`, `info`, `primary`, `success` or `warning` from the `getNavigationBadgeColor()` method:
+如果徽章值是由 `getNavigationBadge()` 返回，它将默认使用 primary 颜色展示。要自定义徽章上下文样式，请在  `getNavigationBadgeColor()` 方法中返回 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 public static function getNavigationBadgeColor(): ?string
@@ -75,13 +75,13 @@ public static function getNavigationBadgeColor(): ?string
 }
 ```
 
-A custom tooltip for the navigation badge can be set in `$navigationBadgeTooltip`:
+导航徽章的自定义 tooltip 可以在 `$navigationBadgeTooltip` 中设置：
 
 ```php
 protected static ?string $navigationBadgeTooltip = 'The number of users';
 ```
 
-Or it can be returned from `getNavigationBadgeTooltip()`:
+或者从 `getNavigationBadgeTooltip()` 中返回：
 
 ```php
 public static function getNavigationBadgeTooltip(): ?string
@@ -100,9 +100,9 @@ protected static ?string $navigationGroup = 'Settings';
 
 在同一个导航分组中的所有菜单项会被集中到同一个分组标签下显示，比如本例的 "Settings"。未分组的菜单项会被保留在侧边栏顶部。
 
-### Grouping navigation items under other items
+### 将导航项分组到其他项目之下
 
-You may group navigation items as children of other items, by passing the label of the parent item as the `$navigationParentItem`:
+将父级项目的标签传递给 `$navigationParentItem`，你可以将导航项作为其他项的子项分组：
 
 ```php
 protected static ?string $navigationParentItem = 'Notifications';
@@ -110,7 +110,7 @@ protected static ?string $navigationParentItem = 'Notifications';
 protected static ?string $navigationGroup = 'Settings';
 ```
 
-You may also use the `getNavigationParentItem()` method to set a dynamic parent item label:
+也可以使用 `getNavigationParentItem()` 方法设置动态的父级项目标签：
 
 ```php
 public static function getNavigationParentItem(): ?string
@@ -119,9 +119,9 @@ public static function getNavigationParentItem(): ?string
 }
 ```
 
-As seen above, if the parent item has a navigation group, that navigation group must also be defined, so the correct parent item can be identified.
+如上所见，如果父级项目有一个导航主，导航组也必须定义，这样才能识别正确的父级项目。
 
-> If you're reaching for a third level of navigation like this, you should consider using [clusters](clusters) instead, which are a logical grouping of resources and custom pages, which can share their own separate navigation.
+> 如果有三级导航，你应该考虑使用 [Cluster](clusters)，这是资源和自定义页面的逻辑分组，可以共享自己单独的导航。
 
 ### 自定义导航分组
 
@@ -154,7 +154,7 @@ public function panel(Panel $panel): Panel
 
 #### 导航分组排序
 
-By using `navigationGroups()`, you are defining a new order for the navigation groups. If you just want to reorder the groups and not define an entire `NavigationGroup` object, you may just pass the labels of the groups in the new order:
+使用 `navigationGroups()`，你可以定义一个导航分组的新顺序。如果你只想渲染该分支而非定义整个 `navigationGroup` 对象，你可以以新排序将分组的标签传入：
 
 ```php
 $panel
@@ -191,9 +191,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-#### Adding extra HTML attributes to navigation groups
+#### 将额外的 HTML 属性添加到导航分组
 
-You can pass extra HTML attributes to the navigation group, which will be merged onto the outer DOM element. Pass an array of attributes to the `extraSidebarAttributes()` or `extraTopbarAttributes()` method, where the key is the attribute name and the value is the attribute value:
+你可以将额外的 HTML 属性传递给导航组，导航组将合并到外部 DOM 元素上。将一个属性数组传递给 `extraSidebarAttributes()` 或 `extraTopbarAttributes()` 方法，其中键是属性名称，值是属性值：
 
 ```php
 NavigationGroup::make()
@@ -201,7 +201,7 @@ NavigationGroup::make()
     ->extraTopbarAttributes(['class' => 'featured-topbar-group']),
 ```
 
-The `extraSidebarAttributes()` will be applied to navigation group elements contained in the sidebar, and the `extraTopbarAttributes()` will only be applied to topbar navigation group dropdowns when using [top navigation](#using-top-navigation).
+`extraSidebarAttributes()` 将会被应用到侧边栏的导航组元素，而当使用[顶部导航](#使用顶部导航)时， `extraTopbarAttributes()` 只应用到顶部导航栏组的下拉菜单中
 
 ## 在桌面端折叠侧边栏
 
@@ -218,7 +218,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-By default, when you collapse the sidebar on desktop, the navigation icons still show. You can fully collapse the sidebar using the `sidebarFullyCollapsibleOnDesktop()` method:
+默认情况下，当你在桌面端折叠侧边栏时，导航图标仍会展示。你可以使用 `sidebarFullyCollapsibleOnDesktop()` 方法完全折叠侧边栏：
 
 ```php
 use Filament\Panel;
@@ -289,7 +289,7 @@ public static function shouldRegisterNavigation(): bool
 }
 ```
 
-Please note that these methods do not control direct access to the resource or page. They only control whether the resource or page will show up in the navigation. If you want to also control access, then you should use [resource authorization](resources/getting-started#authorization) or [page authorization](pages#authorization).
+请注意这些方法不会控制直接访问资源或页面的权限。只会控制资源或页面是否在导航中展示。如果你也想控制权限，请通过[资源授权](resources/getting-started#授权)或[页面授权](pages#授权)实现。
 
 ## 使用顶部导航
 
@@ -383,9 +383,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-### Disabling the topbar
+### 禁用顶部栏
 
-You may disable topbar entirely by passing `false` to the `topbar()` method:
+你可以将 `false` 传入到 `topbar()` 方法，完全禁用顶部栏：
 
 ```php
 use Filament\Panel;

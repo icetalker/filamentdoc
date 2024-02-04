@@ -55,9 +55,9 @@ ColorColumn::make('color')
     ->copyableState(fn (Post $record): string => "Color: {$record->color}")
 ```
 
-## Wrapping multiple color blocks
+## 多个颜色块换行
 
-Color blocks can be set to wrap if they can't fit on one line, by setting `wrap()`:
+如果颜色在一行内无法放得下，可以设置 `wrap()` 进行换行：
 
 ```php
 use Filament\Tables\Columns\ColorColumn;
@@ -66,4 +66,4 @@ ColorColumn::make('color')
     ->wrap()
 ```
 
-Note: the "width" for wrapping is affected by the column label, so you may need to use a shorter or hidden label to wrap more tightly.
+注意：换行的宽度(width)受列标签影响，因此你需要使用简单的标签或者隐藏标签使得换行更紧凑。

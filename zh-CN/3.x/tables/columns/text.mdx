@@ -110,7 +110,7 @@ TextColumn::make('price')
     ->money('EUR')
 ```
 
-There is also a `divideBy` argument for `money()` that allows you to divide the original value by a number before formatting it. This could be useful if your database stores the price in cents, for example:
+此处 `money()` 还有一个 `divideBy` 参数，以允许你在格式化之前将原始值除以某个数字。这对在数据库中将价格存储为分(cent)非常有用，比如：
 
 ```php
 use Filament\Tables\Columns\TextColumn;

@@ -126,9 +126,9 @@ enum Status: string implements HasColor
 
 如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口按对应的颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
-### Using the enum color with a toggle buttons field in your form
+### 在表单切换按钮组(ToggleButtons)中使用枚举颜色
 
-If you use a [`ToggleButtons`](../forms/fields/toggle-buttons) with the Form Builder, and it is set to use an enum for its options, Filament will automatically use the `HasColor` interface to display the enum label in its color.
+如果你在表单构造器中使用 [`ToggleButtons`](../forms/fields/toggle-buttons)，并且使用枚举匹配选项，Filament 会自动使用 `HasColor` 接口，以按其颜色展示枚举标签。
 
 ## 枚举图标
 
@@ -158,19 +158,19 @@ enum Status: string implements HasIcon
 
 ### 表格文本列中使用枚举图标
 
-如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
+如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中强制转换(cast)成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ### 在信息列表文本栏中使用枚举图标
 
-如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁边展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
+如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中强制转换(cast)成枚举。Filament 将会自动使用 `HasIcon` 接口在枚举标签旁边展示枚举图标。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
-### Using the enum icon with a toggle buttons field in your form
+### 表单切换按钮组(ToggleButtons)中使用枚举图标
 
-If you use a [`ToggleButtons`](../forms/fields/toggle-buttons) with the Form Builder, and it is set to use an enum for its options, Filament will automatically use the `HasIcon` interface to display the enum's icon aside its label.
+如果你在表单构造器中使用 [`ToggleButtons`](../forms/fields/toggle-buttons)，并且使用枚举匹配选项，Filament 会自动使用 `HasIcon` 接口，以在其标签旁展示图标。
 
-## Enum descriptions
+## 枚举描述
 
-The `HasDescription` interface transforms an enum instance into a textual description, often displayed under its [label](#enum-labels). This is useful for displaying human-friendly descriptions in your UI.
+`HasDescription` 接口将枚举实例转换成文本化描述，通常在其[标签](#枚举标签)下展示。这对于在 UI 中展示对人类友好的描述非常有用。
 
 ```php
 use Filament\Support\Contracts\HasDescription;
@@ -200,9 +200,9 @@ enum Status: string implements HasLabel, HasDescription
 }
 ```
 
-### Using the enum description with form field descriptions
+### 在表单字段描述中使用枚举描述
 
-The `HasDescription` interface can be used to generate an array of descriptions from an enum, where the enum's value is the key and the enum's description is the value. This applies to Form Builder fields like [`Radio`](../forms/fields/radio#setting-option-descriptions) and [`CheckboxList`](../forms/fields/checkbox-list#setting-option-descriptions):
+`HasDescription` 接口可用于从枚举中生成描述数组，其中枚举值为键、枚举描述是值。这适用于表单构造器字段如 [`Radio`](../forms/fields/radio#设置选项描述) 和 [`CheckboxList`](../forms/fields/checkbox-list#设置选项描述):
 
 ```php
 use Filament\Forms\Components\CheckboxList;

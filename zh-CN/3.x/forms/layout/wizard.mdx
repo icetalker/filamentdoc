@@ -167,9 +167,9 @@ Wizard\Step::make('Order')
     ]),
 ```
 
-### Preventing the next step from being loaded
+### 阻止加载下一步
 
-Inside `afterValidation()` or `beforeValidation()`, you may throw `Filament\Support\Exceptions\Halt`, which will prevent the wizard from loading the next step:
+在 `afterValidation` 或 `beforeValidation()` 内，你可能会抛出 `Filament\Support\Exceptions\Halt`，用于阻止向导卡(wizard)加载下一步：
 
 ```php
 use Filament\Forms\Components\Wizard;

@@ -20,9 +20,9 @@ php artisan make:filament-page Settings
 
 页面类是全页 [Livewire](https://laravel-livewire.com)组件，带有一些你可以在面板中使用的额外功能。
 
-## Authorization
+## 授权
 
-You can prevent pages from appearing in the menu by overriding the `canAccess()` method in your Page class. This is useful if you want to control which users can see the page in the navigation, and also which users can visit the page directly:
+通过重写页面类的 `canAccess` 方法，你可以阻止页面出现在菜单中。当你想在导航中控制哪些用户可以看到该页面以及哪些用户可以直接访问该页面时，这非常有用：
 
 ```php
 public static function canAccess(): bool
@@ -300,7 +300,7 @@ public function getMaxContentWidth(): MaxWidth
 }
 ```
 
-## 生成到页面的 URL
+## 为页面生成 URL
 
 Filament 在页面类中提供了 `getUrl()` 静态方法，用以为其生成 URL。传统上，你需要使用 Laravel 的 `route()` 辅助函数手动生成 URL，不过这些方法取决于对页面 slug 或路由命名规范的认知。
 
@@ -330,19 +330,19 @@ use App\Filament\Pages\Settings;
 Settings::getUrl(panel: 'marketing');
 ```
 
-## Adding sub-navigation between pages
+## 在页面之间添加子导航
 
-You may want to add a common sub-navigation to multiple pages, to allow users to quickly navigate between them. You can do this by defining a [cluster](clusters). Clusters can also contain [resources](resources), and you can switch between multiple pages or resources within a cluster.
+您可能希望向多个页面添加一个通用的子导航，以允许用户在它们之间快速导航。您可以通过定义 [Cluster](clusters) 来实现这一点。Cluster 也可以包含[资源](resources)，并且可以在 Cluster 内的多个页面或资源之间切换。
 
-## Adding extra attributes to the body tag of a page
+## 在页面的 body 标签上添加额外属性
 
-You may wish to add extra attributes to the `<body>` tag of a page. To do this, you can set an array of attributes in `$extraBodyAttributes`:
+你可能想添加额外属性到页面的 `<body>` 标签中。可以在 `$extraBodyAttributes` 中设置属性数组，实现该功能。
 
 ```php
 protected array $extraBodyAttributes = [];
 ```
 
-Or, you can return an array of attributes and their values from the `getExtraBodyAttributes()` method:
+或者，可以在 `getExtraBodyAttributes()` 方法中返回属性数组：
 
 ```php
 public function getExtraBodyAttributes(): array

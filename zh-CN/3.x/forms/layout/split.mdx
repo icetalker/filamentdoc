@@ -5,9 +5,9 @@ title: Split
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The `Split` component allows you to define layouts with flexible widths, using flexbox.
+`Split` 组件允许你通过 flexbox 使用灵活宽度定义布局。 
 
 ```php
 use Filament\Forms\Components\Section;
@@ -28,8 +28,9 @@ Split::make([
 ])->from('md')
 ```
 
-In this example, the first section will `grow()` to consume available horizontal space, without affecting the amount of space needed to render the second section. This creates a sidebar effect.
+本例中，第一个 Section 将会增长(`grow()`)去消费可用的水平空间，而不影响第二个 Section 中需要渲染的空间数量。这会创建了一个侧边栏效果。 
 
-The `from()` method is used to control the [Tailwind breakpoint](https://tailwindcss.com/docs/responsive-design#overview) (`sm`, `md`, `lg`, `xl`, `2xl`) at which the split layout should be used. In this example, the split layout will be used on medium devices and larger. On smaller devices, the sections will stack on top of each other.
+`form()` 方法用来控制 Split 布局所使用的 [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview)(`sm`、 `md`、`lg`、`xl`、`2xl`)。本例中，Split 布局会用于 medium 以上的设备。在比此值更小的设备中， Section 会互相堆叠起来。
+
 
 <AutoScreenshot name="forms/layout/split/simple" alt="Split" version="3.x" />

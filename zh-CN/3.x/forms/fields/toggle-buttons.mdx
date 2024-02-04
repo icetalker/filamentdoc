@@ -5,9 +5,9 @@ title: Toggle buttons
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-## Overview
+## 概述
 
-The toggle buttons input provides a group of buttons for selecting a single value, or multiple values, from a list of predefined options:
+Toogle Buttons 提供了从一个预定义选项列表中选择一个或者多个值的按钮组：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -22,9 +22,9 @@ ToggleButtons::make('status')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/simple" alt="Toggle buttons" version="3.x" />
 
-## Changing the color of option buttons
+## 修改选项按钮颜色
 
-You can change the color of the option buttons using the `colors()` method. Each key in the array should correspond to an option value, and the value may be either `danger`, `gray`, `info`, `primary`, `success` or `warning`:
+使用 `colors()` 方法，可以修改选项按钮颜色。数组中的每个键对应于选项的值，其值可以是 `danger`、`gray`、`info`、`primary`、`success` 或 `warning`：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -40,16 +40,15 @@ ToggleButtons::make('status')
         'scheduled' => 'warning',
         'published' => 'success',
     ])
-])
 ```
 
-If you are using an enum for the options, you can use the [`HasColor` interface](../../support/enums#enum-colors) to define colors instead.
+如果使用枚举作为选项，则可以使用 [`HasColor` 接口](../../support/enums#枚举颜色)来定义颜色。
 
 <AutoScreenshot name="forms/fields/toggle-buttons/colors" alt="Toggle buttons with different colors" version="3.x" />
 
-## Adding icons to option buttons
+## 将图标添加到选项按钮
 
-You can add [icon](https://blade-ui-kit.com/blade-icons?set=1#search) to the option buttons using the `icons()` method. Each key in the array should correspond to an option value, and the value may be any valid [Blade icon](https://blade-ui-kit.com/blade-icons?set=1#search):
+使用 `icons()` 方法，你可以将[图标](https://blade-ui-kit.com/blade-icons?set=1#search)添加到选项按钮。数组的每个键名对应于一个选项值，该值可以是任何有效的 [Blade 图标](https://blade-ui-kit.com/blade-icons?set=1#search):
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -65,16 +64,15 @@ ToggleButtons::make('status')
         'scheduled' => 'heroicon-o-clock',
         'published' => 'heroicon-o-check-circle',
     ])
-])
 ```
 
-If you are using an enum for the options, you can use the [`HasIcon` interface](../../support/enums#enum-icons) to define icons instead.
+如果使用枚举作为选项，则可以使用 [`HasIcon` 接口](../../support/enums#枚举图标)来定义颜色。
 
 <AutoScreenshot name="forms/fields/toggle-buttons/icons" alt="Toggle buttons with icons" version="3.x" />
 
-## Boolean options
+## 布尔值选项
 
-If you want a simple boolean toggle button group, with "Yes" and "No" options, you can use the `boolean()` method:
+如果你需要一个带有 "Yes" 和 "No" 选项的简单布尔值切换按钮组，可以使用 `boolean()` 方法：
 
 ```php
 ToggleButtons::make('feedback')
@@ -82,13 +80,13 @@ ToggleButtons::make('feedback')
     ->boolean()
 ```
 
-The options will have [colors](#changing-the-color-of-option-buttons) and [icons](#adding-icons-to-option-buttons) set up automatically, but you can override these with `colors()` or `icons()`.
+选项将会自动设置好[颜色](#修改选项按钮的颜色)以及[图标](#将图标添加到选项按钮)，不过你也可以使用 `colors()` 或 `icons()` 重写。
 
 <AutoScreenshot name="forms/fields/toggle-buttons/boolean" alt="Boolean toggle buttons" version="3.x" />
 
-## Positioning the options inline with each other
+## 选项行内显示
 
-You may wish to display the options `inline()` with each other:
+如果你想行内显示选项，请使用 `inline()`：
 
 ```php
 ToggleButtons::make('feedback')
@@ -99,9 +97,9 @@ ToggleButtons::make('feedback')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/inline" alt="Inline toggle buttons" version="3.x" />
 
-## Grouping option buttons
+## 选项按钮分组
 
-You may wish to group option buttons together so they are more compact, using the `grouped()` method. This also makes them appear horizontally inline with each other:
+如果你想将选项按钮分组到一起，使之更为紧凑，请使用 `grouped()` 方法。这也使它们看起来水平排列：
 
 ```php
 ToggleButtons::make('feedback')
@@ -112,9 +110,9 @@ ToggleButtons::make('feedback')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/grouped" alt="Grouped toggle buttons" version="3.x" />
 
-## Selecting multiple buttons
+## 选中多个按钮
 
-The `multiple()` method on the `ToggleButtons` component allows you to select multiple values from the list of options:
+`ToggleButtons` 组件的 `multiple()` 方法允许你从选项列表中选择多个值：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -131,7 +129,7 @@ ToggleButtons::make('technologies')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/multiple" alt="Multiple toggle buttons selected" version="3.x" />
 
-These options are returned in JSON format. If you're saving them using Eloquent, you should be sure to add an `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) to the model property:
+这些选项以 JSON 格式返回，如果你使用 Eloquent 保存，请确保将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -146,9 +144,9 @@ class App extends Model
 }
 ```
 
-## Splitting options into columns
+## 将选项分割成多列
 
-You may split options into columns by using the `columns()` method:
+使用 `columns()` 方法，你可以将选项分割成多列：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -162,11 +160,11 @@ ToggleButtons::make('technologies')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/columns" alt="Toggle buttons with 2 columns" version="3.x" />
 
-This method accepts the same options as the `columns()` method of the [grid](layout/grid). This allows you to responsively customize the number of columns at various breakpoints.
+该方法接收与[网格](layout/grid)的 `columns()` 方法同样的选项。这允许你在不同临界点响应式地自定义列数。
 
-### Setting the grid direction
+### 设置网格方向
 
-By default, when you arrange buttons into columns, they will be listed in order vertically. If you'd like to list them horizontally, you may use the `gridDirection('row')` method:
+默认情况下，当你将按钮排列到列中时，按钮会以垂直方式按顺序罗列。如果你想水平排列，请使用 `gridDirection('row')` 方法：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -181,9 +179,9 @@ ToggleButtons::make('technologies')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/rows" alt="Toggle buttons with 2 rows" version="3.x" />
 
-## Disabling specific options
+## 禁用特定选项
 
-You can disable specific options using the `disableOptionWhen()` method. It accepts a closure, in which you can check if the option with a specific `$value` should be disabled:
+使用 `disableOptionWhen()` 方法你可以禁用特定选项。它接收一个闭包，在闭包中确定是否指定的 `$value` 选项该被禁用：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;
@@ -199,7 +197,7 @@ ToggleButtons::make('status')
 
 <AutoScreenshot name="forms/fields/toggle-buttons/disabled-option" alt="Toggle buttons with disabled option" version="3.x" />
 
-If you want to retrieve the options that have not been disabled, e.g. for validation purposes, you can do so using `getEnabledOptions()`:
+如果你想检索没有被禁用的选项，比如，用于验证，可以使用 `getEnabledOptions()`：
 
 ```php
 use Filament\Forms\Components\ToggleButtons;

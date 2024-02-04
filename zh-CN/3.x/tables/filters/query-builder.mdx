@@ -92,22 +92,22 @@ TextConstraint::make('creatorName')
     ->relationship(name: 'creator', titleAttribute: 'name') // Filter the `name` column on the `creator` relationship
 ```
 
-By default, the following operators are available:
+默认情况下，有如下一些可用操作符：
 
-- Contains - filters a column to contain the search term
-- Does not contain - filters a column to not contain the search term
-- Starts with - filters a column to start with the search term
-- Does not start with - filters a column to not start with the search term
-- Ends with - filters a column to end with the search term
-- Does not end with - filters a column to not end with the search term
-- Equals - filters a column to equal the search term
-- Does not equal - filters a column to not equal the search term
-- Is filled - filters a column to not be empty
-- Is blank - filters a column to be empty
+- Contains - 筛选包含搜索条件的字段
+- Does not contain - 筛选不包含搜索条件的字段
+- Starts with - 筛选以搜索条件为开头的列字段
+- Does not start with - 筛选不以搜索条件为开头的列字段
+- Ends with - 筛选以搜索条件为结尾的列字段
+- Does not end with - 筛选不以搜索条件为结尾的列字段
+- Equals - 筛选等于搜索词的列字段
+- Does not equal - 筛选不等于搜索词的列字段
+- Is filled - 筛选包含不为空的字段
+- Is blank - 筛选包含值为空的字段
 
-### Boolean constraints
+### 布尔值约束
 
-Boolean constraints allow you to filter boolean fields. They can be used to filter any boolean field, including via relationships.
+布尔值约束(Boolean constraint)允许你过滤布尔值字段。可用于过滤任何布尔值字段，包括关联中的布尔值字段。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
@@ -118,14 +118,14 @@ BooleanConstraint::make('creatorIsAdmin')
     ->relationship(name: 'creator', titleAttribute: 'is_admin') // Filter the `is_admin` column on the `creator` relationship
 ```
 
-By default, the following operators are available:
+默认情况下，以下操作符可用：
 
-- Is true - filters a column to be `true`
-- Is false - filters a column to be `false`
+- Is true - 筛选值为 `true` 的字段
+- Is false - 筛选值为 `false` 的字段
 
-### Number constraints
+### 数值约束
 
-Number constraints allow you to filter numeric fields. They can be used to filter any numeric field, including via relationships.
+数值约束(Number constraint)允许你过滤数值型字段。可用于过滤任何数值型字段，包括关联中的字段。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
@@ -136,22 +136,22 @@ NumberConstraint::make('ordersItemCount')
     ->relationship(name: 'orders', titleAttribute: 'item_count') // Filter the `item_count` column on the `orders` relationship
 ```
 
-By default, the following operators are available:
+默认情况下，可以使用如下操作符：
 
-- Is minimum - filters a column to be greater than or equal to the search number
-- Is less than - filters a column to be less than the search number
-- Is maximum - filters a column to be less than or equal to the search number
-- Is greater than - filters a column to be greater than the search number
-- Equals - filters a column to equal the search number
-- Does not equal - filters a column to not equal the search number
-- Is filled - filters a column to not be empty
-- Is blank - filters a column to be empty
+- Is minimum - 筛选大于或等于所搜索数字的字段
+- Is less than - 筛选小于所搜索数字的字段
+- Is maximum - 筛选小于或等于所搜索数字的字段
+- Is greater than - 筛选大于所搜索数字的字段
+- Equals - 筛选等于所搜索数字的字段
+- Does not equal - 筛选不等于所搜索数字的字段filters a column to not equal the search number
+- Is filled - 筛选不为空的字段
+- Is blank - 筛选空值字段
 
-When using `relationship()` with a number constraint, users also have the ability to "aggregate" related records. This means that they can filter the column to be the sum, average, minimum or maximum of all the related records at once.
+使用 `relationship()` 中的数值约束时，用户也可以"聚合"关联记录。也就是说，可用过滤列字段一次性对所有关联记录求总和(sum)、求平均(average)、求最小值(minimum)或最大值(maximum)。
 
-#### Integer constraints
+#### 整型约束
 
-By default, number constraints will allow decimal values. If you'd like to only allow integer values, you can use the `integer()` method:
+默认情况下，数值约束允许小数值。如果你只想约束整型值，可以使用 `integer()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
@@ -160,9 +160,9 @@ NumberConstraint::make('stock')
     ->integer()
 ```
 
-### Date constraints
+### 日期约束
 
-Date constraints allow you to filter date fields. They can be used to filter any date field, including via relationships.
+日期约束(Date constraint)允许你过滤日期字段。可用于过滤任何日期字段，包括关联日期字段。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
@@ -173,22 +173,22 @@ DateConstraint::make('creatorCreatedAt')
     ->relationship(name: 'creator', titleAttribute: 'created_at') // Filter the `created_at` column on the `creator` relationship
 ```
 
-By default, the following operators are available:
+默认情况下，可以使用如下操作符：
 
-- Is after - filters a column to be after the search date
-- Is not after - filters a column to not be after the search date, or to be the same date
-- Is before - filters a column to be before the search date
-- Is not before - filters a column to not be before the search date, or to be the same date
-- Is date - filters a column to be the same date as the search date
-- Is not date - filters a column to not be the same date as the search date
-- Is month - filters a column to be in the same month as the selected month
-- Is not month - filters a column to not be in the same month as the selected month
-- Is year - filters a column to be in the same year as the searched year
-- Is not year - filters a column to not be in the same year as the searched year
+- Is after - 过滤字段使之在搜索日期之后
+- Is not after - 过滤字段使之不在搜索日期之后，包括同一日期
+- Is before - 过滤字段使之在搜索日期之前
+- Is not before - 过滤字段使之不在搜索日期之前，包括同一日期
+- Is date - 过滤字段使之与搜索日期相同
+- Is not date - 过滤字段使之不同于搜索日期
+- Is month - 过滤字段使之与所选月份相同
+- Is not month - 过滤字段使之与所选月份不同
+- Is year - 过滤字段使之与所选年份相同
+- Is not year - 过滤字段使之与所选年份不同
 
-### Select constraints
+### Select 约束
 
-Select constraints allow you to filter fields using a select field. They can be used to filter any field, including via relationships.
+Select constraint 允许你使用 Select 字段过滤字段。可用于过滤任何字段，包括关联的字段。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
@@ -210,9 +210,9 @@ SelectConstraint::make('creatorStatus')
     ])
 ```
 
-#### Searchable select constraints
+#### 可搜索 Select 约束
 
-By default, select constraints will not allow the user to search the options. If you'd like to allow the user to search the options, you can use the `searchable()` method:
+默认情况下，Select 约束不允许用户搜索选项。如果你想允许用户搜索选项，请使用 `searchable()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
@@ -226,9 +226,9 @@ SelectConstraint::make('status')
     ])
 ```
 
-#### Multi-select constraints
+#### 多选约束
 
-By default, select constraints will only allow the user to select a single option. If you'd like to allow the user to select multiple options, you can use the `multiple()` method:
+默认情况下，Select Constraint 只允许用户选择一个选项。如果你想允许用户选择多个选项，请使用 `multiple()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
@@ -242,11 +242,11 @@ SelectConstraint::make('status')
     ])
 ```
 
-When the user selects multiple options, the table will be filtered to show records that match any of the selected options.
+当用户选择多个选项时，表格会过滤以显示匹配任何一个所选选项的记录。
 
-### Relationship constraints
+### 关联约束
 
-Relationship constraints allow you to filter fields using data about a relationship:
+关联约束(Relationship constraint)允许你使用关联数据过滤字段：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
@@ -261,11 +261,11 @@ RelationshipConstraint::make('creator') // Filter the `creator` relationship
     )
 ```
 
-The `IsRelatedToOperator` is used to configure the "Is / Contains" and "Is not / Does not contain" operators. It provides a select field which allows the user to filter the relationship by which records are attached to it. The `titleAttribute()` method is used to specify which attribute should be used to identify each related record in the list. The `searchable()` method makes the list searchable. The `multiple()` method allows the user to select multiple related records, and if they do, the table will be filtered to show records that match any of the selected related records.
+`IsRelatedToOperator` 用于配置 "Is / Contains" 和 "Is not / Does not contain" 操作符。它提供了一个 Select 字段，允许用户过滤附加记录的关联。`titleAttribute()` 方法用于指定应使用哪个属性来识别列表中的每个关联记录。`searchable()` 方法使列表可搜索。`multiple()` 方法允许用户选择多个关联记录，如果选择了，表格将被过滤用以显示与所选任何关联记录匹配的记录。
 
-#### Multiple relationships
+#### 多关联
 
-By default, relationship constraints only include operators that are appropriate for filtering a singular relationship, like a `BelongsTo`. If you have a relationship such as a `HasMany` or `BelongsToMany`, you may wish to mark the constraint as `multiple()`:
+默认情况下，关联约束只包含一个操作符，用于过滤单一关联，比如 `BelongsTo`。如果你使用 `HasMany` 或 `BelongsToMany` 这一的关联，你可以将约束标记为 `multiple()`：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
@@ -274,20 +274,20 @@ RelationshipConstraint::make('categories')
     ->multiple()
 ```
 
-This will add the following operators to the constraint:
+这会将如下操作符添加到约束：
 
-- Has minimum - filters a column to have at least the specified number of related records
-- Has less than - filters a column to have less than the specified number of related records
-- Has maximum - filters a column to have at most the specified number of related records
-- Has more than - filters a column to have more than the specified number of related records
-- Has - filters a column to have the specified number of related records
-- Does not have - filters a column to not have the specified number of related records
+- Has minimum - 过滤字段，使之至少有指定数量的关联记录
+- Has less than - 过滤字段，使之拥有少于指定数量的关联记录
+- Has maximum - 过滤字段，使之最多用有指定数量的关联记录
+- Has more than - 过滤字段，使之拥有多于指定数量的关联记录
+- Has - 过滤字段，使之拥有指定数量的关联记录
+- Does not have - 过滤字段，使之没有指定数量的关联记录
 
-#### Empty relationship constraints
+#### 空关联约束
 
-The `RelationshipConstraint` does not support [`nullable()`](#nullable-constraints) in the same way as other constraints.
+`RelationshipConstraint` 和其他约束一样不支持 [`nullable()`](#nullable-约束)。
 
-If the relationship is `multiple()`, then the constraint will show an option to filter out "empty" relationships. This means that the relationship has no related records. If your relationship is singular, then you can use the `emptyable()` method to show an option to filter out "empty" relationships:
+如果关联为 `multiple()`，那么约束会展示一个选项以过滤空关联。这意味着关联没有相关记录。如果关联是单一的，可以使用 `emptyable()` 方法展示一个用以过滤空关联的选项。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
@@ -296,7 +296,7 @@ RelationshipConstraint::make('creator')
     ->emptyable()
 ```
 
-If you have a `multiple()` relationship that must always have at least 1 related record, then you can use the `emptyable(false)` method to hide the option to filter out "empty" relationships:
+如果你的 `multiple()` 关联必须至少有一个关联记录，你可以使用 `emptyable(false)` 来因此过滤空关联的选项：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
@@ -305,9 +305,9 @@ RelationshipConstraint::make('categories')
     ->emptyable(false)
 ```
 
-#### Nullable constraints
+#### Nullable 约束
 
-By default, constraints will not show an option to filter `null` values. If you'd like to show an option to filter `null` values, you can use the `nullable()` method:
+默认情况下，约束不会显示用于筛选 `null` 值的选项。如果你想显示筛选 `null` 值的选项，可以使用 `nullable()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
@@ -316,14 +316,14 @@ TextConstraint::make('name')
     ->nullable()
 ```
 
-Now, the following operators are also available:
+以下是可用操作符：
 
-- Is filled - filters a column to not be empty
-- Is blank - filters a column to be empty
+- Is filled - 过滤字段使之非空
+- Is blank - 过滤字段使之为空
 
-## Scoping relationships
+## 关联查询范围设置
 
-When you use the `relationship()` method on a constraint, you can scope the relationship to filter the related records using the `modifyQueryUsing` argument:
+在约束中使用 `relationship()` 方法时，你可以使用 modifyQueryUsing` 参数设置查询范围，以过滤关联记录：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
@@ -337,9 +337,9 @@ TextConstraint::make('adminCreatorName')
     )
 ```
 
-## Customizing the constraint icon
+## 自定义约束图标
 
-Each constraint type has a default [icon](https://blade-ui-kit.com/blade-icons?set=1#search), which is displayed next to the label in the picker. You can customize the icon for a constraint by passing its name to the `icon()` method:
+每个约束类型都有一个默认的[图标](https://blade-ui-kit.com/blade-icons?set=1#search)，它显示在选择器标签旁边。你可以将图标名传递给 `icon()` 方法自定义约束图标。
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
@@ -349,9 +349,9 @@ TextConstraint::make('author')
     ->icon('heroicon-m-user')
 ```
 
-## Overriding the default operators
+## 重写默认操作符
 
-Each constraint type has a set of default operators, which you can customize by using the `operators()`method:
+每个约束都有一组默认的操作符，你可以使用 `opearator()` 方法对其进行自定义：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Operators\IsFilledOperator;
@@ -364,9 +364,9 @@ TextConstraint::make('author')
     ])
 ```
 
-This will remove all operators, and register the `EqualsOperator`.
+这将移除所有操作符，并注册 `EqualsOperator`。
 
-If you'd like to add an operator to the end of the list, use `pushOperators()` instead:
+如果你想将新操作符添加到列表尾部中，请使用 `pushOperators()`：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Operators\IsFilledOperator;
@@ -379,7 +379,7 @@ TextConstraint::make('author')
     ])
 ```
 
-If you'd like to add an operator to the start of the list, use `unshiftOperators()` instead:
+如果你想将新操作符添加到列表开头中，请使用 `unshiftOperators()`：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Operators\IsFilledOperator;
@@ -392,9 +392,9 @@ TextConstraint::make('author')
     ])
 ```
 
-## Creating custom constraints
+## 创建自定义约束
 
-Custom constraints can be created "inline" with other constraints using the `Constraint::make()` method. You should also pass an [icon](#customizing-the-constraint-icon) to the `icon()` method:
+使用`Constraint::make()` 方法，自定义约束可以和其他约束内联(inline)。你也可以将[图标](#自定义约束图标)传递给 `icon()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -406,7 +406,7 @@ Constraint::make('subscribed')
     ]),
 ```
 
-If you want to customize the label of the constraint, you can use the `label()` method:
+如果你想自定义约束的标签，请使用 `label()` 方法：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -419,7 +419,7 @@ Constraint::make('subscribed')
     ]),
 ```
 
-Now, you must [define operators](#creating-custom-operators) for the constraint. These are options that you can pick from to filter the column. If the column is [nullable](#nullable-constraints), you can also register that built-in operator for your custom constraint:
+现在，你必须为该约束[定义操作符](#创建自定义操作符)。你可以从这些选项中进行选择以过滤列字段。如果列字段是 [nullable](#nullable-约束)，你也可以为自定义约束注册内置运算符：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -434,9 +434,9 @@ Constraint::make('subscribed')
     ]),
 ```
 
-### Creating custom operators
+### 创建自定义操作符
 
-Custom operators can be created using the `Operator::make()` method:
+使用 `Operator::make()` 方法，可用创建自定义操作符：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder\Constraints\Operators\Operator;
@@ -450,19 +450,19 @@ Operator::make('subscribed')
     )),
 ```
 
-In this example, the operator is able to filter records based on whether or not the authenticated user is subscribed to the record. A subscription is recorded in the `subscriptions` relationship of the table.
+本例中，操作符能够基于授权用户是否订阅该记录来过滤记录。订阅在表格的 `subscriptions` 关联中重新排序。
 
-The `baseQuery()` method is used to define the query that will be used to filter the records. The `$isInverse` argument is `false` when the "Subscribed" option is selected, and `true` when the "Not subscribed" option is selected. The function is applied to the base query of the table, where `whereHas()` can be used. If your function does not need to be applied to the base query of the table, like when you are using a simple `where()` or `whereIn()`, you can use the `query()` method instead, which has the bonus of being able to be used inside nested "OR" groups.
+`baseQuery()` 方法用于定义过滤记录的查询。当选中"Subscribed" 选项时，`$isInverse` 参数为 `false`，而选中 `Not subscribed` 选项时，则为 `true`。该函数应用于表格的基础查询，其中可以使用 `whereHas()`。如果函数不需要应用到表格的基础查询，比如使用简单的 `where()` 或 `whereIn()`，你可以使用 `query()` 方法取代，它的好处是能够在嵌套的"OR"组中使用。
 
-The `label()` method is used to render the options in the operator select. Two options are registered for each operator, one for when the operator is not inverted, and one for when it is inverted.
+`label()` 方法用于渲染操作者选中的选项。每个操作者注册了两个选项，一个用于操作者未反转时，一个用在反转时。
 
-The `summary()` method is used in the header of the constraint when it is applied to the query, to provide an overview of the active constraint.
+当`summary()` 方法应用到查询时，它用在约束 header 中，以提供该激活约束的概览。
 
-## Customizing the constraint picker
+## 自定义约束选择器
 
-### Changing the number of columns in the constraint picker
+### 在约束选择器中修改列数
 
-The constraint picker has only 1 column. You may customize it by passing a number of columns to `constraintPickerColumns()`:
+约束选择器(Constraint Picker)只有 1 列。通过将列数传递给 `constraintPickerColumns()` 可以自定义列数：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder;
@@ -474,16 +474,16 @@ QueryBuilder::make()
     ])
 ```
 
-This method can be used in a couple of different ways:
+该方法可以通过不同方式使用：
 
-- You can pass an integer like `constraintPickerColumns(2)`. This integer is the number of columns used on the `lg` breakpoint and higher. All smaller devices will have just 1 column.
-- You can pass an array, where the key is the breakpoint and the value is the number of columns. For example, `constraintPickerColumns(['md' => 2, 'xl' => 4])` will create a 2 column layout on medium devices, and a 4 column layout on extra large devices. The default breakpoint for smaller devices uses 1 column, unless you use a `default` array key.
+- 可以传递整型比如 `constraintPickerColumns(2)`。该整数为 `lg` 临界点及以上宽度时的 columns 数。比此小的设备，只会占 1 列。 
+- 你可以传递一个数组，其中键是临界点(breakpoint)、而值为列数。比如，`constraintPickerColumns(['md' => 2, 'xl' => 4])` 将会在中等(medium)设备中创建 2 列布局，在超大设备中，创建 4 列布局。而较小(smaller)的设备的默认临界点使用 1 列布局，除非使用了 `default` 数组键。
 
-Breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) are defined by Tailwind, and can be found in the [Tailwind documentation](https://tailwindcss.com/docs/responsive-design#overview).
+临界点(`sm`, `md`, `lg`, `xl`, `2xl`)是由 Tailwind 定义，可以在 [Tailwind 文档](https://tailwindcss.com/docs/responsive-design#overview)中查看。
 
-### Increasing the width of the constraint picker
+### 增加约束选择器的宽度
 
-When you [increase the number of columns](#changing-the-number-of-columns-in-the-constraint-picker), the width of the dropdown should increase incrementally to handle the additional columns. If you'd like more control, you can manually set a maximum width for the dropdown using the `constraintPickerWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`:
+当[增加列数](#在约束选择器中修改列数)时，下拉列表的宽度应该逐步增加以处理额外的列数。如果您想要更多的控制，可以使用`constraintPickerWidth()` 方法手动设置下拉列表的最大宽度。选项对应于 [Tailwind 的 max-width 刻度](https://tailwindcss.com/docs/max-width)。可选宽度为'xs'、'sm'、'md'、'lg'、'xl'、'2xl'、'3xl'、`4xl`、'5xl'、6xl'、`7xl'：
 
 ```php
 use Filament\Tables\Filters\QueryBuilder;

@@ -1,18 +1,18 @@
 ---
 layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/infolists/docs/08-testing.md"
-title: Testing
+title: 测试
 ---
 
-## Overview
+## 概述
 
-All examples in this guide will be written using [Pest](https://pestphp.com). However, you can easily adapt this to PHPUnit.
+所有本指南内的示例都会使用 [Pest](https://pestphp.com) 编写。不过，你可以将其适配到 PHPUnit。
 
-Since the Infolist Builder works on Livewire components, you can use the [Livewire testing helpers](https://livewire.laravel.com/docs/testing). However, we have custom testing helpers that you can use with infolists:
+由于信息列表的所有页面都是 Livewire 组件，我们始终都在使用 Livewire 测试辅助函数。如果你之前从未测试过 Livewire 组件，请阅读 Livewire 文档下的[这一向导](https://livewire.laravel.com/docs/testing)。
 
-## Actions
+## Action
 
-You can call an action by passing its infolist component key, and then the name of the action to `callInfolistAction()`:
+你可以将信息列表组件的键名以及 Action 名传递给 `callInfolistAction()` 方法以调用一个 Action：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -30,7 +30,7 @@ it('can send invoices', function () {
 });
 ```
 
-To pass an array of data into an action, use the `data` parameter:
+要传递数据数组到 Action 中，请使用 `data` 参数：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -52,7 +52,7 @@ it('can send invoices', function () {
 });
 ```
 
-If you ever need to only set an action's data without immediately calling it, you can use `setInfolistActionData()`:
+如果你只是要设置 Action 的数据，而不必马上调用，可以使用 `setInfolistActionData()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -70,9 +70,9 @@ it('can send invoices', function () {
 });
 ```
 
-### Execution
+### 执行
 
-To check if an action has been halted, you can use `assertInfolistActionHalted()`:
+使用 `assertInfolistActionHalted()` 可以断言 Action 是否已被中止：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -88,11 +88,11 @@ it('stops sending if invoice has no email address', function () {
 });
 ```
 
-### Errors
+### 错误
 
-`assertHasNoInfolistActionErrors()` is used to assert that no validation errors occurred when submitting the action form.
+`assertHasNoInfolistActionErrors()` 用于断言 Aciton 表单提交时没有出现验证错误。
 
-To check if a validation error has occurred with the data, use `assertHasInfolistActionErrors()`, similar to `assertHasErrors()` in Livewire:
+要断言使用数据时出现验证错误，请使用 `assertHasInfolistActionErrors()`，类似于 Livewire 中的 `assertHasErrors()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -110,7 +110,7 @@ it('can validate invoice recipient email', function () {
 });
 ```
 
-To check if an action is pre-filled with data, you can use the `assertInfolistActionDataSet()` method:
+使用 `assertInfolistActionDataSet()` 方法，可以断言 Action 是否预填充了数据：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -135,9 +135,9 @@ it('can send invoices to the primary contact by default', function () {
 });
 ```
 
-### Action state
+### Action 状态
 
-To ensure that an action exists or doesn't in an infolist, you can use the `assertInfolistActionExists()` or  `assertInfolistActionDoesNotExist()` method:
+要断言 Action 存在于或者不在信息列表中中，可以使用 `assertInfolistActionExists()` 或 `assertInfolistActionDoesNotExist()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -153,7 +153,7 @@ it('can send but not unsend invoices', function () {
 });
 ```
 
-To ensure an action is hidden or visible for a user, you can use the `assertInfolistActionHidden()` or `assertInfolistActionVisible()` methods:
+要断言 Action 对用户隐藏或者可见，可以使用  `assertInfolistActionHidden()` 或 `assertInfolistActionVisible()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -169,7 +169,7 @@ it('can only print customers', function () {
 });
 ```
 
-To ensure an action is enabled or disabled for a user, you can use the `assertInfolistActionEnabled()` or `assertInfolistActionDisabled()` methods:
+要断言 Action 是对用户启用还是禁用，可以使用 `assertInfolistActionEnabled()` 或 `assertInfolistActionDisabled()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -185,7 +185,7 @@ it('can only print a customer for a sent invoice', function () {
 });
 ```
 
-To check if an action is hidden to a user, you can use the `assertInfolistActionHidden()` method:
+要断言 Action 对某个用户隐藏，可以使用 `assertInfolistActionHidden()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -200,9 +200,9 @@ it('can not send invoices', function () {
 });
 ```
 
-### Button appearance
+### 按钮外观
 
-To ensure an action has the correct label, you can use `assertInfolistActionHasLabel()` and `assertInfolistActionDoesNotHaveLabel()`:
+要断言 Action 的标签正确，可以使用  `assertInfolistActionHasLabel()` 和 `assertInfolistActionDoesNotHaveLabel()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -218,7 +218,7 @@ it('send action has correct label', function () {
 });
 ```
 
-To ensure an action's button is showing the correct icon, you can use `assertInfolistActionHasIcon()` or `assertInfolistActionDoesNotHaveIcon()`:
+要断言 Action 按钮的图标正确显示，可以使用  `assertInfolistActionHasIcon()` 或 `assertInfolistActionDoesNotHaveIcon()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -235,7 +235,7 @@ it('when enabled the send button has correct icon', function () {
 });
 ```
 
-To ensure that an action's button is displaying the right color, you can use `assertInfolistActionHasColor()` or `assertInfolistActionDoesNotHaveColor()`:
+要断言 Action 按钮的颜色正确显示，可以使用  `assertInfolistActionHasColor()` 或 `assertInfolistActionDoesNotHaveColor()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -253,7 +253,7 @@ it('actions display proper colors', function () {
 
 ### URL
 
-To ensure an action has the correct URL, you can use `assertInfolistActionHasUrl()`, `assertInfolistActionDoesNotHaveUrl()`, `assertInfolistActionShouldOpenUrlInNewTab()`, and `assertInfolistActionShouldNotOpenUrlInNewTab()`:
+要断言 Action 的 URL 正确，可以使用 `assertInfolistActionHasUrl()`、`assertInfolistActionDoesNotHaveUrl()`、`assertInfolistActionShouldOpenUrlInNewTab()` 和 `assertInfolistActionShouldNotOpenUrlInNewTab()`：
 
 ```php
 use function Pest\Livewire\livewire;

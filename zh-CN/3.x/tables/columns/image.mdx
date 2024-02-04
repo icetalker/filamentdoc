@@ -131,9 +131,9 @@ ImageColumn::make('colleagues.avatar')
     ->overlap(2)
 ```
 
-## Wrapping multiple images
+## 多个图片换行
 
-Images can be set to wrap if they can't fit on one line, by setting `wrap()`:
+如果图片无法放在一行中，可以设置 `wrap()` 进行换行：
 
 ```php
 use Filament\Tables\Columns\ImageColumn;
@@ -144,7 +144,7 @@ ImageColumn::make('colleagues.avatar')
     ->wrap()
 ```
 
-Note: the "width" for wrapping is affected by the column label, so you may need to use a shorter or hidden label to wrap more tightly.
+注意：换行的宽度(width)受列标签影响，因此你需要使用简单的标签或者隐藏标签使得换行更紧凑。
 
 ## 设置限制
 

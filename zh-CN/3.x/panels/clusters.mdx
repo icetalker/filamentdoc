@@ -3,247 +3,86 @@ layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/10-clusters.md"
 title: Clusters
 ---
-## Overview
 
-By default, the configuration file is located at `app/Providers/Filament/AdminPanelProvider.php`. Keep reading to learn more about [panels](#introducing-panels) and how each has [its own configuration file](#creating-a-new-panel).
+## 概述
 
-## Introducing panels
+Cluster 是面板中的分层结构，允许你将[资源](resources)和[自定义页面](pages)分组在一起。它们有助于将面板组织成逻辑部分，并有助于减少面板侧边栏的大小。
 
-By default, when you install the package, there is one panel that has been set up for you - and it lives on `/admin`. All the [resources](resources/getting-started), [custom pages](pages), and [dashboard widgets](dashboard) you create get registered to this panel.
+使用 Cluster 时，会发生以下几件事：
+- 一个新的导航项被添加到导航中，它是指向 Cluster 中第一个资源或页面的链接。
+- 资源或页面的各个导航项在主导航中不再可见。
+- 新的子导航 UI 将添加到 Cluster 中的每个资源或页面，其中包含 Cluster 中资源或页面的导航项。
+- Cluster 中的资源和页面会得到一个新的 URL，前缀是 Cluster 的名称。如果你正确生成[资源](resources/getting-started#为资源页面生成-url)和[页面](pages#为页面生成-url)的 URL，则应自动处理此更改。
+- Cluster 的名称位于 Cluster 中所有资源和页面的面包屑中。单击它时，你将被带到 Cluster 中的第一个资源或页面。
 
-However, you can create as many panels as you want, and each can have its own set of resources, pages and widgets.
+## 创建 Cluster
 
-For example, you could build a panel where users can log in at `/app` and access their dashboard, and admins can log in at `/admin` and manage the app. The `/app` panel and the `/admin` panel have their own resources, since each group of users has different requirements. Filament allows you to do that by providing you with the ability to create multiple panels.
+在创建第一个 Cluster 之前，必须告诉面板 Cluster 类的位置。除了[配置](configuration)中的 `discoverResources()` 和 `discoverPages()` 等方法外，还可以使用 `discoverClusters()`：
 
-### The default admin panel
+```php
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+        ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+        ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters');
+}
+```
 
-When you run `filament:install`, a new file is created in `app/Providers/Filament` - `AdminPanelProvider.php`. This file contains the configuration for the `/admin` panel.
-
-When this documentation refers to the "configuration", this is the file you need to edit. It allows you to completely customize the app.
-
-### Creating a new panel
-
-To create a new panel, you can use the `make:filament-panel` command, passing in the unique name of the new panel:
+现在，你可以使用 `php artisan make:filament-cluster` 创建 Cluster 了：
 
 ```bash
-php artisan make:filament-panel app
+php artisan make:filament-cluster Settings
 ```
 
-This command will create a new panel called "app". A configuration file will be created at `app/Providers/Filament/AppPanelProvider.php`. You can access this panel at `/app`, but you can [customize the path](#changing-the-path) if you don't want that.
-
-Since this configuration file is also a [Laravel service provider](https://laravel.com/docs/providers), it needs to be registered in `config/app.php`. Filament will attempt to do this for you, but if you get an error while trying to access your panel then this process has probably failed. You can manually register the service provider by adding it to the `providers` array.
-
-## Changing the path
-
-In a panel configuration file, you can change the path that the app is accessible at using the `path()` method:
+这将会在 `app/Filament/Cluster` 目录中创建一个新的 Cluster 类：
 
 ```php
-use Filament\Panel;
+<?php
 
-public function panel(Panel $panel): Panel
+namespace App\Filament\Clusters;
+
+use Filament\Clusters\Cluster;
+
+class Settings extends Cluster
 {
-    return $panel
-        // ...
-        ->path('app');
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 }
 ```
 
-If you want the app to be accessible without any prefix, you can set this to be an empty string:
+默认情况下，会定义 [`$navigationIcon`](navigation#自定义导航项图标) 属性，因为你很可能希望立即对其进行自定义。所有其他[导航属性和方法](navigation)也可使用，包括 [`$navigationLabel`](navigation#自定义导航项标签)、[`$navigationSort`](navigation#导航项排序)和 [`$avigationGroup`](navigation#导航项分组)。它们用于自定义 Cluster 的主导航项，与为资源或页面自定义该导航项一样。
+
+## 将资源和页面添加到 Cluster
+
+要将资源和页面添加到 Cluster，你只需在资源或页面类中定义 `$cluster` 属性，并将其设置为你[创建](#创建-cluster)的 Cluster 类：
 
 ```php
-use Filament\Panel;
+use App\Filament\Clusters\Settings;
 
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->path('');
-}
+protected static ?string $cluster = Settings::class;
 ```
 
-Make sure your `routes/web.php` file doesn't already define the `''` or `'/'` route, as it will take precedence.
+## 使用 Cluster 的面板的代码结构推荐
 
-## Render hooks
+使用 Cluster 时，推荐将所有资源和页面移到与 Cluster 同名的目录。比如，此处是一个使用名为 `Settings` 的 Cluster 的面板，其中包含一个 `ColorResource` 和两个自定义页面，其目录结构如下：
 
-[Render hooks](../support/render-hooks) allow you to render Blade content at various points in the framework views. You can [register global render hooks](../support/render-hooks#registering-render-hooks) in a service provider or middleware, but it also allows you to register render hooks that are specific to a panel. To do that, you can use the `renderHook()` method on the panel configuration object. Here's an example, integrating [`wire-elements/modal`](https://github.com/wire-elements/modal) with Filament:
-
-```php
-use Filament\Panel;
-use Illuminate\Support\Facades\Blade;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->renderHook(
-            'panels::body.start',
-            fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
-        );
-}
+```
+.
++-- Clusters
+|   +-- Settings.php
+|   +-- Settings
+|   |   +-- Pages
+|   |   |   +-- ManageBranding.php
+|   |   |   +-- ManageNotifications.php
+|   |   +-- Resources
+|   |   |   +-- ColorResource.php
+|   |   |   +-- ColorResource
+|   |   |   |   +-- Pages
+|   |   |   |   |   +-- CreateColor.php
+|   |   |   |   |   +-- EditColor.php
+|   |   |   |   |   +-- ListColors.php
 ```
 
-A full list of available render hooks can be found [here](../support/render-hooks#available-render-hooks).
-
-## Setting a domain
-
-By default, Filament will respond to requests from all domains. If you'd like to scope it to a specific domain, you can use the `domain()` method, similar to [`Route::domain()` in Laravel](https://laravel.com/docs/routing#route-group-subdomain-routing):
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->domain('admin.example.com');
-}
-```
-
-## Customizing the maximum content width
-
-By default, Filament will restrict the width of the content on the page, so it doesn't become too wide on large screens. To change this, you may use the `maxContentWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `ExtraSmall`, `Small`, `Medium`, `Large`, `ExtraLarge`, `TwoExtraLarge`, `ThreeExtraLarge`, `FourExtraLarge`, `FiveExtraLarge`, `SixExtraLarge`, `SevenExtraLarge`, `Full`, `MinContent`, `MaxContent`, `FitContent`,  `Prose`, `ScreenSmall`, `ScreenMedium`, `ScreenLarge`, `ScreenExtraLarge` and `ScreenTwoExtraLarge`. The default is `SevenExtraLarge`:
-
-```php
-use Filament\Panel;
-use Filament\Support\Enums\MaxWidth;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->maxContentWidth(MaxWidth::Full);
-}
-```
-
-## Lifecycle hooks
-
-Hooks may be used to execute code during a panel's lifecycle. `bootUsing()` is a hook that gets run on every request that takes place within that panel. If you have multiple panels, only the current panel's `bootUsing()` will be run. The function gets run from middleware, after all service providers have been booted:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->bootUsing(function (Panel $panel) {
-            // ...
-        });
-}
-```
-
-## SPA mode
-
-SPA mode utilizes [Livewire's `wire:navigate` feature](https://livewire.laravel.com/docs/navigate) to make your server-rendered panel feel like a single-page-application, with less delay between page loads and a loading bar for longer requests. To enable SPA mode on a panel, you can use the `spa()` method:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->spa();
-}
-```
-
-## Unsaved changes alerts
-
-You may alert users if they attempt to navigate away from a page without saving their changes. This is applied on [Create](resources/creating-records) and [Edit](resources/editing-records) pages of a resource, as well as any open action modals. To enable this feature, you can use the `unsavedChangesAlerts()` method:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->unsavedChangesAlerts();
-}
-```
-
-> Please note: this feature is not compatible with [SPA mode](#spa-mode).
-
-## Registering assets for a panel
-
-You can register [assets](../support/assets) that will only be loaded on pages within a specific panel, and not in the rest of the app. To do that, pass an array of assets to the `assets()` method:
-
-```php
-use Filament\Panel;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->assets([
-            Css::make('custom-stylesheet', resource_path('css/custom.css')),
-            Js::make('custom-script', resource_path('js/custom.js')),
-        ]);
-}
-```
-
-## Applying middleware
-
-You can apply extra middleware to all routes by passing an array of middleware classes to the `middleware()` method in the configuration:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->middleware([
-            // ...
-        ]);
-}
-```
-
-By default, middleware will be run when the page is first loaded, but not on subsequent Livewire AJAX requests. If you want to run middleware on every request, you can make it persistent by passing `true` as the second argument to the `middleware()` method:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->middleware([
-            // ...
-        ], isPersistent: true);
-}
-```
-
-### Applying middleware to authenticated routes
-
-You can apply middleware to all authenticated routes by passing an array of middleware classes to the `authMiddleware()` method in the configuration:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->authMiddleware([
-            // ...
-        ]);
-}
-```
-
-By default, middleware will be run when the page is first loaded, but not on subsequent Livewire AJAX requests. If you want to run middleware on every request, you can make it persistent by passing `true` as the second argument to the `authMiddleware()` method:
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->authMiddleware([
-            // ...
-        ], isPersistent: true);
-}
-```
+这只是推荐，并非强制。只要 Cluster 中的资源和页面使用 [`$cluster`](#将资源和页面添加到-cluster)属性，就可以随心所欲地构建面板。这只是一个建议，可以帮助你保持面板井然有序。
+当面板中存在 Cluster，并且使用 `make:filament-resource` 或 `make:filament-page` 命令生成新的资源或页面时，系统会询问你是否要根据这些准则在集群目录中创建这些资源或页面。如果选择了，Filament 还会为资源或页面类分配正确的 `$cluster` 属性。如果没有这样做，你将需要自己[定义 `$cluster` 属性](#将资源和页面添加到-cluster)。

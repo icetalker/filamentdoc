@@ -158,9 +158,9 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Configuring the global search debounce
+## 配置全局搜索防抖动
 
-Global search has a default debounce time of 500ms, to limit the number of requests that are made while the user is typing. You can alter this by using the `globalSearchDebounce()` method in the [configuration](configuration):
+全局搜索的默认防抖动时间为 500ms，以限制用户键入时发出的请求数量。你可以通过在[配置](configuration)中使用`globalSearchDebounce()` 方法来对其进行修改：
 
 ```php
 use Filament\Panel;

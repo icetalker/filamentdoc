@@ -102,9 +102,9 @@ IconColumn::make('is_featured')
 
 <AutoScreenshot name="tables/columns/icon/boolean-color" alt="Icon column to display a boolean with custom colors" version="3.x" />
 
-## Wrapping multiple icons
+## 多个图标换行
 
-When displaying multiple icons, they can be set to wrap if they can't fit on one line, using `wrap()`:
+当显示多个图标时，如果这些图标不能放在一行，使用 `wrap()` 可以设置换行：
 
 ```php
 use Filament\Tables\Columns\IconColumn;
@@ -113,5 +113,4 @@ IconColumn::make('icon')
     ->wrap()
 ```
 
-Note: the "width" for wrapping is affected by the column label, so you may need to use a shorter or hidden label to wrap more tightly.
-
+注意：换行的宽度(width)受列标签影响，因此你需要使用简单的标签或者隐藏标签使得换行更紧凑。

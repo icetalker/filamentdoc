@@ -230,9 +230,9 @@ use Livewire\Attributes\Url;
 public array $tableColumnSearches = [];
 ```
 
-### Customizing the table search debounce
+### 自定义表格搜索防抖
 
-You may customize the debounce time in all table search fields using the `searchDebounce()` method on the `$table`. By default it is set to `500ms`:
+在 `$table` 上使用 `searchDebounce()` 方法，你可以自定义所有表格搜索字段的防抖动时间。默认为 `500ms`：
 
 ```php
 use Filament\Tables\Table;
@@ -247,9 +247,9 @@ public static function table(Table $table): Table
 }
 ```
 
-### Searching when the input is blurred
+### 输入失焦时搜索
 
-Instead of automatically reloading the table contents while the user is typing their search, which is affected by the [debounce](#customizing-the-table-search-debounce) of the search field, you may change the behaviour so that the table is only searched when the user blurs the input (tabs or clicks out of it), using the `searchOnBlur()` method:
+你可以使用 `searchOnBlur()` 方法更改行为，使表格仅在用户输入失去焦点(制表符或点击失焦)时进行搜索，而不是在用户键入搜索时自动重新加载表内容(这会受到搜索字段的[防抖动(debounce)](#自定义表搜索防抖)的影响)：
 
 ```php
 use Filament\Tables\Table;
@@ -486,9 +486,9 @@ TextColumn::make('name')
     ->alignEnd()
 ```
 
-## Vertically aligning column content
+## 垂直对其列字段内容
 
-Table column content is vertically centered by default. You may change the vertical alignment using the `verticalAlignment()` method, and passing it `VerticalAlignment::Start`, `VerticalAlignment::Center` or `VerticalAlignment::End` options:
+表格列内容默认垂直居中。你可以使用 `verticalAlignment()` 方法，并传入 `VerticalAlignment::Start`、 `VerticalAlignment::Center` 或 `VerticalAlignment::End` 选项，修改垂直对齐方式：
 
 ```php
 use Filament\Support\Enums\VerticalAlignment;
@@ -500,7 +500,7 @@ TextColumn::make('name')
 
 <AutoScreenshot name="tables/columns/vertical-alignment" alt="Table with column vertically aligned to the start" version="3.x" />
 
-Alternatively, you may use shorthand methods like `verticallyAlignStart()`:
+此外，你可以使用如 `verticallyAlignStart()` 一样的快捷方法：
 
 ```php
 use Filament\Support\Enums\VerticalAlignment;
@@ -510,9 +510,9 @@ TextColumn::make('name')
     ->verticallyAlignStart()
 ```
 
-## Allowing column headers to wrap
+## 允许列标题换行
 
-By default, column headers will not wrap onto multiple lines, if they need more space. You may allow them to wrap using the `wrapHeader()` method:
+默认情况下，如果需要更多空间，列标题也不会换行成多行。你可以使用 `wrapHeader()` 方法允许其换行：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -521,9 +521,9 @@ TextColumn::make('name')
     ->wrapHeader()
 ```
 
-## Grouping columns
+## 列分组
 
-You group multiple columns together underneath a single heading using a `ColumnGroup` object:
+使用 `ColumnGroup` 对象，你可以将多个列分组到一个标题之下：
 
 ```php
 use Filament\Tables\Columns\ColumnGroup;
@@ -546,11 +546,11 @@ public function table(Table $table): Table
 }
 ```
 
-The first argument is the label of the group, and the second is an array of column objects that belong to that group.
+第一个参数是分组的标签，第二个承诺书是属于该分组的分组对象数组。
 
 <AutoScreenshot name="tables/columns/grouping" alt="Table with grouped columns" version="3.x" />
 
-You can also control the group header [alignment](#horizontally-aligning-column-content) and [wrapping](#allowing-column-headers-to-wrap) on the `ColumnGroup` object. To improve the multi-line fluency of the API, you can chain the `columns()` onto the object instead of passing it as the second argument:
+你也可以在 `ColumnGroup` 对象上控制分组标题的[对齐方式](#垂直对其列字段内容)以及[换行](#允许列标题换行)。要改进该 API 的多行流畅度(fluency)，你可以在对象上链式调用 `columns()` 无需将其传递为第二个参数：
 
 ```php
 use Filament\Support\Enums\Alignment;

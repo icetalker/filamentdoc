@@ -326,9 +326,9 @@ class ExampleBillingProvider implements Provider
 }
 ```
 
-### Customizing the billing route slug
+### 自定义账单路由 slug
 
-You can customize the URL slug used for the billing route using the `tenantBillingRouteSlug()` method in the [configuration](configuration):
+使用[配置](configuration)中的 `tenantBillingRouteSlug` 方法，你可以自定义用于账单路由的 URL slug：
 
 ```php
 use Filament\Panel;
@@ -728,7 +728,7 @@ Select::make('author_id')
     ->relationship(
         name: 'author',
         titleAttribute: 'name',
-        modifyQueryUsing: fn (Builder $query) => $query->whereBelongsTo(Filament::getTenant())),
+        modifyQueryUsing: fn (Builder $query) => $query->whereBelongsTo(Filament::getTenant()),
     );
 ```
 

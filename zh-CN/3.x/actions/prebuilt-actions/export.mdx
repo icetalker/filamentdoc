@@ -4,9 +4,9 @@ githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/actions/do
 title: Export action
 ---
 
-## Overview
+## 概述
 
-Filament v3.2 introduced a prebuilt action that is able to export rows to a CSV or XLSX file. When the trigger button is clicked, a modal asks for the columns that they want to export, and what they should be labeled. This feature uses [job batches](https://laravel.com/docs/queues#job-batching) and [database notifications](../../notifications/database-notifications#overview), so you need to publish those migrations from Laravel. Also, you need to publish the migrations for tables that Filament uses to store information about exports:
+Filament v3.2 引入了一个预构建的 Action，可以将行导出到 CSV 或 XLSX 文件。当单击触发器按钮时，模态框会询问要导出的列以及它们应该的标签。此功能使用[作业批次](https://laravel.com/docs/queues#job-batching)和[数据库迁移](../../notifications/database-notifications#概述)，因此你需要从 Laravel 发布这些迁移。此外，你还需要发布 Filament 用于存储导出信息的表的迁移：
 
 ```bash
 php artisan queue:batches-table
@@ -16,11 +16,11 @@ php artisan vendor:publish --tag=filament-actions-migrations
 php artisan migrate
 ```
 
-> If you're using PostgreSQL, make sure that the `data` column in the notifications migration is using `json()`: `$table->json('data')`.
+> 如果你使用 PostgreSQL，请确保通知迁移的 `data` 字段使用 `json()`: `$table->json('data')`。
 
-> If you're using UUIDs for your `User` model, make sure that your `notifiable` column in the notifications migration is using `uuidMorphs()`: `$table->uuidMorphs('notifiable')`.
+> 如果在 `User` 模型中使用 UUID，请确保通知迁移中的 `notifiable` 字段使用 `uuidMorphs()`: `$table->uuidMorphs('notifiable')`。
 
-You may use the `ExportAction` like so:
+你可以这样使用 `ExportAction`：
 
 ```php
 use App\Filament\Exports\ProductExporter;
@@ -30,7 +30,7 @@ ExportAction::make()
     ->exporter(ProductExporter::class)
 ```
 
-If you want to add this action to the header of a table instead, you can use `Filament\Tables\Actions\ExportAction`:
+如果要将 Action 添加到表格头部，可以使用  `Filament\Tables\Actions\ExportAction`：
 
 ```php
 use App\Filament\Exports\ProductExporter;
@@ -47,7 +47,7 @@ public function table(Table $table): Table
 }
 ```
 
-Or if you want to add it as a table bulk action, so that the user can choose which rows to export, they can use `Filament\Tables\Actions\ExportBulkAction`:
+或者如果你想将其添加为表格的批量操作，使得用户可以选择导出那些行，可以使用 `Filament\Tables\Actions\ExportBulkAction`：
 
 ```php
 use App\Filament\Exports\ProductExporter;
@@ -64,31 +64,31 @@ public function table(Table $table): Table
 }
 ```
 
-The ["exporter" class needs to be created](#creating-an-exporter) to tell Filament how to export each row.
+[需要创建 "exporter" 类](#创建导出器)以告知 Filament 如何导出每一行。
 
-## Creating an exporter
+## 创建导出器
 
-To create an exporter class for a model, you may use the `make:filament-exporter` command, passing the name of a model:
+要为模型创建 exporter 类，可以使用 `make:filament exporter` 命令，传入模型名称：
 
 ```bash
 php artisan make:filament-exporter Product
 ```
 
-This will create a new class in the `app/Filament/Exports` directory. You now need to define the [columns](#defining-exporter-columns) that can be exported.
+这将会在 `app/Filament/Exports` 目录中创建一个新类。现在你需要到定义可以导出的[列字段](#定义导出列)。
 
-### Automatically generating exporter columns
+### 自动生成导出列
 
-If you'd like to save time, Filament can automatically generate the [columns](#defining-exporter-columns) for you, based on your model's database columns, using `--generate`:
+如果你想要节省时间，Filament 可以使用 `--generate` 基于模型数据库字段自动生成[列字段](#定义导出列)：
 
 ```bash
 php artisan make:filament-exporter Product --generate
 ```
 
-> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the columns for your exporter if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
+> 如果你的表格包含 ENUM 字段，`doctrine/dbal` 包无法扫描表格且会崩溃。因此，如果包含了 ENUM 字段，Filament 无法为你的导出器生成字段。更多该问题的详细信息可查看[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
 
-## Defining exporter columns
+## 定义导出列
 
-To define the columns that can be exported, you need to override the `getColumns()` method on your exporter class, returning an array of `ExportColumn` objects:
+要定义导出的列，你需要在导出器类中重写 `getColumns()` 方法，使之返回 `ExportColumn` 对象数组：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -104,9 +104,9 @@ public function getColumns(): array
 }
 ```
 
-### Customizing the label of an export column
+### 自定义导出列标签
 
-The label for each column will be generated automatically from its name, but you can override it by calling the `label()` method:
+每个列的标签将根据其名称自动生成，但你可以通过调用 `label()` 方法来覆盖它：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -115,11 +115,11 @@ ExportColumn::make('sku')
     ->label('SKU')
 ```
 
-### Calculated export column state
+### 计算导出列的状态Calculated export column state
 
-Sometimes you need to calculate the state of a column, instead of directly reading it from a database column.
+有时你需要计算列的状态，而不是直接从数据库列中读取它。
 
-By passing a callback function to the `state()` method, you can customize the returned state for that column based on the `$record`:
+通过将回调函数传递给 `state()` 方法，可以根据 `$record` 自定义该列的返回状态：
 
 ```php
 use App\Models\Order;
@@ -131,9 +131,9 @@ ExportColumn::make('amount_including_vat')
     })
 ```
 
-### Formatting the value of an export column
+### 格式化导出列的值
 
-You may instead pass a custom formatting callback to `formatStateUsing()`, which accepts the `$state` of the cell, and optionally the Eloquent `$record`:
+相反，你可以将自定义格式化回调传递给 `formatStateUsing()`，它接受单元格的 `$state`，也可以选择 Eloquent 的 `$record`：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -142,11 +142,11 @@ ExportColumn::make('status')
     ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
 ```
 
-If there are [multiple values](#exporting-multiple-values-in-a-cell) in the column, the function will be called for each value.
+如果列中有[多个值](#单元格中导出多个值)，它会为每个值调用该函数。
 
-#### Limiting text length
+#### 限制文本长度
 
-You may `limit()` the length of the cell's value:
+使用 `limit()` 限制单元格值的长度：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -155,9 +155,9 @@ ExportColumn::make('description')
     ->limit(50)
 ```
 
-#### Limiting word count
+#### 限制字数
 
-You may limit the number of `words()` displayed in the cell:
+使用 `words()` 可以限制单元格中显示的字数：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -166,9 +166,9 @@ ExportColumn::make('description')
     ->words(10)
 ```
 
-#### Adding a prefix or suffix
+#### 添加前后缀
 
-You may add a `prefix()` or `suffix()` to the cell's value:
+你可以将前缀(`prefix()`)或者后缀(`suffix()`)添加到单元格的值：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -178,9 +178,9 @@ ExportColumn::make('domain')
     ->suffix('.com')
 ```
 
-### Exporting multiple values in a cell
+### 单元格中导出多个值
 
-By default, if there are multiple values in the column, they will be comma-separated. You may use the `listAsJson()` method to list them as a JSON array instead:
+默认情况下，如果列中有多个值，则它们将以逗号分隔。你可以使用 `listAsJson()` 方法将它们列为 JSON 数组：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -189,9 +189,9 @@ ExportColumn::make('tags')
     ->listAsJson()
 ```
 
-### Displaying data from relationships
+### 在关联中展示数据
 
-You may use "dot notation" to access columns within relationships. The name of the relationship comes first, followed by a period, followed by the name of the column to display:
+你可以使用"点语法"访问关联中的列。首先是关联名，然后是点号，最后是要显示的字段名：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -199,9 +199,9 @@ use Filament\Actions\Exports\ExportColumn;
 ExportColumn::make('author.name')
 ```
 
-### Counting relationships
+### 计数关联
 
-If you wish to count the number of related records in a column, you may use the `counts()` method:
+如果你想计算列中关联记录的数量，可以使用 `counts()` 方法：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -209,9 +209,9 @@ use Filament\Actions\Exports\ExportColumn;
 ExportColumn::make('users_count')->counts('users')
 ```
 
-In this example, `users` is the name of the relationship to count from. The name of the column must be `users_count`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#counting-related-models) for storing the result.
+本例中，`users` 是要计数的关联名。列名必须是 `users_count`，因为这是 [Laravel](https://laravel.com/docs/eloquent-relationships#counting-related-models) 用来存储计数结果的命名规范。
 
-If you'd like to scope the relationship before calculating, you can pass an array to the method, where the key is the relationship name and the value is the function to scope the Eloquent query with:
+如果你想在计算之前设置关联的查询范围，你可以传递数组到该方法中，其中键为关联名、而值是用来设置 Eloquent 查询范围的函数：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -222,9 +222,9 @@ ExportColumn::make('users_count')->counts([
 ])
 ```
 
-### Determining relationship existence
+### 判断关联是否存在
 
-If you simply wish to indicate whether related records exist in a column, you may use the `exists()` method:
+如果你想简单地说明关联记录是否存在于列字段中，你可以使用 `exists()` 方法：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -232,9 +232,9 @@ use Filament\Actions\Exports\ExportColumn;
 ExportColumn::make('users_exists')->exists('users')
 ```
 
-In this example, `users` is the name of the relationship to check for existence. The name of the column must be `users_exists`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) for storing the result.
+本例中，`users` 是用于检测是否存在的关联名。列名必须是 `users_exists`，`avg()`, `max()`, `min()` and `sum()`。
 
-If you'd like to scope the relationship before calculating, you can pass an array to the method, where the key is the relationship name and the value is the function to scope the Eloquent query with:
+如果你想在计算之前设置关联的查询范围，你可以传递数组到该方法中，其中键为关联名、而值是用来设置 Eloquent 查询范围的函数：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -245,9 +245,9 @@ ExportColumn::make('users_exists')->exists([
 ])
 ```
 
-### Aggregating relationships
+### 聚合关联
 
-Filament provides several methods for aggregating a relationship field, including `avg()`, `max()`, `min()` and `sum()`. For instance, if you wish to show the average of a field on all related records in a column, you may use the `avg()` method:
+Filament 提供多种方法用于聚合关联字段，包括 `avg()`、`max()`、`min()` 和 `sum()`。比如，你想在列中显示所有关联记录的字段平均值，可以使用 `avg()` 方法：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -255,9 +255,10 @@ use Filament\Actions\Exports\ExportColumn;
 ExportColumn::make('users_avg_age')->avg('users', 'age')
 ```
 
-In this example, `users` is the name of the relationship, while `age` is the field that is being averaged. The name of the column must be `users_avg_age`, as this is the convention that [Laravel uses](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) for storing the result.
+本例中，`users` 是关联名，而 `age` 是需要被平均的字段。该列的名称必须为 `users_avg_age`，因为这是 [Laravel](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) 用来存该数结果的命名规范。
 
-If you'd like to scope the relationship before calculating, you can pass an array to the method, where the key is the relationship name and the value is the function to scope the Eloquent query with:
+
+如果你想在计算之前设置关联的查询范围，你可以传递数组到该方法中，其中键为关联名、而值是用来设置 Eloquent 查询范围的函数：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -268,9 +269,9 @@ ExportColumn::make('users_avg_age')->avg([
 ], 'age')
 ```
 
-## Configuring the export formats
+## 配置导出格式
 
-By default, the export action will allow the user to choose between both CSV and XLSX formats. You can use the `ExportFormat` enum to customize this, by passing an array of formats to the `formats()` method on the action:
+默认情况下，导出操作(Action)将允许用户在 CSV 和 XLSX 格式之间进行选择。通过传递格式数组到 Action 的 `formats()` 方法，你可以使用 `ExportFormat` 枚举对此进行自定义：
 
 ```php
 use App\Filament\Exports\ProductExporter;
@@ -293,7 +294,7 @@ ExportAction::make()
     ])
 ```
 
-Alternatively, you can override the `getFormats()` method on the exporter class, which will set the default formats for all actions that use that exporter:
+此外，你可以重写 Exporter 类的 `getFormats()` 方法，为使用该 Exporter 的所有 Action 设置默认格式：
 
 ```php
 use Filament\Actions\Exports\Enums\ExportFormat;
@@ -306,13 +307,13 @@ public function getFormats(): array
 }
 ```
 
-## Configuring the export filesystem
+## 配置导出文件系统
 
-### Customizing the storage disk
+### 自定义存储磁盘
 
-By default, exported files will be uploaded to the storage disk defined in the [configuration file](../installation#publishing-configuration). You can also set the `FILAMENT_FILESYSTEM_DISK` environment variable to change this.
+默认情况下，导出文件将会被上传到[配置文件](../installation#发布配置)定义的存储磁盘中。你也可以设置 `FILAMENT_FILESYSTEM_DISK` 环境变量对此进行修改。
 
-If you want to use a different disk for a specific export, you can pass the disk name to the `disk()` method on the action:
+如果你想为指定导出使用不同磁盘，你可以传递磁盘名称到该 Action 的 `disk()` 方法中：
 
 ```php
 use Filament\Actions\ExportAction;
@@ -322,7 +323,7 @@ ExportAction::make()
     ->fileDisk('s3')
 ```
 
-Alternatively, you can override the `getFileDisk()` method on the exporter class, returning the name of the disk:
+此外，你也可以重写导出类的 `getFileDisk()` 方法，使之返回磁盘名：
 
 ```php
 public function getFileDisk(): string
@@ -331,9 +332,9 @@ public function getFileDisk(): string
 }
 ```
 
-### Configuring the export file names
+### 配置导出文件名
 
-By default, exported files will have a name generated based on the ID and type of the export. You can also use the `fileName()` method on the action to customize the file name:
+默认情况下，导出文件会有一个基于 ID 及导出类型生成的名称。你也可以在该 Action 中使用 `fileName()` 方法自定义文件名：
 
 ```php
 use Filament\Actions\ExportAction;
@@ -344,7 +345,7 @@ ExportAction::make()
     ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
 ```
 
-Alternatively, you can override the `getFileName()` method on the exporter class, returning a string:
+此外，你也可以在导出类中重写 `getFileName()` 方法，使之返回一个字符串：
 
 ```php
 
@@ -356,9 +357,9 @@ public function getFileName(Export $export): string
 }
 ```
 
-## Using export options
+## 导出选项
 
-The export action can render extra form components that the user can interact with when exporting a CSV. This can be useful to allow the user to customize the behavior of the exporter. For instance, you might want a user to be able to choose the format of specific columns when exporting. To do this, you can return options form components from the `getOptionsFormComponents()` method on your exporter class:
+导出操作可以渲染额外的表单组件，用户可以在导出 CSV 时与之交互。这对于允许用户自定义导出器(Exporter)的行为非常有用。例如，你可能希望用户能够在导出时选择特定列的格式。为此，你可以在 Exporter 类的 `getOptionsFormComponents()` 方法中返回选项的表单组件：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -373,7 +374,7 @@ public static function getOptionsFormComponents(): array
 }
 ```
 
-Alternatively, you can pass a set of static options to the exporter through the `options()` method on the action:
+此外，你可以通过 Action 的 `options()` 将一组静态选项传递给该导出器(Exporter)：
 
 ```php
 use Filament\Actions\ExportAction;
@@ -385,7 +386,7 @@ ExportAction::make()
     ])
 ```
 
-Now, you can access the data from these options inside the exporter class, by injecting the `$options` argument into any closure function. For example, you might want to use it inside `formatStateUsing()` to [format a column's value](#formatting-the-value-of-an-export-column):
+现在，您可以通过将 `$options` 参数注入到任何闭包函数中，在导出器(Exporter)类内中访问这些选项数据。例如，你可能希望在`formatStateUsing()` 中使用它来[格式化列的值]（#格式化导出列的值）：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -396,7 +397,7 @@ ExportColumn::make('description')
     })
 ```
 
-Alternatively, since the `$options` argument is passed to all closure functions, you can access it inside `limit()`:
+此外，因为 `$options` 参数传递给所有闭包函数，你可以在 `limit()` 中访问它：
 
 ```php
 use Filament\Actions\Exports\ExportColumn;
@@ -405,15 +406,15 @@ ExportColumn::make('description')
     ->limit(fn (array $options): int => $options['descriptionLimit'] ?? 100)
 ```
 
-## Using a custom user model
+## 使用自定义用户模式
 
-By default, the `exports` table has a `user_id` column. That column is constrained to the `users` table:
+默认情况下，`exports` 表格有一个 `user_id` 字段。该字段被约束到 `users` 表：
 
 ```php
 $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 ```
 
-In the `Export` model, the `user()` relationship is defined as a `BelongsTo` relationship to the `App\Models\User` model. If the `App\Models\User` model does not exist, or you want to use a different one, you can bind a new `Authenticatable` model to the container in a service provider's `register()` method:
+在 `Export` 模型上，`user()` 关联被定义为 `App\Models\User` 模型的 `BelongsTo` 关联。如果 `App\Models\User` 模型不存在，或者你想使用其他模型，你可以在服务提供者的 `register()` 方法中将新的 `Authenticatable` 模型绑定到容器：
 
 ```php
 use App\Models\Admin;
@@ -422,21 +423,21 @@ use Illuminate\Contracts\Auth\Authenticatable;
 $this->app->bind(Authenticatable::class, Admin::class);
 ```
 
-If your authenticatable model uses a different table to `users`, you should pass that table name to `constrained()`:
+如果 Authenticatable 模式使用不是 `users` 表，你应该将表名传递给 `constrained()`：
 
 ```php
 $table->foreignId('user_id')->constrained('admins')->cascadeOnDelete();
 ```
 
-### Using a polymorphic user relationship
+### 使用多态用户关联
 
-If you want to associate exports with multiple user models, you can use a polymorphic `MorphTo` relationship instead. To do this, you need to replace the `user_id` column in the `exports` table:
+如果你想将导出关联到多个用户模型，可以使用多态的 `MorphTo` 关联。为此，你需要替换掉在 `exports` 表格的 `user_id` 列：
 
 ```php
 $table->morphs('user');
 ```
 
-Then, in a service provider's `boot()` method, you should call `Export::polymorphicUserRelationship()` to swap the `user()` relationship on the `Export` model to a `MorphTo` relationship:
+然后，在服务提供者的 `boot()` 方法中，你应该调用 `Export::polymorphicUserRelationship()`，将 `Export` 模型的 `user()` 关联切换到 `MorphTo` 关联：
 
 ```php
 use Filament\Actions\Exports\Models\Export;
@@ -444,9 +445,9 @@ use Filament\Actions\Exports\Models\Export;
 Export::polymorphicUserRelationship();
 ```
 
-## Limiting the maximum number of rows that can be exported
+## 限制可导出的最大行数
 
-To prevent server overload, you may wish to limit the maximum number of rows that can be exported from one CSV file. You can do this by calling the `maxRows()` method on the action:
+为防止服务器过载，你可能希望限制可以导出到 CSV 文件的最大行数。你可以在 Action 中调用 `maxRows()` 方法实现此功能：
 
 ```php
 ExportAction::make()
@@ -454,9 +455,9 @@ ExportAction::make()
     ->maxRows(100000)
 ```
 
-## Changing the export chunk size
+## 修改导出块大小
 
-Filament will chunk the CSV, and process each chunk in a different queued job. By default, chunks are 100 rows at a time. You can change this by calling the `chunkSize()` method on the action:
+Filament 会对 CSV 进行分块，并在不同的队列作业中处理每个分块。默认情况下，块一次是 100 行。你可以通过对 Action 调用 `chunkSize()` 方法来对此进行修改：
 
 ```php
 ExportAction::make()
@@ -464,11 +465,11 @@ ExportAction::make()
     ->chunkSize(250)
 ```
 
-If you are encountering memory or timeout issues when exporting large CSV files, you may wish to reduce the chunk size.
+如果导出大的 CSV 文件时，你遇到内存问题或者超时问题，你可能需要减少块的大小。
 
-## Changing the CSV delimiter
+## 修改 CSV 分隔符
 
-The default delimiter for CSVs is the comma (`,`). If you want to export using a different delimiter, you may override the `getCsvDelimiter()` method on the exporter class, returning a new one:
+CSV 的默认分隔符是英文逗号(`,`)。如果你想使用不同分隔符导出，你可以重写导出器类上 `getCsvDelimiter()` 方法，使之返回新的分隔符：
 
 ```php
 public static function getCsvDelimiter(): string
@@ -477,11 +478,11 @@ public static function getCsvDelimiter(): string
 }
 ```
 
-You can only specify a single character, otherwise an exception will be thrown.
+你只能指定单个字符，否则会抛出异常。
 
-## Customizing the export job
+## 自定义导出作业
 
-The default job for processing exports is `Filament\Actions\Exports\Jobs\PrepareCsvExport`. If you want to extend this class and override any of its methods, you may replace the original class in the `register()` method of a service provider:
+处理导出的默认作业是 ``Filament\Actions\Exports\Jobs\PrepareCsvExport`。如果你想扩展该类并重写器方法，你可以在服务提供者的 `register()` 方法中替换其原始类：
 
 ```php
 use App\Jobs\PrepareCsvExport;
@@ -490,7 +491,7 @@ use Filament\Actions\Exports\Jobs\PrepareCsvExport as BasePrepareCsvExport;
 $this->app->bind(BasePrepareCsvExport::class, PrepareCsvExport::class);
 ```
 
-Or, you can pass the new job class to the `job()` method on the action, to customize the job for a specific export:
+或者，你可以传递新的 Job 类到该 Action 的 `job()` 方法中，以定制指定导出的 Job：
 
 ```php
 use App\Jobs\PrepareCsvExport;
@@ -500,9 +501,9 @@ ExportAction::make()
     ->job(PrepareCsvExport::class)
 ```
 
-### Customizing the export queue and connection
+### 自定义导出队列及连接
 
-By default, the export system will use the default queue and connection. If you'd like to customize the queue used for jobs of a certain exporter, you may override the `getJobQueue()` method in your exporter class:
+默认情况下，导出系统会使用默认队列和连接。如果你想为某个特定导出器的 Job 自定义队列，你可以在导出器类中重写 `getJobQueue()` 方法：
 
 ```php
 public function getJobQueue(): ?string
@@ -511,7 +512,7 @@ public function getJobQueue(): ?string
 }
 ```
 
-You can also customize the connection used for jobs of a certain exporter, by overriding the `getJobConnection()` method in your exporter class:
+重写 Exporter 类的 `getJobConnection()` 方法，你可以自定义用于某个特定导出器的 Job 的连接：
 
 ```php
 public function getJobConnection(): ?string
@@ -520,9 +521,10 @@ public function getJobConnection(): ?string
 }
 ```
 
-### Customizing the export job middleware
+### 自定义导出 Job 中间件
 
-By default, the export system will only process one job at a time from each export. This is to prevent the server from being overloaded, and other jobs from being delayed by large exports. That functionality is defined in the `WithoutOverlapping` middleware on the exporter class:
+
+默认情况下，导出系统每个导出一次只处理一个 Job。这是为了防止服务器过载，以及其他作业因大型导出而延迟。该功能在导出器类的`WithoutOverlapping` 中间件中定义：
 
 ```php
 public function getJobMiddleware(): array
@@ -533,11 +535,11 @@ public function getJobMiddleware(): array
 }
 ```
 
-If you'd like to customize the middleware that is applied to jobs of a certain exporter, you may override this method in your exporter class. You can read more about job middleware in the [Laravel docs](https://laravel.com/docs/queues#job-middleware).
+如果你想自定义应用于某个导出器的作业的中间件，你可以在导出器类中重写此方法。你可以在 [Laravel 文档](https://laravel.com/docs/queues#job-middleware)中阅读更多关于作业中间件的信息。
 
-### Customizing the export job retries
+### 自定义导出作业重试次数
 
-By default, the export system will retry a job for 24 hours. This is to allow for temporary issues, such as the database being unavailable, to be resolved. That functionality is defined in the `getJobRetryUntil()` method on the exporter class:
+默认情况下，导出系统将在 24 小时内重试作业。这是为了解决临时问题，例如数据库不可用。该功能在导出器类的 `getJobRetryUntil()` 方法中定义：
 
 ```php
 use Carbon\CarbonInterface;
@@ -548,11 +550,11 @@ public function getJobRetryUntil(): ?CarbonInterface
 }
 ```
 
-If you'd like to customize the retry time for jobs of a certain exporter, you may override this method in your exporter class. You can read more about job retries in the [Laravel docs](https://laravel.com/docs/queues#time-based-attempts).
+如果你想自定义特定导出器的作业重试次数，可以重写导出器的这一方法。更多作业重试信息，可以查阅 [Laravel 文档](https://laravel.com/docs/queues#time-based-attempts)。
 
-### Customizing the export job tags
+### 自定义导出作业标签
 
-By default, the export system will tag each job with the ID of the export. This is to allow you to easily find all jobs related to a certain export. That functionality is defined in the `getJobTags()` method on the exporter class:
+默认情况下，导出系统将使用导出的 ID 标记每个作业。这是为了让你能够轻松地找到与某个导出相关的所有作业。该功能在导出器类的 `getJobTags()` 方法中定义：
 
 ```php
 public function getJobTags(): array
@@ -561,4 +563,4 @@ public function getJobTags(): array
 }
 ```
 
-If you'd like to customize the tags that are applied to jobs of a certain exporter, you may override this method in your exporter class.
+如果要自定义应用于某个导出器的作业的标签，可以在导出器类中重写此方法。

@@ -177,7 +177,7 @@ test('title is disabled', function () {
 
 ## Actions
 
-You can call an action by passing its form component name, and then the name of the action to `callFormComponentAction()`:
+你可以传递 Action 的表单组件名及 Action 名到 `callFormComponentAction` 中调用 Action：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -195,7 +195,7 @@ it('can send invoices', function () {
 });
 ```
 
-To pass an array of data into an action, use the `data` parameter:
+使用 `data` 参数，传递数据数组给 Action：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -217,7 +217,7 @@ it('can send invoices', function () {
 });
 ```
 
-If you ever need to only set an action's data without immediately calling it, you can use `setFormComponentActionData()`:
+如果只需要设置 Action 的数据而不立即调用它，可以使用  `setFormComponentActionData()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -235,9 +235,9 @@ it('can send invoices', function () {
 });
 ```
 
-### Execution
+### 执行
 
-To check if an action has been halted, you can use `assertFormComponentActionHalted()`:
+要检测 Action 是否被中止，可以使用  `assertFormComponentActionHalted()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -253,11 +253,11 @@ it('stops sending if invoice has no email address', function () {
 });
 ```
 
-### Errors
+### 错误
 
-`assertHasNoFormComponentActionErrors()` is used to assert that no validation errors occurred when submitting the action form.
+`assertHasNoFormComponentActionErrors()` 用于断言提交 Action 表单没有出现验证错误。
 
-To check if a validation error has occurred with the data, use `assertHasFormComponentActionErrors()`, similar to `assertHasErrors()` in Livewire:
+使用 `assertHasFormComponentActionErrors()` 用于使用数据断言验证错误，类似于 `Livewire` 中的 `assertHasErrors()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -275,7 +275,7 @@ it('can validate invoice recipient email', function () {
 });
 ```
 
-To check if an action is pre-filled with data, you can use the `assertFormComponentActionDataSet()` method:
+要断言 Action 预装填数据，可以使用 `assertFormComponentActionDataSet()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -302,7 +302,7 @@ it('can send invoices to the primary contact by default', function () {
 
 ### Action state
 
-To ensure that an action exists or doesn't in a form, you can use the `assertFormComponentActionExists()` or  `assertFormComponentActionDoesNotExist()` method:
+要断言 Action 存在于或者不在表单中，可以使用 `assertFormComponentActionExists()` 或 `assertFormComponentActionDoesNotExist()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -318,7 +318,7 @@ it('can send but not unsend invoices', function () {
 });
 ```
 
-To ensure an action is hidden or visible for a user, you can use the `assertFormComponentActionHidden()` or `assertFormComponentActionVisible()` methods:
+要断言 Action 对用户隐藏或可见，可以使用  `assertFormComponentActionHidden()` 或 `assertFormComponentActionVisible()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -334,7 +334,7 @@ it('can only print customers', function () {
 });
 ```
 
-To ensure an action is enabled or disabled for a user, you can use the `assertFormComponentActionEnabled()` or `assertFormComponentActionDisabled()` methods:
+要断言 Action 是对用户启用还是禁用，可以使用 `assertFormComponentActionEnabled()` 或 `assertFormComponentActionDisabled()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -350,7 +350,7 @@ it('can only print a customer for a sent invoice', function () {
 });
 ```
 
-To check if an action is hidden to a user, you can use the `assertFormComponentActionHidden()` method:
+要断言 Action 对某个用户隐藏，可以使用 `assertFormComponentActionHidden()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -365,9 +365,9 @@ it('can not send invoices', function () {
 });
 ```
 
-### Button appearance
+### 按钮外观
 
-To ensure an action has the correct label, you can use `assertFormComponentActionHasLabel()` and `assertFormComponentActionDoesNotHaveLabel()`:
+要断言 Action 的标签正确，可以使用  `assertFormComponentActionHasLabel()` 和 `assertFormComponentActionDoesNotHaveLabel()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -383,7 +383,7 @@ it('send action has correct label', function () {
 });
 ```
 
-To ensure an action's button is showing the correct icon, you can use `assertFormComponentActionHasIcon()` or `assertFormComponentActionDoesNotHaveIcon()`:
+要断言 Action 按钮的图标正确显示，可以使用  `assertFormComponentActionHasIcon()` 或 `assertFormComponentActionDoesNotHaveIcon()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -400,7 +400,7 @@ it('when enabled the send button has correct icon', function () {
 });
 ```
 
-To ensure that an action's button is displaying the right color, you can use `assertFormComponentActionHasColor()` or `assertFormComponentActionDoesNotHaveColor()`:
+要断言 Action 按钮的颜色正确显示，可以使用  `assertFormComponentActionHasColor()` 或 `assertFormComponentActionDoesNotHaveColor()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -418,7 +418,7 @@ it('actions display proper colors', function () {
 
 ### URL
 
-To ensure an action has the correct URL, you can use `assertFormComponentActionHasUrl()`, `assertFormComponentActionDoesNotHaveUrl()`, `assertFormComponentActionShouldOpenUrlInNewTab()`, and `assertFormComponentActionShouldNotOpenUrlInNewTab()`:
+要断言 Action 的 URL 正确，可以使用 `assertFormComponentActionHasUrl()`、`assertFormComponentActionDoesNotHaveUrl()`、`assertFormComponentActionShouldOpenUrlInNewTab()` 和 `assertFormComponentActionShouldNotOpenUrlInNewTab()`：
 
 ```php
 use function Pest\Livewire\livewire;

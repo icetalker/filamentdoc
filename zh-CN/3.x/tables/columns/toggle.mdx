@@ -24,9 +24,9 @@ ToggleColumn::make('is_admin')
 ```php
 ToggleColumn::make()
     ->beforeStateUpdated(function ($record, $state) {
-        // Runs before the state is saved to the database.
+        // 在状态保存到数据库之前运行
     })
     ->afterStateUpdated(function ($record, $state) {
-        // Runs after the state is saved to the database.
+        // 在状态保存到数据库之后运行
     })
 ```
