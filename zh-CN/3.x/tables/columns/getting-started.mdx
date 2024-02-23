@@ -521,6 +521,28 @@ TextColumn::make('name')
     ->wrapHeader()
 ```
 
+## 控制列宽
+
+默认情况下，列字段会根据需求占据空间。你可以使用 `grow()` 方法，让一些列消费更多的空间：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('name')
+    ->grow()
+```
+
+此外，你也可以定义该列的宽度，请使用 `style` 属性将其传递给头部单元格，这样你就可以使用任何有效的 CSS 值了：
+
+```php
+use Filament\Tables\Columns\IconColumn;
+
+IconColumn::make('is_paid')
+    ->label('Paid')
+    ->boolean()
+    ->width('1%')
+```
+
 ## 列分组
 
 使用 `ColumnGroup` 对象，你可以将多个列分组到一个标题之下：

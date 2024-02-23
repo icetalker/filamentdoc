@@ -65,6 +65,20 @@ public function table(Table $table): Table
 }
 ```
 
+### 显示第一页和最后一页的链接
+
+使用 `extremePaginationLinks()` 方法可以添加第一页和最后一页链接：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->extremePaginationLinks();
+}
+```
+
 ### 使用简单分页
 
 重写 `paginateTableQuery()` 方法可以使用简单分页。

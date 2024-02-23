@@ -115,7 +115,30 @@ ExportColumn::make('sku')
     ->label('SKU')
 ```
 
-### 计算导出列的状态Calculated export column state
+### 配置默认的列选中
+
+默认情况下，当询问用户要导出哪些列时，所有的列都会被选中。你可以使用 `enabledByDefault()` 方法自定义列的默认选中状态：
+
+```php
+use Filament\Actions\Exports\ExportColumn;
+
+ExportColumn::make('description')
+    ->enabledByDefault(false)
+```
+
+### 禁用列选择
+
+默认情况下，会询问用户想导出哪些列。你可以使用 `columnMapping(false)` 方法，禁用该功能：
+
+```php
+use App\Filament\Exports\ProductExporter;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->columnMapping(false)
+```
+
+### 计算导出列的状态
 
 有时你需要计算列的状态，而不是直接从数据库列中读取它。
 
@@ -257,7 +280,6 @@ ExportColumn::make('users_avg_age')->avg('users', 'age')
 
 本例中，`users` 是关联名，而 `age` 是需要被平均的字段。该列的名称必须为 `users_avg_age`，因为这是 [Laravel](https://laravel.com/docs/eloquent-relationships#other-aggregate-functions) 用来存该数结果的命名规范。
 
-
 如果你想在计算之前设置关联的查询范围，你可以传递数组到该方法中，其中键为关联名、而值是用来设置 Eloquent 查询范围的函数：
 
 ```php
@@ -275,7 +297,6 @@ ExportColumn::make('users_avg_age')->avg([
 
 ```php
 use App\Filament\Exports\ProductExporter;
-use Filament\Actions\ExportAction;
 use Filament\Actions\Exports\Enums\ExportFormat;
 
 ExportAction::make()
@@ -307,6 +328,19 @@ public function getFormats(): array
 }
 ```
 
+## 修改导出查询
+
+默认情况下，如果你在表格上使用 `ExportAction`，该 Action 会使用表格当前过滤和排序的查询来导出数据。如果没有表格，它会使用模型默认的查询。要在导出前修改该查询构造器，你可以在该 Action 上使用 `modifyQueryUsing()` 方法：
+
+```php
+use App\Filament\Exports\ProductExporter;
+use Illuminate\Database\Eloquent\Builder;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
+```
+
 ## 配置导出文件系统
 
 ### 自定义存储磁盘
@@ -316,8 +350,6 @@ public function getFormats(): array
 如果你想为指定导出使用不同磁盘，你可以传递磁盘名称到该 Action 的 `disk()` 方法中：
 
 ```php
-use Filament\Actions\ExportAction;
-
 ExportAction::make()
     ->exporter(ProductExporter::class)
     ->fileDisk('s3')
@@ -337,7 +369,6 @@ public function getFileDisk(): string
 默认情况下，导出文件会有一个基于 ID 及导出类型生成的名称。你也可以在该 Action 中使用 `fileName()` 方法自定义文件名：
 
 ```php
-use Filament\Actions\ExportAction;
 use Filament\Actions\Exports\Models\Export;
 
 ExportAction::make()
@@ -377,8 +408,6 @@ public static function getOptionsFormComponents(): array
 此外，你可以通过 Action 的 `options()` 将一组静态选项传递给该导出器(Exporter)：
 
 ```php
-use Filament\Actions\ExportAction;
-
 ExportAction::make()
     ->exporter(ProductExporter::class)
     ->options([
@@ -523,7 +552,6 @@ public function getJobConnection(): ?string
 
 ### 自定义导出 Job 中间件
 
-
 默认情况下，导出系统每个导出一次只处理一个 Job。这是为了防止服务器过载，以及其他作业因大型导出而延迟。该功能在导出器类的`WithoutOverlapping` 中间件中定义：
 
 ```php
@@ -564,3 +592,41 @@ public function getJobTags(): array
 ```
 
 如果要自定义应用于某个导出器的作业的标签，可以在导出器类中重写此方法。
+
+### 自定义导出作业的批次名称
+
+默认情况下，导出系统不会定义作业批次的名称。如果你想为特定导出器(exporter)的作业批次名称，可以在导出器(Exporter)类中重写 `getJobBatchName()` 方法：
+
+```php
+public function getJobBatchName(): ?string
+{
+    return 'product-export';
+}
+```
+
+## 授权
+
+默认情况下，只有开启导出的用户才能下载生成的文件。如果你像自定义授权逻辑，可以创建 `ExportPolicy` 类，并且在 [`AuthServiceProvider` 中注册它](https://laravel.com/docs/10.x/authorization#registering-policies)：
+
+```php
+use App\Policies\ExportPolicy;
+use Filament\Actions\Exports\Models\Export;
+
+protected $policies = [
+    Export::class => ExportPolicy::class,
+];
+```
+
+该策略的 `view()` 用于授权下载权限。
+
+请注意，如果你定义了策略，现有的逻辑(即只有开启导出的用户可以访问生成的文件)将被移除。如果你要保留该逻辑，你需要将其添加到策略中：
+
+```php
+use App\Models\User;
+use Filament\Actions\Exports\Models\Export;
+
+public function view(User $user, Export $export): bool
+{
+    return $export->user()->is($user);
+}
+```

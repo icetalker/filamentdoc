@@ -236,7 +236,7 @@ Repeater::make('qualifications')
 
 ### 在关联中重排项目
 
-默认情况下，Repeater 项目 [重新排序](#项目重新排序)是禁用的。这是因为关联模型需要有一个 `sort` 字段用来存储关联记录的排序。要启用重新排序功能，你需要使用 `orderColumn()` 方法，传入关联模型的用于排序的字段名：
+默认情况下，Repeater 项目 [重新排序](#项目重新排序)关联的 Repeater 项目是禁用的。这是因为关联模型需要有一个 `sort` 字段用来存储关联记录的排序。要启用重新排序功能，你需要使用 `orderColumn()` 方法，传入关联模型的用于排序的字段名：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -289,7 +289,7 @@ class OrderProduct extends Pivot
     {
         return $this->belongsTo(Order::class);
     }
-    
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
@@ -636,7 +636,7 @@ Repeater::make('members')
             ->icon('heroicon-m-envelope')
             ->action(function (array $arguments, Repeater $component): void {
                 $itemData = $component->getItemState($arguments['item']);
-                
+
                 Mail::to($itemData['email'])
                     ->send(
                         // ...

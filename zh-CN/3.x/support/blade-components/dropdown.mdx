@@ -81,6 +81,32 @@ title: Dropdown Blade component
 </x-filament::dropdown.list.item>
 ```
 
+### 修改下拉项目的图标颜色
+
+默认情况下，图标的颜色采用[该下拉项相同的颜色](#修改下拉菜单项目的颜色)。你可以使用 `icon-color` 属性将其重写为 `danger`、`info`、`primary`、`success` 或 `warning`：
+
+```blade
+<x-filament::dropdown.list.item icon="heroicon-m-pencil" icon-color="danger">
+    Edit
+</x-filament::dropdown.list.item>
+
+<x-filament::dropdown.list.item icon="heroicon-m-pencil" icon-color="info">
+    Edit
+</x-filament::dropdown.list.item>
+
+<x-filament::dropdown.list.item icon="heroicon-m-pencil" icon-color="primary">
+    Edit
+</x-filament::dropdown.list.item>
+
+<x-filament::dropdown.list.item icon="heroicon-m-pencil" icon-color="success">
+    Edit
+</x-filament::dropdown.list.item>
+
+<x-filament::dropdown.list.item icon="heroicon-m-pencil" icon-color="warning">
+    Edit
+</x-filament::dropdown.list.item>
+```
+
 ## 添加图片到下拉菜单项目
 
 使用 `image` 属性，你可以为下拉菜单项目添加圆形图片：

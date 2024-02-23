@@ -19,7 +19,7 @@ TextColumn::make('title')
 
 ## 显示为"徽章"
 
-默认情况下，文本非常简单，没有背景色。您可以使用 "badge()" 方法将其显示为"徽章"。这方面的一个很好的用例是状态，其中可能需要显示与状态相匹配的[颜色](#自定义颜色)徽章：
+默认情况下，文本非常简单，没有背景色。你可以使用 `badge()` 方法将其显示为"徽章"。这方面的一个很好的用例是状态，其中可能需要显示与状态相匹配的[颜色](#自定义颜色)徽章：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -160,6 +160,29 @@ TextColumn::make('description')
     ->words(10)
 ```
 
+## 将文本限制为指定行数
+
+你可以将文本限制到指定的行数，而不是限制成固定长度。将文本行数锁定到指定行数在响应式界面中很有用，这样可以确保在所有屏幕中都有一致性体验。使用 `lineClamp()` 方法可以达成此效果：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('description')
+    ->lineClamp(2)
+```
+
+## 添加前后缀
+
+你可以将前缀或后缀添加到单元格值中：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('domain')
+    ->prefix('https://')
+    ->suffix('.com')
+```
+
 ## 内容换行
 
 如果你希望列中内容太长时进行换行，可以使用 `wrap()` 方法：
@@ -205,6 +228,21 @@ TextColumn::make('authors.name')
     ->listWithLineBreaks()
     ->limitList(3)
 ```
+
+#### 打开限制列表
+
+使用 `expandableLimitedList()` 方法你可以让限制列表可打开或者折叠：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('authors.name')
+    ->listWithLineBreaks()
+    ->limitList(3)
+    ->expandableLimitedList()
+```
+
+请注意这只是 `listWithLineBreaks()` 或 `bulleted()` 的一个特性，其每个项都有各自的行。
 
 ### 使用列表分隔符
 
@@ -301,8 +339,6 @@ TextColumn::make('email')
 ```
 
 <AutoScreenshot name="tables/columns/text/icon-color" alt="Text column with icon in the primary color" version="3.x" />
-
-<AutoScreenshot name="tables/columns/text/icon-after" alt="Text column with icon after" version="3.x" />
 
 ## 自定义文本大小
 

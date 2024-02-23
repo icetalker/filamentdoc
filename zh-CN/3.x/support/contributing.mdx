@@ -1,0 +1,89 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/08-contributing.md"
+title: Contributing
+---
+
+> 本指南部分来自于 [Laravel 贡献指南](https://laravel.com/docs/contributions)，这是一个非常有用的情感来源。
+
+## 报告漏洞
+
+如果你发现 Filament 有 Bug，请在 [GitHub 仓库](https://github.com/filamentphp/filament/issues/new/choose)打开 issue 提交报告。在打开 issue 之前，请搜索[现有 issue](https://github.com/filamentphp/filament/issues?q=is%3Aissue) 以查看该 Bug 是否已被提交。
+请确保包含尽可能多的信息，包括应用包的版本。在应用这使用 Artisan 命令以使用所有预填充的正确版本打开新 issue。
+
+```bash
+php artisan make:filament-issue
+```
+
+创建 issue 时，需要"重现仓库"。**请不要链接到你的实际项目**，我们需要的是全新的最小化的重现仓库，没有非必要代码。也就是说，无所谓你的真实项目是私有的/保密的，因为我们需要的是单独的、隔离的重现仓库。这允许我们快速解决问题。**如果缺失了这点，issue 会被自动关闭，切不会评审，以节约维护者的时间并确保对努力报告的开发者公平.** 如果你确信重现报告不适于该 issue(其实很少的场景如此)，请 `@danharrin` 并解释为何如此。"它只是一个简单的 issue" 并不是创建仓库的借口！[需要示例？此处提供了一个 Filament 项目模板](https://filament-issue.unitedbycode.com)。
+
+记住，Bug 提交是建立在希望有同样问题的其他人可以和你一起合作解决的基础之上。不要期望 bug 报告会自动看到任何活动，或者其他人会跳出来修复它。创建 bug 报告有助于你自己和其他人开始修复问题。
+
+## 新特性开发
+
+如果想对 Filament 提出新功能或改进可以使用我们托管在 Github 上的 [discussion 表单](https://github.com/filamentphp/filament/discussions)。如果你打算在拉取请求中自己实现该功能，我们建议你提前在功能讨论中 "@danharrin"，并询问它是否适合该框架，以防止浪费你的时间。
+
+## 插件开发
+
+如果你想开发 Filament 插件，请查阅本文档中的[插件开发章节](https://filamentphp.com/docs/support/plugins)。官方 [Discord](https://filamentphp.com/discord) 服务器也是询问问题及获取插件开发帮助的好去处。你可以在 [`#plugin-developers-chat`](https://discord.com/channels/883083792112300104/970354547723730955) 频道中进行交流。
+
+你可以[将你的插件提交到 Filament 网站](https://github.com/filamentphp/filamentphp.com/blob/main/README.md#contributing)。
+
+## 使用 Filament 的本地副本开发
+
+如果你想为 Filament 包做出贡献，那么你需要在真实的 Laravel 项目中对其进行测试：
+
+- Fork [GitHub 仓库](https://github.com/filamentphp/filament) 到你的 GitHub 账号中。
+- 本地创建 Laravel 应用。
+- 在 Laravel 应用的根目录中克隆你 Fork 的项目。
+- 在 `/filament` 目录中，为你的修改创建分支，比如：`fix/error-message`。
+
+在应用的 `composer.json` 中安装该包：
+
+```jsonc
+{
+    // ...
+    "require": {
+        "filament/filament": "*",
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "filament/packages/*"
+        }
+    ],
+    // ...
+}
+```
+
+然后，运行 `compose update`。
+
+一旦更新完成，你就可以 commit 并提交 PR 给 [GitHub 仓库](https://github.com/filamentphp/filament)。
+
+## 检测翻译缺失
+
+安装好 Laravel 应用，并安装[面板构造器](https://laravel-filament.cn/docs/zh-CN/panels/installation)。
+
+如果你想检测西班牙语翻译文件是否缺失，请运行：
+
+```bash
+php artisan filament:check-translations es
+```
+
+这可以让你知道本地化语言中缺失了哪些翻译。你可以提交 PR 更新到 [GitHub 仓库](https://github.com/filamentphp/filament)。
+
+
+如果你已在你的应用中发布了翻译文件，并且你想对其进行检测，请使用：
+
+```bash
+php artisan filament:check-translations es --source=app
+```
+
+## 安全漏洞
+
+如果你在 Filament 中发现了安全漏洞，请通过 [dan@danharrin.com](mailto:dan@danharrin.com) 发邮件给 Dan Harrin。所有安全罗东都会被快速解决。
+
+## 代码规范
+
+请注意，Filament 随带发布了[代码规范](https://github.com/filamentphp/filament/blob/afa0c703da18ce78b508951436f571c9d4813db6/CODE_OF_CONDUCT.md)。参与项目即需同意遵守该条约。

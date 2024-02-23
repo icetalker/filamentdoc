@@ -448,6 +448,15 @@ ImportColumn::make('sku')
     ->example('ABC123')
 ```
 
+默认情况下，列名用在示例 CSV 的头部。你可以使用 `examplerHeader()` 自定义每一列的头部：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->exampleHeader('SKU')
+```
+
 ## 使用自定义用户模型
 
 默认情况下，`imports` 表格有一个 `user_id` 字段。该字段约束到 `users` 表：
@@ -605,6 +614,17 @@ public function getJobTags(): array
 
 如果你想为特定的 importer 自定义使用的标签，可以在 importer 类中重写该方法。
 
+### 自定义导入作业批次名称
+
+默认情况下，导入系统不会为作业批次定义任何名称。如果你像自定义特定导入器(importer)的作业批次名称，可以在导入器中(importer)重写 `getJobBatchName()` 方法：
+
+```php
+public function getJobBatchName(): ?string
+{
+    return 'product-import';
+}
+```
+
 ## 自定义导入验证消息
 
 导入系统将在导入前自动验证 CSV 文件。如果有任何错误，会向用户展示错误列表，并且不会处理该导入。如果你想重写默认的验证消息，你可以重写 importer 类的 `getValidationMessages()` 方法：
@@ -708,3 +728,30 @@ class ProductImporter extends Importer
 在钩子中，你可以使用 `$this->data` 访问当前行数据。使用 `$this->originalData`，你也可以在[强制转换](#强制转换状态)或者映射之前访问来自 CSV 的原始行数据，
 
 当前记录(如果已经存在)可以使用 `$this->record` 访问，并且可以使用 `$this->options` 访问[导入表单选项](#使用导入选项)。
+
+## 授权
+
+默认情况下，只有开启导入的用户可以访问才能访问在部分导入失败时生成的失败 CSV 文件。如果你像自定义授权逻辑，可以创建 `ImportPolicy` 类，并且在 [`AuthServiceProvider` 中注册它](https://laravel.com/docs/10.x/authorization#registering-policies)：
+
+```php
+use App\Policies\ImportPolicy;
+use Filament\Actions\Imports\Models\Import;
+
+protected $policies = [
+    Import::class => ImportPolicy::class,
+];
+```
+
+该策略的 `view()` 用于授权访问导入失败的 CSV 文件。
+
+请注意，如果你定义了策略，现有的逻辑(即只有开启导入的用户可以访问失败的 CSV 文件)将被移除。如果你要保留该逻辑，你需要将其添加到策略中：
+
+```php
+use App\Models\User;
+use Filament\Actions\Imports\Models\Import;
+
+public function view(User $user, Import $import): bool
+{
+    return $import->user()->is($user);
+}
+```

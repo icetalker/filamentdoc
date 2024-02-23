@@ -46,6 +46,32 @@ php artisan make:filament-user
 
 Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/3.x/forms/installation)、[表格构造器](/docs/zh-CN/3.x/tables/installation)、[通知生成器](/docs/zh-CN/3.x/notifications/installation)、[Action](/docs/zh-CN/3.x/actions/installation)、[信息列表](/docs/zh-CN/3.x/infolists/installation)及 [Widget](/docs/zh-CN/3.x/widgets/installation) 包。因此在面板中无需再行安装就能使用。
 
+## 改善 Filament 面板性能
+
+### 缓存 Blade 图标
+
+你可以考虑在本地及部署脚本中运行 `php artisan icons:cache`。这是因为 Filament 使用了 [Blade Icons](https://blade-ui-kit.com/blade-icons) 包，它在缓存时有更好的性能。
+
+### 缓存 Filament 组件
+
+你也可以考虑在部署脚本中运行 `php artisan filament:cache-componengs`，特别是当你有大量组件(资源、页面、Widgets、关联管理器、自定义 Livewire 组件等)时。这将在应用的 `bootstrap/cache/filament` 目录中生成缓存文件，其中包含每个组件类型的索引。这在某些应用中可以显著提升 Filament 的性能，因为它减少了需要扫描的文件数量并且自动发现组件。
+
+不过，如果你在本地开发应用，应该避免使用该命令，因为它在清除或者重新缓存之前，将会阻止你发现新组件。
+
+你可以运行 `php artisan filament:clear-cached-components` 在任何时候清理缓存而不重新生成缓存。
+
+### 在服务器中启用 OPcache
+
+来自于 [Laravel Forge 文档](https://forge.laravel.com/docs/servers/php.html#opcache):
+
+> 优化生产环境中的 PHP OPcache，将编译过的 PHP 代码保存在内存中是对性能的极大提升。
+
+请使用搜索引擎去检索相关的 Opcache 安装指南。
+
+### 优化 Laravel 应用
+
+你也可以考虑在部署脚本中运行 `php artisan optimize`。这将会缓存配置和路由。
+
 ## 部署到生成环境
 
 ### 允许用户访问面板

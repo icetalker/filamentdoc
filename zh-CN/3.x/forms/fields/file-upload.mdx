@@ -340,6 +340,8 @@ FileUpload::make('attachment')
 
 表单提交后，会返回临时文件上传对象，而不是持久化的文件存储路径。这非常适合像导入的 CSV 这样的临时文件。
 
+请注意，图片、视频和音频文件不会再表单预览中展示存储的文件名，除非你使用了 [`previewable(false)`](#预览文件)。这是因为 FilePond 预览插件的限制。
+
 ## 根据 EXIF 数据确定图像的方向
 
 默认情况下，FilePond 会根据 EXIF 数据自动确定图片方向。使用 `orientImagesFromExif(false)` 方法，你可以禁用该行为：
