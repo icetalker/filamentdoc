@@ -715,7 +715,7 @@ protected static bool $isScopedToTenant = true;
 
 接下来是 Filament 当前不提供的一些特性：
 
-- 将关系管理器记录的查询范围限定到当前租户。在使用关系管理器时，在绝大多数情况下，查询的范围不需要限定为当前租户，因为它已经在父记录中的限定了查询范围，而父记录本身的查询范围是当前租户。例如，如果 `team` 租户模型有一个 `Author` 资源，并且该资源设置了 `posts` 关联和关系管理器，并且帖子(Post)只属于一个作者(Author)，则无需确定查询范围。这是因为用户无论如何都只能看到属于当前团队(team)的作者(Author)，因此只能看到属于这些作者的帖子。如有需要，你可以[设置 Eloquent 查询范围](resources/relation-managers#customizing-the-relation-manager-eloquent-query)。
+- 将关系管理器记录的查询范围限定到当前租户。在使用关系管理器时，在绝大多数情况下，查询的范围不需要限定为当前租户，因为它已经在父记录中的限定了查询范围，而父记录本身的查询范围是当前租户。例如，如果 `team` 租户模型有一个 `Author` 资源，并且该资源设置了 `posts` 关联和关系管理器，并且帖子(Post)只属于一个作者(Author)，则无需确定查询范围。这是因为用户无论如何都只能看到属于当前团队(team)的作者(Author)，因此只能看到属于这些作者的帖子。如有需要，你可以[设置 Eloquent 查询范围](resources/relation-managers#自定义关联管理器-eloquent-查询)。
 
 - 表单组件及过滤器范围。当使用 `Select`、`CheckboxList` 或者 `Repeater` 表单组件，亦或者 `SelectFilter` 或者其他类似的能够自动获取"选项"或数据库数据(通常使用 `relationship()` 方法获取)的 Filament 组件时，这个数据没有限定查询范围。主要原因是，这些功能通常不属于 Filament 面板构建包，它无从得知在那个上下文中的使用及租户的存在。即便它能访问租户，也无从配置租户关联。要限定这些组件的查询范围，你需要传递一个查询范围限定为当前用户的查询函数。比如，如果你使用 `Select` 表单组件从关联中选择 `author`，你可以这样做：
 

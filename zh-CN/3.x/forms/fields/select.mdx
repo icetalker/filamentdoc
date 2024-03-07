@@ -198,11 +198,11 @@ Select::make('author_id')
     ->preload()
 ```
 
-### Excluding the current record
+### 排除当前记
 
-When working with recursive relationships, you will likely want to remove the current record from the set of results.
+当使用递归关联时，你可能希望从结果集中移除当前记录。
 
-This can be easily be done using the `ignoreRecord` argument:
+可以使用 `ignoreRecord` 参数实现该功能：
 
 ```php
 use Filament\Forms\Components\Select;

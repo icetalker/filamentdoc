@@ -9,11 +9,11 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 使用共同的属性，你可以允许用户将表格行分组到一起。这对于以更有组织的方式显示大量数据非常有用。
 
-可以使用要分组的属性名称(例如 `status`)或允许您自定义该分组行为的 `Group` 对象(例如 `Group::make('status')->collapsable()`)来设置分组。
+可以使用要分组的属性名称(例如 `status`)或允许你自定义该分组行为的 `Group` 对象(例如 `Group::make('status')->collapsable()`)来设置分组。
 
 ## 默认行分组
 
-您可能希望始终使用指定属性对文章进行分组。要执行此操作，请将该分组传递给 `defaultGroup()` 方法：
+你可能希望始终使用指定属性对文章进行分组。要执行此操作，请将该分组传递给 `defaultGroup()` 方法：
 
 ```php
 use Filament\Tables\Table;
@@ -188,7 +188,7 @@ public function table(Table $table): Table
 
 ## 可折叠分组
 
-您可以允许分组的行折叠在其分组标题下。要启用此功能，请在 `Group` 对象中使用 `collapsable()` 方法：
+你可以允许分组的行折叠在其分组标题下。要启用此功能，请在 `Group` 对象中使用 `collapsable()` 方法：
 
 ```php
 use Filament\Tables\Grouping\Group;
@@ -206,7 +206,7 @@ public function table(Table $table): Table
 
 ## 分组汇总
 
-你可以对分组进行[汇总](summaries)，以在分组内展示记录的汇总。如果您选择将汇总表添加到分组表中的列中，则此操作会自动生效。
+你可以对分组进行[汇总](summaries)，以在分组内展示记录的汇总。如果你选择将汇总表添加到分组表中的列中，则此操作会自动生效。
 
 ### 隐藏分组行并且只显示汇总
 

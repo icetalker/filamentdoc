@@ -107,9 +107,9 @@ FileUpload::make('attachments')
 
 `attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [cast] 添加到该 Eloquent 模型属性中。
 
-## Avatar mode
+## 头像模式
 
-You can enable avatar mode for your file upload field using the `avatar()` method:
+使用 `avatar()` 方法，你可以为上传文件启用头像模式：
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -118,9 +118,9 @@ FileUpload::make('avatar')
     ->avatar()
 ```
 
-This will only allow images to be uploaded, and when they are, it will display them in a compact circle layout that is perfect for avatars.
+这只允许上传图片，并且在上传后它将会在一个紧凑的圆中展示图片，这很适合于头像。
 
-This feature pairs well with the [circle cropper](#allowing-users-to-crop-images-as-a-circle).
+该特性与[圆形裁切](#允许用户将图片裁切成圆)是绝佳匹配。
 
 ## 图片编辑器
 
@@ -209,9 +209,9 @@ FileUpload::make('image')
     ->imageEditorViewportHeight('1080')
 ```
 
-### Allowing users to crop images as a circle
+### 允许用户将图片裁切成圆
 
-You can allow users to crop images as a circle using the `circleCropper()` method:
+使用 `circleCropper()` 方法，可以允许用户将图片裁切成圆：
 
 ```php
 use Filament\Forms\Components\FileUpload;
@@ -223,7 +223,7 @@ FileUpload::make('image')
     ->circleCropper()
 ```
 
-This is perfectly accompanied by the [`avatar()` method](#avatar-mode), which renders the images in a compact circle layout.
+这与 [`avatar()` 方法](#头像模式)完美结合，其以紧凑的圆形布局渲染图像。
 
 ### 不使用编辑器裁切和调整图标大小
 

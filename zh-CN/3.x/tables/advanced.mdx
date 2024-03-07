@@ -99,7 +99,7 @@ protected function paginateTableQuery(Builder $query): Paginator
 
 重写 `paginateTableQuery()` 方法，你可以使用 cursor 分页：
 
-首先，找到Livewire组件。如果您使用的是面板构造器中的资源，并且希望向 List 页面添加简单的分页，则需要打开资源中的`Pages/List.php` 文件，而不是资源类本身。
+首先，找到Livewire组件。如果你使用的是面板构造器中的资源，并且希望向 List 页面添加简单的分页，则需要打开资源中的 `Pages/List.php` 文件，而不是资源类本身。
 
 ```php
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -312,7 +312,7 @@ Scout 内部使用 `whereIn()` 方法来检索结果，因此使用该方法不�
 
 `applyColumnSearchesToTableQuery()` 方法确保搜索各个列仍然有效。如果你想使用 Scout 进行搜索输入，你可以用你自己的实现来代替这个方法。
 
-要显示全局搜索输入，表中至少有一列需要是 `searchable()` 可搜索的。或者，如果您使用 Scout 来控制哪些列已经可以搜索，您可以简单地将 `searchable()` 传递给整个表：
+要显示全局搜索输入，表中至少有一列需要是 `searchable()` 可搜索的。或者，如果你使用 Scout 来控制哪些列已经可以搜索，你可以简单地将 `searchable()` 传递给整个表：
 
 
 ```php

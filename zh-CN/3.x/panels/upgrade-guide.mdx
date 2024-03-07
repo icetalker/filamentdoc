@@ -26,11 +26,11 @@ composer require filament/upgrade:"^3.2" -W --dev
 vendor/bin/filament-v3
 ```
 
-请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，但脚本应该已经为您处理了大部分重复工作。
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，你可能需要对代码进行一些手动更改，但脚本应该已经为你处理了大部分重复工作。
 
 此时，创建了一个新文件 `app/Providers/Filament/*PanelProvider.php`，旧的 `config/filament.php` 配置文件中的配置项复制过去。由于新配置文件是 [Laravel 服务提供者](https://laravel.com/docs/providers)，需要将其注册到 `config/app.php` 中。Filament 回尝试为你进行注册，不过如果你访问面板出错了，那么可能这一个过程失败了。你可以将其添加到 `providers` 数组手动注册。
 
-最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
+最后，你必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
 
 然后，你可以运行 `composer remove filament/upgrade`，因为你不再需要它了。
 
@@ -54,7 +54,7 @@ php artisan filament:install --panels
 
 新文件 `app/Providers/Filament/AdminPanelProvider.php` 将被创建，然后就可以将旧的配置从 `config/filament.php` 文件中转移过去。由于新配置文件是 [Laravel 服务提供者](https://laravel.com/docs/providers)，需要将其注册到 `config/app.php` 中。Filament 回尝试为你进行注册，不过如果你访问面板出错了，那么可能这一个过程失败了。你可以将其添加到 `providers` 数组手动注册。
 
-大多数配置的转移都是不言自明的，但如果您遇到问题，请参阅[配置文档](configuration)。
+大多数配置的转移都是不言自明的，但如果你遇到问题，请参阅[配置文档](configuration)。
 
 最后，运行如下命令将旧的配置文件替换成新配置文件：
 

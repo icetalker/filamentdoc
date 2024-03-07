@@ -23,9 +23,9 @@ composer require filament/upgrade:"^3.2" -W --dev
 vendor/bin/filament-v3
 ```
 
-请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，您可能需要对代码进行一些手动更改，但脚本应该已经为您处理了大部分重复工作。
+请确保仔细按照说明进行操作，并查看脚本所做的更改。之后，你可能需要对代码进行一些手动更改，但脚本应该已经为你处理了大部分重复工作。
 
-最后，您必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
+最后，你必须运行 `php artisan filament:install` 来完成 Filament v3 的安装。所有新的 Filament 项目都必须运行此命令。
 
 然后，你可以运行 `composer remove filament/upgrade`，因为你不在需要它了。
 
@@ -39,7 +39,7 @@ vendor/bin/filament-v3
 
 #### 配置文件重命名并与其他 Filament 包合并
 
-现在所有的 Filament 包共有一个配置文件。大部分配置已经转移到代码库的其他位置，只留下了少数。在替换您修改过的配置选项时，应该使用 v3 文档作为参考。要发布新配置文件并删除旧配置文件，请运行：
+现在所有的 Filament 包共有一个配置文件。大部分配置已经转移到代码库的其他位置，只留下了少数。在替换你修改过的配置选项时，应该使用 v3 文档作为参考。要发布新配置文件并删除旧配置文件，请运行：
 
 ```bash
 php artisan vendor:publish --tag=filament-config --force
