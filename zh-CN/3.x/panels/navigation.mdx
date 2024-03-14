@@ -473,9 +473,36 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### 条件性隐藏用户菜单项
+
+你可以使用 `visible()` 和 `hidden()` 方法，来条件性地隐藏或显示用户菜单项。传递一个函数将延迟条件的评估，直到菜单被渲染：
+
+```php
+use App\Models\Payment;
+use Filament\Navigation\MenuItem;
+
+MenuItem::make()
+    ->label('Payments')
+    ->visible(fn (): bool => auth()->user()->can('viewAny', Payment::class))
+    // or
+    ->hidden(fn (): bool => ! auth()->user()->can('viewAny', Payment::class))
+```
+
+### 从用户菜单项发送一个 `POST` HTTP 请求
+
+通过将 URL 传递给 `postAction()` 方法，你可以从用户菜单项中发送一个 `POST` HTTP 请求：
+
+```php
+use Filament\Navigation\MenuItem;
+
+MenuItem::make()
+    ->label('Lock session')
+    ->postAction(fn (): string => route('lock-session'))
+```
+
 ## 禁用面包屑
 
-默认布局会显示面包屑，用来显示当前页面在应用层次结构中的位置。
+默认布局会显示面包屑，用来说明当前页面在应用层次结构中的位置。
 
 你可以在[配置](configuration)中禁用面包屑：
 

@@ -23,12 +23,13 @@ title: 安装
 
 ```bash
 composer require filament/filament:"^3.2" -W
+
 php artisan filament:install --panels
 ```
 
 这段命令将会创建并注册一个新的 [Laravel 服务提供者](https://laravel.com/docs/providers)，叫做 `app\Providers\Filament\AdminPanelProvider`.
 
-> 如果访问面板时出错，请检查该服务提供者有没有在 `config/app.php` 中注册。如果没有，你应该手动将其添加到 `providers` 数组中。
+> 如果访问面板时出错，请检查该服务提供者有没有在 `bootstrap/providers.php` (Laravel 11 及以上版本)或 `config/app.php` (Laravel 10 及以下版本) 中注册。如果没有，你应该手动添加。
 
 ## 创建用户
 

@@ -338,19 +338,6 @@ Action::make('updateAuthor')
     ->modalWidth(MaxWidth::FiveExtraLarge)
 ```
 
-## 条件性隐藏模态框
-
-你可能需要条件性展示模态框。请使用 `modalHidden()`：
-
-```php
-Action::make('create')
-    ->action(function (array $data): void {
-        // ...
-    })
-    ->modalHidden(fn (): bool => $this->role !== 'admin')
-    ->modalContent(view('filament.pages.actions.create'))
-```
-
 ## 模态框打开时执行代码
 
 使用 `mountUsing()` 方法，你可以在模态框打开时，在闭包中执行代码。
@@ -540,4 +527,28 @@ Action::make('updateAuthor')
 use Filament\Support\View\Components\Modal;
 
 Modal::closeButton(false);
+```
+
+## 优化模态框配置方法
+
+当你在模态框配置方法(比如 `modalHeading()`)中使用数据库查询或者其他大型操作时，其可以执行多次。这是因为 Filament 使用这些方法来决定是否渲染模态框，以及渲染模态框的内容。
+
+要跳过这个确定是否渲染模态框的检查，你可以使用 `modal()` 方法，该方法会告诉 Filament 该模态框存在该 Action 中，且不需要再次检查：
+
+```php
+Action::make('updateAuthor')
+    ->modal()
+```
+
+## 条件性隐藏模态框
+
+你可能需要条件性展示模态框。请使用 `modalHidden()`：
+
+```php
+Action::make('create')
+    ->action(function (array $data): void {
+        // ...
+    })
+    ->modalHidden(fn (): bool => $this->role !== 'admin')
+    ->modalContent(view('filament.pages.actions.create'))
 ```

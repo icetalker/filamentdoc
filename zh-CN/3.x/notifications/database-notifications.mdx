@@ -25,7 +25,7 @@ php artisan notifications:table
 
 <AutoScreenshot name="notifications/database" alt="Database notifications" version="3.x" />
 
-数据库通知会在模态框中渲染。要打开这一模态框，你必须在视图中有一个“触发”按钮。在应用中创建新的触发按钮组件，比如在 `/resources/views/notifications/database-notifications-trigger.blade.php` 文件中：
+数据库通知会在模态框中渲染。要打开这一模态框，你必须在视图中有一个“触发”按钮。在应用中创建新的触发按钮组件，比如在 `/resources/views/filament/notifications/database-notifications-trigger.blade.php` 文件中：
 
 ```blade
 <button type="button">
@@ -40,7 +40,7 @@ php artisan notifications:table
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
 
-DatabaseNotifications::trigger('filament-notifications.database-notifications-trigger');
+DatabaseNotifications::trigger('filament.notifications.database-notifications-trigger');
 ```
 
 然后，点击视图中渲染的触发按钮。一个包含数据库通知的模态框就会出现！

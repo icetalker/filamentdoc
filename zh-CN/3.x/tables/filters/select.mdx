@@ -102,3 +102,20 @@ SelectFilter::make('author')
     ->relationship('author', 'name')
     ->searchable()
 ```
+
+## 禁用占位符选择
+
+使用 `selectablePlaceholder()` 方法，你可以阻止占位符(null 选项)被选中：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->default('draft')
+    ->selectablePlaceholder(false)
+```

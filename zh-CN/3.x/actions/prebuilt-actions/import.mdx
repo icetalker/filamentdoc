@@ -51,6 +51,16 @@ public function table(Table $table): Table
 
 [需要创建 "importer" 类](#创建-importer)，告知 Filament 如何导入 CSV 的每一行。
 
+如果在某些地方有多个 `ImportAction`，你需要在 `make()` 方法中为每个 Action 都指定一个唯一的名称：
+
+```php
+ImportAction::make('importProducts')
+    ->importer(ProductImporter::class)
+
+ImportAction::make('importBrands')
+    ->importer(BrandImporter::class)
+```
+
 ## 创建 importer
 
 要为模型创建 importer 类，可以使用 `make:filament-importer` 命令，并传入模型名称：
@@ -68,8 +78,6 @@ php artisan make:filament-importer Product
 ```bash
 php artisan make:filament-importer Product --generate
 ```
-
-> If your table contains ENUM columns, the `doctrine/dbal` package we use is unable to scan your table and will crash. Hence, Filament is unable to generate the columns for your importer if it contains an ENUM column. Read more about this issue [here](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808).
 
 ## 定义 importer 字段
 
@@ -320,6 +328,18 @@ ImportColumn::make('sku')
     ->fillRecordUsing(function (Product $record, string $state): void {
         $record->sku = strtoupper($state);
     })
+```
+
+### 在导入字段下面添加帮助文本
+
+有时，你可能需要在验证之前提供额外的信息给用户，以便他们了解如何正确填写字段。你可以使用 `helperText()` 方法添加帮助文本，这些文本将在映射的下拉列表下方显示：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+ImportColumn::make('skus')
+    ->array(',')
+    ->helperText('A comma-separated list of SKUs.')
 ```
 
 ## 导入时更新现有记录

@@ -280,10 +280,12 @@ public static function getNavigationLabel(): string
 protected static ?string $navigationIcon = 'heroicon-o-user-group';
 ```
 
-此外，你可以在 `getNavigationIcon()` 方法椎间盘美国设置动态导航图标：
+此外，你可以在 `getNavigationIcon()` 方法中设置动态导航图标：
 
 ```php
-public static function getNavigationIcon(): ?string
+use Illuminate\Contracts\Support\Htmlable;
+
+public static function getNavigationIcon(): string | Htmlable | null
 {
     return 'heroicon-o-user-group';
 }
@@ -515,4 +517,3 @@ public static function getPages(): array
     ];
 }
 ```
-

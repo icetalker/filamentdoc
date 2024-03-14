@@ -84,8 +84,6 @@ php artisan make:filament-exporter Product
 php artisan make:filament-exporter Product --generate
 ```
 
-> 如果你的表格包含 ENUM 字段，`doctrine/dbal` 包无法扫描表格且会崩溃。因此，如果包含了 ENUM 字段，Filament 无法为你的导出器生成字段。更多该问题的详细信息可查看[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。
-
 ## 定义导出列
 
 要定义导出的列，你需要在导出器类中重写 `getColumns()` 方法，使之返回 `ExportColumn` 对象数组：
@@ -341,6 +339,24 @@ ExportAction::make()
     ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
 ```
 
+此外，你可以重写 Exporter 类的 `modifyQuery()` 方法，该方法将修改使用该 Exporter 的所有 Action 的查询构造器：
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+public static function modifyQuery(Builder $query): Builder
+{
+    return $query->with([
+        'purchasable' => fn (MorphTo $morphTo) => $morphTo->morphWith([
+            ProductPurchase::class => ['product'],
+            ServicePurchase::class => ['service'],
+            Subscription::class => ['plan'],
+        ]),
+    ]);
+}
+```
+
 ## 配置导出文件系统
 
 ### 自定义存储磁盘
@@ -508,6 +524,43 @@ public static function getCsvDelimiter(): string
 ```
 
 你只能指定单个字符，否则会抛出异常。
+
+## XLSX 单元格样式
+
+如果你想要指定 XLSX 文件的样式，你可以重写导出器类上 `getXlsxCellStyle()` 方法，使之返回一个 [OpenSpout `Style` 对象](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#styling)：
+
+```php
+use OpenSpout\Common\Entity\Style\Style;
+
+public function getXlsxCellStyle(): ?Style
+{
+    return (new Style())
+        ->setFontSize(12)
+        ->setFontName('Consolas');
+}
+```
+
+如果你只想为 XLSX 文件的标题单元格使用不同的样式，你可以重写导出器类上 `getXlsxHeaderCellStyle()` 方法，使之返回一个 [OpenSpout `Style` 对象](https://github.com/openspout/openspout/blob/4.x/docs/documentation.md#styling)：
+
+```php
+use OpenSpout\Common\Entity\Style\CellAlignment;
+use OpenSpout\Common\Entity\Style\CellVerticalAlignment;
+use OpenSpout\Common\Entity\Style\Color;
+use OpenSpout\Common\Entity\Style\Style;
+
+public function getXlsxHeaderCellStyle(): ?Style
+{
+    return (new Style())
+        ->setFontBold()
+        ->setFontItalic()
+        ->setFontSize(14)
+        ->setFontName('Consolas')
+        ->setFontColor(Color::rgb(255, 255, 77))
+        ->setBackgroundColor(Color::rgb(0, 0, 0))
+        ->setCellAlignment(CellAlignment::CENTER)
+        ->setCellVerticalAlignment(CellVerticalAlignment::CENTER);
+}
+```
 
 ## 自定义导出作业
 

@@ -86,17 +86,39 @@ TextColumn::make('created_at')
 
 ## 数字格式化
 
-`numeric()` 方法允许你使用 PHP 的 `number_format()` 将列格式化成数字：
+`numeric()` 方法允许你将列格式化成数字：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
 
 TextColumn::make('stock')
-    ->numeric(
-        decimalPlaces: 0,
-        decimalSeparator: '.',
-        thousandsSeparator: ',',
-    )
+    ->numeric()
+```
+
+如果你想自定义数字的精度用以格式化数字，你可以使用 `decimalPlaces` 参数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('stock')
+    ->numeric(decimalPlaces: 0)
+```
+
+默认情况下，应用的本地化会将用于格式化数字。如果你想自定义使用的本地化，可以将其传递给 `locale` 参数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('stock')
+    ->numeric(locale: 'nl')
+```
+
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法，用以设置整个应用的默认本地化：
+
+```php
+use Illuminate\Support\Number;
+
+Number::useLocale('nl');
 ```
 
 ## 货币格式化
@@ -110,13 +132,30 @@ TextColumn::make('price')
     ->money('EUR')
 ```
 
-此处 `money()` 还有一个 `divideBy` 参数，以允许你在格式化之前将原始值除以某个数字。这对在数据库中将价格存储为分(cent)非常有用，比如：
+`money()` 还有一个 `divideBy` 参数，以允许你在格式化之前将原始值除以某个数字。这对在数据库中将价格存储为分(cent)非常有用，比如：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
 
 TextColumn::make('price')
     ->money('EUR', divideBy: 100)
+```
+
+默认情况下，应用的本地化设置会将用于格式化数字。如果你想自定义使用的本地化设置，可以将其传递给 `locale` 参数：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('price')
+    ->money('EUR', locale: 'nl')
+```
+
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法，用以设置整个应用的默认本地化：
+
+```php
+use Illuminate\Support\Number;
+
+Number::useLocale('nl');
 ```
 
 ## 限制文本长度
@@ -265,6 +304,29 @@ use Filament\Tables\Columns\TextColumn;
 
 TextColumn::make('description')
     ->html()
+```
+
+如果你使用该方法，那么 HTML 将会在渲染之前被净化以移除任何潜在的不安全内容。如果你不想这样做，你可以将 HTML 包装在 `HtmlString` 对象中，将其格式化：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\HtmlString;
+
+TextColumn::make('description')
+    ->formatStateUsing(fn (string $state): HtmlString => new HtmlString($state))
+```
+
+或者，你也可以从 `formatStateUsing()` 方法返回一个 `view()` 对象，该对象也不会被清理：
+
+```php
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Contracts\View\View;
+
+TextColumn::make('description')
+    ->formatStateUsing(fn (string $state): View => view(
+        'filament.tables.columns.description-entry-content',
+        ['state' => $state],
+    ))
 ```
 
 ### 将 Markdown 渲染成 HTML
@@ -447,7 +509,7 @@ TextColumn::make('index')->state(
 
 `$rowLoop` 是 [Laravel Blade 的 `$loop` 对象](https://laravel.com/docs/blade#the-loop-variable)，因此你可以引用 `$loop` 的所有其他属性.
 
-你可以使用 `rowIndex()` 作为快捷方式： 
+你可以使用 `rowIndex()` 作为快捷方式：
 
 ```php
 use Filament\Tables\Columns\TextColumn;

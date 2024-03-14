@@ -60,17 +60,39 @@ TextEntry::make('created_at')
 
 ## 数字格式化
 
-`numeric()` 方法允许你使用 PHP 的 `number_format()` 将 Entry 格式化为数字：
+`numeric()` 方法允许你将 Entry 格式化为数字：
 
 ```php
 use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('stock')
-    ->numeric(
-        decimalPlaces: 0,
-        decimalSeparator: '.',
-        thousandsSeparator: ',',
-    )
+    ->numeric()
+```
+
+如果你想自定义用于格式化数字的小数位数，你可以使用 `decimalPlaces` 参数：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('stock')
+    ->numeric(decimalPlaces: 0)
+```
+
+默认情况下，你的应用的本地化语言将被用于格式化数字。如果你想要自定义本地化语言，你可以使用 `locale` 参数：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('stock')
+    ->numeric(locale: 'nl')
+```
+
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法设置整个应用默认的本地化语言：
+
+```php
+use Illuminate\Support\Number;
+
+Number::useLocale('nl');
 ```
 
 ## 货币格式化
@@ -91,6 +113,23 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('price')
     ->money('EUR', divideBy: 100)
+```
+
+默认情况下，应用的本地化语言将用于格式化金额，如果你想自定义使用的本地化语言，你可以将其传递给 `locale` 参数：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('price')
+    ->money('EUR', locale: 'nl')
+```
+
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法设置整个应用默认的本地化语言：
+
+```php
+use Illuminate\Support\Number;
+
+Number::useLocale('nl');
 ```
 
 ## 限制文本长度
@@ -220,6 +259,29 @@ use Filament\Infolists\Components\TextEntry;
 
 TextEntry::make('description')
     ->html()
+```
+
+如果你使用该方法，那么 HTML 将会在渲染之前被净化以移除任何潜在的不安全内容。如果你不想这样做，你可以将 HTML 包装在 `HtmlString` 对象中，将其格式化：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+use Illuminate\Support\HtmlString;
+
+TextEntry::make('description')
+    ->formatStateUsing(fn (string $state): HtmlString => new HtmlString($state))
+```
+
+或者，你也可以从 `formatStateUsing()` 方法返回一个 `view()` 对象，该对象不会被清理：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+use Illuminate\Contracts\View\View;
+
+TextEntry::make('description')
+    ->formatStateUsing(fn (string $state): View => view(
+        'filament.infolists.components.description-entry-content',
+        ['state' => $state],
+    ))
 ```
 
 ### 将 Markdown 渲染成 HTML

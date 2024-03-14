@@ -258,13 +258,27 @@ Select::make('author_id')
     ->searchable(['first_name', 'last_name'])
 ```
 
+### 保存中间数据到关联
+
+如果你使用了 `multiple()` 关联，并且你的中间表有额外的列，你可以使用 `pivotData()` 方法来指定要保存到它们之中的数据：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('primaryTechnologies')
+    ->relationship(name: 'technologies', titleAttribute: 'name')
+    ->multiple()
+    ->pivotData([
+        'is_primary' => true,
+    ])
+```
+
 ### 在模态框中创建新选项
 
 你可以自定义用于创建新记录的表单，并将其附加到 `BelongsTo` 关联中：
 
 ```php
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Model;
 
 Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'name')
@@ -283,13 +297,29 @@ Select::make('author_id')
 
 <AutoScreenshot name="forms/fields/select/create-option-modal" alt="Select with create option modal" version="3.x" />
 
+#### 自定义新选项创建
+
+你可以使用 `createOptionUsing()` 方法自定义新选项的创建过程，它应该返回新记录的主键：
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('author_id')
+    ->relationship(name: 'author', titleAttribute: 'name')
+    ->createOptionForm([
+       // ...
+    ])
+    ->createOptionUsing(function (array $data): int {
+        return auth()->user()->team->members()->create($data)->getKey();
+    }),
+```
+
 ### 模态框中编辑选中的选项
 
 你可以自定义一个表单，用于编辑选中的记录，并将其保存回 `BelongsTo` 关联：
 
 ```php
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Model;
 
 Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'name')

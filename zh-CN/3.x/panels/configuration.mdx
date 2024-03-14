@@ -32,7 +32,7 @@ php artisan make:filament-panel app
 
 该命令会创建一个名为"app"的新面板。同时生成一个新配置文件 `app/Providers/Filament/AppPanelProvider.php`。你可以在 `/app` 中访问该面板，不过如果你不想要该路径你也可以[自定义路径](#修改路径)。
 
-由于配置文件也是一个 [Laravel 服务提供者](https://laravel.com/docs/providers)，它需要在 `config/app.php` 中注册。Filament 会尝试为你完成此操作，不过如果你访问该面板时返回错误，那么可能是该操作失败。你可以将其添加到 `providers` 数组手动注册服务提供者。
+由于配置文件也是一个 [Laravel 服务提供者](https://laravel.com/docs/providers)，它需要在 `bootstrap/providers.php` (Laravel 11 和以上版本) 或 `config/app.php` (Laravel 10 和以下版本)中注册。Filament 会尝试为你完成此操作，不过如果你访问该面板时返回错误，那么可能是该操作失败。
 
 ## 修改路径
 
@@ -70,6 +70,7 @@ Filament 允许你在应用布局中的不同点渲染 Blade 模板内容。这�
 
 ```php
 use Filament\Panel;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 
 public function panel(Panel $panel): Panel
@@ -77,7 +78,7 @@ public function panel(Panel $panel): Panel
     return $panel
         // ...
         ->renderHook(
-            'panels::body.start',
+            PanelsRenderHook::BODY_START,
             fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
         );
 }
@@ -148,6 +149,44 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### 为特定 URL 禁用 SPA 导航
+
+默认情况下，当启用 SPA 模式时，任何与当前请求同域的 URL 都会使用 Livewire 的 [`wire:navigate`](https://livewire.laravel.com/docs/navigate) 特性进行导航。如果你希望为特定 URL 禁用 SPA 导航，请使用 `spaUrlExceptions()` 方法：
+
+```php
+use App\Filament\Resources\PostResource;
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->spa()
+        ->spaUrlExceptions(fn (): array => [
+            url('/admin'),
+            PostResource::getUrl(),
+        ]);
+}
+```
+
+> 本例中，我们使用资源上的 [`getUrl()`](/resources/getting-started#为资源页生成-url) 来获取资源首页的 URL。不过该功能需要面板已经注册，而配置是在请求生命周期的早期运行，因此无法在此时运行。你可以使用函数来返回 URL，该函数将在面板注册后运行：
+
+这些 URL 需要与当前请求完全匹配，包括域名和协议。如果你希望使用通配符来匹配多个 URL，你可以使用一个星号 (`*`) 作为通配符字符：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->spa()
+        ->spaUrlExceptions([
+            '*/admin/posts/*',
+        ]);
+}
+```
+
 ## 未保存的修改提醒
 
 当用户视图离开页面时，你可以提醒用户页面上修改未保存。这适用于资源的[创建页](resources/creating-records)和[编辑页](resources/editing-records)，以及任何打开的 Action 模态框。要启用此功能，请使用 `unsavedChangesAlerts()` 方法：
@@ -164,6 +203,65 @@ public function panel(Panel $panel): Panel
 ```
 
 > 请注意：此特性不兼容 [SPA 模式](#spa-模式)。
+
+## 启用数据库事务
+
+默认情况下，Filament 不会将操作包装到数据库事务中，而用户需要测试以确保操作包装到事物中是安全的，才能启用事务。不过，你可以使用 `databaseTransactions()` 方法，一次性为所有操作启用数据库事务：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->databaseTransactions();
+}
+```
+
+对于任何你不想包装到事务的操作，你可以使用 `databaseTransactions(false)` 方法：
+
+```php
+CreateAction::make()
+    ->databaseTransactions(false)
+```
+
+而对于像[创建资源](resources/creating-records)和[编辑资源](resources/editing-records)这样的页面，你可以在页面类中将 `$hasDatabaseTransactions` 属性设置为 `false`：
+
+```php
+use Filament\Resources\Pages\CreateRecord;
+
+class CreatePost extends CreateRecord
+{
+    protected ?bool $hasDatabaseTransactions = false;
+    
+    // ...
+}
+```
+
+### 为特定操作和页面选择性启用数据库事务
+
+你可以为特定的操作和页面选择加入数据库事务，而不是到处启用数据库事务然后选择性退出。
+
+对于 Action，你可以使用 `databaseTransactions()` 方法:
+
+```php
+CreateAction::make()
+    ->databaseTransactions()
+```
+
+而对于像[创建资源](resources/creating-records)和[编辑资源](resources/editing-records)这样的页面，你可以在页面类中将 `$hasDatabaseTransactions` 属性设置为 `true`：
+
+```php
+use Filament\Resources\Pages\CreateRecord;
+
+class CreatePost extends CreateRecord
+{
+    protected ?bool $hasDatabaseTransactions = true;
+    
+    // ...
+}
+```
 
 ## 为面板注册资源
 

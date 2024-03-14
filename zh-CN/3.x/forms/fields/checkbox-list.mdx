@@ -233,6 +233,20 @@ CheckboxList::make('authors')
     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
 ```
 
+### 将中间表数据保存到关联
+
+如果你的中间表有额外的列，你可以使用 `pivotData()` 方法指定应该其中保存的数据：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('primaryTechnologies')
+    ->relationship(name: 'technologies', titleAttribute: 'name')
+    ->pivotData([
+        'is_primary' => true,
+    ])
+```
+
 ## 设置没有搜索结果的自定义消息
 
 使用可搜索的复选框列表时，你可能希望在没有找到搜索结果时显示一条自定义消息。为此，请使用 `noSearchResultsMessage()` 方法：
