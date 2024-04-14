@@ -82,11 +82,11 @@ SelectFilter::make('status')
 
 ### 在表格文本列中使用枚举标签
 
-如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasLabel` 接口展示枚举的标签，而采用非其原始值。
+如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中强制转换(cast)成枚举。Filament 将会自动使用 `HasLabel` 接口展示枚举的标签，而采用非其原始值。
 
 ### 在表格中使用枚举标签作为分组标题
 
-如果你在表格构造器中使用[分组](../tables/grouping)，且其在 Eloquent 模型中 cast 成了枚举。Filament 将会自动使用 `HasLabel` 接口展示枚举的标签，而采用非其原始值。这些标签会被展示成[每个分组的标题](../tables/grouping#设置分组标题)。
+如果你在表格构造器中使用[分组](../tables/grouping)，且其在 Eloquent 模型中强制转换(cast)成了枚举。Filament 将会自动使用 `HasLabel` 接口展示枚举的标签，而采用非其原始值。这些标签会被展示成[每个分组的标题](../tables/grouping#设置分组标题)。
 
 ### 在信息列表文本条目中使用枚举标签
 
@@ -120,11 +120,11 @@ enum Status: string implements HasColor
 
 ### 在表格文本列中使用枚举颜色
 
-如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口以其颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
+如果你使用了表格构造器的 [`TextColumn`](../tables/columns/text)，且其在 Eloquent 模型中强制转换(cast)成枚举。Filament 将会自动使用 `HasColor` 接口以其颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ### 在信息列表文本栏中使用枚举颜色
 
-如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中 cast 成枚举。Filament 将会自动使用 `HasColor` 接口按对应的颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
+如果你在信息列表中使用了 [`TextEntry`](../infolists/entries/text)，且其在 Eloquent 模型中强制转换(cast)成枚举。Filament 将会自动使用 `HasColor` 接口按对应的颜色展示枚举标签。如果该列使用 [`badge()`](../tables/columns/text#显示为徽章) 方法则效果最佳。
 
 ### 在表单切换按钮组(ToggleButtons)中使用枚举颜色
 

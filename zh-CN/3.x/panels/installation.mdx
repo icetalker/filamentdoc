@@ -55,7 +55,7 @@ Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/3.x/form
 
 ### 缓存 Filament 组件
 
-你也可以考虑在部署脚本中运行 `php artisan filament:cache-componengs`，特别是当你有大量组件(资源、页面、Widgets、关联管理器、自定义 Livewire 组件等)时。这将在应用的 `bootstrap/cache/filament` 目录中生成缓存文件，其中包含每个组件类型的索引。这在某些应用中可以显著提升 Filament 的性能，因为它减少了需要扫描的文件数量并且自动发现组件。
+你也可以考虑在部署脚本中运行 `php artisan filament:cache-components`，特别是当你有大量组件(资源、页面、Widgets、关联管理器、自定义 Livewire 组件等)时。这将在应用的 `bootstrap/cache/filament` 目录中生成缓存文件，其中包含每个组件类型的索引。这在某些应用中可以显著提升 Filament 的性能，因为它减少了需要扫描的文件数量并且自动发现组件。
 
 不过，如果你在本地开发应用，应该避免使用该命令，因为它在清除或者重新缓存之前，将会阻止你发现新组件。
 

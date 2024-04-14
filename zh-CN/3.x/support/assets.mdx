@@ -62,9 +62,9 @@ FilamentAsset::register([
 ]);
 ```
 
-本例中，我们使用 `__DIR__` 生成从当前文件到资源的相对路径。比如，如果你将这段代码添加到 `/app/Providers/AppServiceProvider.php`，那么 CSS 文件应该位于 `/resources/css/custom.css`。
+本例中，我们使用 `__DIR__` 生成从当前文件到资源的相对路径。比如，如果将这段代码添加到 `/app/Providers/AppServiceProvider.php`，那么 CSS 文件应该位于 `/resources/css/custom.css`。
 
-当运行 `php artisan filament:assets` 命令时，CSS 文件将被复制到 `/public` 目录中。此外，它也被加载到其他使用 Filament 的所有 Blade 视图中。如果你只希望在页面元素需要时，才加载这些 CSS，请查看[CSS懒加载](#css-懒加载)章节。
+当运行 `php artisan filament:assets` 命令时，CSS 文件将被复制到 `/public` 目录中。此外，它也被加载到其他使用 Filament 的所有 Blade 视图中。如果你只希望在页面元素需要时，才加载这些 CSS，请查看 [CSS 懒加载](#css-懒加载)章节。
 
 ### 在插件中使用 Tailwind CSS
 
@@ -85,11 +85,11 @@ export default {
 
 这意味着，当编译这些 Tailwind CSS 文件时，就会包含所有插件视图中用到的样式类，同时也包含应用及 Filament 核心中使用的类。
 
-不过，使用该技术，对于在[后台面板](../panels)中使用插件的用户，可能会额外的复杂度。如果他们使用的[自定义主题](../panels/theming)，由于他们最终都要编译自己的 CSS 文件，这倒没什么；但是，如果他们使用面板自带的默认样式，你需要留意你插件视图中使用的样式类。比如，如果你使用了一个默认样式表中没有包含的类，用户也没有自己编译，它就不会包含在最终的 CSS 文件中。这意味着你的插件视图可能不会如你期望的那样展示。这是我推荐在插件中编译及[注册](#注册-css-文件) Tailwind CSS 编译后样式表的情形之一。
+不过，使用该技术，对于在[后台面板](../panels/installation)中使用插件的用户，可能会额外的复杂度。如果他们使用的[自定义主题](../panels/theming)，由于他们最终都要编译自己的 CSS 文件，这倒没什么；但是，如果他们使用面板自带的默认样式，你需要留意你插件视图中使用的样式类。比如，如果你使用了一个默认样式表中没有包含的类，用户也没有自己编译，它就不会包含在最终的 CSS 文件中。这意味着你的插件视图可能不会如你期望的那样展示。这是我推荐在插件中编译及[注册](#注册-css-文件) Tailwind CSS 编译后样式表的情形之一。
 
 ### CSS 懒加载
 
-默认情况下，所有使用资源系统注册的 CSS 文件，在每个 Filament 页面的 `<head>` 中加载。这是加载 CSS 文件最简单的方式，不过有时候这些资源太大且不是每个页面都需要。这种情况下，你可以利用与 Filament 捆绑的 [Alpine.js 的懒加载资源](https://github.com/tanthammar/alpine-lazy-load-assets)。前提非常简单，您可以在元素上使用 `x-load-css` 指令，当该元素加载到页面上时，指定的css文件将加载到页面的 `<head>` 中。这非常适合需要 CSS 文件的小型 UI 元素和整个页面：
+默认情况下，所有使用资源系统注册的 CSS 文件，在每个 Filament 页面的 `<head>` 中加载。这是加载 CSS 文件最简单的方式，不过有时候这些资源太大且不是每个页面都需要。这种情况下，你可以利用与 Filament 捆绑的 [Alpine.js 的懒加载资源](https://github.com/tanthammar/alpine-lazy-load-assets)。前提非常简单，你可以在元素上使用 `x-load-css` 指令，当该元素加载到页面上时，指定的css文件将加载到页面的 `<head>` 中。这非常适合需要 CSS 文件的小型 UI 元素和整个页面：
 
 ```blade
 <div
@@ -171,11 +171,11 @@ FilamentAsset::register([
 
 本例中，我们使用 `__DIR__` 生成从当前文件到资源的相对路径。比如，如果你将这段代码添加到 `/app/Providers/AppServiceProvider.php`，那么 JavaScript 文件应该位于 `/resources/js/custom.js`。
 
-当运行 `php artisan filament:assets` 命令时，这个 JavaScript 文件将被复制到 `/public` 目录中。此外，它也被加载到其他使用 Filament 的所有 Blade 视图中。如果你只希望在页面元素需要时，才加载这些 JavaScript，请查阅[JavaScript懒加载](#javascript-懒加载)章节。
+当运行 `php artisan filament:assets` 命令时，这个 JavaScript 文件将被复制到 `/public` 目录中。此外，它也被加载到其他使用 Filament 的所有 Blade 视图中。如果你只希望在页面元素需要时，才加载这些 JavaScript，请查阅 [JavaScript 懒加载](#javascript-懒加载)章节。
 
 ### JavaScript 懒加载
 
-默认情况下，所有使用资源系统注册的 JavaScript 文件，在每个 Filament 页面的底部加载。这是加载 JavaScript 文件最简单的方式，不过有时候这些资源太大而且不是每个页面都需要引入。这种情况下，你可以利用与 Filament 捆绑的 [Alpine.js 的懒加载资源](https://github.com/tanthammar/alpine-lazy-load-assets)。前提非常简单，您可以在元素上使用 `x-load-js` 指令，当该元素加载到页面上时，指定的 JavaScript 文件将在页面底部加载。这非常适合需要 JavaScript 文件的小型 UI 元素和整个页面：
+默认情况下，所有使用资源系统注册的 JavaScript 文件，在每个 Filament 页面的底部加载。这是加载 JavaScript 文件最简单的方式，不过有时候这些资源太大而且不是每个页面都需要引入。这种情况下，你可以利用与 Filament 捆绑的 [Alpine.js 的懒加载资源](https://github.com/tanthammar/alpine-lazy-load-assets)。前提非常简单，你可以在元素上使用 `x-load-js` 指令，当该元素加载到页面上时，指定的 JavaScript 文件将在页面底部加载。这非常适合需要 JavaScript 文件的小型 UI 元素和整个页面：
 
 ```blade
 <div

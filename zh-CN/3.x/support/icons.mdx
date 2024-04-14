@@ -22,11 +22,11 @@ php artisan vendor:publish --tag=blade-icons
 
 然后打开 `config/blade-icons.php` 文件，并取消 `sets` 数组中 `default` 设置的注释。 
 
-既然默认设置存在于配置文件中，您只需将所需的任何图标放在应用程序的 `resources/svg` 目录中即可。比如，如果你将一个名为 `star.svg` 的 SVG 文件放到 `resources/svg` 目录下，你可用在 Filament 的任何地方以 `icon-star` 引用它。`icon-` 前缀也是在 `config/blade-icons.php` 文件中配置。你也可用在 Blade 视图中使用 [`@svg('icon-star')` 指令](https://github.com/blade-ui-kit/blade-icons#directive) 渲染这个自定义图标。
+既然默认设置存在于配置文件中，你只需将所需的任何图标放在应用的 `resources/svg` 目录中即可。比如，如果你将一个名为 `star.svg` 的 SVG 文件放到 `resources/svg` 目录下，你可以在 Filament 的任何地方以 `icon-star` 引用它。`icon-` 前缀也是在 `config/blade-icons.php` 文件中配置。你也可以在 Blade 视图中使用 [`@svg('icon-star')` 指令](https://github.com/blade-ui-kit/blade-icons#directive)渲染这个自定义图标。
 
 ## 替换默认图标
 
-Filament 包含一个图标管理系统，让你可用替换任何在你自己的 UI 中使用的默认图标。在服务提供者(比如 `AppServiceProvider`、或者图标专用的服务提供者)的 `boot()` 方法中实现。如果你想创建一个插件使用不同的图标集替换 Heroicon，你应该创建一个带有类似服务提供者的 Laravel 包实现。
+Filament 包含一个图标管理系统，让你可以替换任何在你自己的 UI 中使用的默认图标。在服务提供者(比如 `AppServiceProvider`、或者图标专用的服务提供者)的 `boot()` 方法中实现。如果你想创建一个插件使用不同的图标集替换 Heroicon，你应该创建一个带有类似服务提供者的 Laravel 包实现。
 
 替换图标可以使用 `FilamentIcon` 门面。它有个 `register()` 方法，接收一个图标数组用以替换。数组的键是唯一的[图标别名](#可用图标别名)，用以在 Filament UI 中识别该图标，值是要替换的 Blade 图标的名称。此外，你可以使用 HTML 替代图标名，在 Blade 视图中渲染图标：
 

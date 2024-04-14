@@ -10,7 +10,7 @@ Filament 会暴露所有模型属性给 Javascript，除非在模型中使用 `$
 
 > 由于属性在 Javascript 中可见，只有表单中的字段是用户可编辑的。因此对批量赋值而言，这不是个问题。
 
-要在编辑和查看页面中，从 Javascript 中移除特定属性，你可以重写[`mutateFromDataBeforeFill()` 方法](editing-records#填充表单前自定义数据):
+要在编辑和查看页面中，从 Javascript 中移除特定属性，你可以重写 [`mutateFromDataBeforeFill()` 方法](editing-records#填充表单前自定义数据):
 
 ```php
 protected function mutateFormDataBeforeFill(array $data): array

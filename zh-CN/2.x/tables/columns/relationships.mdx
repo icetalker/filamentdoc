@@ -24,7 +24,7 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_count')->counts('users')
 ```
 
-本例中，`users` 是要统计的模型关联的方法名。表格字段名必须是 `users_count`，因为这是[Laravel使用](https://laravel.com/docs/eloquent-relationships#counting-related-models)的用于存储这类结果的命名规范。
+本例中，`users` 是要统计的模型关联的方法名。表格字段名必须是 `users_count`，因为这是 [Laravel 使用](https://laravel.com/docs/eloquent-relationships#counting-related-models)的用于存储这类结果的命名规范。
 
 ## 查询关联是否存在
 
@@ -36,7 +36,7 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_exists')->exists('users')
 ```
 
-本例中，`users` 是模型关联的名字。表格字段名必须是 `users_exists`，因为这是[Laravel使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。
+本例中，`users` 是模型关联的名字。表格字段名必须是 `users_exists`，因为这是 [Laravel 使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。
 
 ## 聚合关联
 
@@ -48,4 +48,4 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('users_avg_age')->avg('users', 'age')
 ```
 
-本例中，`users` 是模型关联的名字，`age` 是需要被平均的字段名。表格字段名必须是 `users_avg_age`，因为这是[Laravel使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。
+本例中，`users` 是模型关联的名字，`age` 是需要被平均的字段名。表格字段名必须是 `users_avg_age`，因为这是 [Laravel 使用](https://laravel.com/docs/9.x/eloquent-relationships#other-aggregate-functions)的用于存储这类结果的命名规范。

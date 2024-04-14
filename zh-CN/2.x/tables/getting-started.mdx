@@ -154,7 +154,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
 
 ## 分页
 
-默认情况下，表格是分页的。要禁用此功能，你可以在Livewire组件上重写 `isTablePaginationEnabled()` 方法： 
+默认情况下，表格是分页的。要禁用此功能，你可以在 Livewire 组件上重写 `isTablePaginationEnabled()` 方法： 
 
 ```php
 <?php
@@ -238,7 +238,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
 }
 ```
 
-默认情况下，Livewire 将分页状态保存在URL查询字符串的 `page` 参数中。如果你在同一页面有多张表格，这就会导致一张表格的分页状态可能会被其他表格的分页状态所覆盖。
+默认情况下，Livewire 将分页状态保存在 URL 查询字符串的 `page` 参数中。如果你在同一页面有多张表格，这就会导致一张表格的分页状态可能会被其他表格的分页状态所覆盖。
 
 要解决这一问题，你可以在组件上定义 `getTableQueryStringIdentifier()`，为该表格返回唯一查询字符串标识符：
 
@@ -313,11 +313,11 @@ protected function getTableRecordUrlUsing(): Closure
 
 本例中，点击每个post都会转到 `posts.edit` 路由。
 
-如果你要为一个特定的字段[重写URL](columns/getting-started#打开URL)，或者在点击字段时[运行Livewire操作](columns#执行操作)，请查看[表格字段文档](columns#打开URL)。
+如果你要为一个特定的字段[重写URL](columns/getting-started#打开-url)，或者在点击字段时[运行 Livewire 操作](columns#执行操作)，请查看[表格字段文档](columns#打开-url)。
 
-### 记录 action
+### 记录 Action
 
-另外，你也可以配置表格行，用以触发action，替代打开URL:
+另外，你也可以配置表格行，用以触发 Action，替代打开 URL:
 
 ```php
 use Closure;
@@ -467,7 +467,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
 
 ## 查询字符串
 
-Livewire 使用了一个在 UR L查询字符串中存储数据的特性，用来获取跨请求数据。
+Livewire 使用了一个在 URL 查询字符串中存储数据的特性，用来获取跨请求数据。
 
 对应于 Filament，此特性让你可以在 URL 中存储表格过滤器、排序、搜索和分页状态。
 

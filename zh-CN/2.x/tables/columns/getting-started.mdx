@@ -126,7 +126,7 @@ protected function getDefaultTableSortDirection(): ?string
 
 ### 在 session 中持久化排序
 
-要将排序持久化到用户的session中，请在 Livwire 组件上重写 `shouldPersistTableSortInSession()` 方法：
+要将排序持久化到用户的 session 中，请在 Livwire 组件上重写 `shouldPersistTableSortInSession()` 方法：
 
 ```php
 protected function shouldPersistTableSortInSession(): bool
@@ -196,9 +196,9 @@ protected $queryString = [
 ];
 ```
 
-### 在Session中持久化搜索
+### 在 Session 中持久化搜索
 
-要在用户Session中持久化表格或单列搜索，可以在Livewire组件中重写 `shouldPersistTableSearchInSession()` 或 `shouldPersistTableColumnSearchInSession()` 方法：
+要在用户 Session 中持久化表格或单列搜索，可以在 Livewire 组件中重写 `shouldPersistTableSearchInSession()` 或 `shouldPersistTableColumnSearchInSession()` 方法：
 
 ```php
 protected function shouldPersistTableSearchInSession(): bool
@@ -212,7 +212,7 @@ protected function shouldPersistTableColumnSearchInSession(): bool
 }
 ```
 
-## 单元格操作及URL
+## 单元格操作及 URL
 
 当点击单元格时，你可以执行一个"操作(action)"，或者打开一个网址。
 
@@ -251,11 +251,11 @@ TextColumn::make('title')
     )
 ```
 
-传入 `action()` 方法的 Action 对象名称必须是唯一的，用来与表格中的其他Action操作进行区分。 
+传入 `action()` 方法的 Action 对象名称必须是唯一的，用来与表格中的其他 Action 操作进行区分。 
 
-### 打开URL
+### 打开 URL
 
-你可以使用 `url()` 方法并传入一个回调函数或者静态URL作为参数来打开URL。回调函数接收一个 `$record` 参数可用于自定义URL：
+你可以使用 `url()` 方法并传入一个回调函数或者静态 URL 作为参数来打开 URL。回调函数接收一个 `$record` 参数可用于自定义 URL：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -264,7 +264,7 @@ TextColumn::make('title')
     ->url(fn (Post $record): string => route('posts.edit', ['post' => $record]))
 ```
 
-你可以选择在新的标签页中打开URL：
+你可以选择在新的标签页中打开 URL：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -329,9 +329,9 @@ Tables\Columns\TextColumn::make('amount_including_vat')
 
 ## Tooltips
 
-> 如果你想要在后面面板之外使用tooltips提示，请先在应用中[安装`@ryangjchandler/alpine-tooltip`](https://github.com/ryangjchandler/alpine-tooltip#installation)，引入[`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。如果你使用[自定义后台主题](/docs/zh-CN/2.x/admin/appearance#创建主题)，你也需要安装[`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。
+> 如果你想要在后面面板之外使用 tooltips 提示，请先在应用中[安装 `@ryangjchandler/alpine-tooltip`](https://github.com/ryangjchandler/alpine-tooltip#installation)，引入 [`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。如果你使用[自定义后台主题](/docs/zh-CN/2.x/admin/appearance#创建主题)，你也需要安装 [`tippy.css`](https://atomiks.github.io/tippyjs/v6/getting-started/#1-package-manager)。
 
-当你悬浮在单元格时，你可以自定义要显示的tooltip提示:
+当你悬浮在单元格时，你可以自定义要显示的 tooltip 提示:
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -352,7 +352,7 @@ TextColumn::make('title')
 
 ## 自定义属性
 
-传入数组到 `extraAttributes()` 中，可以自定义表格字段的HTML：
+传入数组到 `extraAttributes()` 中，可以自定义表格字段的 HTML：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -360,11 +360,11 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('slug')->extraAttributes(['class' => 'bg-gray-200'])
 ```
 
-这些属性会被并入到该字段每个单元格的外层`<div>`元素中。
+这些属性会被并入到该字段每个单元格的外层 `<div>` 元素中。
 
 ## 全局设置
 
-如果你想要全局地调整所有字段的默认行为，你可以在服务提供者的 `boot()` 方法里面调用静态 `configureUsing()` 方法，传入一个闭包作为参数来修改表格字段。比如，你希望所有的字段都是可排序的 [`sortable()`](#排序) 和 可切换的[`toggleable()`](#切换表格字段可见度)，你可以这样做
+如果你想要全局地调整所有字段的默认行为，你可以在服务提供者的 `boot()` 方法里面调用静态 `configureUsing()` 方法，传入一个闭包作为参数来修改表格字段。比如，你希望所有的字段都是可排序的 [`sortable()`](#排序) 和 可切换的 [`toggleable()`](#切换表格字段可见度)，你可以这样做
 
 ```php
 use Filament\Tables\Columns\Column;

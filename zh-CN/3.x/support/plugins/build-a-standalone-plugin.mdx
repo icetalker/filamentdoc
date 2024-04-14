@@ -16,7 +16,7 @@ title: 开发独立插件
 
 ## 步骤 1: 创建插件
 
-首先，我们将使用[开始向导](/docs/zh-CN/3.x/support/plugins/getting-started#creating-a-plugin)中提到的步骤创建插件。
+首先，我们将使用[开始向导](/docs/zh-CN/3.x/support/plugins/getting-started#创建插件)中提到的步骤创建插件。
 
 ## 步骤 2: 清理
 
@@ -50,7 +50,7 @@ title: 开发独立插件
 },
 ```
 
-通常，Filament v3 建议用户使用自定义的 Filament 主题来设计插件的样式，但为了示例，让我们提供自己的样式表，该样式表可以使用 Filament v3 中的新 `x-load` 功能异步加载。因此，让我们更新 `package.json` 文件，引入cssnano、postpass、postpass-cli 和 postpass-nesting，从而构建样式表。
+通常，Filament v3 建议用户使用自定义的 Filament 主题来设计插件的样式，但为了示例，让我们提供自己的样式表，该样式表可以使用 Filament v3 中的新 `x-load` 功能异步加载。因此，让我们更新 `package.json` 文件，引入 cssnano、postpass、postpass-cli 和 postpass-nesting，从而构建样式表。
 
 ```json
 {
@@ -228,7 +228,7 @@ class Heading extends Component
 
 ## 步骤 6: 添加一些样式
 
-接下来，让我们为我们的字段提供一些自定义样式。我们将以下内容添加到 `resources/css/index.css` 中。然后运行`npm-run-build` 来编译我们的 css。
+接下来，让我们为我们的字段提供一些自定义样式。我们将以下内容添加到 `resources/css/index.css` 中。然后运行 `npm run build` 来编译我们的 css。
 
 ```css
 .headings-component {

@@ -36,7 +36,7 @@ TextColumn::make('title')
 
 ## 日期格式
 
-你可以使用 `date()` 和 `dateTime()` 方法，对使用[PHP日期格式串](https://www.php.net/manual/en/datetime.format.php)的值进行格式化:
+你可以使用 `date()` 和 `dateTime()` 方法，对使用 [PHP 日期格式串](https://www.php.net/manual/en/datetime.format.php)的值进行格式化:
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -54,7 +54,7 @@ TextColumn::make('created_at')->since()
 
 ## 货币格式
 
-`money()` 方法让你快速格式化以任何货币格式化金额。此功能内部使用[`akaunting/laravel-money`](https://github.com/akaunting/laravel-money)实现：
+`money()` 方法让你快速格式化以任何货币格式化金额。此功能内部使用 [`akaunting/laravel-money`](https://github.com/akaunting/laravel-money) 实现：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -93,7 +93,7 @@ TextColumn::make('description')
 
 ## 限制字数
 
-你可以使用 words() 限制单元格字数：
+你可以使用 `words()` 限制单元格字数：
 
 ```php
 use Filament\Tables\Columns\TextColumn;
@@ -111,7 +111,7 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('description')->wrap()
 ```
 
-## 渲染HTML
+## 渲染 HTML
 
 如果字段值是 HTML，可以使用 `html()` 方法渲染:
 
@@ -121,7 +121,7 @@ use Filament\Tables\Columns\TextColumn;
 TextColumn::make('description')->html()
 ```
 
-## Enum格式
+## Enum 格式
 
 你可以使用 `enum()` 方法将一套已知的单元格值进行转换：
 
@@ -231,7 +231,7 @@ TextColumn::make('title')
 
 ## 自定义字体粗细
 
-文本字段字体粗细默认是常规字体。不过你可以改为如下选项: `thin`, `extralight`, `light`, `medium`, `semibold`, `bold`, `extrabold` or `black`。
+文本字段字体粗细默认是常规字体。不过你可以改为如下选项: `thin`、`extralight`、`light`、`medium`、`semibold`、`bold`、`extrabold` 或 `black`。
 
 比如，你可以使用 `weight('bold')` 改为粗体：
 
@@ -244,7 +244,7 @@ TextColumn::make('email')
 
 ## 自定义字体类型
 
-你可以将字体类型修改为如下选项：`sans`、 `serif` 或 `mono`。
+你可以将字体类型修改为如下选项：`sans`、`serif` 或 `mono`。
 
 比如，你可以使用 `fontFamily('mono')` 将字体设置为 mono：
 
@@ -257,7 +257,7 @@ TextColumn::make('text')
 
 ## 允许将文本复制到剪切板
 
-你可以将文本设为可复制，这样点击单元格可将文本复制到剪切板，并可以选择指定自定义确认消息和持续时间（以毫秒为单位）。此功能仅在应用程序启用SSL时有效。
+你可以将文本设为可复制，这样点击单元格可将文本复制到剪切板，并可以选择指定自定义确认消息和持续时间(以毫秒为单位)。此功能仅在应用程序启用 SSL 时有效。
 
 ```php
 use Filament\Tables\Columns\TextColumn;

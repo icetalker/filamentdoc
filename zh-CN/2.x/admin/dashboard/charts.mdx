@@ -19,7 +19,7 @@ php artisan make:filament-widget BlogPostsChart --chart
 
 `getHeading()` 方法用来返回图表的标题。
 
-`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集都是一个标签化数组用来绘制图表的point，标签为字符串。Filament 用来渲染图表的这种数据结构，与[Chart.js](https://www.chartjs.org/docs)图表库是一致的。你可以借助[Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
+`getData()` 方法用于返回一个包含数据集和标签的数组。每个数据集都是一个标签化数组用来绘制图表的 point，标签为字符串。Filament 用来渲染图表的这种数据结构，与 [Chart.js](https://www.chartjs.org/docs)图表库是一致的。你可以借助 [Chart.js 文档](https://www.chartjs.org/docs)去了解 `getData()` 方法基于图表类型可能的返回值。
 
 ```php
 <?php
@@ -54,20 +54,20 @@ class BlogPostsChart extends LineChartWidget
 
 ## 可用图表类型
 
-以下是你可以继承的图表插件类清单，以及他们对应的[Chart.js](https://www.chartjs.org/docs)文档页面，从中你可以知晓 `getData()` 应该怎么返回哪些值。
+以下是你可以继承的图表插件类清单，以及他们对应的 [Chart.js](https://www.chartjs.org/docs)文档页面，从中你可以知晓 `getData()` 应该怎么返回哪些值。
 
-- `Filament\Widgets\BarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bar)
-- `Filament\Widgets\BubbleChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/bubble)
-- `Filament\Widgets\DoughnutChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\LineChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/line)
-- `Filament\Widgets\PieChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/doughnut)
-- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/polar)
+- `Filament\Widgets\BarChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/bar)
+- `Filament\Widgets\BubbleChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/bubble)
+- `Filament\Widgets\DoughnutChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\LineChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/line)
+- `Filament\Widgets\PieChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- `Filament\Widgets\PolarAreaChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/polar)
 - `Filament\Widgets\RadarChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/radar)
-- `Filament\Widgets\ScatterChartWidget` - [Chart.js文档](https://www.chartjs.org/docs/latest/charts/scatter)
+- `Filament\Widgets\ScatterChartWidget` - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/scatter)
 
 ## 从 Eloquent 模型中生成图表数据
 
-要想从 Eloquent 模型中生成数据，Filament 推荐你安装 `flowframe/laravel-trend` 包。查看文档请到[Flowframe 网站](https://docs.flowfra.me/docs/laravel-trend/installation-and-setup)。
+要想从 Eloquent 模型中生成数据，Filament 推荐你安装 `flowframe/laravel-trend` 包。查看文档请到 [Flowframe 网站](https://docs.flowfra.me/docs/laravel-trend/installation-and-setup)。
 
 以下是使用 `laravel-trend` 包生成图表数据的一个示例：
 

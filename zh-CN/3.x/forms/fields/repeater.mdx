@@ -30,7 +30,7 @@ Repeater::make('members')
 
 <AutoScreenshot name="forms/fields/repeater/simple" alt="Repeater" version="3.x" />
 
-建议将 repeater 数据存储在数据库的 `JSON` 字段中。此外，如果你使用了 Eloquent，请确保该对该字段进行 `array` cast。
+建议将 repeater 数据存储在数据库的 `JSON` 字段中。此外，如果你使用了 Eloquent，请确保该对该字段进行 `array` 强制转换(casts)。
 
 上例可以明显看出，组件 Schema 在组件的 `schema()` 方法中定义:
 
@@ -597,7 +597,7 @@ Repeater::make('members')
 
 ### 使用模态框确认 Repeater Action
 
-在 action 对象中使用 `requiresConfirmation()` 方法，你可以使用模态框确认 action。你可以使用所有[模态框自定义方法](../../actions/modals)来修改其内容和行为：
+在 Action 对象中使用 `requiresConfirmation()` 方法，你可以使用模态框确认 Action。你可以使用所有[模态框自定义方法](../../actions/modals)来修改其内容和行为：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -645,7 +645,7 @@ Repeater::make('members')
     ])
 ```
 
-本例中，$arguments['item']` 提供了当前 Repeater 项目的 ID。你可以在 Repeater 组件中使用 `getItemState()` 方法验证该 Repeater 项目中的数据。该方法返回该项目已验证的数据。如果数据无效，它会取消该操作并在表单中显示该项目的错误消息。
+本例中，`$arguments['item']` 提供了当前 Repeater 项目的 ID。你可以在 Repeater 组件中使用 `getItemState()` 方法验证该 Repeater 项目中的数据。该方法返回该项目已验证的数据。如果数据无效，它会取消该操作并在表单中显示该项目的错误消息。
 
 如果你想获取当前项目的原始数据，而不对其进行验证，你可以使用 `$component->getRawItemState($arguments['item'])`。
 

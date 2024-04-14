@@ -351,7 +351,7 @@ class EditPost extends Component implements Forms\Contracts\HasForms
 
 ### 注册模型类
 
-某些情况下，在表单提交之前模型实例不可用。比如，新建 post 的表单：在提交表单之前，post模型的实例不会被传到表单里。
+某些情况下，在表单提交之前模型实例不可用。比如，新建 post 的表单：在提交表单之前，post 模型的实例不会被传到表单里。
 
 你可以通过注册模型类代替，取得如前面注册模型的一些特性：
 
@@ -408,7 +408,7 @@ class CreatePost extends Component implements Forms\Contracts\HasForms
 
 有一些字段，如 `Select`、`Repeater`、`SpatieMediaLibraryFileUpload` 或 `SpatieTagsInput` 可以与模型关联交互。
 
-比如，`Select` 可用于添加多条记录到 `BelongstoMany` 关联模型中。当[注册模型](#注册模型)到表单或者组件时，这些关联字段也会[在调用 `getState()`时](#从表单获取数据) 自动被保存到关联的透视表中：
+比如，`Select` 可用于添加多条记录到 `BelongstoMany` 关联模型中。当[注册模型](#注册模型)到表单或者组件时，这些关联字段也会[在调用 `getState()` 时](#从表单获取数据) 自动被保存到关联的透视表中：
 
 ```php
 <?php
@@ -471,7 +471,7 @@ class EditPost extends Component implements Forms\Contracts\HasForms
 
 ### 手动保存关联字段
 
-某些情况下，在表单提交之前模型实例不可用。比如，在新建 post 的表单中，提交表单前post的实例不会被传到表单form里。这种情况下，你需要[传模型类](#注册模型类)代替，不过，关联字段就需要随后手动进行保存了。
+某些情况下，在表单提交之前模型实例不可用。比如，在新建 post 的表单中，提交表单前 post 的实例不会被传到表单 form 里。这种情况下，你需要[传模型类](#注册模型类)代替，不过，关联字段就需要随后手动进行保存了。
 
 这种情况下，你可以在实例创建后在表单上调用 `model()` 和 `saveRelationships()` 方法:
 

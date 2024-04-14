@@ -135,7 +135,7 @@ Card::make()->extraAttributes(['class' => 'bg-gray-50'])
 
 ### 全局设置
 
-如果你想要全局修改组件的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的卡片组件默认为[2列](#列数)，你可以这样做：
+如果你想要全局修改组件的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的卡片组件默认为 [2 列](#列数)，你可以这样做：
 
 ```php
 use Filament\Forms\Components\Card;
@@ -174,7 +174,7 @@ Fieldset::make('Metadata')
 
 此例中，`title`、`description` 和 `image` 会自动从 `metadata` 关联模型中加载，当表单提交时会被再次保存。如果 `metadata` 记录不存在，就自动生成。
 
-> 要启用这个功能，**你必须按照[关系型字段](getting-started#field-relationships)设置的指示**。如果你使用了[后台面板](/docs/zh-CN/2.X/admin)，可以跳过此步。
+> 要启用这个功能，**你必须按照[关系型字段](getting-started#field-relationships)设置的指示**。如果你使用了[后台面板](/docs/zh-CN/2.x/admin)，可以跳过此步。
 
 ## 网格
 
@@ -513,7 +513,7 @@ Placeholder::make('Label')
     ->content('Content, displayed underneath the label')
 ```
 
-你甚至可以在占位符中渲染HTML内容：
+你甚至可以在占位符中渲染 HTML 内容：
 
 ```php
 use Filament\Forms\Components\Placeholder;
@@ -550,7 +550,7 @@ Card::make()
 
 ## 行内标签
 
-你可以使用 inlineLabel() 方法，使表单标签和字段在各自列中相互对齐。这适用于所有组件，每个字段内部都会有一个行内标签。
+你可以使用 `inlineLabel()` 方法，使表单标签和字段在各自列中相互对齐。这适用于所有组件，每个字段内部都会有一个行内标签。
 
 ```php
 use Filament\Forms\Components\Card;
@@ -564,7 +564,7 @@ Card::make()
 
 ## 视图组件
 
-除了[创建自定义布局组件](#创建自定义布局组件)，你也可以在不用新建PHP类的情况下，新建视图组件。
+除了[创建自定义布局组件](#创建自定义布局组件)，你也可以在不用新建 PHP 类的情况下，新建视图组件。
 
 ```php
 use Filament\Forms\Components\View;

@@ -31,7 +31,7 @@ Filament 的网格(Grid)系统，允许你使用任何布局组件创建响应�
 
 我们希望为不同的临界点指定不同的数字，因此我们将一个数组传递给 `columns()`。在比 `sm` [Tailwind 临界点](https://tailwindcss.com/docs/responsive-design#overview)更小的设备中，我们只想拥有 1 个 column，按默认即可。大于 `sm` 临界点的设备，我们希望拥有 3 columns。对于大于 `xl` 临界点的设备，我们希望它拥有 6 个列。对于大于 `2xl` 临界点的设备，我们希望它拥有 8 个列。
 
-在 Section 内，我们有一个 [Text iinput](../fields/text-input)。TextiNPUT 是表单组件且所有表单组件都有一个 `columnSpan()` 方法，因此我们可以用它来指定该 TextInput 应该占用多少 column。对小于 `sm` 临界点的设备，我们希望 TextInput 占用 1 column，此为默认值。对于大于 `sm` 临界点的设备，我们希望其占用 2 columns。对于大于 `xl` 临界点的设备，我们希望它占用 3 个列。对于大于 `2xl` 临界点的设备，我们希望它占用 4 个列。
+在 Section 内，我们有一个 [Text input](../fields/text-input)。TextInput 是表单组件且所有表单组件都有一个 `columnSpan()` 方法，因此我们可以用它来指定该 TextInput 应该占用多少 column。对小于 `sm` 临界点的设备，我们希望 TextInput 占用 1 column，此为默认值。对于大于 `sm` 临界点的设备，我们希望其占用 2 columns。对于大于 `xl` 临界点的设备，我们希望它占用 3 个列。对于大于 `2xl` 临界点的设备，我们希望它占用 4 个列。
 
 ```php
 use Filament\Forms\Components\Section;

@@ -60,7 +60,7 @@ Card::make()
 
 ## 全局设置
 
-如果您希望全局更改组件的默认行为，那么您可以在服务提供者的 `boot()` 方法中调用静态的 `configureUsing()` 方法，向该方法传入闭包修改使用的组件。例如，如果您希望默认情况下所有 Card 组件都有 [2 列](grid)，您可以这样做：
+如果希望全局更改组件的默认行为，那么可以在服务提供者的 `boot()` 方法中调用静态的 `configureUsing()` 方法，向该方法传入闭包修改使用的组件。例如，如果希望默认情况下所有 Card 组件都有 [2 列](grid)，可以这样做：
 
 ```php
 use Filament\Infolists\Components\Card;

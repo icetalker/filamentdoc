@@ -111,7 +111,7 @@ public static function table(Table $table): Table
 
 ## 操作
 
-[操作Actions](../../tables/actions#单一操作)是在表格的每一行末尾进行渲染的按钮，用户可以借以在表格中实现任务。要了解怎么创建操作，请查看[操作文档](../../tables/actions#单一操作)。
+[操作 Action](../../tables/actions#单一操作)是在表格的每一行末尾进行渲染的按钮，用户可以借以在表格中实现任务。要了解怎么创建操作，请查看[操作文档](../../tables/actions#单一操作)。
 
 要在表格中添加操作，使用 `$table->actions()` 方法：
 
@@ -263,9 +263,9 @@ public static function table(Table $table): Table
 
 如果 `deleteAny()` 方法返回 `true`，用户可以批量删除记录。Filament 使用 `deleteAny()` 方法因为通过迭代检查 `delete()` 策略性能不是很好。
 
-## 自定义Eloquent查询
+## 自定义 Eloquent 查询
 
-虽然你可以[为整个资源自定义Eloquent查询](getting-started#自定义Eloquent查询)，你可能还会想对列表页表格做一些特定的修改。在页面类中重写 `getTableQuery()` 方法，可以实现：
+虽然你可以[为整个资源自定义 Eloquent 查询](getting-started#自定义-eloquent-查询)，你可能还会想对列表页表格做一些特定的修改。在页面类中重写 `getTableQuery()` 方法，可以实现：
 
 ```php
 protected function getTableQuery(): Builder

@@ -161,9 +161,9 @@ TextInput::make('domain')
     ->suffixIconColor('success')
 ```
 
-## Revealable password inputs
+## 可显示的密码输入
 
-When using `password()`, you can also make the input `revealable()`, so that the user can see a plain text version of the password they're typing by clicking a button:
+使用 `password()` 时，你也可以使之可见 `revealable()`，这样用户可以通过点击按钮查看他们正在输入的密码的明文：
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -226,8 +226,8 @@ TextInput::make('name')
 
 相比于 [`disabled()`](getting-started#禁用字段)，它有一些不同之处：
 
-- 当使用 `readOnly()` 时，该字段仍然会在表单提交时发送给服务器。使用浏览器控制台或者通过 JavaScript，仍然可以修改它的值。可以使用 [`dehydrated(false)`](advanced#阻止字段被-dehydrated) 阻止该行为。
-- 使用 `readOnly()` 时，样式不会该变，比如不会减少透明度。T
+- 使用 `readOnly()` 时，该字段仍然会在表单提交时发送给服务器。使用浏览器控制台或者通过 JavaScript，仍然可以修改它的值。可以使用 [`dehydrated(false)`](advanced#阻止字段被-dehydrated) 阻止该行为。
+- 使用 `readOnly()` 时，样式不会改变，比如不会减少透明度。
 - 使用 `readOnly()` 时，该字段仍然可以获得焦点。
 
 ## 文本输入验证

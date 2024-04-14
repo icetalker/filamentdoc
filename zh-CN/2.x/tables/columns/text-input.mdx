@@ -14,7 +14,7 @@ TextInputColumn::make('name')
 
 ## Validation
 
-你可以以数组形式传入[Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)验证输入：
+你可以以数组形式传入 [Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)验证输入：
 
 ```php
 use Filament\Tables\Columns\TextInputColumn;
@@ -23,11 +23,11 @@ TextInputColumn::make('name')
     ->rules(['required', 'max:255'])
 ```
 
-> Filament 使用 tooltip 提示显示验证错误。如果你想在后台面板之外使用tooltip来展示验证错误，请在应用中安装 [`@ryangjchandler/alpine-tooltip` installed](https://github.com/ryangjchandler/alpine-tooltip#installation)。
+> Filament 使用 tooltip 提示显示验证错误。如果你想在后台面板之外使用 tooltip 来展示验证错误，请在应用中安装 [`@ryangjchandler/alpine-tooltip`](https://github.com/ryangjchandler/alpine-tooltip#installation)。
 
 ## 自定义Input类型
 
-你也可以使用 `type()` 方法传入自定义[HTML Input类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)：
+你也可以使用 `type()` 方法传入自定义 [HTML Input 类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types)：
 
 ```php
 use Filament\Tables\Columns\TextInputColumn;

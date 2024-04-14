@@ -7,11 +7,11 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 概述
 
-Filament 表格可以使用 [Action](../actions/installation)。Action 是添加到[表格行末](#行-action)或表格[头部](#头部-action)的按钮。比如，如果你想在表格头部添加"新建"记录的 Action，在每行中添加"编辑"和"删除" Action。[批量 Action](#批量操作)可用在记录选中时执行代码。另外，Action 也可以添加到[表格列](#列-action)，这样该列中的每个单元格都是 action 的触发器。
+Filament 表格可以使用 [Action](../actions/installation)。Action 是添加到[表格行末](#行-action)或表格[头部](#头部-action)的按钮。比如，如果你想在表格头部添加"新建"记录的 Action，在每行中添加"编辑"和"删除" Action。[批量 Action](#批量操作)可以在记录选中时执行代码。另外，Action 也可以添加到[表格列](#列-action)，这样该列中的每个单元格都是 action 的触发器。
 
 强烈建议阅读[自定义 Action 触发按钮](../actions/trigger-button) 和 [Action 模态框](../actions/modals)文档，去了解 Action 的全部功能。
 
-## 行 action
+## 行 Action
 
 Action 按钮可以在每个表格行的末尾进行渲染。将其放入 `$table->actions()` 方法中：
 
@@ -86,11 +86,11 @@ public function table(Table $table): Table
 
 <AutoScreenshot name="tables/actions/before-cells" alt="Table with actions before cells" version="3.x" />
 
-### Accessing the selected table rows
+### 访问选中的表格行
 
-You may want an action to be able to access all the selected rows in the table. Usually, this is done with a [bulk action](#bulk-actions) in the header of the table. However, you may want to do this with a row action, where the selected rows provide context for the action.
+你可能希望一个 Action 可以访问表格中所有选中的行。通常，这是通过表格头部上的一个批量操作(#批量操作)来实现。不过，你可以使用行 Action 来实现，此处为选中的行提供该 Action 的上下文。
 
-For example, you may want to have a row action that copies the row data to all the selected records. To force the table to be selectable, even if there aren't bulk actions defined, you need to use the `selectable()` method. To allow the action to access the selected records, you need to use the `accessSelectedRecords()` method. Then, you can use the `$selectedRecords` parameter in your action to access the selected records:
+比如，你可能希望行 Action 复制行数据到所有选中的记录。即使未定义批量操作，要强制使表格可被选中，那你需要使用 `selectable()` 方法。要允许该 Action 访问选中的记录，你需要使用 `accessSelectedRecords()` 方法。然后，你可以使用 Action 中的 `$selectedRecords` 参数，访问选中的记录：
 
 ```php
 use Filament\Tables\Table;
@@ -227,9 +227,9 @@ public function table(Table $table): Table
 }
 ```
 
-### Preventing bulk-selection of all pages
+### 阻止所有页面的批量选择
 
-The `selectCurrentPageOnly()` method can be used to prevent the user from easily bulk-selecting all records in the table at once, and instead only allows them to select one page at a time:
+`selectCurrentPageOnly()` 方法可以用来阻止用户在表格中一次性批量选择所有记录，相反只允许它们一次选择一个页面：
 
 ```php
 use Filament\Tables\Table;

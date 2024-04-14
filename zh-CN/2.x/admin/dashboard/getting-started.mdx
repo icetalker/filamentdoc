@@ -53,7 +53,7 @@ protected int | string | array $columnSpan = [
 
 你可以修改有多少网格数被用于展示插件。
 
-首先，你必须[替换原来的Dashboard页面](#自定义Dashboard页面)。
+首先，你必须[替换原来的 Dashboard 页面](#自定义-dashboard-页面)。
 
 然后，在新建的 `app/Filament/Pages/Dashboard.php` 文件中，你可以重写 `getColumns()` 方法，来返回占用的网格列数：
 
@@ -112,7 +112,7 @@ php artisan make:filament-widget BlogPostsOverview
 
 该命令会创建两个文件 - 一个插件类文件位于 Filament 目录下的 `/Widgets` 文件夹中，以及一个位于 Filament 视图目录 `/widgets` 文件夹中的视图文件。
 
-## 自定义控制面板页面
+## 自定义 Dashboard 页面
 
 如果你想要自定义 Dashboard 类，比如[修改插件宽度](#自定义插件宽度)，请新建文件 `app/Filament/Pages/Dashboard.php`：
 

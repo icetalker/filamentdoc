@@ -6,7 +6,7 @@ title: 开始
 
 ## 概述
 
-虽然 Filament 几乎提供了构建出色应用程序所需的任何工具，但有时你需要添加自己的功能，供自己应用或者作为发行包让其他开发人员也可以在他们的应用程序使用。这就是为什么 Filament 提供了一个插件系统，允许您扩展其功能。
+虽然 Filament 几乎提供了构建出色应用程序所需的任何工具，但有时你需要添加自己的功能，供自己应用或者作为发行包让其他开发人员也可以在他们的应用程序使用。这就是为什么 Filament 提供了一个插件系统，允许你扩展其功能。
 
 在我们深入研究之前，了解插件可以使用的不同语境是很重要的。主要有两种情况：
 
@@ -38,7 +38,7 @@ Filament v3 引入了一个 Plugin 对象，用于配置插件。该对象是一
 
 ### 注册资源
 
-所有的 [资源注册](/docs/zh-CN/3.x/support/assets)，包括 CSS、JS 和 Alpine 组件，应该在插件服务提供者的 `packageBooted()` 方法中实现。它允许 Filament 使用资源管理器注册资源并在需要时加载。
+所有的[资源注册](/docs/zh-CN/3.x/support/assets)，包括 CSS、JS 和 Alpine 组件，应该在插件服务提供者的 `packageBooted()` 方法中实现。它允许 Filament 使用资源管理器注册资源并在需要时加载。
 
 ## 创建插件
 
@@ -46,19 +46,19 @@ Filament v3 引入了一个 Plugin 对象，用于配置插件。该对象是一
 
 ### 使用
 
-要使用该模板，只需跳转到 GitHub 仓库并单击 "Use this template" 按钮(***当Filament处于v3 Beta时，请确保在使用模板之前切换到3.x分支***)。这将在您的帐户中创建一个带有样板代码的新仓库。之后，您可以将仓库克隆到您的机器上。当你的计算机上有了该代码后，请导航到项目的根目录并运行以下命令：
+要使用该模板，只需跳转到 GitHub 仓库并单击 "Use this template" 按钮。这将在你帐户中创建一个带有样板代码的新仓库。之后，你可以将仓库克隆到机器上。当你的机器上有了该代码后，请导航到项目的根目录并运行以下命令：
 
 ```bash
 php ./configure.php
 ```
 
-这一操作会询问你一系列问题，以配置插件。当你回答完所有问题后，脚本就会为你弹出一个新插件，你就可以开始创建新插件了。
+这一操作会询问你一系列问题，以配置插件。当你回答完所有问题后，脚本就会使用模板创建一个新插件，你就可以开始创建新插件了。
 
 ## 升级现有插件
 
-由于每个插件的使用范围和功能都有很大差异，因此没有一种一刀切的方法来升级现有插件。然而，需要注意的一点是，与所有插件一致的是，`PluginServiceProvider` 被弃用。
+由于每个插件的使用范围和功能都有很大差异，因此没有一种一刀切的方法来升级现有插件。然而，需要注意的一点是，所有插件都一致地弃用了 `PluginServiceProvider`。
 
-在插件服务提供者中，您需要更改它以继承 PackageServiceProvider。您还需要向服务提供者添加一个静态 `$name` 属性。此属性用于向 Filament 注册插件。以下是您的服务提供商可能的示例：
+在插件服务提供者中，需要更改它以继承 PackageServiceProvider。你还需要向服务提供者添加一个静态 `$name` 属性。此属性用于向 Filament 注册插件。以下是服务提供商可能的示例：
 
 ```php
 class MyPluginServiceProvider extends PackageServiceProvider
@@ -74,10 +74,10 @@ class MyPluginServiceProvider extends PackageServiceProvider
 
 ### 有用链接
 
-在升级插件之前，请完整阅读本指南。它将帮助您理解这些概念以及如何构建插件。
+在升级插件之前，请完整阅读本指南。它将帮助你理解这些概念以及如何构建插件。
 
 1. [Filament 资源管理](/docs/zh-CN/3.x/support/assets)
 2. [面板插件开发](/docs/zh-CN/3.x/panels/plugins)
-3. [Icon管理](docs/zh-CN/3.x/support/icons)
-4. [颜色管理](docs/zh-CN/3.x/support/colors)
-5. [自定义样式](docs/zh-CN/3.x/support/style-customization)
+3. [Icon 管理](/docs/zh-CN/3.x/support/icons)
+4. [颜色管理](/docs/zh-CN/3.x/support/colors)
+5. [自定义样式](/docs/zh-CN/3.x/support/style-customization)

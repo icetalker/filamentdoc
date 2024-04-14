@@ -9,7 +9,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 类似于 [Repeater](repeater)，Builder 组件允许你输出重复的表单组件的 JSON 数组。不像 Repeater 那样只定义一个表单 Schema，Builder 允许你定义不同的 Schema 块，你可以使用任何顺序重复。这对于创建更高级的数组结构非常有用。
 
-Builder 主要用于通过预定义块创建网页内容。这可能是营销网站的内容，甚至可能是在线表单中的字段。下面的示例在页面内容中为不同元素定义了多个块。在网站的前端，您可以循环 JSON 中的每个块，并根据自己的意愿对其进行格式化。
+Builder 主要用于通过预定义块创建网页内容。这可能是营销网站的内容，甚至可能是在线表单中的字段。下面的示例在页面内容中为不同元素定义了多个块。在网站的前端，你可以循环 JSON 中的每个块，并根据自己的意愿对其进行格式化。
 
 ```php
 use Filament\Forms\Components\Builder;
@@ -58,7 +58,7 @@ Builder::make('content')
 
 <AutoScreenshot name="forms/fields/builder/simple" alt="Builder" version="3.x" />
 
-我们强烈推荐你在数据库中使用 `JSON` 类型存储 Builder 数据。此外，如果使用 Eloquent，请确保该列有 `array` cast。
+我们强烈推荐你在数据库中使用 `JSON` 类型存储 Builder 数据。此外，如果使用 Eloquent，请确保该列有 `array` casts。
 
 如上例所示，块(Block)在组件的 `blocks()` 方法中定义。块是 `Builder\Block` 对象，需要传入一个唯一名称和一个组件 Schema：
 
@@ -310,7 +310,7 @@ Builder::make()
 
 ### 增加块选择器的宽度
 
-当你[增加列数](#修改块选择器中的列数)时，下拉列表的宽度应该会递增以处理额外的列。如果您想要更多的控制，可以使用 `blockPickerWidth() `方法手动设置下拉列表的最大宽度。选项对应于[Tailwind 的最大宽度比例](https://tailwindcss.com/docs/max-width)。选项为'xs'、'sm'、'md'、'lg'、'xl'、'2xl'、'3xl'、`4xl`、'5xl'、6xl'、`7xl'：
+当你[增加列数](#修改块选择器中的列数)时，下拉列表的宽度应该会递增以处理额外的列。如果你想要更多的控制，可以使用 `blockPickerWidth() `方法手动设置下拉列表的最大宽度。选项对应于 [Tailwind 的最大宽度比例](https://tailwindcss.com/docs/max-width)。选项为'xs'、'sm'、'md'、'lg'、'xl'、'2xl'、'3xl'、`4xl`、'5xl'、6xl'、`7xl'：
 
 ```php
 use Filament\Forms\Components\Builder;

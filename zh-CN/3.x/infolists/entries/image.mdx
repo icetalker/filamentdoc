@@ -128,7 +128,7 @@ ImageEntry::make('colleagues.avatar')
 
 ### 自定义层叠数
 
-默认层叠数为 `4`，但您可以将其自定义为 `0` 到 `8`：
+默认层叠数为 `4`，但你也可以将其自定义为 `0` 到 `8`：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -175,7 +175,7 @@ ImageEntry::make('colleagues.avatar')
 
 #### 剩余数分开显示
 
-默认情况下，`limitedRemainingText()` 会将剩余图片的数量以数字的形式显示在其他图片上。如果你希望将数量显示在图片后面，你可以使用 `isSeparate: true` 参数：
+默认情况下，`limitedRemainingText()` 会将剩余图片的数量以数字的形式显示在其他图片上。如果希望将数量显示在图片后面，你可以使用 `isSeparate: true` 参数：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;
@@ -221,7 +221,7 @@ ImageEntry::make('logo')
 
 ## 阻止检测文件存在与否
 
-当 Infolist 加载完后，它将自动检测图片是否存在。这全部在后台完成。当远程存储许多图片时，这可能会非常耗时。您可以使用 `checkFileExistence(false)` 方法禁用此功能：
+当 Infolist 加载完后，它将自动检测图片是否存在。这全部在后台完成。当远程存储许多图片时，这可能会非常耗时。可以使用 `checkFileExistence(false)` 方法禁用此功能：
 
 ```php
 use Filament\Infolists\Components\ImageEntry;

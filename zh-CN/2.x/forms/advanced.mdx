@@ -100,7 +100,7 @@ function (Closure $set) {
 }
 ```
 
-如果你在为后台面板资源或关联管理器创建表单，并且你想要检查表单是否 `create`, `edit` 或 `view`，请使用 `$context` 参数：
+如果你在为后台面板资源或关联管理器创建表单，并且你想要检查表单是否 `create`、`edit` 或 `view`，请使用 `$context` 参数：
 
 ```php
 function (string $context) {
@@ -108,7 +108,7 @@ function (string $context) {
 }
 ```
 
-> 如果没有使用后台面板，你也可以在你的 Livewire 组件中定义 `getFormContext()` 方法，设置表单的context。
+> 如果没有使用后台面板，你也可以在你的 Livewire 组件中定义 `getFormContext()` 方法，设置表单的 context。
 
 闭包在底层使用 Laravel 的 `app()->call()`，因此你可以同时使用多个参数而不用关心参数顺序：
 
@@ -164,7 +164,7 @@ TextInput::make('newPasswordConfirmation')
 
 ### 数据注水
 
-数据注水(Hydration)是指表单填充数据的过程。当你调用[表单填充`fill()`方法](getting-started#表单数据填充)时运行。你可以在数据注水后使用 `afterStateHydrated()` 方法自定义做些什么操作。
+数据注水(Hydration)是指表单填充数据的过程。当你调用[表单填充 `fill()` 方法](getting-started#表单数据填充)时运行。你可以在数据注水后使用 `afterStateHydrated()` 方法自定义做些什么操作。
 
 此例中，`name` 字段将会总是以首字母大写填充：
 
@@ -182,7 +182,7 @@ TextInput::make('name')
 
 你可以使用 `afterStateUpdated()` 自定义字段更新后的行为。
 
-此例中, `slug` 字段会根据 `title` 字段的slug版本自动更新：
+此例中, `slug` 字段会根据 `title` 字段的 slug 版本自动更新：
 
 ```php
 use Closure;
@@ -237,7 +237,7 @@ TextInput::make('passwordConfirmation')
 </button>
 ```
 
-通常，你需要为特定的组件类分发事件。假若如此，你应该用组件名作为事件的前缀，并传送组件的state path作为第二个参数：
+通常，你需要为特定的组件类分发事件。假若如此，你应该用组件名作为事件的前缀，并传送组件的 state path 作为第二个参数：
 
 ```blade
 <button wire:click="dispatchFormEvent('repeater::createItem', '{{ $getStatePath() }}')">
@@ -274,7 +274,7 @@ protected function setUp(): void
 }
 ```
 
-如果你的事件是组件指定的，你需要确保组件没有被禁用，以及组件的state path匹配事件的第二个参数：
+如果你的事件是组件指定的，你需要确保组件没有被禁用，以及组件的 state path 匹配事件的第二个参数：
 
 ```php
 use Filament\Forms\Components\Component;

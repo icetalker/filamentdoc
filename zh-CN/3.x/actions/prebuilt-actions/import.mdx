@@ -390,7 +390,7 @@ public function resolveRecord(): ?Product
 
 ### 为导入字段忽视空状态
 
-默认情况下，如果 CSV 中的字段是空的，并且由用户映射，并且验证不需要该字段，则该列字段作为 `null` 导入数据库。如果您想忽略空白状态，而使用数据库中的现有值，可以调用 `ignoreBlankState()` 方法：
+默认情况下，如果 CSV 中的字段是空的，并且由用户映射，并且验证不需要该字段，则该列字段作为 `null` 导入数据库。如果想忽略空白状态，而使用数据库中的现有值，可以调用 `ignoreBlankState()` 方法：
 
 ```php
 use Filament\Actions\Imports\ImportColumn;
@@ -518,7 +518,7 @@ Import::polymorphicUserRelationship();
 
 ## 限制可被导入的最大行数
 
-为避免服务器过载，您、你可能希望限制从 CSV 文件导入的最大行数。您可以在 Action 上调用 `maxRows()` 方法来完成此操作：
+为避免服务器过载，你可能希望限制从 CSV 文件导入的最大行数。你可以在 Action 上调用 `maxRows()` 方法来完成此操作：
 
 ```php
 ImportAction::make()
@@ -552,7 +552,7 @@ ImportAction::make()
 
 ## 自定义导入作业
 
-处理导入的默认 job 是 `Filament\Actions\imports\Jobs\ImportCsv`。如果你想扩展这个类并重写它的方法，你可以替换服务提供者的 `register()` 方法中的原始类：
+处理导入的默认 job 是 `Filament\Actions\imports\Jobs\ImportCsv`。如果想扩展这个类并重写它的方法，你可以替换服务提供者的 `register()` 方法中的原始类：
 
 ```php
 use App\Jobs\ImportCsv;

@@ -189,7 +189,7 @@ CreateAction::make()
 
 ### 生命周期钩子
 
-钩子可用于操作生命周期的各个结点中执行代码。
+钩子可用于操作生命周期的各个节点中执行代码。
 
 ```php
 use Filament\Tables\Actions\CreateAction;
@@ -585,7 +585,7 @@ public static function table(Table $table): Table
 
 ## 删除记录
 
-默认情况下，你不能在关联管理器中操作已删除记录。如果你想在关联管理器中添加恢复，强制删除和过滤废弃删除记录这样的功能，请在生成关联管理器时使用 --soft-deletes 标志:
+默认情况下，你不能在关联管理器中操作已删除记录。如果你想在关联管理器中添加恢复，强制删除和过滤废弃删除记录这样的功能，请在生成关联管理器时使用 `--soft-deletes` 标志:
 
 ```php
 php artisan make:filament-relation-manager CategoryResource posts title --soft-deletes
@@ -686,7 +686,7 @@ $action->cancel();
 
 ## 访问所有者记录
 
-关联管理器是 Livewire 组件。首次加载时，所有者记录(主资源模型的 Eloquent 记录)会被载入到一个 public 的 $ownerRecord 属性中。因此，你可以这样访问所有者记录：
+关联管理器是 Livewire 组件。首次加载时，所有者记录(主资源模型的 Eloquent 记录)会被载入到一个 public 的 `$ownerRecord` 属性中。因此，你可以这样访问所有者记录：
 
 ```php
 $this->ownerRecord

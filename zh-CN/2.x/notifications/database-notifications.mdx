@@ -47,13 +47,13 @@ php artisan notifications:table
 ],
 ```
 
-然后，只需将 `@livewire('notifications')` 组件移动到你希望渲染数据库通知触发按钮的HTML中的相应位置。现在应该可以看到触发按钮了，点击按钮就能打开数据库通知模态框。
+然后，只需将 `@livewire('notifications')` 组件移动到你希望渲染数据库通知触发按钮的 HTML 中的相应位置。现在应该可以看到触发按钮了，点击按钮就能打开数据库通知模态框。
 
 ## 发送通知
 
 有多种方法可用于发送广播通知，取决于哪一种更适合你。
 
-你可以使用fluent API:
+你可以使用 fluent API:
 
 ```php
 use Filament\Notifications\Notification;

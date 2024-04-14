@@ -57,14 +57,14 @@ class BlogPostsChart extends ChartWidget
 
 以下是你可以继承的图表 Widget 类清单，以及他们对应的 [Chart.js](https://www.chartjs.org/docs) 文档页面，从中你可以了解 `getData()` 应该怎么返回哪些值。
 
-- Bar chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bar)
-- Bubble chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/bubble)
-- Doughnut chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
-- Line chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/line)
-- Pie chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/doughnut)
-- Polar area chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/polar)
-- Radar chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/radar)
-- Scatter chart - [Chart.js documentation](https://www.chartjs.org/docs/latest/charts/scatter)
+- Bar chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/bar)
+- Bubble chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/bubble)
+- Doughnut chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- Line chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/line)
+- Pie chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/doughnut)
+- Polar area chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/polar)
+- Radar chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/radar)
+- Scatter chart - [Chart.js 文档](https://www.chartjs.org/docs/latest/charts/scatter)
 
 ## 自定义图表颜色
 
@@ -74,7 +74,7 @@ class BlogPostsChart extends ChartWidget
 protected static string $color = 'info';
 ```
 
-如果你要进一步自定义颜色，或者在多个数据集中使用多种颜色，你仍然可以在数据中使用 Chart.js 的[颜色选项](https://www.chartjs.org/docs/latest/general/colors.html)：
+如果你要进一步自定义颜色，或者在多个数据集中使用多种颜色，仍然可以在数据中使用 Chart.js 的[颜色选项](https://www.chartjs.org/docs/latest/general/colors.html)：
 
 ```php
 protected function getData(): array
@@ -213,7 +213,7 @@ protected function getOptions(): array
 }
 ```
 
-这些 PHP 数组会在图表渲染时转换成 JSON 对象。如果你想在该方法中返回原始 JavaScript，你可以返回 `RawJs` 对象。如果你想使用 JavaScript 回调函数，这就很有用。比如：
+这些 PHP 数组会在图表渲染时转换成 JSON 对象。如果你想在该方法中返回原始 JavaScript，可以返回 `RawJs` 对象。如果你想使用 JavaScript 回调函数，这就很有用。比如：
 
 ```php
 use Filament\Support\RawJs;

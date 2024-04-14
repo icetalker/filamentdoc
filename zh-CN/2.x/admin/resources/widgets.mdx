@@ -8,7 +8,7 @@ title: 页内插件(widget)
 
 Filament 允许你在页面内展示插件，置于页头(header)之下或者页脚(footer)之上。 
 
-你可以使用现有的 [dashboard 插件](dashboard)，或为资源创建一个专门的插件。
+你可以使用现有的 [Dashboard 插件](dashboard)，或为资源创建一个专门的插件。
 
 ## 新建资源插件
 
@@ -31,7 +31,7 @@ public static function getWidgets(): array
 }
 ```
 
-关于如何创建自定义插件，请查看[Dashboard](../dashboard) 文档。
+关于如何创建自定义插件，请查看 [Dashboard](../dashboard) 文档。
 
 ## 在资源页中显示页内插件
 
@@ -63,7 +63,7 @@ class ListCustomers extends ListRecords
 
 ## 访问当前记录
 
-如果你在Edit或View页面中使用插件(widget)，你可以通过在插件类中定义 `$record` 属性来获取当前的记录。
+如果你在 Edit 或 View 页面中使用插件(widget)，你可以通过在插件类中定义 `$record` 属性来获取当前的记录。
 
 ```php
 use Illuminate\Database\Eloquent\Model;

@@ -286,7 +286,7 @@ These get merged onto the outer `<div>` element of each entry in that entry.
 
 ## 全局设置
 
-如果你想全局修改所有 Entry 的默认行为，你可以在服务提供者 `boot()` 方法中调用静态的 `configureUsing()` 方法，其中传入一个闭包以修改 Entry 行为。比如，如果你想让所有的 `TextEntry` 组件设置为 [`word(10)`](#限制字数)，你可以这样：
+如果想全局修改所有 Entry 的默认行为，可以在服务提供者 `boot()` 方法中调用静态的 `configureUsing()` 方法，其中传入一个闭包以修改 Entry 行为。比如，如果想让所有的 `TextEntry` 组件设置为 [`word(10)`](#限制字数)，你可以这样：
 
 ```php
 use Filament\Infolists\Components\TextEntry;

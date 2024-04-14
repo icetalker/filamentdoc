@@ -143,7 +143,7 @@ Filament 插件也可以注册他自己的前端资源。这些资源会被所�
 
 ### CSS样式表
 
-要去注册自定义页面，将全限定类名添加到服务提供者的 `$styles` 属性数组中。你应该使用唯一名称作为键名，指向样式表的URL 作为值。
+要去注册自定义页面，将全限定类名添加到服务提供者的 `$styles` 属性数组中。你应该使用唯一名称作为键名，指向样式表的 URL 作为值。
 
 ```php
 use Filament\PluginServiceProvider;
@@ -168,9 +168,9 @@ class ExampleServiceProvider extends PluginServiceProvider
 
 编译后，你的 Tailwind 样式中可能会保函 Filament 核心中已有的类。请使用 [awcodes/filament-plugin-purge](https://github.com/awcodes/filament-plugin-purge) 将这些类排除(Purge)，对其瘦身。
 
-### Script脚本
+### Script 脚本
 
-要去注册自定义页面，将全限定类名添加到服务提供者的 `$scripts` 属性数组中。你应该使用唯一名称作为键名，指向脚本的URL作为值。这些脚本会被添加到 Filament 核心脚本之后。
+要去注册自定义页面，将全限定类名添加到服务提供者的 `$scripts` 属性数组中。你应该使用唯一名称作为键名，指向脚本的 URL 作为值。这些脚本会被添加到 Filament 核心脚本之后。
 
 ```php
 use Filament\PluginServiceProvider;
@@ -275,7 +275,7 @@ Filament 会自动注册你的 `Page` , 确保 Livewire 找到它。
 
 ## 命令, 视图, 翻译, 迁移及其他
 
-由于`PluginServiceProvider`继承了 [Laravel 扩展包工具](https://github.com/spatie/laravel-package-tools)的服务提供者, 你可以使用[`configurePackage` 方法](https://github.com/spatie/laravel-package-tools#usage)来注册 [commands](https://github.com/spatie/laravel-package-tools#registering-commands), [views](https://github.com/spatie/laravel-package-tools#working-with-views), [translations](https://github.com/spatie/laravel-package-tools#working-with-translations), [migrations](https://github.com/spatie/laravel-package-tools#working-with-migrations) 等等。
+由于`PluginServiceProvider`继承了 [Laravel 扩展包工具](https://github.com/spatie/laravel-package-tools)的服务提供者, 你可以使用[`configurePackage` 方法](https://github.com/spatie/laravel-package-tools#usage)来注册 [commands](https://github.com/spatie/laravel-package-tools#registering-commands)、[views](https://github.com/spatie/laravel-package-tools#working-with-views)、[translations](https://github.com/spatie/laravel-package-tools#working-with-translations)、[migrations](https://github.com/spatie/laravel-package-tools#working-with-migrations) 等等。
 
 ## ServingFilament 事件
 

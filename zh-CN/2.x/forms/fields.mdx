@@ -61,7 +61,7 @@ use Filament\Forms\Components\TextInput;
 TextInput::make('name')->translateLabel() // 相当于 label(__('Name'))
 ```
 
-### 设置ID
+### 设置 ID
 
 像设置标签一样，字段ID会根据他们的字段名自动生成。可以使用 `id()` 重写：
 
@@ -225,7 +225,7 @@ TextInput::make('name')->placeholder('John Doe')
 
 ### 全局设置
 
-如果你想要全局修改字段的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的复选框[`inline(false)`](#复选框)，你可以这样做：
+如果你想要全局修改字段的默认行为，你可以在服务提供者的 `boot()` 方法中调用静态方法 `configrueUsing()`，传入闭包修改其使用的组件。比如，你想让所有的复选框 [`inline(false)`](#复选框)，你可以这样做：
 
 ```php
 use Filament\Forms\Components\Checkbox;
@@ -467,7 +467,7 @@ TextInput::make('cost')->mask(fn (TextInput\Mask $mask) => $mask
 )
 ```
 
-里面也包含了一个 `money()` 方法，可以更容易格式化货币输入。本例，前缀符号是 `$`、千位分隔符 `,` 、及两位小数:
+里面也包含了一个 `money()` 方法，可以更容易格式化货币输入。本例，前缀符号是 `$`、千位分隔符 `,` 及两位小数:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -583,7 +583,7 @@ Select::make('technologies')
 
 ![](https://user-images.githubusercontent.com/41773797/147613070-cd82703a-fa05-4f29-b0ac-3eb03b542077.png)
 
-这些选项以 JSON 格式返回。如果你使用的是 Eloquent，你应该在模型属性中添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)：
+这些选项以 JSON 格式返回。如果你使用的是 Eloquent，你应该在模型属性中添加 `array` [casts](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -1509,7 +1509,7 @@ Repeater::make('members')
 
 ![](https://user-images.githubusercontent.com/41773797/147613690-9c36779b-f3dc-4710-bdba-dc5c81ddd3cd.png)
 
-我们建议您将数据以 `JSON` 字段的形式保存在数据库中。另外，如果使用了 Eloquent，确保对该字段进行了 `array` cast。
+我们建议您将数据以 `JSON` 字段的形式保存在数据库中。另外，如果使用了 Eloquent，确保对该字段进行了 `array` 强制转换(casts)。
 
 如上例所示，组件的 schema 可以在 `schema()` 方法中定义：
 
@@ -1652,7 +1652,7 @@ HasManyRepeater::make('qualifications')
 
 本例假定你的关联模型中有一个 `sort` 字段。
 
-如果你使用了像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable)这样的包，使用了像 `order_column` 这样的字段名作为排序字段，你可以将其作为参数传入 `orderable()` 中：
+如果你使用了像 [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable) 这样的包，使用了像 `order_column` 这样的字段名作为排序字段，你可以将其作为参数传入 `orderable()` 中：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -1679,7 +1679,7 @@ Repeater::make('members')
     ->grid(2)
 ```
 
-该方法与 [grid](layout#网格)的 `columns()` 方法相似，接收相同的参数选项。让你可以在不同临界点自定义网格列数。
+该方法与 [grid](layout#网格) 的 `columns()` 方法相似，接收相同的参数选项。让你可以在不同临界点自定义网格列数。
 
 ### 项目标签
 
@@ -1701,9 +1701,9 @@ Repeater::make('members')
 
 ### 使用 `$get()` 访问父级字段值
 
-所有表单组件都可以[使用 `$get()` 和 `$set()`](advanced)获取其他字段的值。然而，在 Repeater 中使用可能会碰到异常。
+所有表单组件都可以[使用 `$get()` 和 `$set()`](advanced) 获取其他字段的值。然而，在 Repeater 中使用可能会碰到异常。
 
-这是因为默认情况下，`$get()` 和 `$set()` 被限定在当前repeater项目中。也就是说，你可以在 repeater 项目中的其他字段交互，而不需要了解该表单属于哪一个 repeater 条目。
+这是因为默认情况下，`$get()` 和 `$set()` 被限定在当前 repeater 项目中。也就是说，你可以在 repeater 项目中的其他字段交互，而不需要了解该表单属于哪一个 repeater 条目。
 
 其结果是，当你不能与 repeater 字段进行互动时，会感到困惑。我们使用 `../` 语法来解决此问题 - `$get('../../parent_field_name')`。
 
@@ -2003,7 +2003,7 @@ KeyValue::make('meta')
 
 颜色选择器(Color Picker)组件让你可以以一系列格式选择颜色。
 
-默认情况下，组件使用HEX(16进制)格式：
+默认情况下，组件使用 HEX(16 进制)格式：
 
 ```php
 use Filament\Forms\Components\ColorPicker;

@@ -12,7 +12,7 @@ Filament 表单构造器的设计具有灵活性且可自定义.许多现有的�
 
 [Livewire](https://livewire.laravel.com) 是一个工具，它允许使用 Blade 渲染的 HTML 在不要求整页重载的情况下，动态地重新渲染。Filament 表单是建立在 Livewire 基础上的，因此它们可以动态地重新渲染，以在初始化渲染之后适配它们的布局。
 
-默认情况下，用户使用字段时，表单将不再重新渲染。由于渲染需要往返于服务器，因此这是一种性能优化。但是，如果您希望在用户与字段交互后重新渲染表单，可以使用 `live()` 方法：
+默认情况下，用户使用字段时，表单将不再重新渲染。由于渲染需要往返于服务器，因此这是一种性能优化。但是，如果希望在用户与字段交互后重新渲染表单，可以使用 `live()` 方法：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -41,7 +41,7 @@ TextInput::make('username')
 
 ### 动态响应字段防抖
 
-使用 "debouncing"，你可以在 `live()` 和 `livewire(onBlur: true)` 之间找到一个中间方案。Debouncing(防抖)将会阻止网络请求，直至用户输入停止一段特定时间。你可以使用 `live(debounce: 500)` 方法来实现该功能:
+使用 "debouncing"，可以在 `live()` 和 `livewire(onBlur: true)` 之间找到一个中间方案。Debouncing(防抖)将会阻止网络请求，直至用户输入停止一段特定时间。你可以使用 `live(debounce: 500)` 方法来实现该功能:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -661,7 +661,7 @@ class Foo extends Component
 
 #### 在 Livewire 组件中访问当前记录
 
-在 `mount()` 方法中使用 `$record` 参数，或者使用 `$record` 属性，你可用在 Livewire 组件中访问当前记录：
+在 `mount()` 方法中使用 `$record` 参数，或者使用 `$record` 属性，你可以在 Livewire 组件中访问当前记录：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -691,7 +691,7 @@ Livewire::make(Foo::class)
 
 ### 延迟加载 Livewire 组件
 
-使用 `lazy()` 方法，你可用允许组件[延迟加载](https://livewire.laravel.com/docs/lazy#rendering-placeholder-html)：
+使用 `lazy()` 方法，你允许可以组件[延迟加载](https://livewire.laravel.com/docs/lazy#rendering-placeholder-html)：
 
 ```php
 use Filament\Forms\Components\Livewire;

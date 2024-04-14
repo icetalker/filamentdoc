@@ -99,7 +99,7 @@ protected function paginateTableQuery(Builder $query): Paginator
 
 重写 `paginateTableQuery()` 方法，你可以使用 cursor 分页：
 
-首先，找到Livewire组件。如果你使用的是面板构造器中的资源，并且希望向 List 页面添加简单的分页，则需要打开资源中的 `Pages/List.php` 文件，而不是资源类本身。
+首先，找到 Livewire 组件。如果你使用的是面板构造器中的资源，并且希望向 List 页面添加简单的分页，则需要打开资源中的 `Pages/List.php` 文件，而不是资源类本身。
 
 ```php
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -225,6 +225,7 @@ public function table(Table $table): Table
         ->columns([
             // ...
         ]);
+}
 ```
 
 使用 `$table->description()` 方法，可以在标题下添加描述：
@@ -240,6 +241,7 @@ public function table(Table $table): Table
         ->columns([
             // ...
         ]);
+}
 ```
 
 将视图传递给 `$table->header()` 方法，可以自定义整个表格头部：
@@ -256,6 +258,7 @@ public function table(Table $table): Table
         ->columns([
             // ...
         ]);
+}
 ```
 
 ## 轮询表格内容

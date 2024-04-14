@@ -223,7 +223,7 @@ BelongsToSelect::make('author_id')
     ->relationship('author', 'name')
 ```
 
-关于 `BelongsToSelect` 的更多信息，可以查看[表单文档](../../forms/fields#从-belongsto-关联模型中自动添加数据)。
+关于 `BelongsToSelect` 的更多信息，可以查看[表单文档](../../forms/fields#从关联中自动加载数据)。
 
 #### 布局组件
 
@@ -280,7 +280,7 @@ Fieldset::make('Metadata')
 
 #### Repeater
 
-另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)：
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#自动从关联中填充数据)：
 
 ```php
 use App\Models\App;
@@ -319,7 +319,7 @@ Select::make('technologies')
     ->relationship('technologies', 'name')
 ```
 
-更多信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship)。
+更多信息，请查看[表单文档](../../forms/fields#从关联中自动加载数据)。
 
 #### 复选框列表控件
 
@@ -332,7 +332,7 @@ CheckboxList::make('technologies')
     ->relationship('technologies', 'name')
 ```
 
-更多关于 `CheckboxList` 的信息，请查看[表单文档](../../forms/fields#populating-automatically-from-a-belongstomany-relationship-1)。
+更多关于 `CheckboxList` 的信息，请查看[表单文档](../../forms/fields#自动从关联中获取数据)。
 
 #### 关联管理器
 
@@ -395,7 +395,7 @@ Fieldset::make('Metadata')
 
 #### Repeater
 
-另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#populating-automatically-from-a-hasmany-relationship)
+另外，如果你想在主表单里面对关联(relationship)进行编辑，你也可以使用 [Repeater](../../forms/fields#自动从关联中填充数据)
 
 ```php
 use Filament\Forms\Components\Repeater;
