@@ -111,7 +111,7 @@ RichEditor::make('content')
     ->hintIcon('heroicon-s-translate')
 ```
 
-提示也可以添加颜色 `color()`。默认是灰色，不过你也可以设为 `primary`、`success`、`warning` 或  `danger`：
+提示也可以添加颜色 `color()`。默认是灰色，不过你也可以设为 `primary`、`success`、`warning` 或 `danger`：
 
 ```php
 use Filament\Forms\Components\RichEditor;
@@ -131,7 +131,7 @@ use Filament\Forms\Components\TextInput;
 TextInput::make('name')->extraAttributes(['title' => 'Text input'])
 ```
 
-如果要将额外的HTML属性添加到输入框本身，则使用 `extraInputAttributes()`:
+如果要将额外的 HTML 属性添加到输入框本身，则使用 `extraInputAttributes()`:
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -158,7 +158,7 @@ use Filament\Forms\Components\Toggle;
 Toggle::make('is_admin')->disabled(! auth()->user()->isAdmin())
 ```
 
-请注意，禁用字段并不会影响保存，懂技术的用户仍然可以操作页面HTML改变他的值。
+请注意，禁用字段并不会影响保存，懂技术的用户仍然可以操作页面 HTML 改变他的值。
 
 要阻止字段值被保存，请使用 `dehydrated(false)` 方法：
 
@@ -377,7 +377,7 @@ TextInput::make('domain')
     ->suffixIcon('heroicon-o-external-link')
 ```
 
-你也可以使用 `prefixAction()` 和 `suffixAction()` 方法，在输入框前后渲染 action 按钮:
+你也可以使用 `prefixAction()` 和 `suffixAction()` 方法，在输入框前后渲染 Action 按钮:
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -485,7 +485,7 @@ TextInput::make('cost')->mask(fn (TextInput\Mask $mask) => $mask->money(prefix: 
 
 ### Datalists
 
-你可以使用 `datalist()` 方法为文本框指定一个 [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)选项:
+你可以使用 `datalist()` 方法为文本框指定一个 [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) 选项:
 
 ```php
 TextInput::make('manufacturer')
@@ -744,7 +744,7 @@ Select::make('authorId')
 
 这个表单会在模态框内打开，用户可以在里面填写数据。一旦表单提交，新记录就会被字段选中。
 
-由于HTML不支持嵌套 `<form>` 元素，你必须在视图的 `<form>` 表单之外渲染模态框。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，这已经被包含在内了：
+由于 HTML 不支持嵌套 `<form>` 元素，你必须在视图的 `<form>` 表单之外渲染模态框。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，这已经被包含在内了：
 
 ```blade
 <form wire:submit.prevent="submit">
@@ -792,7 +792,7 @@ Checkbox::make('is_admin')->inline(false)
 
 ![](https://user-images.githubusercontent.com/41773797/147613119-0bc731dd-fcdd-4c1a-9a26-cce2b0f589d2.png)
 
-如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到模型属性中：
+如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [casts](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -863,7 +863,7 @@ Toggle::make('is_admin')
 
 ![](https://user-images.githubusercontent.com/41773797/147613184-9086c102-ad71-4c4e-9170-9a4201a80c66.png)
 
-如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [cast](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到相应的模型属性上。
+如果你使用 Eloquent 保存布尔值，你应该添加 `boolean` [casts](https://laravel.com/docs/eloquent-mutators#attribute-casting) 到相应的模型属性上。
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -896,7 +896,7 @@ CheckboxList::make('technologies')
 
 ![](https://user-images.githubusercontent.com/41773797/147761423-bd6e99ec-104d-40c2-875a-fed1d638f2c3.png)
 
-这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
+这些选项以 JSON 格式返回。如果你使用 Eloquent 保存数据，你应该添加 `array` [casts](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -1068,7 +1068,7 @@ TimePicker::make('alarm_at')
 
 ![](https://user-images.githubusercontent.com/41773797/147613326-004b09c8-c224-4676-a70f-cf6b7e3f0306.png)
 
-你可以限制选择器可选的最小/最大日期。`minDate()` 和 `maxDate()` 方法接收一个 `DateTime` 实例(如 Carbon)或字符串作为参数：
+你可以限制选择器可选的最小/最大日期。`minDate()` 和 `maxDate()` 方法接收一个 `DateTime` 实例(如 `Carbon`)或字符串作为参数：
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -1088,7 +1088,7 @@ use Filament\Forms\Components\DatePicker;
 DatePicker::make('date_of_birth')->format('d/m/Y')
 ```
 
-你可以自定义字段的显示格式，以不同于存入数据库时候的格式。对此，使用 `displayFormat()` 方法，它也可以接收字符串日期格式，使用 [PHP date formatting tokens](https://www.php.net/manual/en/datetime.format.php):
+你可以自定义字段的显示格式，以不同于存入数据库时候的格式。对此，使用 `displayFormat()` 方法，它也可以接收字符串日期格式，使用 [PHP 日期格式](https://www.php.net/manual/en/datetime.format.php):
 
 ```php
 use Filament\Forms\Components\DatePicker;
@@ -1106,7 +1106,7 @@ use Filament\Forms\Components\DateTimePicker;
 DateTimePicker::make('published_at')->withoutSeconds()
 ```
 
-你也可以使用 `hoursStep()`、 `minutesStep()` 或 `secondsStep()` 方法，自定义输入小时/分钟/秒钟的增加间隔：
+你也可以使用 `hoursStep()`、`minutesStep()` 或 `secondsStep()` 方法，自定义输入小时/分钟/秒钟的增加间隔：
 
 ```php
 use Filament\Forms\Components\DateTimePicker;
@@ -1194,7 +1194,7 @@ FileUpload::make('attachment')
 
 默认情况下，文件会被公开上传到默认的存储盘中。
 
-> 请注意，要正确地预览图片及其他文件，FilePond 要求从与应用程序相同的域名提供文件，否则需要设置设置好 CORS 标头。请确保 `APP_URL` 环境变量设置正确，或者修改[文件系统](https://laravel.com/docs/10.x/filesystem)驱动，以设置正确的 URL。如果你将文件托管在其他域名中，比如 S3，请确保 CORS 表头设置正确。
+> 请注意，要正确地预览图片及其他文件，FilePond 要求从与应相同的域名提供文件，否则需要设置设置好 CORS 标头。请确保 `APP_URL` 环境变量设置正确，或者修改[文件系统](https://laravel.com/docs/10.x/filesystem)驱动，以设置正确的 URL。如果你将文件托管在其他域名中，比如 S3，请确保 CORS 表头设置正确。
 
 可以使用 `disk()`、`directory()` 和 `visibility()` 方法，修改文件保存的磁盘和目录，以及可见性： 
 
@@ -1299,7 +1299,7 @@ use Filament\Forms\Components\FileUpload;
 FileUpload::make('attachments')->multiple()
 ```
 
-如果你使用 Eloquent 保存这些网址，你需要添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
+如果你使用 Eloquent 保存这些网址，你需要添加 `array` [casts](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 到模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -1870,7 +1870,7 @@ TagsInput::make('tags')
 
 ![](https://user-images.githubusercontent.com/41773797/147614098-14d6eecb-2674-49b6-a5ee-e963c4d88a6e.png)
 
-如果你使用 Eloquent 保存 JSON 标签，你应该在模型属性中添加 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)。
+如果你使用 Eloquent 保存 JSON 标签，你应该在模型属性中添加 `array` [casts](https://laravel.com/docs/eloquent-mutators#array-and-json-casting)。
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -2025,7 +2025,7 @@ ColorPicker::make('rgba_color')->rgba()
 
 ## 视图字段
 
-除了[创建自定义字段](#创建自定义字段)，你可以创造"视图(view)"字段，让你可以不需要创建另外的PHP类就可以创建自定义字段。
+除了[创建自定义字段](#创建自定义字段)，你可以创造"视图(view)"字段，让你可以不需要创建另外的 PHP 类就可以创建自定义字段。
 
 ```php
 use Filament\Forms\Components\ViewField;

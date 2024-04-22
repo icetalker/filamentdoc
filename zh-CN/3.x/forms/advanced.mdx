@@ -326,7 +326,7 @@ TextInput::make('vat_number')
     ->required(fn (Get $get): bool => filled($get('company_name')))
 ```
 
-本例中，`company_name` 字段是实时更新的 [`live(onBlur: true)`](#动态响应字段失焦)。这允许表单在 `company_name` 字段值修改及用户点击离开后重新渲染。你可以在 `required()` 函数中使用 [`$get()`](#注入字段的当前状态)来访问字段值。字段值使用 `filled()`检测，这样当 `company_name` 字段不为 `null` 或者空字符串时，`vat_number` 字段是必需的。其结果是:只有在 `company_name` 字段填充时，`vat_number` 字段才是必需的。
+本例中，`company_name` 字段是实时更新的 [`live(onBlur: true)`](#动态响应字段失焦)。这允许表单在 `company_name` 字段值修改及用户点击离开后重新渲染。你可以在 `required()` 函数中使用 [`$get()`](#注入字段的当前状态) 来访问字段值。字段值使用 `filled()`检测，这样当 `company_name` 字段不为 `null` 或者空字符串时，`vat_number` 字段是必需的。其结果是:只有在 `company_name` 字段填充时，`vat_number` 字段才是必需的。
 
 使用函数能够以相同的方式让其他[验证规则](validation)动态化。
 
@@ -371,7 +371,7 @@ TextInput::make('slug')
 
 ### 依赖 Select 选项
 
-要基于另一个字段的值动态更新 [Select 字段](fields/select)选项，你可以传递一个函数到 Select 字段的 `options()` 方法中。该函数可以[将 utilities 作为参数注入](#表单组件-utility-注入)，这样你就可以使用 [`$get()`](#注入字段的当前状态)做像检测另一个字段值这样的事情：
+要基于另一个字段的值动态更新 [Select 字段](fields/select)选项，你可以传递一个函数到 Select 字段的 `options()` 方法中。该函数可以[将 utilities 作为参数注入](#表单组件-utility-注入)，这样你就可以使用 [`$get()`](#注入字段的当前状态) 做像检测另一个字段值这样的事情：
 
 ```php
 use Filament\Forms\Get;
@@ -403,7 +403,7 @@ Select::make('sub_category')
     })
 ```
 
-本例中，`category` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许表单在 `category` 字段值修改时重新渲染。你可以在 `options()` 函数中使用 [`$get()`](#注入字段的当前状态)访问那个字段的值。字段的值用于确定哪些选项在 `sub_category` 字段中可用。PHP 中的 `match()` 语句用于基于 `category` 字段值返回选项数组。其结果是：`sub_category` 字段只会展示选中的 `category` 字段相关的值。
+本例中，`category` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许表单在 `category` 字段值修改时重新渲染。你可以在 `options()` 函数中使用 [`$get()`](#注入字段的当前状态) 访问那个字段的值。字段的值用于确定哪些选项在 `sub_category` 字段中可用。PHP 中的 `match()` 语句用于基于 `category` 字段值返回选项数组。其结果是：`sub_category` 字段只会展示选中的 `category` 字段相关的值。
 
 你可以修改这个例子，使之在函数中查询，从 Eloquent 模型或者其他数据源中加载选项选项：
 
@@ -560,7 +560,7 @@ Group::make()
 
 ### 保存数据到 `BelongsTo` 关联
 
-请注意，如果你要将数据保存到 `BelongsTo` 关联，那么数据库中的外键字段必须为 `nullable()` 类型。这是因为 Filament 在保存关联之前先保存表单。由于先保存表单，外键 ID 还不存在，因此它必须是 nullable 的。表单保存后，Filament 立即保存关联，然后再填入 外键 ID 并再次保存。
+请注意，如果你要将数据保存到 `BelongsTo` 关联，那么数据库中的外键字段必须为 `nullable()` 类型。这是因为 Filament 在保存关联之前先保存表单。由于先保存表单，外键 ID 还不存在，因此它必须是 nullable 的。表单保存后，Filament 立即保存关联，然后再填入外键 ID 并再次保存。
 
 值得注意的是，如果表单模型上有一个观察者，那么可能需要对其进行调整，以确保它不依赖于创建时存在的关联。例如，如果有一个观察者在创建表单时向相关记录发送电子邮件，那么你可能需要切换到使用附加关联后运行的其他挂钩，如 `updated()`。
 

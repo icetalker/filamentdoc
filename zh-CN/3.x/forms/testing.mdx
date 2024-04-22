@@ -108,7 +108,7 @@ it('has a title field', function () {
 });
 ```
 
-你也可以传入函数作为额外的参数，来断言一个字段传入了一个"真值测试”\"。着对断言一个字段有某个特定配置非常有用：
+你也可以传入函数作为额外的参数，来断言一个字段传入了一个"真值测试"。着对断言一个字段有某个特定配置非常有用：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -217,7 +217,7 @@ it('can send invoices', function () {
 });
 ```
 
-如果只需要设置 Action 的数据而不立即调用它，可以使用  `setFormComponentActionData()`:
+如果只需要设置 Action 的数据而不立即调用它，可以使用 `setFormComponentActionData()`:
 
 ```php
 use function Pest\Livewire\livewire;
@@ -237,7 +237,7 @@ it('can send invoices', function () {
 
 ### 执行
 
-要检测 Action 是否被中止，可以使用  `assertFormComponentActionHalted()`：
+要检测 Action 是否被中止，可以使用 `assertFormComponentActionHalted()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -318,7 +318,7 @@ it('can send but not unsend invoices', function () {
 });
 ```
 
-要断言 Action 对用户隐藏或可见，可以使用  `assertFormComponentActionHidden()` 或 `assertFormComponentActionVisible()` 方法：
+要断言 Action 对用户隐藏或可见，可以使用 `assertFormComponentActionHidden()` 或 `assertFormComponentActionVisible()` 方法：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -367,7 +367,7 @@ it('can not send invoices', function () {
 
 ### 按钮外观
 
-要断言 Action 的标签正确，可以使用  `assertFormComponentActionHasLabel()` 和 `assertFormComponentActionDoesNotHaveLabel()`：
+要断言 Action 的标签正确，可以使用 `assertFormComponentActionHasLabel()` 和 `assertFormComponentActionDoesNotHaveLabel()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -383,7 +383,7 @@ it('send action has correct label', function () {
 });
 ```
 
-要断言 Action 按钮的图标正确显示，可以使用  `assertFormComponentActionHasIcon()` 或 `assertFormComponentActionDoesNotHaveIcon()`：
+要断言 Action 按钮的图标正确显示，可以使用 `assertFormComponentActionHasIcon()` 或 `assertFormComponentActionDoesNotHaveIcon()`：
 
 ```php
 use function Pest\Livewire\livewire;
@@ -400,7 +400,7 @@ it('when enabled the send button has correct icon', function () {
 });
 ```
 
-要断言 Action 按钮的颜色正确显示，可以使用  `assertFormComponentActionHasColor()` 或 `assertFormComponentActionDoesNotHaveColor()`：
+要断言 Action 按钮的颜色正确显示，可以使用 `assertFormComponentActionHasColor()` 或 `assertFormComponentActionDoesNotHaveColor()`：
 
 ```php
 use function Pest\Livewire\livewire;

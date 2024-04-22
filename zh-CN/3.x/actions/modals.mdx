@@ -325,7 +325,7 @@ Action::make('updateAuthor')
 
 ## 修改模态框宽度
 
-使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `ExtraSmall`, `Small`, `Medium`, `Large`, `ExtraLarge`, `TwoExtraLarge`, `ThreeExtraLarge`, `FourExtraLarge`, `FiveExtraLarge`, `SixExtraLarge`, `SevenExtraLarge`, `Screen`：
+使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Screen`：
 
 ```php
 Action::make('updateAuthor')
@@ -438,7 +438,7 @@ Action::make('edit')
 
 现在，编辑模态框的 Footer 中有一个 "Delete" 按钮，点击时会打开确认模态框。该 Action 完全独立于 `edit` Action，点击时不会运行 `edit` Action。
 
-本例中， 如果 `delete` Action 运行了，你可能希望取消 `edit` Aaction。为此，你可以使用 `cancelParentActions()` 方法：
+本例中， 如果 `delete` Action 运行了，你可能希望取消 `edit` Action。为此，你可以使用 `cancelParentActions()` 方法：
 
 ```php
 Action::make('delete')

@@ -13,9 +13,6 @@ title: 从 v2.x 升级
 
 请在升级到 Livewire v3 前先升级 Filament。升级 Livewire 说明请查看[此处](https://livewire.laravel.com/docs/upgrading)。
 
-> **Livewire v3 最近发布了!**<br />
-> Livewire 团队在使其稳定方面做得很好，不过它是完全重写 Livewire v2。你可能会碰到问题，因此，我们建议在将 Filament v3 使用到生产环境之前对应用进行全面的测试。
-
 ## 自动升级
 
 升级应用的最简单方式是，运行自动升级脚本。该脚本会自动升级应用到 Filament 的最新版本，并修改你的代码，处理大多数破坏性更新。
@@ -94,7 +91,7 @@ Filament v2 的 `secondary` 在许多组件中是灰色。所有 `secondary` 的
 - `Closure $get` 替换为 `\Filament\Forms\Get $get`
 - `Closure $set` 替换为 `\Filament\Forms\Set $set`
 
-#### `TextInput` masks now use Alpine.js' masking package
+#### `TextInput` masks 现在使用 Alpine.js' masking 包
 
 Filament v2 拥有一个流畅的 mask 对象语法，用于管理输入遮罩。在 v3 中，你可以使用 Alpin.js 的 masking 语法替代。更多详情请查看[输入遮罩文档](fields/text-input#input-masking)。
 

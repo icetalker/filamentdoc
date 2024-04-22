@@ -246,9 +246,9 @@ class CreatePost extends Component implements Forms\Contracts\HasForms
 
 ## 注册模型
 
-你可以给表单注册一个模型。表单构造器可以用这个模型解锁DX特性。如：
+你可以给表单注册一个模型。表单构造器可以用这个模型解锁 DX 特性。如：
 - 当使用像 `exists` 和 `unique` 这样的数据库验证规则时，会自动检索数据库名
-- 当使用像 `Select`、`Repeater`、`SpatieMediaLibraryFileUpload`、或 `SpatieTagsInput` 这样的字段控件时，保存表单时会自动将关联同时附加到模型中。
+- 当使用像 `Select`、`Repeater`、`SpatieMediaLibraryFileUpload` 或 `SpatieTagsInput` 这样的字段控件时，保存表单时会自动将关联同时附加到模型中。
 
 使用 `getFormModel()` 将模型实例作为参数到表单中:
 

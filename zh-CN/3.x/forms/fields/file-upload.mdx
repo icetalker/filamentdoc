@@ -81,7 +81,7 @@ FileUpload::make('attachment')
 
 ### 生成自定义文件名
 
-使用 `getUploadedFileNameForStorageUsing()` 方法，你可以完全自定义文件名的生成方式，并基于上传的文件 `Sfile` 在闭包中返回字符串：
+使用 `getUploadedFileNameForStorageUsing()` 方法，你可以完全自定义文件名的生成方式，并基于上传的文件 `$file` 在闭包中返回字符串：
 
 ```php
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -105,7 +105,7 @@ FileUpload::make('attachments')
     ->storeFileNamesIn('attachment_file_names')
 ```
 
-`attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [cast] 添加到该 Eloquent 模型属性中。
+`attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [casts] 添加到该 Eloquent 模型属性中。
 
 ## 头像模式
 

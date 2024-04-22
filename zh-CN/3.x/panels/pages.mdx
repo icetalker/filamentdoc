@@ -18,7 +18,7 @@ php artisan make:filament-page Settings
 
 该命令会生成两个文件 - 一个位于Filament目录的 `/Pages` 文件夹中的页面类，以及一个位于 Filament 视图目录的 `/pages` 文件夹中的视图文件。
 
-页面类是全页 [Livewire](https://laravel-livewire.com)组件，带有一些你可以在面板中使用的额外功能。
+页面类是全页 [Livewire](https://laravel-livewire.com) 组件，带有一些你可以在面板中使用的额外功能。
 
 ## 授权
 
@@ -200,7 +200,7 @@ public function getTitle(): string | Htmlable
 
 ## 自定义页面导航标签
 
-默认情况下，Filament 使用页面的 [title](#自定义页面标题)作为器[导航](navigation)项标签。你可以在页面类中定义 `$navigationLabel` 属性重写：
+默认情况下，Filament 使用页面的 [title](#自定义页面标题) 作为其[导航](navigation)项标签。你可以在页面类中定义 `$navigationLabel` 属性重写：
 
 ```php
 protected static ?string $navigationLabel = 'Custom Navigation Label';
@@ -217,7 +217,7 @@ public static function getNavigationLabel(): string
 
 ## 自定义页面 URL
 
-默认情况下，Filament 会为基于页面的名称为页面生成 URL (slug)。你可以在页面类中定义 `$slug` 属性进行重写：
+默认情况下，Filament 会为基于页面的名称为页面生成 URL(slug)。你可以在页面类中定义 `$slug` 属性进行重写：
 
 ```php
 protected static ?string $slug = 'custom-url-slug';

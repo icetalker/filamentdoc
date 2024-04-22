@@ -124,8 +124,7 @@ FilamentAsset::register([
 
 ### 使用 URL 注册 CSS 文件
 
-如果你想使用 URL 注册 CSS 文件，也是可行的。这些资源会像平常那样在每个页面中加载，不过运行 `php artisan filament:assets` 命令时，不会被复制到 `/public` 目录中。
-这对于从 CDN 中注册外部样式表或已经直接编译到 `/public` 目录的样式表很有用：
+如果你想使用 URL 注册 CSS 文件，也是可行的。这些资源会像平常那样在每个页面中加载，不过运行 `php artisan filament:assets` 命令时，不会被复制到 `/public` 目录中。这对于从 CDN 中注册外部样式表或已经直接编译到 `/public` 目录的样式表很有用：
 
 ```php
 use Filament\Support\Assets\Css;
@@ -186,17 +185,15 @@ FilamentAsset::register([
 </div>
 ```
 
-为避免 CSS 文件自动加载，你可以对 `FilamentAsset::register()` 调用进行包装，检查控制台是否需要这些资源。如果控制台对其有请求，可以猜想用户正在发布资源而非真正请求：
+为避免 CSS 文件自动加载，你可以使用 `loadedOnRequest()` 方法：
 
 ```php
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 
-if (app()->runningInConsole()) {
-    FilamentAsset::register([
-        Js::make('custom-script', __DIR__ . '/../../resources/js/custom.js'),
-    ]);
-}
+FilamentAsset::register([
+    Js::make('custom-script', __DIR__ . '/../../resources/js/custom.js')->loadedOnRequest(),
+]);
 ```
 
 如果你的 JavaScript 文件要[注册到插件](#为插件注册资源)，你必须在 `FilamentAsset::getScriptSrc()` 方法中将插件包作为第二个参数传入：
@@ -365,8 +362,7 @@ window.filamentData.user.name // 'Dan Harrin'
 
 ### 使用 URL 注册 JavaScript 文件
 
-如果你想使用 URL 注册一个 JavaScript 文件，也是可行的。这些资源会像平常那样在每个页面中加载，不过运行 `php artisan filament:assets` 命令时，不会被复制到 `/public` 目录中。
-这对于从 CDN 中注册外部及脚本或已经直接编译到 `/public` 目录的脚本很有用：
+如果你想使用 URL 注册一个 JavaScript 文件，也是可行的。这些资源会像平常那样在每个页面中加载，不过运行 `php artisan filament:assets` 命令时，不会被复制到 `/public` 目录中。这对于从 CDN 中注册外部及脚本或已经直接编译到 `/public` 目录的脚本很有用：
 
 ```php
 use Filament\Support\Assets\Js;

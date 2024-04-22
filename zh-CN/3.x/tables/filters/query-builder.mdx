@@ -143,7 +143,7 @@ NumberConstraint::make('ordersItemCount')
 - Is maximum - 筛选小于或等于所搜索数字的字段
 - Is greater than - 筛选大于所搜索数字的字段
 - Equals - 筛选等于所搜索数字的字段
-- Does not equal - 筛选不等于所搜索数字的字段filters a column to not equal the search number
+- Does not equal - 筛选不等于所搜索数字的字段
 - Is filled - 筛选不为空的字段
 - Is blank - 筛选空值字段
 
@@ -479,7 +479,7 @@ QueryBuilder::make()
 - 可以传递整型比如 `constraintPickerColumns(2)`。该整数为 `lg` 临界点及以上宽度时的 columns 数。比此小的设备，只会占 1 列。 
 - 你可以传递一个数组，其中键是临界点(breakpoint)、而值为列数。比如，`constraintPickerColumns(['md' => 2, 'xl' => 4])` 将会在中等(medium)设备中创建 2 列布局，在超大设备中，创建 4 列布局。而较小(smaller)的设备的默认临界点使用 1 列布局，除非使用了 `default` 数组键。
 
-临界点(`sm`, `md`, `lg`, `xl`, `2xl`)是由 Tailwind 定义，可以在 [Tailwind 文档](https://tailwindcss.com/docs/responsive-design#overview)中查看。
+临界点(`sm`、`md`、`lg`、`xl`、`2xl`)是由 Tailwind 定义，可以在 [Tailwind 文档](https://tailwindcss.com/docs/responsive-design#overview)中查看。
 
 ### 增加约束选择器的宽度
 

@@ -253,7 +253,7 @@ use Filament\Actions\Exports\ExportColumn;
 ExportColumn::make('users_exists')->exists('users')
 ```
 
-本例中，`users` 是用于检测是否存在的关联名。列名必须是 `users_exists`，`avg()`, `max()`, `min()` and `sum()`。
+本例中，`users` 是用于检测是否存在的关联名。列名必须是 `users_exists`、`avg()`、`max()`、`min()` 和 `sum()`。
 
 如果你想在计算之前设置关联的查询范围，你可以传递数组到该方法中，其中键为关联名、而值是用来设置 Eloquent 查询范围的函数：
 

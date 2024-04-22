@@ -327,7 +327,7 @@ Forms\Components\Select::make('owner_id')
 - `email()` 确保只有有效的邮箱地址可以输入到该字段。同时它会改变移动端的键盘布局。
 - `tel()` 确保只有有效的电话号码可以输入到该字段中。同时会改变移动端的键盘布局。
 
-这个表单应该已经生效了！你可以尝试创建新患者及它们的Owner。创建完成后，页面会跳转到编辑页，你可以在此更新详情。
+这个表单应该已经生效了！你可以尝试创建新患者及它们的 Owner。创建完成后，页面会跳转到编辑页，你可以在此更新详情。
 
 ### 设置患者表格
 
@@ -644,7 +644,7 @@ public function table(Table $table): Table
 
 ## 介绍 Widget
 
-Filament Widget 是一个在仪表盘上展示信息的组件，特别是统计信息。Wideget 通常被添加到面板中默认的[仪表盘](../panels/dashboard)中，不过你也可以将其添加到任何页面，包括资源页。Filament 自带了一些内置 Widget，比如[统计 Widget](../widgets/stats-overview)用以在简单的卡片中渲染重要的统计信息；[图表 widget](../widgets/charts)用来渲染直观的图表；[表格 Widget](../panels/dashboard#表格-widget) 允许你内嵌表格构造器。
+Filament Widget 是一个在仪表盘上展示信息的组件，特别是统计信息。Wideget 通常被添加到面板中默认的[仪表盘](../panels/dashboard)中，不过你也可以将其添加到任何页面，包括资源页。Filament 自带了一些内置 Widget，比如，[统计 Widget](../widgets/stats-overview)用以在简单的卡片中渲染重要的统计信息；[图表 widget](../widgets/charts)用来渲染直观的图表；[表格 Widget](../panels/dashboard#表格-widget) 允许你内嵌表格构造器。
 
 让我们为默认的仪表盘页添加一个统计 Widget，使之包含每个患者类型的统计信息以及一个随时间推进的可视化治疗图表。
 
