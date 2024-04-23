@@ -331,6 +331,17 @@ AttachAction::make()
     ->recordSelectSearchColumns(['title', 'description'])
 ```
 
+### 附加多个记录
+
+`AttachAction` 组件的 `multiple()` 方法允许你选择多个值：
+
+```php
+use Filament\Tables\Actions\AttachAction;
+
+AttachAction::make()
+    ->multiple()
+```
+
 ### 自定义附加模态框的 Select 字段
 
 你可以传入一个函数到 `recordSelect()` 方法，自定义附加之中使用的 Select 字段对象：
@@ -432,6 +443,17 @@ use Filament\Tables\Actions\AssociateAction;
 
 AssociateAction::make()
     ->recordSelectSearchColumns(['title', 'description'])
+```
+
+### 关联多条记录
+
+`AssociateAction` 组件的 `multiple()` 方法允许你选择多个值：
+
+```php
+use Filament\Tables\Actions\AssociateAction;
+
+AssociateAction::make()
+    ->multiple()
 ```
 
 ### 自定义关联模态框的 Select 字段
@@ -634,6 +656,30 @@ public static function canViewForRecord(Model $ownerRecord, string $pageClass): 
 public function hasCombinedRelationManagerTabsWithContent(): bool
 {
     return true;
+}
+```
+
+### 为表单选项卡设置图标
+
+请在编辑页或查看页类中，重写 `getContentTabIcon()` 方法：
+
+```php
+public function getContentTabIcon(): ?string
+{
+    return 'heroicon-m-cog';
+}
+```
+
+### 设置表单选项卡的位置
+
+默认情况下，表单选项卡在关联选项卡之前渲染。要在其之后渲染，你可以在编辑页或查看页类中重写 `getContentTabPosition()` 方法：
+
+```php
+use Filament\Resources\Pages\ContentTabPosition;
+
+public function getContentTabPosition(): ?ContentTabPosition
+{
+    return ContentTabPosition::After;
 }
 ```
 

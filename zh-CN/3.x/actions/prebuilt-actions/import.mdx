@@ -11,8 +11,14 @@ Filament v3.1 引入了一个可以从 CSV 导入数据的预制 Action。点击
 该特性使用了[批量队列作业](https://laravel.com/docs/queues#job-batching)及[数据库通知](../../notifications/database-notifications#概述)，因此你需要发布这些迁移到 Laravel 中。同时，也需要发布 Filament 用于存储导入数据的迁移表：
 
 ```bash
+# Laravel 11 and higher
+php artisan make:queue-batches-table
+php artisan make:notifications-table
+
+# Laravel 10
 php artisan queue:batches-table
 php artisan notifications:table
+
 php artisan vendor:publish --tag=filament-actions-migrations
 
 php artisan migrate

@@ -180,6 +180,37 @@ class EditUser extends EditRecord
 
 此外，如果你在模态框操作中编辑记录，请查阅 [Action 文档](../../actions/prebuilt-actions/edit#生命周期钩子)。
 
+## 单独保存表单的一部分
+
+你可能希望允许用户用户独立于表单的其余部分来保存表单的一部分。实现该功能的其中一种方式是，[在头部和尾部中使用 Section Action](../../forms/layout/section#adding-actions-to-the-sections-header-or-footer)。在 `action()` 方法中，你可以调用 `saveFormComponentOnly()`，将你想要保存的 `Section` 组件传入其中：
+
+```php
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Section;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
+
+Section::make('Rate limiting')
+    ->schema([
+        // ...
+    ])
+    ->footerActions([
+        fn (string $operation): Action => Action::make('save')
+            ->action(function (Section $component, EditRecord $livewire) {
+                $livewire->saveFormComponentOnly($component);
+                
+                Notification::make()
+                    ->title('Rate limiting saved')
+                    ->body('The rate limiting settings have been saved successfully.')
+                    ->success()
+                    ->send();
+            })
+            ->visible($operation === 'edit'),
+    ])
+```
+
+可以使用 `$operation` helper，以确保该 Action 只有在表单编辑时可见。
+
 ## 停止保存处理过程
 
 你可以随时在生命周期钩子内或者 mutation 方法内调用 `$this->halt()`， 停止整个保存处理过程：
@@ -273,6 +304,29 @@ class EditUser extends EditRecord
 ```
 
 要查看 Action 的整个 API，请访问[页面部分](../pages#添加-action-到页面)。
+
+### 添加保存 Action 按钮到头部
+
+通过重写 `getHeaderActions()` 并使用 `getSaveFormAction()`，可以将保存按钮移动到页面的头部。你需要将 `formId()` 传递给该 Action，以指定该 Action 要提交的表单对应的 `form` 的 ID，也就是页面视图中使用的 `<form>` ID：
+
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        $this->getSaveFormAction()
+            ->formId('form'),
+    ];
+}
+```
+
+重写 `getFormActions()` 方法，使之返回空数组，可以移除表单中的所有 Action：
+
+```php
+protected function getFormActions(): array
+{
+    return [];
+}
+```
 
 ## 创建另一个编辑页面
 

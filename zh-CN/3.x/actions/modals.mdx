@@ -328,6 +328,8 @@ Action::make('updateAuthor')
 使用 `modalWidth()` 方法，你可以修改模态框宽度。宽度选项对应于 [Tailwind 的 max-width 大小](https://tailwindcss.com/docs/max-width)。可用选项包括 `ExtraSmall`、`Small`、`Medium`、`Large`、`ExtraLarge`、`TwoExtraLarge`、`ThreeExtraLarge`、`FourExtraLarge`、`FiveExtraLarge`、`SixExtraLarge`、`SevenExtraLarge`、`Screen`：
 
 ```php
+use Filament\Support\Enums\MaxWidth;
+
 Action::make('updateAuthor')
     ->form([
         // ...
@@ -551,4 +553,13 @@ Action::make('create')
     })
     ->modalHidden(fn (): bool => $this->role !== 'admin')
     ->modalContent(view('filament.pages.actions.create'))
+```
+
+## 向模态框窗口添加额外属性
+
+使用 `extraModalWindowAttributes()`，你也可以将额外的 HTML 属性传递给模态框窗口：
+
+```php
+Action::make('updateAuthor')
+    ->extraModalWindowAttributes(['class' => 'update-author-modal'])
 ```

@@ -164,7 +164,7 @@ use Filament\Notifications\Notification;
 
 protected function beforeCreate(): void
 {
-    if (! $this->getRecord()->team->subscribed()) {
+    if (! auth()->user()->team->subscribed()) {
         Notification::make()
             ->warning()
             ->title('You don\'t have an active subscription!')
@@ -329,6 +329,103 @@ class CreateCategory extends CreateRecord
             // ...
         ];
     }
+}
+```
+
+## 导入资源记录
+
+Filament 引入了 `ImportAction`，你可以将其添加到[列表页](listing-records)的 `getHeaderActions()` 中。它允许用户上传 CSV 数据将其导入到资源中：
+
+```php
+use App\Filament\Imports\ProductImporter;
+use Filament\Actions;
+
+protected function getHeaderActions(): array
+{
+    return [
+        Actions\ImportAction::make()
+            ->importer(ProductImporter::class),
+        Actions\CreateAction::make(),
+    ];
+}
+```
+
+需要[创建](../../actions/prebuilt-actions/import#创建-importer)导入类，以告知 Filament 如何导入 CSV 的每个行。你可以在 [Action 文档](../../actions/prebuilt-actions/import)中了解 `ImportAction` 的更多详情。
+
+## 自定义 Action
+
+"Actions" 是显示在页面上的按钮，允许用户在页面上运行 Livewire 方法或者访问 URL。
+
+在资源页面中，Action 通常处于两个地方：页面的右上角以及表单下面。
+
+比如，你可以在创建页面的头部添加新的按钮 Action：
+
+```php
+use App\Filament\Imports\UserImporter;
+use Filament\Actions;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateUser extends CreateRecord
+{
+    // ...
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\ImportAction::make()
+                ->importer(UserImporter::class),
+        ];
+    }
+}
+```
+
+或者，在表单的"新建"按钮旁边添加新按钮：
+
+```php
+use Filament\Actions\Action;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateUser extends CreateRecord
+{
+    // ...
+
+    protected function getFormActions(): array
+    {
+        return [
+            ...parent::getFormActions(),
+            Action::make('close')->action('createAndClose'),
+        ];
+    }
+
+    public function createAndClose(): void
+    {
+        // ...
+    }
+}
+```
+
+要查看整个 Action API，请参考[页面章节](../pages#添加-actions-到页面)。
+
+### 添加新建 Action 按钮到头部
+
+通过重写 `getHeaderActions()` 并使用 `getCreateFormAction()`，可以将新建按钮移动到页面的头部。你需要将 `formId()` 传递给该 Action，以指定该 Action 要提交的表单对应的 `form` 的 ID，也就是页面视图中使用的 `<form>` ID：
+
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        $this->getCreateFormAction()
+            ->formId('form'),
+    ];
+}
+```
+
+重写 `getFormActions()` 方法，使之返回空数组，可以移除表单中的所有 Action：
+
+```php
+protected function getFormActions(): array
+{
+    return [];
 }
 ```
 

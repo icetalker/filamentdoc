@@ -14,10 +14,11 @@ Filament 允许你在框架视图的多个节点渲染 Blade 模板内容。这�
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 
 FilamentView::registerRenderHook(
-    'panels::body.start',
+    PanelsRenderHook::BODY_START,
     fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
 );
 ```
@@ -26,10 +27,11 @@ FilamentView::registerRenderHook(
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 
 FilamentView::registerRenderHook(
-    'panels::body.start',
+    PanelsRenderHook::BODY_START,
     fn (): View => view('impersonation-banner'),
 );
 ```
@@ -38,63 +40,106 @@ FilamentView::registerRenderHook(
 
 ### 面板渲染钩子
 
-- `panels::auth.login.form.after` - 登录表单之后
-- `panels::auth.login.form.before` - 登录表单之前
-- `panels::auth.password-reset.request.form.after` - 密码重置请求表单之后
-- `panels::auth.password-reset.request.form.before` - 密码重置请求表单之前
-- `panels::auth.password-reset.reset.form.after` - 密码重置表单之后
-- `panels::auth.password-reset.reset.form.before` - 密码重置表单之前
-- `panels::auth.register.form.after` - 注册表单之后
-- `panels::auth.register.form.before` - 注册表单之前
-- `panels::body.start` - `<body>` 之后
-- `panels::body.end` - `</body>` 之前
-- `panels::content.end` - 页面内容之后，在 `<main>` 里面
-- `panels::content.start` - 页面内容之前，在 `<main>` 里
-- `panels::footer` - 页面 footer
-- `panels::global-search.end` - [全局搜索](../panels/resources/global-search) 容器尾部
-- `panels::global-search.after` - [全局搜索](../panels/resources/global-search)容器之后，在顶部栏内
-- `panels::global-search.before` - [全局搜索](../panels/resources/global-search)容器之前，在顶部栏内
-- `panels::global-search.start` - [全局搜索](../panels/resources/global-search) 容器开始处
-- `panels::head.end` - `</head>` 之前
-- `panels::head.start` - `<head>` 之后
-- `panels::page.end` - 页面内容容器结尾，也[可将范围锁定到](#渲染钩子作用域)页面或者资源类
-- `panels::page.footer-widgets.after` - After the page footer widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::page.footer-widgets.before` - Before the page footer widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::page.header-widgets.after` - After the page header widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::page.header-widgets.before` - Before the page header widgets, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::page.start` - 页面内容容器开始处，也[可将范围锁定到](#渲染钩子作用域)页面或者资源类
-- `panels::resource.pages.list-records.table.after` - After the resource table, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::resource.pages.list-records.table.before` - Before the resource table, also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::resource.pages.list-records.tabs.end` - The end of the filter tabs (after the last tab), also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::resource.pages.list-records.tabs.start` - The start of the filter tabs (before the first tab), also [can be scoped](#scoping-render-hooks) to the page or resource class
-- `panels::resource.relation-manager.after` - After the relation manager table, also [can be scoped](#scoping-render-hooks) to the page or relation manager class
-- `panels::resource.relation-manager.before` - Before the relation manager table, also [can be scoped](#scoping-render-hooks) to the page or relation manager class
-- `panels::scripts.after` - Scripts 脚本定义之后
-- `panels::scripts.before` - Scripts 脚本定义之前
-- `panels::sidebar.nav.end` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之前
-- `panels::sidebar.nav.start` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之后
-- `panels::sidebar.footer` - Pinned to the bottom of the sidebar, below the content
-- `panels::styles.after` - 样式定义之后
-- `panels::styles.before` - 样式定义之前
-- `panels::tenant-menu.after` - [租户菜单](../panels/tenancy#自定义租户菜单)之后
-- `panels::tenant-menu.before` - [租户菜单](../panels/tenancy#自定义租户菜单)之前
-- `panels::topbar.end` - End of the topbar container
-- `panels::topbar.start` - Start of the topbar container
-- `panels::user-menu.after` - [用户菜单](../panels/navigation#自定义用户菜单)之后
-- `panels::user-menu.before` - [用户菜单](../panels/navigation#自定义用户菜单)之前
-- `panels::user-menu.profile.after` - [用户菜单](../panels/navigation#自定义用户菜单)的 Profile 项之后
-- `panels::user-menu.profile.before` - [用户菜单](../panels/navigation#自定义用户菜单)的 Profile 项之前
+```php
+    use Filament\View\PanelsRenderHook;
+```
+
+- `PanelsRenderHook::AUTH_LOGIN_FORM_AFTER` - 登录表单之后
+- `PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE` - 登录表单之前
+- `PanelsRenderHook::AUTH_PASSWORD_RESET_REQUEST_FORM_AFTER` - 密码重置请求表单之后
+- `PanelsRenderHook::AUTH_PASSWORD_RESET_REQUEST_FORM_BEFORE` - 密码重置请求表单之前
+- `PanelsRenderHook::AUTH_PASSWORD_RESET_RESET_FORM_AFTER` - 密码重置表单之后
+- `PanelsRenderHook::AUTH_PASSWORD_RESET_RESET_FORM_BEFORE` - 密码重置表单之前
+- `PanelsRenderHook::AUTH_REGISTER_FORM_AFTER` - 注册表单之后
+- `PanelsRenderHook::AUTH_REGISTER_FORM_BEFORE` - 注册表单之前
+- `PanelsRenderHook::BODY_END` - `<body>` 之后
+- `PanelsRenderHook::BODY_START` - `</body>` 之前
+- `PanelsRenderHook::CONTENT_END` -页面内容之后，在 `<main>` 里面
+- `PanelsRenderHook::CONTENT_START` - 页面内容之前，在 `<main>` 里
+- `PanelsRenderHook::FOOTER` - 页面 footer
+- `PanelsRenderHook::GLOBAL_SEARCH_AFTER` - [全局搜索](../panels/resources/global-search)容器之后，在顶部栏内
+- `PanelsRenderHook::GLOBAL_SEARCH_BEFORE` - [全局搜索](../panels/resources/global-search)容器之前，在顶部栏内
+- `PanelsRenderHook::GLOBAL_SEARCH_END` - [全局搜索](../panels/resources/global-search) 容器尾部
+- `PanelsRenderHook::GLOBAL_SEARCH_START` - [全局搜索](../panels/resources/global-search) 容器开始处
+- `PanelsRenderHook::HEAD_END` - </head>` 之前
+- `PanelsRenderHook::HEAD_START` - `<head>` 之后
+- `PanelsRenderHook::PAGE_END` - 页面内容容器结尾，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_FOOTER_WIDGETS_AFTER` - 在页面 Footer Widget 之后，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_FOOTER_WIDGETS_BEFORE` - 在页面 Footer Widget 之前，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_HEADER_ACTIONS_AFTER` - 在页面头部 Action 之后，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE` - 在页面头部 Action 之前，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_HEADER_WIDGETS_AFTER` - 在页面头部 Widget 之后，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_HEADER_WIDGETS_BEFORE` - 在页面头部 Widget 之前，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::PAGE_START` - 页面内容容器开始处，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_LIST_RECORDS_TABLE_AFTER` - 在资源表格之后，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_LIST_RECORDS_TABLE_BEFORE` - 在资源表格之前，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_LIST_RECORDS_TABS_END` - 过滤器选项卡尾部(最后一个选项卡之后)，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_LIST_RECORDS_TABS_START` - 过滤器选项卡开始处(第一个选项卡之前)，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_MANAGE_RELATED_RECORDS_TABLE_AFTER` - 在关联管理器表格之后，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_PAGES_MANAGE_RELATED_RECORDS_TABLE_BEFORE` - 在关联管理器表格之前，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_RELATION_MANAGER_AFTER` - 在关联管理器表格之后，也[可将范围锁定到](#渲染钩子作用域)页面类或关联管理器类
+- `PanelsRenderHook::RESOURCE_RELATION_MANAGER_BEFORE` - 在关联管理器表格之前，也[可将范围锁定到](#渲染钩子作用域)页面类或关联管理器类
+- `PanelsRenderHook::RESOURCE_TABS_END` -  资源选项卡的末尾(最后一个选项卡之后)，也[可将范围锁定到](#渲染钩子作用域)页面类或资源类
+- `PanelsRenderHook::RESOURCE_TABS_START` - 资源选项卡的起始处(第一个选项卡之前)，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
+- `PanelsRenderHook::SCRIPTS_AFTER` - Scripts 脚本定义之后
+- `PanelsRenderHook::SCRIPTS_BEFORE` - Scripts 脚本定义之前
+- `PanelsRenderHook::SIDEBAR_NAV_END` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之前
+- `PanelsRenderHook::SIDEBAR_NAV_START` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之后
+- `PanelsRenderHook::SIDEBAR_FOOTER` - 固定在侧边栏的底部，在内容下方
+- `PanelsRenderHook::STYLES_AFTER` - 样式定义之后
+- `PanelsRenderHook::STYLES_BEFORE` - 样式定义之前
+- `PanelsRenderHook::TENANT_MENU_AFTER` - [租户菜单](../panels/tenancy#自定义租户菜单)之后
+- `PanelsRenderHook::TENANT_MENU_BEFORE` - [租户菜单](../panels/tenancy#自定义租户菜单)之前
+- `PanelsRenderHook::TOPBAR_AFTER` - Topbar 容器之下
+- `PanelsRenderHook::TOPBAR_BEFORE` - Topbar 容器之上
+- `PanelsRenderHook::TOPBAR_END` - Topbar 容器末尾
+- `PanelsRenderHook::TOPBAR_START` - Topbar 容器起始处
+- `PanelsRenderHook::USER_MENU_AFTER` - [用户菜单](../panels/navigation#自定义用户菜单)之后
+- `PanelsRenderHook::USER_MENU_BEFORE` - [用户菜单](../panels/navigation#自定义用户菜单)之前
+- `PanelsRenderHook::USER_MENU_PROFILE_AFTER` - [用户菜单](../panels/navigation#自定义用户菜单)的 Profile 项之后
+- `PanelsRenderHook::USER_MENU_PROFILE_BEFORE` - [用户菜单](../panels/navigation#自定义用户菜单)的 Profile 项之前
+
+### 表格构造器渲染钩子
+
+所有这些渲染钩子可以[将范围锁定到](#渲染钩子作用域)任何的表格 Livewire 组件类中。使用面板构造器使，这些列可以是资源的列表或管理页面，或关联管理器。表格 Widget 也是 Livewire 组件类。
+
+```php
+    use Filament\Tables\View\TablesRenderHook;
+```
+
+- `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_AFTER` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
+- `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_BEFORE` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
+- `TablesRenderHook::TOOLBAR_END` - 工具栏的末尾
+- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER` - After the [grouping](../tables/grouping) selector
+- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE` - Before the [grouping](../tables/grouping) selector
+- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_AFTER` - 在 [reorder](../tables/advanced#reordering-records) 触发器之后
+- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_BEFORE` - 在 [reorder](../tables/advanced#reordering-records) 触发器之前
+- `TablesRenderHook::TOOLBAR_SEARCH_AFTER` - [搜索](../tables/getting-started#使列字段可排序和可搜索)容器之后
+- `TablesRenderHook::TOOLBAR_SEARCH_BEFORE` - [搜索](../tables/getting-started#m使列字段可排序和可搜索)容器之前
+- `TablesRenderHook::TOOLBAR_START` - 工具栏开始处
+- `TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_AFTER` - After the [toggle columns](../tables/columns/getting-started#toggling-column-visibility) trigger
+- `TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_BEFORE` - Before the [toggle columns](../tables/columns/getting-started#toggling-column-visibility) trigger
+
+### Widgets 渲染钩子
+
+```php
+    use Filament\Widgets\View\WidgetsRenderHook;
+```
+
+- `WidgetsRenderHook::TABLE_WIDGET_END` -  [表格 widget](../panels/dashboard#表格-widget)的末尾，在表格之后，也[可将范围锁定到](#渲染钩子作用域)表格 Widget 类之后
+- `WidgetsRenderHook::TABLE_WIDGET_START` - [表格 widget](../panels/dashboard#表格-widget)的起始处，在表格之前，也[可将范围锁定到](#渲染钩子作用域)表格 Widget 类之后
 
 ## 渲染钩子作用域
 
-有些渲染钩子可以限定作用范围，它让你可以只在某个特定页面或者 Livewire 组件中渲染。比如，你可能只想在一个页面中注册钩子。为此，你可以将页面类或者组件作为第二个参数传入到 `registerRenderHook()`：
+有些渲染钩子可以限定作用范围，它让你可以只在某个特定页面或 Livewire 组件中渲染。比如，你可能只想在一个页面中注册钩子。为此，你可以将页面类或组件作为第二个参数传入到 `registerRenderHook()`：
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 
 FilamentView::registerRenderHook(
-    'panels::page.start',
+    PanelsRenderHook::PAGE_START,
     fn (): View => view('warning-banner'),
     scopes: \App\Filament\Resources\UserResource\Pages\EditUser::class,
 );
@@ -104,9 +149,10 @@ FilamentView::registerRenderHook(
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 
 FilamentView::registerRenderHook(
-    'panels::page.start',
+    PanelsRenderHook::PAGE_START,
     fn (): View => view('warning-banner'),
     scopes: [
         \App\Filament\Resources\UserResource\Pages\CreateUser::class,
@@ -119,9 +165,10 @@ FilamentView::registerRenderHook(
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 
 FilamentView::registerRenderHook(
-    'panels::page.start',
+    PanelsRenderHook::PAGE_START,
     fn (): View => view('warning-banner'),
     scopes: \App\Filament\Resources\UserResource::class,
 );
@@ -133,9 +180,10 @@ FilamentView::registerRenderHook(
 
 ```php
 use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 
 FilamentView::registerRenderHook(
-    'panels::page.start',
+    PanelsRenderHook::PAGE_START,
     fn (array $scopes): View => view('warning-banner', ['scopes' => $scopes]),
     scopes: \App\Filament\Resources\UserResource::class,
 );
@@ -146,17 +194,17 @@ FilamentView::registerRenderHook(
 对插件开发者而言，将渲染钩子暴露给插件用户或许有用。你无需在任何地方注册这些钩子，只需在 Blade 中像这样输出：
 
 ```blade
-{{ \Filament\Support\Facades\FilamentView::renderHook('panels::body.start') }}
+{{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_START) }}
 ```
 
 要限定你的渲染钩子的作用域，你可以将其作为第二个参数传给 `renderHook()`。比如，如果钩子在 Livewire 组件内部，你可以使用 `static::class` 传递该组件类：
 
 ```blade
-{{ \Filament\Support\Facades\FilamentView::renderHook('panels::page.start', scopes: $this->getRenderHookScopes()) }}
+{{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_START, scopes: $this->getRenderHookScopes()) }}
 ```
 
 你也可以传递多个 scopes 作为数组，所有匹配该 scopes 的渲染钩子都会被渲染：
 
 ```blade
-{{ \Filament\Support\Facades\FilamentView::renderHook('panels::page.start', scopes: [static::class, \App\Filament\Resources\UserResource::class]) }}
+{{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_START, scopes: [static::class, \App\Filament\Resources\UserResource::class]) }}
 ```

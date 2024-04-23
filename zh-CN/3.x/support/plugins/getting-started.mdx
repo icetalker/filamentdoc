@@ -29,7 +29,7 @@ title: 开始
 
 ### Plugin 对象
 
-Filament v3 引入了一个 Plugin 对象，用于配置插件。该对象是一个简单的 PHP 类继承了 `Filament\Support\Plugin` 类。此类用于配置插件，而且是插件的主入口。也用作注册插件中可能使用的资源及图标。
+Filament v3 引入了一个 Plugin 对象的概念，用于配置插件。此对象是一个简单的 PHP 类。它实现了 `Filament\Contracts\Plugin` 接口。该类用于配置插件，而且是插件的主入口。也用作注册插件中可能使用的资源及图标。
 
 虽然 plugin 对象十分有用，创建该对象却不是必须的。你仍然可以不使用 plugin 对象来创建插件，参考[创建面板插件教程](/docs/zh-CN/3.x/support/plugins/build-a-panel-plugin)。
 

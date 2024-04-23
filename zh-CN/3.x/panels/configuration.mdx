@@ -202,8 +202,6 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-> 请注意：此特性不兼容 [SPA 模式](#spa-模式)。
-
 ## 启用数据库事务
 
 默认情况下，Filament 不会将操作包装到数据库事务中，而用户需要测试以确保操作包装到事物中是安全的，才能启用事务。不过，你可以使用 `databaseTransactions()` 方法，一次性为所有操作启用数据库事务：
@@ -219,11 +217,11 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-对于任何你不想包装到事务的操作，你可以使用 `databaseTransactions(false)` 方法：
+对于任何你不想包装到事务的操作，你可以使用 `databaseTransaction(false)` 方法：
 
 ```php
 CreateAction::make()
-    ->databaseTransactions(false)
+    ->databaseTransaction(false)
 ```
 
 而对于像[创建资源](resources/creating-records)和[编辑资源](resources/editing-records)这样的页面，你可以在页面类中将 `$hasDatabaseTransactions` 属性设置为 `false`：
@@ -243,11 +241,11 @@ class CreatePost extends CreateRecord
 
 你可以为特定的操作和页面选择加入数据库事务，而不是到处启用数据库事务然后选择性退出。
 
-对于 Action，你可以使用 `databaseTransactions()` 方法:
+对于 Action，你可以使用 `databaseTransaction()` 方法:
 
 ```php
 CreateAction::make()
-    ->databaseTransactions()
+    ->databaseTransaction()
 ```
 
 而对于像[创建资源](resources/creating-records)和[编辑资源](resources/editing-records)这样的页面，你可以在页面类中将 `$hasDatabaseTransactions` 属性设置为 `true`：
@@ -344,5 +342,20 @@ public function panel(Panel $panel): Panel
         ->authMiddleware([
             // ...
         ], isPersistent: true);
+}
+```
+
+## 禁用广播
+
+默认情况下，如果已在[已发布的 `config/filament.php` 配置文件](installation##发布配置)中设置了凭据，Laravel Echo 将自动连接每个面板。要在面板中禁用此自动连接，可以使用 `broadcasting(false)` 方法：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->broadcasting(false);
 }
 ```
