@@ -49,7 +49,7 @@ FileUpload::make('attachments')
     ->multiple()
 ```
 
-如果你使用 Eloquent 来保存文件 URL，请确保将 `array` [casts] 添加到对应的模型属性中：
+如果你使用 Eloquent 来保存文件 URL，请确保将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到对应的模型属性中：
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -105,7 +105,7 @@ FileUpload::make('attachments')
     ->storeFileNamesIn('attachment_file_names')
 ```
 
-`attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [casts] 添加到该 Eloquent 模型属性中。
+`attachment_file_names` 现在将会存储上传文件的原始文件名，在表单提交后将其存入到数据库中。如果通过 `multiple()` 实现多文件上传，请确保将 `array` [cast](https://laravel.com/docs/eloquent-mutators#array-and-json-casting) 添加到该 Eloquent 模型属性中。
 
 ## 头像模式
 

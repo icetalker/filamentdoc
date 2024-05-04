@@ -39,7 +39,7 @@ Action 是可以在页面中执行任务或者访问 URL 的按钮。你可以[�
 
 ### 头部 Action
 
-你也可以轻松地在任何页面的头部添加 Action，包括[资源页面]。你不需要操心添加任何内容到 Blade 模板，我们已经帮你处理了。只需在页面类的 `getHeaderActions()` 方法中返回 Action：
+你也可以轻松地在任何页面的头部添加 Action，包括[资源页面](resources/getting-started)。你不需要操心添加任何内容到 Blade 模板，我们已经帮你处理了。只需在页面类的 `getHeaderActions()` 方法中返回 Action：
 
 ```php
 use Filament\Actions\Action;
@@ -164,7 +164,7 @@ protected function getHeaderWidgets(): array
 }
 ```
 
-该属性数组被映射到 Widget 类上中的 [public Livewire 属性]：
+该属性数组被映射到 Widget 类上中的 [public Livewire 属性](https://livewire.laravel.com/docs/properties)：
 
 ```php
 use Filament\Widgets\Widget;

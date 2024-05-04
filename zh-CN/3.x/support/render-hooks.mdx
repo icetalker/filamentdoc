@@ -61,7 +61,7 @@ FilamentView::registerRenderHook(
 - `PanelsRenderHook::GLOBAL_SEARCH_BEFORE` - [全局搜索](../panels/resources/global-search)容器之前，在顶部栏内
 - `PanelsRenderHook::GLOBAL_SEARCH_END` - [全局搜索](../panels/resources/global-search) 容器尾部
 - `PanelsRenderHook::GLOBAL_SEARCH_START` - [全局搜索](../panels/resources/global-search) 容器开始处
-- `PanelsRenderHook::HEAD_END` - </head>` 之前
+- `PanelsRenderHook::HEAD_END` - `</head>` 之前
 - `PanelsRenderHook::HEAD_START` - `<head>` 之后
 - `PanelsRenderHook::PAGE_END` - 页面内容容器结尾，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
 - `PanelsRenderHook::PAGE_FOOTER_WIDGETS_AFTER` - 在页面 Footer Widget 之后，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
@@ -83,8 +83,8 @@ FilamentView::registerRenderHook(
 - `PanelsRenderHook::RESOURCE_TABS_START` - 资源选项卡的起始处(第一个选项卡之前)，也[可将范围锁定到](#渲染钩子作用域)页面或资源类
 - `PanelsRenderHook::SCRIPTS_AFTER` - Scripts 脚本定义之后
 - `PanelsRenderHook::SCRIPTS_BEFORE` - Scripts 脚本定义之前
-- `PanelsRenderHook::SIDEBAR_NAV_END` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之前
-- `PanelsRenderHook::SIDEBAR_NAV_START` - 在 [侧边栏](../panels/navigation)中，`</nav>` 之后
+- `PanelsRenderHook::SIDEBAR_NAV_END` - 在[侧边栏](../panels/navigation)中，`</nav>` 之前
+- `PanelsRenderHook::SIDEBAR_NAV_START` - 在[侧边栏](../panels/navigation)中，`</nav>` 之后
 - `PanelsRenderHook::SIDEBAR_FOOTER` - 固定在侧边栏的底部，在内容下方
 - `PanelsRenderHook::STYLES_AFTER` - 样式定义之后
 - `PanelsRenderHook::STYLES_BEFORE` - 样式定义之前
@@ -110,10 +110,10 @@ FilamentView::registerRenderHook(
 - `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_AFTER` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
 - `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_BEFORE` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
 - `TablesRenderHook::TOOLBAR_END` - 工具栏的末尾
-- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER` - After the [grouping](../tables/grouping) selector
-- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE` - Before the [grouping](../tables/grouping) selector
-- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_AFTER` - 在 [reorder](../tables/advanced#reordering-records) 触发器之后
-- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_BEFORE` - 在 [reorder](../tables/advanced#reordering-records) 触发器之前
+- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER` - 在[分组](../tables/grouping)选择器之后
+- `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE` - 再[分组](../tables/grouping)选择器之前
+- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_AFTER` - 在 [reorder](../tables/advanced#重新排序记录) 触发器之后
+- `TablesRenderHook::TOOLBAR_REORDER_TRIGGER_BEFORE` - 在 [reorder](../tables/advanced#重新排序记录) 触发器之前
 - `TablesRenderHook::TOOLBAR_SEARCH_AFTER` - [搜索](../tables/getting-started#使列字段可排序和可搜索)容器之后
 - `TablesRenderHook::TOOLBAR_SEARCH_BEFORE` - [搜索](../tables/getting-started#m使列字段可排序和可搜索)容器之前
 - `TablesRenderHook::TOOLBAR_START` - 工具栏开始处

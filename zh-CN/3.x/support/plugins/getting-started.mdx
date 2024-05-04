@@ -31,7 +31,7 @@ title: 开始
 
 Filament v3 引入了一个 Plugin 对象的概念，用于配置插件。此对象是一个简单的 PHP 类。它实现了 `Filament\Contracts\Plugin` 接口。该类用于配置插件，而且是插件的主入口。也用作注册插件中可能使用的资源及图标。
 
-虽然 plugin 对象十分有用，创建该对象却不是必须的。你仍然可以不使用 plugin 对象来创建插件，参考[创建面板插件教程](/docs/zh-CN/3.x/support/plugins/build-a-panel-plugin)。
+虽然 plugin 对象十分有用，创建该对象却不是必须的。你仍然可以不使用 plugin 对象来创建插件，参考[创建面板插件教程](build-a-panel-plugin)。
 
 > **Info** 
 > Plugin 对象只用于 Panel Providers。独立插件不使用该对象。所有独立插件的配置应该在插件的服务提供者中处理。 
@@ -76,8 +76,8 @@ class MyPluginServiceProvider extends PackageServiceProvider
 
 在升级插件之前，请完整阅读本指南。它将帮助你理解这些概念以及如何构建插件。
 
-1. [Filament 资源管理](/docs/zh-CN/3.x/support/assets)
-2. [面板插件开发](/docs/zh-CN/3.x/panels/plugins)
-3. [Icon 管理](/docs/zh-CN/3.x/support/icons)
-4. [颜色管理](/docs/zh-CN/3.x/support/colors)
-5. [自定义样式](/docs/zh-CN/3.x/support/style-customization)
+1. [Filament 资源管理](../assets)
+2. [面板插件开发](../plugins)
+3. [Icon 管理](../icons)
+4. [颜色管理](../colors)
+5. [自定义样式](../style-customization)

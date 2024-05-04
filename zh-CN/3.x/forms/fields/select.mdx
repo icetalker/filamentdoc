@@ -198,7 +198,7 @@ Select::make('author_id')
     ->preload()
 ```
 
-### 排除当前记
+### 排除当前记录
 
 当使用递归关联时，你可能希望从结果集中移除当前记录。
 
@@ -569,9 +569,9 @@ Select::make('author_id')
 
 请确保你不会将抖动降得太低，因为这会导致由于从服务器检索选项的网络请求数量太高而使 Select 变得缓慢且响应较差。
 
-## 现在选项数量
+## 限制选项数量
 
-使用 `optionsLimit()` 方法，你可以现在选项的数量。默认值是 50：
+使用 `optionsLimit()` 方法，你可以限制选项的数量。默认值是 50：
 
 ```php
 use Filament\Forms\Components\Select;
@@ -590,7 +590,7 @@ Select::make('author_id')
 
 ### 选中的选项验证
 
-通过设置 `minItems()` 和 `maxItems()` 方法，你可以验证可以在[多选 Select] 中可以选择的最小和最大数量：
+通过设置 `minItems()` 和 `maxItems()` 方法，你可以验证可以在[多选 Select](#multi-select) 中可以选择的最小和最大数量：
 
 ```php
 use Filament\Forms\Components\Select;
