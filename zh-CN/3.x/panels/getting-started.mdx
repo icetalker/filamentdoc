@@ -116,7 +116,7 @@ class Treatment extends Model
 }
 ```
 
-## 介绍资源
+## 引入资源
 
 在 Filament 中，资源是用于为你的 Eloquent 模型创建 CRUD 接口的静态类。他们描述了后台管理员应该如何在面板中和数据交互 - 通过表格和表单。
 
@@ -437,7 +437,7 @@ public static function table(Table $table): Table
 
 刷新页面，会发现表格的右上角有一个新的过滤器图标(在搜索表单旁边)。这个过滤器打开一个包含患者类型的选择菜单。现在，你可以尝试通过患者类型进行数据过滤了。
 
-## 介绍关联管理器
+## 引入关联管理器
 
 此刻，系统中患者可以和它们的主人相关联了。但是，如果我们想要第三个层级呢？患者来到诊所寻求治疗，系统应该可以记录这些治疗并与患者关联。
 
@@ -535,7 +535,7 @@ public function form(Form $form): Form
 
 #### 配置 `price` 字段
 
-我们来为治疗添加一个 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。它是 `numberic()` 的，添加验证的同时，改变移动设备中键盘的布局。同时使用 `prefix()` 方法添加货币前缀，比如，prefix('€')`会在不影响保存的输出值的情况下，在文本输入框前面添加 `€`：
+我们来为治疗添加一个 `price` 字段。我们可以使用文本输入框，并进行一些定制工作使之适于货币输入。它是 `numberic()` 的，添加验证的同时，改变移动设备中键盘的布局。同时使用 `prefix()` 方法添加货币前缀，比如，`prefix('€')`会在不影响保存的输出值的情况下，在文本输入框前面添加 `€`：
 
 ```php
 use Filament\Forms;
@@ -640,9 +640,9 @@ public function table(Table $table): Table
 }
 ```
 
-> 你可以传入任何有效的[PHP 日期格式字符串](https://www.php.net/manual/en/datetime.format.php) 到 `dateTime()` 方法 (e.g. `dateTime('m-d-Y h:i A')`)。
+> 你可以传入任何有效的 [PHP 日期格式字符串](https://www.php.net/manual/en/datetime.format.php) 到 `dateTime()` 方法 (e.g. `dateTime('m-d-Y h:i A')`)。
 
-## 介绍 Widget
+## 引入 Widget
 
 Filament Widget 是一个在仪表盘上展示信息的组件，特别是统计信息。Wideget 通常被添加到面板中默认的[仪表盘](../panels/dashboard)中，不过你也可以将其添加到任何页面，包括资源页。Filament 自带了一些内置 Widget，比如，[统计 Widget](../widgets/stats-overview)用以在简单的卡片中渲染重要的统计信息；[图表 widget](../widgets/charts)用来渲染直观的图表；[表格 Widget](../panels/dashboard#表格-widget) 允许你内嵌表格构造器。
 

@@ -8,7 +8,7 @@ title: 多租户(Multi-tenancy)
 
 多租户(Multi-tenancy)是一个应用程序的单个实例为多个客户提供服务的概念。每个客户都有自己的数据和访问规则，这些规则禁止他们查看或修改彼此的数据。这是 SaaS 应用程序中的常见模式。用户通常属于用户组(通常称为团队或组织)。记录归群组所有，用户可以是多个群组的成员。这适用于用户需要在数据上进行协作的应用程序。
 
-多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
+多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
 
 ## 一对多租户
 
@@ -116,7 +116,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
 登录后访问您的应用时，如果用户还没有租户，他们将被重定向到此页面。
 
-要设置注册页面，您需要创建一个继承 `Filament\Pages\Tenancy\RegisterTenant` 的新页面类。这是一个全页 Livewire 组件。你可以把它放在任何你想要的地方，比如 `app/Fament/Pages/Tenance/RegisterTeam.php`：
+要设置注册页面，您需要创建一个继承 `Filament\Pages\Tenancy\RegisterTenant` 的新页面类。这是一个全页 Livewire 组件。你可以把它放在任何你想要的地方，比如 `app/Filament/Pages/Tenancy/RegisterTeam.php`：
 
 ```php
 namespace App\Filament\Pages\Tenancy;
@@ -484,7 +484,7 @@ class Team extends Model implements HasAvatar
 
 ## 配置租户关联
 
-当创建和展示带有租户的记录时，Filament 需要访问每个资源的两个 Eloquent 关联 - 一个是 "ownship" 关联，它在资源的模型类中定义，以及一个租户模型类上的关联。默认情况下，Filament 会按照标准的 Laravel 规范去尝试猜测这些关联的名称。比如，如果租户模型是 `App\Models\Team`，那它会在资源模型类中寻找 `team()` 关联。如果资源模型是 `App\Models\Post`，它会在租户模型类中查找 `posts()` 关联。
+当创建和展示带有租户的记录时，Filament 需要访问每个资源的两个 Eloquent 关联 - 一个是 "ownership" 关联，它在资源的模型类中定义，以及一个租户模型类上的关联。默认情况下，Filament 会按照标准的 Laravel 规范去尝试猜测这些关联的名称。比如，如果租户模型是 `App\Models\Team`，那它会在资源模型类中寻找 `team()` 关联。如果资源模型是 `App\Models\Post`，它会在租户模型类中查找 `posts()` 关联。
 
 ### 自定义 ownership 关联名
 
