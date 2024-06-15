@@ -44,6 +44,8 @@ class StatsOverview extends BaseWidget
 你可以使用 `description()` 方法提供额外的描述信息，同时也可以通过 `descriptionIcon()` 添加描述图标：
 
 ```php
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
 protected function getStats(): array
 {
     return [
@@ -51,7 +53,7 @@ protected function getStats(): array
             ->description('32k increase')
             ->descriptionIcon('heroicon-m-arrow-trending-up'),
         Stat::make('Bounce rate', '21%')
-            ->description('7% increase')
+            ->description('7% decrease')
             ->descriptionIcon('heroicon-m-arrow-trending-down'),
         Stat::make('Average time on page', '3:12')
             ->description('3% increase')
@@ -60,11 +62,24 @@ protected function getStats(): array
 }
 ```
 
+`descriptionIcon()` 方法也接收第二个参数，以在图标放到描述之前而非之后：
+
+```php
+use Filament\Support\Enums\IconPosition;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
+Stat::make('Unique views', '192.1k')
+    ->description('32k increase')
+    ->descriptionIcon('heroicon-m-arrow-trending-up', IconPosition::Before)
+```
+
 ## 修改 Stat 颜色
 
 你也可以通过 `color()` (`danger`、`gray`、`info`、`primary`、`success` 或 `warning`) 指定 Stat 颜色：
 
 ```php
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
 protected function getStats(): array
 {
     return [
@@ -89,6 +104,8 @@ protected function getStats(): array
 使用 `extraAttributes()` 方法，你可以将额外的 HTML 属性传入 Stat 中：
 
 ```php
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
 protected function getStats(): array
 {
     return [
@@ -110,6 +127,8 @@ protected function getStats(): array
 你也可以添加或者链式调用 `chart()` 到每个 Stat，以提供历史数据。`chart()` 方法接收一组要绘制的点形成的数组：
 
 ```php
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
 protected function getStats(): array
 {
     return [

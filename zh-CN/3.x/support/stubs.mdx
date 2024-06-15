@@ -1,0 +1,15 @@
+---
+layout: "@layouts/BaseLayout.astro"
+githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/support/docs/09-stubs.md"
+title: Stubs
+---
+
+## 发布桩代码(Stub)
+
+如果你想自定义 Filament 生成的文件，可以通过将 "桩代码(stubs)" 发布到应用来实现。这些桩代码是模板文件，你可以根据自己的偏好进行修改。
+
+要将 stubs 发布到 `stubs/filament` 目录，请运行以下命令：
+
+```bash
+php artisan vendor:publish --tag=filament-stubs
+```

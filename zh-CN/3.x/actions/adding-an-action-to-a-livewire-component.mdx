@@ -238,3 +238,34 @@ public function publishAction(): Action
 现在，当第一个 Action 提交后，第二个 Action 会在第一个的地方打开。原本传递到第一个 Action 的[参数](#传递-action-参数)将会传递到第二个 Action，这样你就可以使用它们在请求间持久化数据。
 
 如果第一个 Action 取消了，第二个就不会打开。如果第二个取消，第一个已经运行过，就不能再取消。
+
+## 编码触发 Action
+
+有时，你可能需要在用户不点击内置触发按钮的情况下触发操作(Action)，尤其是从 JavaScript 中触发。以下是可以在 Livewire 组件上注册的 Action 示例：
+
+```php
+use Filament\Actions\Action;
+
+public function testAction(): Action
+{
+    return Action::make('test')
+        ->requiresConfirmation()
+        ->action(function (array $arguments) {
+            dd('Test action called', $arguments);
+        });
+}
+```
+
+你可以使用 `wire:click` 属性，调用 `mountAction()` 方法，并可选地传入你希望可用的任何参数，在 HTML 中单击触发该操作(Action)：
+
+```blade
+<button wire:click="mountAction('test', { id: 12345 })">
+    Button
+</button>
+```
+
+要在 JavaScript 中触发该 Action，你可以使用 [`$wire` utility](https://livewire.laravel.com/docs/alpine#controlling-livewire-from-alpine-using-wire)，并传入相同的参数：
+
+```js
+$wire.mountAction('test', { id: 12345 })
+```

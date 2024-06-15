@@ -88,6 +88,17 @@ Tab::make()
     ->badgeColor('success')
 ```
 
+### 向过滤器选项卡添加额外属性
+
+使用 `extraAttributes()`，你可以将额外的 HTML 属性传递给过滤器选项卡：
+
+```php
+use Filament\Resources\Components\Tab;
+
+Tab::make()
+    ->extraAttributes(['data-cy' => 'statement-confirmed-tab'])
+```
+
 ### 自定义默认标签页
 
 要自定义页面加载时选中的默认标签页，你可以在 `getDefaultActiveTab()` 方法中，返回该标签页对应的数组键名：

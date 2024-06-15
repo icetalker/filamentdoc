@@ -47,6 +47,8 @@ Notification::make()
     ->send();
 ```
 
+此标题文本可包含基础的、安全的 HTML 元素。要使用 Markdown 生成安全的 HTML，你可以使用 [`Str::markdown()` helper](https://laravel.com/docs/strings#method-str-markdown): `title(Str::markdown('Saved **successfully**'))`。
+
 或者使用 JavaScript：
 
 ```js
@@ -209,6 +211,8 @@ Notification::make()
     ->body('Changes to the post have been saved.')
     ->send();
 ```
+
+body 文本可包含基础的、安全的 HTML 元素。要使用 Markdown 生成安全的 HTML，你可以使用 [`Str::markdown()` helper](https://laravel.com/docs/strings#method-str-markdown): `body(Str::markdown('Changes to the **post** have been saved.'))`。
 
 或者，使用 JavaScript：
 

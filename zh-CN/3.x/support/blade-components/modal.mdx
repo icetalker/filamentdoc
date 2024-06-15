@@ -149,15 +149,15 @@ $dispatch('open-modal', { id: 'edit-user' })
 </x-filament::modal>
 ```
 
-## 模态框粘性 header
+## 使模态框 header 有粘性
 
-如果模态框中的内容超出模态框大小，模态框的头部会随着视图滚出视图。不过，Slide-Over 有一个总是可见的 header。你可以使用 `sticky-header` 属性控制该行为：
+如果模态框中的内容超出模态框大小，模态框的头部会随着视图滚出视图。不过，Slide-Over 有一个总是可见的粘性模态框。你可以使用 `sticky-header` 属性控制该行为：
 
 ```blade
 <x-filament::modal sticky-header>
     <x-slot name="heading">
         Modal heading
-    </slot>
+    </x-slot>
 
     {{-- Modal content --}}
 </x-filament::modal>
@@ -197,6 +197,16 @@ $dispatch('open-modal', { id: 'edit-user' })
 </x-filament::modal>
 ```
 
+## 通过 escape 关闭模态框
+
+默认情况下，当你在模态上按下 escape 键时，它会自己关闭。如果你希望为特定 Action 禁用此行为，可以使用 `close-by-escaping` 属性：
+
+```blade
+<x-filament::modal :close-by-escaping="false">
+    {{-- Modal content --}}
+</x-filament::modal>
+```
+
 ## 隐藏模态框关闭按钮
 
 默认情况下，模态框在右上角有一个关闭按钮。你可以使用 `close-button` 属性将该关闭按钮从模态框中移除：
@@ -206,3 +216,14 @@ $dispatch('open-modal', { id: 'edit-user' })
     {{-- Modal content --}}
 </x-filament::modal>
 ```
+
+## 防止模态框自动聚焦
+
+默认情况下，模态框会在打开时在第一个可聚焦的元素中自动聚焦。如果你想禁用该行为，可以使用 `autofocus` 属性：
+
+```blade
+<x-filament::modal :autofocus="false">
+    {{-- Modal content --}}
+</x-filament::modal>
+```
+

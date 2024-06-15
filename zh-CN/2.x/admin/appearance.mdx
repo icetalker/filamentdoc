@@ -52,7 +52,7 @@ Filament 默认只包含明亮主题。但是，你也可以在[配置文件](in
 
 你先需要[发布配置文件](installation#发布配置文件)，才能使用这个特性。
 
-在配置文件 `config/filament.php` 中，将 `layouts.sidebar.is_collapsible_on_desktop` 设置为 `true`:
+在配置文件 `config/filament.php` 中，将 `layout.sidebar.is_collapsible_on_desktop` 设置为 `true`:
 
 ```php
 'layout' => [
@@ -199,7 +199,7 @@ Filament 暴露了一个配置项，允许用户调整所有页面的最大内�
 
 要使用这个特性，你必须先[发布配置文件](installation#发布配置文件)。
 
-在 `config/filament.php` 中，将 `layouts.max_content_width` 设置成 `xl` 到 `7xl` 之间的值，或者没有最大宽度的 `full` :
+在 `config/filament.php` 中，将 `layout.max_content_width` 设置成 `xl` 到 `7xl` 之间的值，或者没有最大宽度的 `full` :
 
 ```php
 'layout' => [
@@ -257,12 +257,12 @@ Filament::pushMeta([
 
 Filament 允许自定义通知的显示位置。
 
-在 `config/filament.php` 文件中，将 `layouts.notifications.alignment` 设置为 `left`、`center` 或 `right` 中的任意值，将 `layouts.notifications.vertical_alignment` 设置为 `top`、`center` 或者 `bottom` 中的任意值:
+在 `config/filament.php` 文件中，将 `layout.notifications.alignment` 设置为 `left`、`center` 或 `right` 中的任意值，将 `layouts.notifications.vertical_alignment` 设置为 `top`、`center` 或者 `bottom` 中的任意值:
 
 ```php
 'layout' => [
     'notifications' => [
-        'vertical_alignment' => 'top'
+        'vertical_alignment' => 'top',
         'alignment' => 'center',
     ],
 ],

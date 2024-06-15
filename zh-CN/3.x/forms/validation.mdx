@@ -362,6 +362,14 @@ Field::make('name')->required()
 Field::make('name')->requiredIf('field', 'value')
 ```
 
+### Required If Accepted
+
+只有在其他指定字段等于 "yes"、"on"、 1、 "1"、 true 或 "true" 时，该字段才不能为空。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-if-accepted)
+
+```php
+Field::make('name')->requiredIfAccepted('field')
+```
+
 ### Required Unless
 
 字段值不能为空，_除非_其他自定字段有给定值。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-required-unless)。
@@ -479,6 +487,14 @@ Field::make('email')
     })
 ```
 
+### ULID
+
+自断必须是一个有效的 [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) (ULID). [参考 Laravel 文档。](https://laravel.com/docs/validation#rule-ulid)
+
+```php
+Field::make('identifier')->ulid()
+```
+
 ### UUID
 
 字段必须是有效的 RFC 4122(版本 1、3、4 或 5) UUID。[参考 Laravel 文档](https://laravel.com/docs/validation#rule-uuid)
@@ -501,7 +517,6 @@ TextInput::make('slug')->rules(['alpha_dash'])
 
 你可以使用任何自定义规则，正如 [Laravel](https://laravel.com/docs/validation#custom-validation-rules) 会使用的自定义规则一样：
 
-
 ```php
 TextInput::make('slug')->rules([new Uppercase()])
 ```
@@ -509,13 +524,13 @@ TextInput::make('slug')->rules([new Uppercase()])
 你也可以使用[闭包规则](https://laravel.com/docs/validation#using-closures)
 
 ```php
+use Closure;
+
 TextInput::make('slug')->rules([
-    function () {
-        return function (string $attribute, $value, Closure $fail) {
-            if ($value === 'foo') {
-                $fail('The :attribute is invalid.');
-            }
-        };
+     fn (): Closure => function (string $attribute, $value, Closure $fail) {
+        if ($value === 'foo') {
+            $fail('The :attribute is invalid.');
+        }
     },
 ])
 ```

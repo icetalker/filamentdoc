@@ -92,7 +92,7 @@ php artisan make:filament-importer Product --generate
 ```php
 use Filament\Actions\Imports\ImportColumn;
 
-public function getColumns(): array
+public static function getColumns(): array
 {
     return [
         ImportColumn::make('name')
@@ -260,7 +260,7 @@ use App\Models\Author;
 use Filament\Actions\Imports\ImportColumn;
 
 ImportColumn::make('author')
-    ->relationship(resolveUsing: function (array $state): ?Author {
+    ->relationship(resolveUsing: function (string $state): ?Author {
         return Author::query()
             ->where('email', $state)
             ->orWhere('username', $state)
@@ -275,7 +275,7 @@ use App\Models\Author;
 use Filament\Actions\Imports\ImportColumn;
 
 ImportColumn::make('author')
-    ->relationship(resolveUsing: function (array $state): ?Author {
+    ->relationship(resolveUsing: function (string $state): ?Author {
         if (filter_var($state, FILTER_VALIDATE_EMAIL)) {
             return 'email';
         }
@@ -394,6 +394,28 @@ public function resolveRecord(): ?Product
 }
 ```
 
+如果你希望在没有找到记录时让导入失败，你可以抛出 `RowImportFailedException` 并显示消息：
+
+```php
+use App\Models\Product;
+use Filament\Actions\Imports\Exceptions\RowImportFailedException;
+
+public function resolveRecord(): ?Product
+{
+    $product = Product::query()
+        ->where('sku', $this->data['sku'])
+        ->first();
+
+    if (! $product) {
+        throw new RowImportFailedException("No product found with SKU [{$this->data['sku']}].");
+    }
+
+    return $product;
+}
+```
+
+导入完成后，用户能够下载失败行的 CSV，其中将包含错误消息。
+
 ### 为导入字段忽视空状态
 
 默认情况下，如果 CSV 中的字段是空的，并且由用户映射，并且验证不需要该字段，则该列字段作为 `null` 导入数据库。如果想忽略空白状态，而使用数据库中的现有值，可以调用 `ignoreBlankState()` 方法：
@@ -472,6 +494,15 @@ use Filament\Actions\Imports\ImportColumn;
 
 ImportColumn::make('sku')
     ->example('ABC123')
+```
+
+或者如果你想添加不止一个示例行，你可以传递一个数组给 `examples()` 方法：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->examples(['ABC123', 'DEF456'])
 ```
 
 默认情况下，列名用在示例 CSV 的头部。你可以使用 `examplerHeader()` 自定义每一列的头部：
@@ -675,6 +706,22 @@ use Filament\Actions\Imports\ImportColumn;
 
 ImportColumn::make('name')
     ->validationAttribute('full name')
+```
+
+## 自定义导入文件验证
+
+使用 `fileRules()` 方法，你可以为导入文件添加新的 [Laravel 验证规则](https://laravel.com/docs/validation#available-validation-rules)： 
+
+```php
+use Illuminate\Validation\Rules\File;
+
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->fileRules([
+        'max:1024',
+        // or
+        File::types(['csv', 'txt'])->max(1024),
+    ]),
 ```
 
 ## 生命周期钩子

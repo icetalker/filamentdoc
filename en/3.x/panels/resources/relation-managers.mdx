@@ -3,6 +3,7 @@ layout: "@layouts/BaseLayout.astro"
 githubUrl: "https://github.com/filamentphp/filament/edit/3.x/packages/panels/docs/03-resources/07-relation-managers.md"
 title: Managing relationships
 ---
+import LaracastsBanner from "@components/LaracastsBanner.astro"
 
 ## Choosing the right tool for the job
 
@@ -57,6 +58,13 @@ This feature is explained more in depth in the [Forms documentation](../../forms
 
 ## Creating a relation manager
 
+<LaracastsBanner
+    title="Relation Managers"
+    description="Watch the Rapid Laravel Development with Filament series on Laracasts - it will teach you the basics of adding relation managers to Filament resources."
+    url="https://laracasts.com/series/rapid-laravel-development-with-filament/episodes/13"
+    series="rapid-laravel-development"
+/>
+
 To create a relation manager, you can use the `make:filament-relation-manager` command:
 
 ```bash
@@ -109,7 +117,7 @@ Once a table and form have been defined for the relation manager, visit the [Edi
 
 ### Read-only mode
 
-Relation managers are usually displayed on either the Edit or View page of a resource. On the View page, Filament will automatically hide all actions that modify the relationship, such as create, edit, and delete. We call this "read-only mode", and it is there by default to preserve the read-only behaviour of the View page. However, you can disable this behaviour, by overriding the `isReadOnly()` method on the relation manager class to return `false` all the time:
+Relation managers are usually displayed on either the Edit or View page of a resource. On the View page, Filament will automatically hide all actions that modify the relationship, such as create, edit, and delete. We call this "read-only mode", and it is there by default to preserve the read-only behavior of the View page. However, you can disable this behavior, by overriding the `isReadOnly()` method on the relation manager class to return `false` all the time:
 
 ```php
 public function isReadOnly(): bool

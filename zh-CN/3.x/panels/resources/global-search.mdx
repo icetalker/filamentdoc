@@ -172,3 +172,38 @@ public function panel(Panel $panel): Panel
         ->globalSearchDebounce('750ms');
 }
 ```
+
+## 配置全局搜索字段后缀
+
+全局搜索字段默认不包含任何后缀。你可以在[配置](configuration)的 `globalSearchFieldSuffix()` 对此进行自定义：
+
+如果你想在后缀中显示当前配置的[全局搜索键盘绑定](#注册全局搜索键盘绑定)，可以使用 `globalSearchFieldKeyBindingSuffix()` 方法，它会将第一个键盘绑定作为全局搜索字段的后缀进行显示：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchFieldKeyBindingSuffix();
+}
+```
+
+要自定义后缀，你可以将字符串或函数传入到 `globalSearchFieldSuffix()` 方法。比如，为每个平台手动提供自定义键盘绑定：
+
+```php
+use Filament\Panel;
+use Filament\Support\Enums\Platform;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchFieldSuffix(fn (): ?string => match (Platform::detect()) {
+            Platform::Windows, Platform::Linux => 'CTRL+K',
+            Platform::Mac => '⌘K',
+            default => null,
+        });
+}
+```

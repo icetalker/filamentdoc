@@ -12,7 +12,7 @@ Filament 使用 CSS 变量来定义其调色板。这些 CSS 变量映射到安�
 
 在服务提供者的 `boot()` 方法、或者中间件中，你可以调用 `FilamentColor::register()` 方法，用来自定义 Filament UI 元素使用的颜色。
 
-Filament 有 7 种默认颜色可供自定义：
+Filament 有 6 种默认颜色可供自定义：
 
 ```php
 use Filament\Support\Colors\Color;
@@ -30,9 +30,11 @@ FilamentColor::register([
 
 `Color` 类包含了所有 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) 供选取。
 
+你也可以传入一个函数到 `register()`，它只会在应用渲染时调用。如果你从服务提供者中调用 `register()` 并想要让比如当前授权用户(稍后在中间件中初始化)访问对象时，非常有用。
+
 ## 使用非 Tailwind 颜色
 
-你也可以使用 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference)中不包含的自定义颜色，方法是以 RGB 格式传入一个从 `50` 到 `900` 色调数组：
+你也可以使用 [Tailwind CSS 颜色](https://tailwindcss.com/docs/customizing-colors#color-palette-reference)中不包含的自定义颜色，方法是以 RGB 格式传入一个从 `50` 到 `950` 色调数组：
 
 ```php
 use Filament\Support\Facades\FilamentColor;
@@ -50,7 +52,7 @@ FilamentColor::register([
         800 => '153, 27, 27',
         900 => '127, 29, 29',
         950 => '69, 10, 10',
-    ];
+    ],
 ]);
 ```
 

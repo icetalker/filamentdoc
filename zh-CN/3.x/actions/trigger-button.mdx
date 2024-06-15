@@ -13,7 +13,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## 选择触发样式
 
-开箱即用，操作触发器有 3 个样式 - “按钮”、“链接”及“图标按钮”。
+开箱即用，操作触发器有 4 个样式 - “按钮”、“链接”、“图标按钮”和“徽章”。
 
 “按钮”触发器有背景色、标签及可选的[图标](#设置图标)。通常，默认使用按钮样式，不过你页可以使用 `button()` 方法手动启用。
 
@@ -42,6 +42,15 @@ Action::make('edit')
 ```
 
 <AutoScreenshot name="actions/trigger-button/icon-button" alt="Icon button trigger" version="3.x" />
+
+"徽章(Badge)" 触发器有背景色、标签和可选的[图标](#设置图标)。你可以使用 `badge()` 将徽章作为触发器：
+
+```php
+Action::make('edit')
+    ->badge()
+```
+
+<AutoScreenshot name="actions/trigger-button/badge" alt="Badge trigger" version="3.x" />
 
 ### 在移动端只使用图标按钮
 
@@ -178,7 +187,7 @@ Action::make('filter')
     ->badge(5)
 ```
 
-<AutoScreenshot name="actions/trigger-button/badge" alt="Trigger with badge" version="3.x" />
+<AutoScreenshot name="actions/trigger-button/badged" alt="Trigger with badge" version="3.x" />
 
 你也可以传递徽章使用颜色，这个值可以是 `danger`、`gray`、`info`、`primary`、`success` 及 `warning`：
 
@@ -192,7 +201,7 @@ Action::make('filter')
     ->badgeColor('success')
 ```
 
-<AutoScreenshot name="actions/trigger-button/success-badge" alt="Trigger with green badge" version="3.x" />
+<AutoScreenshot name="actions/trigger-button/success-badged" alt="Trigger with green badge" version="3.x" />
 
 ## 按钮样式轮廓
 

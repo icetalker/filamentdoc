@@ -254,3 +254,70 @@ public function getDescription(): ?string
 ```php
 protected static bool $isLazy = true;
 ```
+
+## 使用自定义 Chart.js 插件
+
+Chart.js 提供了强大的插件系统，允许你扩展功能并创建自定义图表行为。本指南将详解如何在图表 Widget 中使用它们。
+
+### 步骤 1: 使用 NPM 安装插件
+
+要开始使用，请先在项目中使用 NPM 安装该插件。本指南中，我们将安装 [`chartjs-plugin-datalabels`](https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html#installation)：
+
+```bash
+npm install chartjs-plugin-datalabels --save-dev
+```
+
+### 步骤 2: 创建 JavaScript 文件引入该插件
+
+你可以创建 JavaScript 文件，在其中定义自定义插件。本指南针中，我们称之为 `filament-chart-js-plugins`。引入该插件，并将其添加到 `window.filamentChartJsPlugins` 数组：
+
+```javascript
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+
+window.filamentChartJsPlugins ??= []
+window.filamentChartJsPlugins.push(ChartDataLabels)
+```
+
+如果数组还没有初始化，那么在推送之前对其进行初始化是很重要的。这可以确保注册 Chart.js 插件的多个 JavaScript 文件(尤其是来自 Filament 插件的文件)不会相互覆盖，无论它们的启动顺序如何。
+
+你可以将想要的插件推入到 `filamentChartJsPlugins` 数组，你无需单独文件来引入每个插件：
+
+### 步骤 3: 使用 Vite 编译 JavaScript 文件
+
+现在，你需要使用 Vite 或者你选择的捆绑器编译 JavaScript 文件。在 Vite 配置(通常是 `vite.config.js`)中引入该文件。比如：
+
+```javascript
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/css/filament/admin/theme.css',
+                'resources/js/filament-chart-js-plugins.js', // Include the new file in the `input` array so it is built
+            ],
+        }),
+    ],
+});
+```
+
+使用 `npm run build` 编译该文件。
+
+### 步骤 4: 在 Filament 中注册该 JavaScript 文件
+
+Filament 需要知道在渲染图表 Widget 时是否引入此 JavaScript 文件。你可以在类似 `AppServiceProvider` 的服务提供者的 `boot()` 方法中执行此操作：
+
+```php
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Support\Facades\Vite;
+
+FilamentAsset::register([
+    Js::make('chart-js-plugins', Vite::asset('resources/js/filament-chart-js-plugins.js'))->module(),
+]);
+```
+
+可查看更多关于[资源注册](../support/assets)以及[为特定面板注册资源](../panels/configuration#为面板注册资源)。

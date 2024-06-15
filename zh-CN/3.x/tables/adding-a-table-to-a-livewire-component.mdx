@@ -137,5 +137,3 @@ Filament 可以基于模型数据库字段，猜测你想要在表格中添加�
 ```bash
 php artisan make:livewire-table Products/ListProducts --generate
 ```
-
-> 如果标中包含 ENUM 字段，`doctrine/dbal` 将会无法扫描表并且崩溃。因此，如果包含 ENUM 字段，Filament 将无法生成 Schema。更多关于该问题的信息，请查阅[此处](https://github.com/doctrine/dbal/issues/3819#issuecomment-573419808)。

@@ -25,7 +25,7 @@ php artisan notifications:table
 
 ## 渲染数据库通知模态框
 
-> 如果你想将数据库通知添加到面板上，[请按照本指南的这一部分](#将数据库通知添加到面板)操作。
+> 如果你想将数据库通知添加到面板上，[请按照本指南的这一部分](#将数据库通知模态框添加到面板)操作。
 
 如果你想在[面板构造器](../panels)之外渲染数据库通知，你必须在你的 Blade 布局中添加一个新的 Livewire 组件：
 
@@ -53,7 +53,7 @@ DatabaseNotifications::trigger('filament.notifications.database-notifications-tr
 
 然后，点击视图中渲染的触发按钮。一个包含数据库通知的模态框就会出现！
 
-### 将数据库通知添加到面板
+### 将数据库通知模态框添加到面板
 
 你可以在面板的[配置](../panels/configuration)中弃用数据库通知：
 
@@ -99,6 +99,8 @@ $recipient->notify(
         ->toDatabase(),
 );
 ```
+
+> Laravel 使用队列发送数据库通知。请确保队列以通知接收的顺序运行。
 
 此外，还可以使用传统 [Laravel 通知类](https://laravel.com/docs/notifications#generating-notifications)返回通知给 `toBroadcast()` 方法：
 

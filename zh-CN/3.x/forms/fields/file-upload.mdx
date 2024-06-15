@@ -68,7 +68,21 @@ class Message extends Model
 
 默认情况下，新上传的文件会生成随机文件名。这是为了确保不会和现有的文件产生冲突。
 
+### 控制文件名的安全提示
+
+在使用 `preserveFilenames()` 或 `getUploadedFileNameForStorageUsing()` 方法之前，请注意安全隐患。如果允许用户使用自己的文件名上传文件，则有一些方法可以利用这些方法上传恶意文件，**即使使用 [`acceptedFileTypes()`](#文件类型验证)方法**来限制可以上传的文件类型，这也适用，因为它使用 Laravel 的 `mimetypes` 规则，该规则不验证文件的扩展名，只验证其 mime 类型，该类型可以被操纵。
+
+这对于在 `TemporaryUploadedFile` 对象上使用 `getClientOriginalName()` 方法(这也是 `preserveFilenames()` 方法所使用的)，特别是一个问题。默认情况下，Livewire 为上传的每个文件生成一个随机文件名，并使用文件的 mime 类型来确定文件扩展名。
+
+如果攻击者上传了一个具有欺骗性 mime 类型的 PHP 文件，则将这些方法**与 `local` 或 `public` 文件系统磁盘**一起使用将使你的应用容易受到远程代码执行攻击**使用 S3 磁盘可以保护你免受这种特定的攻击向量**的攻击，因为 S3 不会像服务器从本地存储提供文件时那样执行 PHP 文件。
+
+如果你使用的是 `local` 或 `public` 磁盘，则应考虑使用 [`storeFileNamesIn()` 方法](#将原始文件名单独存储)将原始文件名存储在数据库的单独列中，并将随机生成的文件名保留在文件系统中。这样，你仍然可以向用户显示原始文件名，同时确保文件系统的安全。
+
+除了这个安全问题之外，你还应该意识到，允许用户使用自己的文件名上传文件可能会导致与现有文件发生冲突，并使管理存储变得困难。如果不将文件限定到特定目录，用户可能会上传同名文件，并覆盖其他文件的内容，因此在任何情况下，这些功能都只能由受信任的用户访问。
+
 ### 保留原始文件名
+
+> 重要：使用该特性时，请确保阅读对应的[安全提示](#控制文件名的安全提示)。
 
 使用 `preserveFilenames()` 方法，可以保留上传文件的原始文件名：
 
@@ -80,6 +94,8 @@ FileUpload::make('attachment')
 ```
 
 ### 生成自定义文件名
+
+> 重要：使用该特性时，请确保阅读对应的[安全提示](#控制文件名的安全提示)。
 
 使用 `getUploadedFileNameForStorageUsing()` 方法，你可以完全自定义文件名的生成方式，并基于上传的文件 `$file` 在闭包中返回字符串：
 
@@ -227,7 +243,7 @@ FileUpload::make('image')
 
 ### 不使用编辑器裁切和调整图标大小
 
-Filepond 允许你在上传之前，在不需要编辑器的情况下，裁切图片及调整图片大小。你可以使用 `imageCropAspectRatio()`、`imageResizeTargetHeight()` 和 `imageResizeTargetWidth()` 方法自定义这些行为。应该为这三个方法设置 `imageResizeMode()`， 可设置成 [`force`、`cover` 或 `contain`](https://pqina.nl/filepond/docs/api/plugins/image-resize) 三者其中之一。
+Filepond 允许你在上传之前，在不需要单独编辑器的情况下，裁切图片及调整图片大小。你可以使用 `imageCropAspectRatio()`、`imageResizeTargetHeight()` 和 `imageResizeTargetWidth()` 方法自定义这些行为。应该为这三个方法设置 `imageResizeMode()` 使之生效， 可设置成 [`force`、`cover` 或 `contain`](https://pqina.nl/filepond/docs/api/plugins/image-resize) 三者其中之一。
 
 ```php
 use Filament\Forms\Components\FileUpload;

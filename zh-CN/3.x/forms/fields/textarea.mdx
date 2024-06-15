@@ -40,6 +40,23 @@ Textarea::make('description')
     ->autosize()
 ```
 
+## 使该字段只读
+
+不要与[禁用字段](getting-started#禁用字段)混为一谈，你可以使用 `readOnly()` 方法使该字段只读：
+
+```php
+use Filament\Forms\Components\Textarea;
+
+Textarea::make('description')
+    ->readOnly()
+```
+
+与 [`disabled()`](getting-started#禁用字段) 相比，它有一些不同之处：
+
+- 使用 `readOnly()` 时，该字段仍然会在表单提交时发送到服务器。它可以通过浏览器控制台或者 JavaScript 操作改变。你可以使用 [`dehydrated(false)`](advanced#preventing-a-field-from-being-dehydrated) 来阻止该行为。
+- 当使用 `readOnly()` 时，它的样式没有任何改变。
+- 当使用 `readOnly()` 时，该字段仍然是可聚焦的。
+
 ## 文本区验证
 
 除了[验证](../validation)页面上的所有规则，文本区也有一些专门的验证规则。

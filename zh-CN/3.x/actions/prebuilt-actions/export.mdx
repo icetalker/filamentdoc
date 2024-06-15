@@ -97,7 +97,7 @@ php artisan make:filament-exporter Product --generate
 ```php
 use Filament\Actions\Exports\ExportColumn;
 
-public function getColumns(): array
+public static function getColumns(): array
 {
     return [
         ExportColumn::make('name'),

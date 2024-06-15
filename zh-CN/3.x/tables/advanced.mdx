@@ -128,7 +128,19 @@ public function table(Table $table): Table
 }
 ```
 
-本例中，点击点击每个 post 将会跳转到 `posts.edit` 路由。
+本例中，点击每个 post 将会跳转到 `posts.edit` 路由。
+
+你也可以在新的标签页中打开该 URL:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->openRecordUrlInNewTab();
+}
+```
 
 如果你要让某个特定列字段[重写 URL](columns/getting-started#打开-url)，或者在点击列字段时[运行 Action](columns/getting-started#运行-action)，请查看[列字段文档](columns/getting-started#打开-url)。
 

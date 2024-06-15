@@ -37,3 +37,17 @@ use Filament\Tables\Columns\TextInputColumn;
 
 TextInputColumn::make('background_color')->type('color')
 ```
+
+## 生命周期钩子
+
+钩子可以在输入框的生命周期的各个节点中使用以执行代码：
+
+```php
+TextInputColumn::make()
+    ->beforeStateUpdated(function ($record, $state) {
+        // Runs before the state is saved to the database.
+    })
+    ->afterStateUpdated(function ($record, $state) {
+        // Runs after the state is saved to the database.
+    })
+```

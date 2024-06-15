@@ -146,7 +146,7 @@ ViewField::make('rating')
 现在，要在自定义组件的视图中渲染 Action，你需要调用 `$getAction()` 并传入你注册的 Action 名：
 
 ```blade
-<div x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }">
+<div x-data="{ state: $wire.$entangle('{{ $getStatePath() }}') }">
     <input x-model="state" type="range" />
     
     {{ $getAction('setMaximum') }}

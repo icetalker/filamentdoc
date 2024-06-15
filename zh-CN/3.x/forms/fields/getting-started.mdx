@@ -211,6 +211,15 @@ TextInput::make('categories')
     ->extraInputAttributes(['width' => 200])
 ```
 
+你也可以将额外的 HTML 属性传入到围绕标签、Entry 和任何其他文本的字段包装器中：
+
+```php
+use Filament\Forms\Components\TextInput;
+
+TextInput::make('categories')
+    ->extraFieldWrapperAttributes(['class' => 'components-locked'])
+```
+
 ## 禁用字段
 
 你可以禁用一个字段，以防用户对其进行编辑：

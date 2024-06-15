@@ -95,6 +95,18 @@ Filter::make('is_featured')
     ->default()
 ```
 
+### 自定义内置过滤器表单字段
+
+无论你使用的是 Checkbox、[Toggle](#使用-toggle-按钮而非-checkbox)还是 [Select](select)，你可以使用 `modifyFormFieldUsing()` 方法，自定义过滤器使用的内置表单字段。该方法接受一个带 `$field` 参数的函数，此参数让你可以访问表单字段，以进行自定义：
+
+```php
+use Filament\Forms\Components\Checkbox;
+use Filament\Tables\Filters\Filter;
+
+Filter::make('is_featured')
+    ->modifyFormFieldUsing(fn (Checkbox $field) => $field->inline(false))
+```
+
 ## 在 Session 中持久化过滤器
 
 要在用户 Session 中持久化表格过滤器，请使用 `persistFiltersInSession()` 方法：
@@ -109,6 +121,45 @@ public function table(Table $table): Table
             // ...
         ])
         ->persistFiltersInSession();
+}
+```
+
+## 延迟过滤器
+
+你可以延迟过滤器修改对表格的影响，使之在点击"应用(Apply)"按钮后才生效。为此，请使用 `deferFilters()` 方法：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->deferFilters();
+}
+```
+
+### 自定义应用过滤器 Action
+
+当延时过滤器时，使用 `filtersApplyAction()` 方法，并传入一个返回 Action 的闭包，你可以自定义 "Apply" 按钮。[自定义 Action 触发按钮](../../actions/trigger-button)中的所有方法都可以在此使用：
+
+```php
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->filters([
+            // ...
+        ])
+        ->filtersApplyAction(
+            fn (Action $action) => $action
+                ->link()
+                ->label('Save filters to table'),
+        );
 }
 ```
 

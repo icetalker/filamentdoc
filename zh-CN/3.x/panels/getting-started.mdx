@@ -148,7 +148,7 @@ php artisan make:filament-resource Patient
 
 #### "Name" 文本输入框
 
-Filament 捆绑了大量[表单字段](../forms/fields)。让我们从最简单的[文本输入框](../forms/fields/text-input)入手：
+Filament 捆绑了大量[表单字段](../forms/fields、getting-started#可用字段)。让我们从最简单的[文本输入框](../forms/fields/text-input)入手：
 
 ```php
 use Filament\Forms;
@@ -337,7 +337,7 @@ Forms\Components\Select::make('owner_id')
 
 #### 添加文本字段
 
-Filament 捆绑了一系列[表格列字段](../tables/columns)。让我们使用最简单的[文本列](../tables/columns/text)，将其用在 `patients` 表格中的所有字段：
+Filament 捆绑了一系列[表格列字段](../tables/columns/getting-started#可用列字段)。让我们使用最简单的[文本列](../tables/columns/text)，将其用在 `patients` 表格中的所有字段：
 
 ```php
 use Filament\Tables;
@@ -410,7 +410,7 @@ public static function table(Table $table): Table
 
 虽然你可以将 `type` 字段设置成可搜索的 searchable，不过使之可过滤会有更好的用户体验。
 
-Filament 表格可以设置[过滤器](../tables/filters/getting-started)，过滤器是一个允许你设置 Eloquent 查询范围来减少表格记录的组件。过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
+Filament 表格可以设置[过滤器](../tables/filters/getting-started#可用过滤器)，过滤器是一个允许你设置 Eloquent 查询范围来减少表格记录的组件。过滤器甚至可以包含自定义表单组件，这使之称为构建接口的有力工具。
 
 Filament 包含了一个预制的 [`SelectFilter`](../tables/filters/select)，你可以将其添加到表格的 `filters()` 中：
 

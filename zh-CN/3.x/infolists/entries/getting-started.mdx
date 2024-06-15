@@ -21,6 +21,20 @@ public function infolist(Infolist $infolist): Infolist
 }
 ```
 
+如果你在[面板构造器的资源](../../panels/resources)中，`infolist()` 方法应该是静态的：
+
+```php
+use Filament\Infolists\Infolist;
+
+public static function infolist(Infolist $infolist): Infolist
+{
+    return $infolist
+        ->schema([
+            // ...
+        ]);
+}
+```
+
 条目(Entry)可以使用静态 `make()` 方法创建，传入其唯一名称。你可以使用"点语法"访问 Entry 关联。
 
 ```php
@@ -282,7 +296,16 @@ TextEntry::make('slug')
     ->extraAttributes(['class' => 'bg-gray-200'])
 ```
 
-These get merged onto the outer `<div>` element of each entry in that entry.
+这些属性合并到该 Entry 的外层 `</div>` 中。
+
+你也可以将额外的 HTML 属性传递给该 Entry 的包装器，其包装了标签、Entry 和其他文本：
+
+```php
+use Filament\Infolists\Components\TextEntry;
+
+TextEntry::make('slug')
+    ->extraEntryWrapperAttributes(['class' => 'entry-locked'])
+```
 
 ## 全局设置
 

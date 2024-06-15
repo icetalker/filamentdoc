@@ -87,19 +87,19 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 {
     // ...
 
-    public function getTenants(Panel $panel): Collection
-    {
-        return $this->teams;
-    }
-    
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class);
     }
 
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->teams;
+    }
+
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->teams->contains($tenant);
+        return $this->teams()->whereKey($tenant)->exists();
     }
 }
 ```
@@ -121,10 +121,10 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 ```php
 namespace App\Filament\Pages\Tenancy;
 
+use App\Models\Team;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
-use Illuminate\Database\Eloquent\Model;
 
 class RegisterTeam extends RegisterTenant
 {
@@ -132,7 +132,7 @@ class RegisterTeam extends RegisterTenant
     {
         return 'Register team';
     }
-    
+
     public function form(Form $form): Form
     {
         return $form
@@ -141,13 +141,13 @@ class RegisterTeam extends RegisterTenant
                 // ...
             ]);
     }
-    
+
     protected function handleRegistration(array $data): Team
     {
         $team = Team::create($data);
-        
+
         $team->members()->attach(auth()->user());
-        
+
         return $team;
     }
 }
@@ -185,7 +185,6 @@ namespace App\Filament\Pages\Tenancy;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\EditTenantProfile;
-use Illuminate\Database\Eloquent\Model;
 
 class EditTeamProfile extends EditTenantProfile
 {
@@ -193,7 +192,7 @@ class EditTeamProfile extends EditTenantProfile
     {
         return 'Team profile';
     }
-    
+
     public function form(Form $form): Form
     {
         return $form
@@ -437,6 +436,18 @@ MenuItem::make()
     ->hidden(fn (): bool => ! auth()->user()->can('manage-team'))
 ```
 
+### 从租户菜单项中发送 `POST` HTTP 请求
+
+你可用将 URL 传入到 `postAction()` 方法，从租户菜单项中发送 `POST` HTTP 请求：
+
+```php
+use Filament\Navigation\MenuItem;
+
+MenuItem::make()
+    ->label('Lock session')
+    ->postAction(fn (): string => route('lock-session'))
+```
+
 ### 隐藏租户菜单
 
 通过 `tenantMenu(false)` 方法，你可以隐藏租户菜单：
@@ -491,6 +502,7 @@ class Team extends Model implements HasAvatar
 你可以在 `tenant()` 配置方法中使用 `ownershipRelationship` 参数，自定义跨所有资源使用的 ownership 的关联名。本例中，资源模型类定义了一个 `owner` 关联：
 
 ```php
+use App\Models\Team;
 use Filament\Panel;
 
 public function panel(Panel $panel): Panel
@@ -534,6 +546,7 @@ class PostResource extends Resource
 使用像团队这样的租户时，你可能想添加 slug 而不是团队 ID 作为 URL。你可以在 `tenant()` 配置方法中的 `slugAttribute` 参数实现该目的：
 
 ```php
+use App\Models\Team;
 use Filament\Panel;
 
 public function panel(Panel $panel): Panel
@@ -584,7 +597,7 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model implements HasCurrentTenantLabel
 {
     // ...
-    
+
     public function getCurrentTenantLabel(): string
     {
         return 'Active team';
@@ -615,12 +628,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class User extends Model implements FilamentUser, HasDefaultTenant, HasTenants
 {
     // ...
-    
+
     public function getDefaultTenant(Panel $panel): ?Model
     {
         return $this->latestTeam;
     }
-    
+
     public function latestTeam(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'latest_team_id');
@@ -665,6 +678,7 @@ public function panel(Panel $panel): Panel
 默认情况下，URL 结构会将 tenant ID 或 slug 放在面板路径之后。如果你想使用其他 URL 分段加上前缀，请使用 `tenantRoutePrefix()` 方法：
 
 ```php
+use App\Models\Team;
 use Filament\Panel;
 
 public function panel(Panel $panel): Panel
@@ -678,6 +692,42 @@ public function panel(Panel $panel): Panel
 ```
 
 此前，租户 1 的 URL 结构是 `/admin/1`。现在，是 `/admin/team/1`。
+
+## 使用域名识别租户
+
+使用租户时，你可能想像 `team1.example.com/posts` 这样使用域名或者子域名路由，而不是使用像 `/team1/posts` 这样的路由前缀。你可以使用 `tenantDomain()` 方法以及 `tenant()` 配置方法来实现该功能。`tenant` 参数对应于该租户模型的 slug 属性：
+
+```php
+use App\Models\Team;
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->tenant(Team::class, slugAttribute: 'slug')
+        ->tenantDomain('{tenant:slug}.example.com');
+}
+```
+
+上例中，租户在应用主域名的子域名中。你也可以将系统设置为在租户解析整个域名：
+
+```php
+use App\Models\Team;
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->tenant(Team::class, slugAttribute: 'domain')
+        ->tenantDomain('{tenant:domain}');
+}
+```
+
+本例中，`domain` 属性应该是一个有效的域名，比如 `example.com` 或 `subdomain.example.com`。
+
+> 注意：当参数用于整个域名(`tenantDomain('{tenant:domain}')`)时，Filament 将在应用中为所有 `tenant` 参数注册一个 `[a-z0-9.\-]+` 的[全局路由模式](https://laravel.com/docs/routing#parameters-global-constraints)。这是因为 Laravel 默认不允许路由中使用 `.` 字符。这可能会与其他使用租户的面板或者其他使用 `tenant` 路由参数的部分发送冲突。
 
 ## 禁用某个资源的租户
 
@@ -756,7 +806,7 @@ class ApplyTenantScopes
         Author::addGlobalScope(
             fn (Builder $query) => $query->whereBelongsTo(Filament::getTenant()),
         );
-        
+
         return $next($request);
     }
 }
