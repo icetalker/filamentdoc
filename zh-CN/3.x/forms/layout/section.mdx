@@ -86,9 +86,9 @@ Section::make('Rate limiting')
 
 > [请确保该 Section 有一个 heading 或 ID](#adding-actions-to-a-section-without-heading)
 
-#### Aligning section footer actions
+#### Section 尾部 Action 对齐
 
-Footer actions are aligned to the inline start by default. You may customize the alignment using the `footerActionsAlignment()` method:
+默认情况下，Footer Action 默认对齐到行内起始位置。你可以使用 `footerActionsAlignment()` 方法自定义对齐方式：
 
 ```php
 use Filament\Forms\Components\Actions\Action;
@@ -108,9 +108,9 @@ Section::make('Rate limiting')
     ->footerActionsAlignment(Alignment::End)
 ```
 
-### Adding actions to a section without heading
+### 添加到不带标题的 Section 中
 
-If your section does not have a heading, Filament has no way of locating the action inside it. In this case, you must pass a unique `id()` to the section:
+如果你的 Section 没有标题，Filament无法定位其中的 Action。这种情况下，你必须向 Section 传递一个唯一的  `id()`：
 
 ```php
 use Filament\Forms\Components\Section;

@@ -36,7 +36,7 @@ FileUpload::make('attachment')
     ->visibility('private')
 ```
 
-> 是否从磁盘中删除这些文件由开发者决定，因为 Filament 无从知晓这些图片是否由其他地方的依赖。其中一种自动实现方式是监测[模型事件](https://laravel.com/docs/eloquent#events)。
+> 是否从磁盘中删除这些文件由开发者决定，因为 Filament 无从知晓这些图片是否有其他地方的依赖。其中一种自动实现方式是监测[模型事件](https://laravel.com/docs/eloquent#events)。
 
 ## 多文件上传
 

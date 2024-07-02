@@ -8,7 +8,7 @@ title: Export action
 
 Filament v3.2 引入了一个预构建的 Action，可以将行导出到 CSV 或 XLSX 文件。当单击触发器按钮时，模态框会询问要导出的列以及它们应该的标签。此功能使用[作业批次](https://laravel.com/docs/queues#job-batching)和[数据库迁移](../../notifications/database-notifications#概述)，因此你需要从 Laravel 发布这些迁移。此外，你还需要发布 Filament 用于存储导出信息的表的迁移：
 
-``bash
+```bash
 # Laravel 11 and higher
 php artisan make:queue-batches-table
 php artisan make:notifications-table
@@ -570,7 +570,7 @@ public function getXlsxHeaderCellStyle(): ?Style
 
 ## 自定义导出作业
 
-处理导出的默认作业是 ``Filament\Actions\Exports\Jobs\PrepareCsvExport`。如果你想扩展该类并重写器方法，你可以在服务提供者的 `register()` 方法中替换其原始类：
+处理导出的默认作业是 `Filament\Actions\Exports\Jobs\PrepareCsvExport`。如果你想扩展该类并重写器方法，你可以在服务提供者的 `register()` 方法中替换其原始类：
 
 ```php
 use App\Jobs\PrepareCsvExport;
@@ -579,7 +579,7 @@ use Filament\Actions\Exports\Jobs\PrepareCsvExport as BasePrepareCsvExport;
 $this->app->bind(BasePrepareCsvExport::class, PrepareCsvExport::class);
 ```
 
-或者，你可以传递新的 Job 类到该 Action 的 `job()` 方法中，以定制指定导出的 Job：
+或者，你可以传递新的 Job 类到该 Action 的 `job()` 方法中，以为指定的导出自定义 Job：
 
 ```php
 use App\Jobs\PrepareCsvExport;
@@ -611,7 +611,7 @@ public function getJobConnection(): ?string
 
 ### 自定义导出 Job 中间件
 
-默认情况下，导出系统每个导出一次只处理一个 Job。这是为了防止服务器过载，以及其他作业因大型导出而延迟。该功能在导出器类的`WithoutOverlapping` 中间件中定义：
+默认情况下，导出系统每个导出一次只处理一个 Job。这是为了防止服务器过载，以及其他作业因大型导出而延迟。该功能在导出器类的 `WithoutOverlapping` 中间件中定义：
 
 ```php
 public function getJobMiddleware(): array
