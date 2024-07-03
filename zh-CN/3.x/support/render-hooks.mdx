@@ -85,6 +85,8 @@ FilamentView::registerRenderHook(
 - `PanelsRenderHook::SCRIPTS_BEFORE` - Scripts 脚本定义之前
 - `PanelsRenderHook::SIDEBAR_NAV_END` - 在[侧边栏](../panels/navigation)中，`</nav>` 之前
 - `PanelsRenderHook::SIDEBAR_NAV_START` - 在[侧边栏](../panels/navigation)中，`</nav>` 之后
+- `PanelsRenderHook::SIMPLE_PAGE_END` - 简单页面的内容容器末尾，也可[将范围锁定到](#渲染钩子作用域)页面类
+- `PanelsRenderHook::SIMPLE_PAGE_START` - 简单页面的内容容器开头，也可[将范围锁定到](#渲染钩子作用域)页面类
 - `PanelsRenderHook::SIDEBAR_FOOTER` - 固定在侧边栏的底部，在内容下方
 - `PanelsRenderHook::STYLES_AFTER` - 样式定义之后
 - `PanelsRenderHook::STYLES_BEFORE` - 样式定义之前
@@ -109,6 +111,10 @@ FilamentView::registerRenderHook(
 
 - `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_AFTER` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
 - `TablesRenderHook::SELECTION_INDICATOR_ACTIONS_BEFORE` - 选择指示栏中的“全选”和“取消全选”操作按钮之后
+- `TablesRenderHook::HEADER_AFTER` - 在 header 容器之后
+- `TablesRenderHook::HEADER_BEFORE` - 在 header 容器之前
+- `TablesRenderHook::TOOLBAR_AFTER` - 在 toolbar 容器之后
+- `TablesRenderHook::TOOLBAR_BEFORE` - 在 toolbar 容器之前
 - `TablesRenderHook::TOOLBAR_END` - 工具栏的末尾
 - `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER` - 在[分组](../tables/grouping)选择器之后
 - `TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE` - 再[分组](../tables/grouping)选择器之前

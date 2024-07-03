@@ -23,6 +23,18 @@ protected function setUp(): void
 }
 ```
 
+### 测试多个面板
+
+如果你有多个面板并且想要测试非默认面板，你需要告诉 Filament 你在测试哪个面板。可以在测试用例的 `setUp()` 方法中完成此操作，或者可以在特殊用例的开头完成。当你通过请求访问面板时，Filament 通常在中间件中实现此操作，因此，如果你在测试中没有像测试 Livewire 组件那样发起请求，则需要手动设置当前面板：
+
+```php
+use Filament\Facades\Filament;
+
+Filament::setCurrentPanel(
+    Filament::getPanel('app'), // Where `app` is the ID of the panel you want to test.
+);
+```
+
 ## 资源
 
 ### 页面

@@ -34,3 +34,23 @@ public function panel(Panel $panel): Panel
         ->databaseNotificationsPolling('30s');
 }
 ```
+
+## 在面板中设置 websocket
+
+面板构造器提供了对实时广播和数据库通知的内置支持。然而，你还有许多区域需要安装和配置，以便将一切连接起来并使其正常工作。
+
+1. 如果你还没准备好，请阅读 Laravel 文档中的[广播](https://laravel.com/docs/broadcasting)章节。
+2. 安装并配置广播以使用[服务的 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
+3. 如果你还没准备好，需要发布 Filament 包配置：
+
+```bash
+php artisan vendor:publish --tag=filament-config
+```
+
+4. 在 `config/filament.php` 中编辑配置并取消 `broadcasting.echo` 区域的注释 - 请确保确保根据你广播安装正确配置设置。
+5. 请确保在你的 `.env` 文件中存在[相关的 `VITE_*` 条目](https://laravel.com/docs/broadcasting#client-pusher-channels)。
+6. 使用 `php artisan route:clear` 和d `php artisan config:clear` 清楚相关缓存，以确保你的新配置生效。
+
+现在你的面板应该能够连接到广播服务器、比如，如果你将日志记入 Pusher 的调试控制台，每次加载页面时你应该可以看到一个正在进入的连接。
+
+要发布实时通知，请查看[广播通知文档](../notifications/broadcast-notifications)。
