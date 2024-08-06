@@ -141,6 +141,23 @@ public function table(Table $table): Table
 }
 ```
 
+### 设置默认的排序选项标签
+
+要设置默认的排序选项标签，请使用 `defaultSortOptionLabel()` 方法：
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            // ...
+        ])
+        ->defaultSortOptionLabel('Date');
+}
+```
+
 ## 搜索
 
 使用表格右上角的文本输入字段，列字段可以是可搜索的。要使之可搜索，请使用 `searchable()` 方法：

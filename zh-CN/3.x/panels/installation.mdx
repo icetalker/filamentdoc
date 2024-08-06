@@ -46,17 +46,33 @@ Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/3.x/form
 
 ## 改善 Filament 面板性能
 
-### 缓存 Blade 图标
+### 生产环境中优化 Filament
 
-你可以考虑在本地及部署脚本中运行 `php artisan icons:cache`。这是因为 Filament 使用了 [Blade Icons](https://blade-ui-kit.com/blade-icons) 包，它在缓存时有更好的性能。
+要在生产环境中优化 Filament，你应该在部署脚本中运行如下命令：
 
-### 缓存 Filament 组件
+```bash
+php artisan filament:optimize
+```
 
-你也可以考虑在部署脚本中运行 `php artisan filament:cache-components`，特别是当你有大量组件(资源、页面、Widgets、关联管理器、自定义 Livewire 组件等)时。这将在应用的 `bootstrap/cache/filament` 目录中生成缓存文件，其中包含每个组件类型的索引。这在某些应用中可以显著提升 Filament 的性能，因为它减少了需要扫描的文件数量并且自动发现组件。
+该命令将[缓存 Filament 组件](#缓存-filament-组件)以及 [Blade 图标](#缓存-blade-图标)，这将显著改善 Filament 面板的性能。该命令是 `php artisan filament:cache-components` 和 `php artisan icons:cache` 这两个命令的快捷方式。
+
+要一次性清除缓存，请运行：
+
+```bash
+php artisan filament:optimize-clear
+```
+
+#### 缓存 Filament 组件
+
+如果你没有使用 [`filament:optimize` 命令](#生产环境中优化-filament)，你也可以考虑在部署脚本中运行 `php artisan filament:cache-components`，特别是当你有大量组件(资源、页面、Widget、关联管理器、自定义 Livewire 组件等)时。这将在应用的 `bootstrap/cache/filament` 目录中生成缓存文件，其中包含每个组件类型的索引。这在某些应用中可以显著提升 Filament 的性能，因为它减少了需要扫描的文件数量并且自动发现组件。
 
 不过，如果你在本地开发应用，应该避免使用该命令，因为它在清除或者重新缓存之前，将会阻止你发现新组件。
 
 你可以运行 `php artisan filament:clear-cached-components` 在任何时候清理缓存而不重新生成缓存。
+
+### 缓存 Blade 图标
+
+如果你没有使用 [`filament:optimize` 命令](#生产环境中优化-filament)，你可以考虑在本地及部署脚本中运行 `php artisan icons:cache`。这是因为 Filament 使用了 [Blade Icons](https://blade-ui-kit.com/blade-icons) 包，它在缓存时有更好的性能。
 
 ### 在服务器中启用 OPcache
 
@@ -68,7 +84,7 @@ Filament 面板构造器包已经预装了[表单构造器](/docs/zh-CN/3.x/form
 
 ### 优化 Laravel 应用
 
-你也可以考虑在部署脚本中运行 `php artisan optimize`。这将会缓存配置和路由。
+你也可以考虑在部署脚本中运行 `php artisan:optimize` 以优化生产环境中的应用。该命令将会缓存配置和路由。
 
 ## 部署到生产环境
 
@@ -149,5 +165,6 @@ php artisan vendor:publish --tag=filament-translations
 
 ```bash
 composer update
+
 php artisan filament:upgrade
 ```

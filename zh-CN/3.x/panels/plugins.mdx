@@ -6,7 +6,7 @@ title: 插件开发
 
 ## 概述
 
-Filament 插件的基础是 Laravel 包。它们通过 Composer 安装到 Filament 项目中，并遵循所有标准技术，如使用服务提供商注册路线、视图和翻译。如果你是 Laravel 软件包开发的新手，这里有一些资源可以帮助你掌握核心概念：
+Filament 插件的基础是 Laravel 包。它们通过 Composer 安装到 Filament 项目中，并遵循所有标准技术，如使用服务提供者注册路由、视图和翻译文件。如果你是 Laravel 软件包开发的新手，这里有一些资源可以帮助你掌握核心概念：
 
 - [Laravel 文档的包开发章节](https://laravel.com/docs/packages)是一个很好的参考指南。
 - [Spatie 的包训练教程](https://spatie.be/products/laravel-package-training)是一个很好的说明视频，一步步教你处理过程。
@@ -16,11 +16,11 @@ Filament 插件是基于 Laravel 包的概念构建的，允许你为任何 Fila
 
 ## 使用插件类配置面板
 
-Plugin 插件类允许你的包与面板[配置](configuration) 文件进行互动。它是一个实现 `Plugin` 接口的简单 PHP 类。3 个方法是必须的：
+Plugin 插件类允许你的包与面板[配置](configuration)文件进行互动。它是一个实现 `Plugin` 接口的简单 PHP 类。有 3 个方法是必需的：
  
-- `getId()` 方法返回该插件的唯一标识符。请确保它足够具体，不会与同一项目中可能使用的其他插件发生冲突。
-- `register()` 方法允许你使用面板可用的[配置](configuration)选项。包括注册[资源](resources/getting-started)、[页面](pages)、[主题](themes)、[渲染钩子](configuration#渲染钩子)等到。
-- 只有当面板中注册的插件被实际使用时才会运行。它由中间件类执行。
+- `getId()` 方法返回该插件的唯一标识符。请确保它足够特殊，而不会与同一项目中可能使用的其他插件发生冲突。
+- `register()` 方法允许你使用面板可用的[配置](configuration)选项。包括注册[资源](resources/getting-started)、[页面](pages)、[主题](themes)、[渲染钩子](configuration#渲染钩子)等。
+- `boot()` 方法只有当面板中注册的插件被实际使用时才会运行。它由中间件类执行。
 
 ```php
 <?php
@@ -90,7 +90,7 @@ class BlogPlugin implements Plugin
 }
 ```
 
-现在，插件用户就可以使用 `make()` 方法：
+现在，插件用户可以使用 `make()` 方法：
 
 ```php
 use DanHarrin\FilamentBlog\BlogPlugin;

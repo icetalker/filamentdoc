@@ -56,6 +56,35 @@ protected function getHeaderActions(): array
 }
 ```
 
+### 页面加载时打开 Action 模态框
+
+通过将 `$defaultAction` 属性设置为你想要打开的 Action 名，你可以在页面加载时打开 Action：
+
+```php
+use Filament\Actions\Action;
+
+public $defaultAction = 'onboarding';
+
+public function onboardingAction(): Action
+{
+    return Action::make('onboarding')
+        ->modalHeading('Welcome')
+        ->visible(fn (): bool => ! auth()->user()->isOnBoarded());
+}
+```
+
+使用 `$defaultActionArguments` 方法，你也可以将参数数组传递给默认 Action：
+
+```php
+public $defaultActionArguments = ['step' => 2];
+```
+
+此外，通过将 `action` 作为查询参数指定给页面，你可以在页面加载时打开 Action 模态框：
+
+```
+/admin/products/edit/932510?action=onboarding
+```
+
 ### 刷新表单数据
 
 如果要在资源的[编辑页](resources/editing-records)或[查看页](resources/viewing-records)中使用 Action，你可以使用 `refreshFormData()` 方法在主表单中刷新数据：

@@ -370,7 +370,37 @@ Builder::make('content')
     ->maxItems(5)
 ```
 
-## 自定义 Builder 项 action
+## 使用 `$get()` 访问父级字段值
+
+所有表单组件都能[使用 `$get()` 和 `$set()`](../advanced) 来访问另一个字段的值。不过，在 Builder schema 内使用时，你可能会遇到非预期的行为。
+
+这是因为 `$get()` 和 `$set()` 默认限定在当前 Builder 项目中。这意味着你无需知道当前表单组件属于哪个 Builder 项目，就可以在 Builder 项目内与其他字段交互。
+
+这样的后果是，当无法与 Builder 之外的字段交互时，你会产生疑惑。我们可以使用 `...` 语法来解决该问题 - `$get('../../parent_field_name')`。
+
+假设表单有这样的数据结构：
+
+```php
+[
+    'client_id' => 1,
+
+    'builder' => [
+        'item1' => [
+            'service_id' => 2,
+        ],
+    ],
+]
+```
+
+你要在 Builder 项内检索 `client_id` 的值。
+
+`$get()` 与当前的 Builder 项目相关，因此 `$get('client_id')` 是在查找 `$get('builder.item1.client_id')`。
+
+你可以使用 `../` 去到该数据结构的上一级，因此 `$get('../client_id')` 是 `$get('builder.client_id')`，而 `$get('../../client_id')` 是 `$get('client_id')`.
+
+`$get()` 不带参数或者 `$get('')`或者 `$get('./')`的特例， 将总是返回当前 Builder 项目的所有数据的数组。
+
+## 自定义 Builder 项 Action
 
 该字段使用 action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
 
@@ -497,7 +527,7 @@ Builder::make('content')
                 TextInput::make('text')
                     ->placeholder('Default heading'),
             ])
-            ->preview('filament.content.blocks-previews.heading'),
+            ->preview('filament.content.block-previews.heading'),
     ])
 ```
 

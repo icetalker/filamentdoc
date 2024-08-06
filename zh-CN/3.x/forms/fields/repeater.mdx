@@ -477,6 +477,8 @@ Repeater::make('invitations')
 
 你可以使用 `../` 回到该数据结构的上一级，因此 `$get('../client_id')` 相当于 `$get('repeater.client_id')`，`$get('../../client_id')` 相当于 `$get('client_id')`。
 
+The special case of `$get()` with no arguments, or `$get('')` or `$get('./')`, will always return the full data array for the current repeater item.
+
 ## Repeater 验证
 
 除了[验证](../validation)页面中列出的所有规则，还有一些其他专用于 Repeater 的验证规则。

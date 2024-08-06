@@ -257,12 +257,12 @@ TextColumn::make('rating')
     ))
 ```
 
-此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法，用以设置整个应用的默认本地化：
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Table::$defaultNumberLocale` 方法，用以设置整个应用的默认本地化：
 
 ```php
-use Illuminate\Support\Number;
+use Filament\Tables\Table;
 
-Number::useLocale('nl');
+Table::$defaultNumberLocale = 'nl';
 ```
 
 ### 货币格式化
@@ -297,12 +297,12 @@ TextColumn::make('price')
     ->summarize(Sum::make()->money('EUR', locale: 'nl'))
 ```
 
-此外，你可以在服务提供者的 `boot()` 方法中，使用 `Number::useLocale()` 方法，用以设置整个应用的默认本地化设置：
+此外，你可以在服务提供者的 `boot()` 方法中，使用 `Table::$defaultNumberLocale` 方法，用以设置整个应用的默认本地化设置：
 
 ```php
-use Illuminate\Support\Number;
+use Filament\Tables\Table;
 
-Number::useLocale('nl');
+Table::$defaultNumberLocale = 'nl';
 ```
 
 ### 限制文本长度
@@ -315,6 +315,22 @@ use Filament\Tables\Columns\TextColumn;
 
 TextColumn::make('sku')
     ->summarize(Range::make()->limit(5))
+```
+
+### 添加前后缀
+
+你可以将前后缀添加到汇总值：
+
+```php
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\HtmlString;
+
+TextColumn::make('volume')
+    ->summarize(Sum::make()
+        ->prefix('Total volume: ')
+        ->suffix(new HtmlString(' m&sup3;'))
+    )
 ```
 
 ## 自定义汇总
@@ -333,6 +349,32 @@ TextColumn::make('name')
 ```
 
 回调可以访问数据库 `$query` 构建器实例，以执行计算。它应该返回展示在表格中的值。
+
+## 条件性隐藏汇总
+
+要隐藏汇总，你可以传递一个布尔值或者一个返回布尔值的函数给 `hidden()` 方法。如果需要，你可以通过函数的 `$query` 参数让该汇总器(summarizer)访问 Eloquent 查询的 Builder 实例：
+
+```php
+use Filament\Tables\Columns\Summarizers\Summarizer;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('sku')
+    ->summarize(Summarizer::make()
+        ->hidden(fn (Builder $query): bool => ! $query->exists()))
+```
+
+此外，你可以使用 `visable()` 方法来实现相反的效果：
+
+```php
+use Filament\Tables\Columns\Summarizers\Summarizer;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+
+TextColumn::make('sku')
+    ->summarize(Summarizer::make()
+        ->visible(fn (Builder $query): bool => $query->exists()))
+```
 
 ## 汇总行分组
 

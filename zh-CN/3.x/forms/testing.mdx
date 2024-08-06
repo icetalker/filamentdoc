@@ -47,6 +47,32 @@ it('can automatically generate a slug from the title', function () {
 
 > 注意，如果一个 Livewire 组件中有多个表单，你可以使用 `assertFormSet([...], 'createPostForm')` 指定你想要检测哪个表单。
 
+在 `assertFormSet()` 中传入一个函数，将允许你访问表单的 `$state` 并执行额外的断言：
+
+```php
+use Illuminate\Support\Str;
+use function Pest\Livewire\livewire;
+
+it('can automatically generate a slug from the title without any spaces', function () {
+    $title = fake()->sentence();
+
+    livewire(CreatePost::class)
+        ->fillForm([
+            'title' => $title,
+        ])
+        ->assertFormSet(function (array $state): array {
+            expect($state['slug'])
+                ->not->toContain(' ');
+                
+            return [
+                'slug' => Str::slug($title),
+            ];
+        });
+});
+```
+
+如果你希望 Filament 在函数运行后继续断言表单状态，你可以在该函数中返回数组。
+
 ## 验证
 
 使用 `assertHasFormErrors()` 断言对表单中的数据进行有效验证：
@@ -121,6 +147,17 @@ it('has a title field', function () {
 });
 ```
 
+要断言表单中不包含给定字段，请将字段名传给 `assertFormFieldDoesNotExist()`：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('does not have a conditional field', function () {
+    livewire(CreatePost::class)
+        ->assertFormFieldDoesNotExist('no-such-field');
+});
+```
+
 > 如果 Livewire 组件有多个表单，你可以指定哪个表单要断言字段是否存在。比如 `assertFormFieldExists('title', 'createPostForm')`。
 
 ### Hidden 字段
@@ -174,6 +211,132 @@ test('title is disabled', function () {
 ```
 
 > 对于 `assertFormFieldIsEnabled()` 和 `assertFormFieldIsDisabled()`，你可以传递该字段所属表单的名称作为第二个参数，比如 `assertFormFieldIsEnabled('title', 'createPostForm')`。
+
+## 布局组件
+
+如果你想确定特定的布局组件(而非字段)是否存在，你可以使用 `assertFormComponentExists()`。由于布局组件没有名称，该方法使用了由开发者提供的 `Key()`:
+
+```php
+use Filament\Forms\Components\Section;
+
+Section::make('Comments')
+    ->key('comments-section')
+    ->schema([
+        //
+    ])
+```
+
+```php
+use function Pest\Livewire\livewire;
+
+test('comments section exists' function () {
+    livewire(EditPost::class)
+        ->assertFormComponentExists('comments-section');
+});
+```
+
+要断言表单中不包含给定组件，请将组件的 key 传给 `assertFormComponentDoesNotExist()`：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('does not have a conditional component', function () {
+    livewire(CreatePost::class)
+        ->assertFormComponentDoesNotExist('no-such-section');
+});
+```
+
+要检测组件是否存在以及是否传入给定的真值测试，你可以传递函数给 `assertFormComponentExists()` 的第二个参数，根据组件是否通过测试来返回 true 或 false：
+
+```php
+use Filament\Forms\Components\Component;
+
+use function Pest\Livewire\livewire;
+
+test('comments section has heading' function () {
+    livewire(EditPost::class)
+        ->assertFormComponentExists(
+            'comments-section',
+            function (Component $component): bool {
+                return $component->getHeading() === 'Comments';
+            },
+        );
+});
+```
+
+如果你想要更多信息的测试结果，你可以在真值测试回调中嵌入一个断言：
+
+```php
+use Filament\Forms\Components\Component;
+use Illuminate\Testing\Assert;
+
+use function Pest\Livewire\livewire;
+
+test('comments section is enabled' function () {
+    livewire(EditPost::class)
+        ->assertFormComponentExists(
+            'comments-section',
+            function (Component $component): bool {
+                Assert::assertTrue(
+                    $component->isEnabled(),
+                    'Failed asserting that comments-section is enabled.',
+                );
+                
+                return true;
+            },
+        );
+});
+```
+
+### Wizard
+
+要转到向导卡的下一步，请使用 `goToNextWizardStep()`:
+
+```php
+use function Pest\Livewire\livewire;
+
+it('moves to next wizard step', function () {
+    livewire(CreatePost::class)
+        ->goToNextWizardStep()
+        ->assertHasFormErrors(['title']);
+});
+```
+
+你也可以调用 `goToPreviousWizardStep()` 转到上一步：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('moves to next wizard step', function () {
+    livewire(CreatePost::class)
+        ->goToPreviousWizardStep()
+        ->assertHasFormErrors(['title']);
+});
+```
+
+如果要跳转到指定的步骤，请使用 `goToWizardStep()`，然后是 `assertWizardCurrentStep` 方法，以确保你在没有上一步验证错误的情况下到达需要的步骤：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('moves to the wizards second step', function () {
+    livewire(CreatePost::class)
+        ->goToWizardStep(2)
+        ->assertWizardCurrentStep(2);
+});
+```
+
+如果你在单个 Livewire 组件中有多个表单，任何的 wizard 测试 helper 都接受 `formName` 参数：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('moves to next wizard step only for fooForm', function () {
+    livewire(CreatePost::class)
+        ->goToNextWizardStep(formName: 'fooForm')
+        ->assertHasFormErrors(['title'], formName: 'fooForm');
+});
+```
 
 ## Actions
 

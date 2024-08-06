@@ -12,7 +12,7 @@ keywords: [Filament, Form Builder, Form Fields]
 
 字段组件和[布局组件](layout)一起，在表单 schema 中。
 
-如果你想在 Livewire 组件中使用这些字段，你可以将它们放到 `getFormSchema()` 方法中： 
+如果你想在 Livewire 组件中使用这些字段，可以将它们放到 `getFormSchema()` 方法中： 
 
 ```php
 protected function getFormSchema(): array
@@ -23,7 +23,7 @@ protected function getFormSchema(): array
 }
 ```
 
-如果你在后台面板的资源或者关联管理器中使用，你必须将它们放在 `$form->schema()` 方法中:
+如果你在后台面板的资源或者关联管理器中使用，必须将它们放在 `$form->schema()` 方法中:
 
 ```php
 public static function form(Form $form): Form
@@ -174,7 +174,7 @@ Toggle::make('is_admin')
     ->dehydrated(auth()->user()->isAdmin())
 ```
 
-如果你使用[后台面板](/docs/zh-CN/2.x/admin)，且只想在[资源的新建页](/docs/zh-CN/2.x/admin/resources)保存禁用字段:
+如果你使用[后台面板](../admin)，且只想在[资源的新建页](../admin/resources)保存禁用字段:
 
 ```php
 use Filament\Resources\Pages\CreateRecord;
@@ -629,7 +629,7 @@ Select::make('technologies')
     ->relationship('technologies', 'name')
 ```
 
-> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](docs/admin)，可以跳过此步。
+> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](../admin)，可以跳过此步。
 
 你可以使用 `relationship()` 方法的第三个参数，自定义数据库查询:
 
@@ -744,7 +744,7 @@ Select::make('authorId')
 
 这个表单会在模态框内打开，用户可以在里面填写数据。一旦表单提交，新记录就会被字段选中。
 
-由于 HTML 不支持嵌套 `<form>` 元素，你必须在视图的 `<form>` 表单之外渲染模态框。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，这已经被包含在内了：
+由于 HTML 不支持嵌套 `<form>` 元素，你必须在视图的 `<form>` 表单之外渲染模态框。如果你使用[后台面板](../admin)，这已经被包含在内了：
 
 ```blade
 <form wire:submit.prevent="submit">
@@ -956,7 +956,7 @@ CheckboxList::make('technologies')
     ->relationship('technologies', 'name')
 ```
 
-> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](/docs/zh-CN/2.x/admin)，可以跳过此步。
+> 要启用这个功能，**你必须按照[关联字段](getting-started#关联字段)区域的指南进行设置**。如果你使用了[后台面板](../admin)，可以跳过此步。
 
 你可以使用 `relationship()` 方法的第三个参数，自定义数据库查询检索选项：
 
@@ -1509,7 +1509,7 @@ Repeater::make('members')
 
 ![](https://user-images.githubusercontent.com/41773797/147613690-9c36779b-f3dc-4710-bdba-dc5c81ddd3cd.png)
 
-我们建议您将数据以 `JSON` 字段的形式保存在数据库中。另外，如果使用了 Eloquent，确保对该字段进行了 `array` 强制转换(casts)。
+我们建议将数据以 `JSON` 字段的形式保存在数据库中。另外，如果使用了 Eloquent，确保对该字段进行了 `array` 强制转换(casts)。
 
 如上例所示，组件的 schema 可以在 `schema()` 方法中定义：
 
@@ -1633,7 +1633,7 @@ Repeater::make('qualifications')
     ])
 ```
 
->要启用该功能，**你也必须按照[关联字段](getting-started#关联字段)区域的指示进行设置**。如果你使用[后台面板](/docs/zh-CN/2.x/admin)，可以忽略此步
+>要启用该功能，**你也必须按照[关联字段](getting-started#关联字段)区域的指示进行设置**。如果你使用[后台面板](../admin)，可以忽略此步
 
 #### 排序项目
 
@@ -2035,7 +2035,7 @@ ViewField::make('notifications')->view('filament.forms.components.range-slider')
 
 在你的视图内，你可以使用 Livewire 和 Alpine.js 与表单组件进行状态交互。 
 
-视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定, 或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互。
+视图可以使用 `$getStatePath()` 闭包获取字段类的 Livewire 属性 path。你可以使用 [`wire:model`](https://laravel-livewire.com/docs/properties#data-binding) 进行数据绑定，或者 [`$wire.entangle`](https://laravel-livewire.com/docs/alpine-js) 与 Alpine.js 进行交互。
 
 使用 [Livewire's entangle](https://laravel-livewire.com/docs/2.x/alpine-js#sharing-state) 与 Alpine.js 共享 state:
 

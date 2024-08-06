@@ -282,7 +282,7 @@ Notification::make()
     ->actions([
         Action::make('view')
             ->button()
-            ->url(route('posts.show', $post), shouldOpenInNewTab: true)
+            ->url(route('posts.show', $post), shouldOpenInNewTab: true),
         Action::make('undo')
             ->color('gray'),
     ])
@@ -428,3 +428,56 @@ import { Notification, NotificationAction } from '../../vendor/filament/notifica
 
 // ...
 ```
+
+## 使用 JavaScript 关闭通知
+
+通知发送完后，你可以通过在窗口中调用 `close-notification` 派发浏览器事件按需关闭通知、
+
+
+该事件需要包含你所发送的通知的 ID，你可以在 `Notification` 对象上使用 `getId()` 方法来获取 ID。
+
+```php
+use Filament\Notifications\Notification;
+
+$notification = Notification::make()
+    ->title('Hello')
+    ->persistent()
+    ->send()
+
+$notificationId = $notification->getId()
+```
+
+要关闭通知，你可以从 Livewire 上派发该事件：
+
+```php
+$this->dispatch('close-notification', id: $notificationId);
+```
+
+或在从 JavaScript 中，如此例中的 Alpine.js：
+
+```blade
+<button x-on:click="$dispatch('close-notification', { id: notificationId })" type="button">
+    Close Notification
+</button>
+```
+
+如果你可以检索到通知 ID，请持久化 ID，并用它来关闭通知。这是推荐的方式，因为 ID 是唯一的，不存在关闭掉其他通知的风险。不过，如果你无法持久化该随机 ID，你可以在发送通知时传递一个自定义 ID：
+
+```php
+use Filament\Notifications\Notification;
+
+Notification::make('greeting')
+    ->title('Hello')
+    ->persistent()
+    ->send()
+```
+
+本例中，你可以使用自定义 ID 派发事件来关闭通知：
+
+```blade
+<button x-on:click="$dispatch('close-notification', { id: 'greeting' })" type="button">
+    Close Notification
+</button>
+```
+
+请注意，如果你使用同一个 ID 发送多个通知，你可能会遇到非预期的副作用，因此推荐使用随机 ID。

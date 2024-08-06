@@ -273,6 +273,18 @@ FileUpload::make('attachment')
     ->uploadProgressIndicatorPosition('left')
 ```
 
+### 在 Grid 中禁用文件
+
+通过设置 `panelLayout()`，使用 [Filepond `grid` 布局](https://pqina.nl/filepond/docs/api/style/#grid-layout)：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->panelLayout('grid')
+```
+
 ## 文件重新排序
 
 使用 `reorderable()` 方法，你可以允许用户对上传文件重新排序：

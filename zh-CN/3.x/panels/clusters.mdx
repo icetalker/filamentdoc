@@ -9,6 +9,7 @@ title: Clusters
 Cluster 是面板中的分层结构，允许你将[资源](resources)和[自定义页面](pages)分组在一起。它们有助于将面板组织成逻辑部分，并有助于减少面板侧边栏的大小。
 
 使用 Cluster 时，会发生以下几件事：
+
 - 一个新的导航项被添加到导航中，它是指向 Cluster 中第一个资源或页面的链接。
 - 资源或页面的各个导航项在主导航中不再可见。
 - 新的子导航 UI 将添加到 Cluster 中的每个资源或页面，其中包含 Cluster 中资源或页面的导航项。
@@ -85,4 +86,24 @@ protected static ?string $cluster = Settings::class;
 ```
 
 这只是推荐，并非强制。只要 Cluster 中的资源和页面使用 [`$cluster`](#将资源和页面添加到-cluster)属性，就可以随心所欲地构建面板。这只是一个建议，可以帮助你保持面板井然有序。
+
 当面板中存在 Cluster，并且使用 `make:filament-resource` 或 `make:filament-page` 命令生成新的资源或页面时，系统会询问你是否要根据这些准则在集群目录中创建这些资源或页面。如果选择了，Filament 还会为资源或页面类分配正确的 `$cluster` 属性。如果没有这样做，你将需要自己[定义 `$cluster` 属性](#将资源和页面添加到-cluster)。
+
+## 自定义 Cluster 的面包屑导航
+
+Cluster 的名称存在于 Cluster 中所有资源和页面的面包屑导航中。
+
+你可以在 Cluster 类中使用 `$clusterBreadcrumb` 属性自定义面包屑名称：
+
+```php
+protected static ?string $clusterBreadcrumb = 'cluster';
+```
+
+此外，可以使用 `getClusterBreadcrumb()` 来定义面包屑的动态名称：
+
+```php
+public static function getClusterBreadcrumb(): string
+{
+    return __('filament/clusters/cluster.name');
+}
+```

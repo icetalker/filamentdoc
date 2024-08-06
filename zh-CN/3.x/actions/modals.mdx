@@ -510,7 +510,7 @@ Modal::closedByClickingAway(false);
 
 ## 通过 escape 关闭模态框
 
-默认情况下，当你在模态上按下 escape 键时，它会关闭自己。如果你希望为特定 Action 禁用此行为，可以使用 `closedByEscaping(false)` 方法：
+默认情况下，当你在模态上按下 escape 键时，它会关闭自己。如果你希望为特定 Action 禁用此行为，可以使用 `closeModalByEscaping(false)` 方法：
 
 ```php
 Action::make('updateAuthor')
@@ -520,7 +520,7 @@ Action::make('updateAuthor')
     ->action(function (array $data): void {
         // ...
     })
-    ->closedByEscaping(false)
+    ->closeModalByEscaping(false)
 ```
 
 如果你想修改应用中的所有模态框的此个行为，你可以在服务提供者或中间件中调用 `Modal::closedByEscaping()`：

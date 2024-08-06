@@ -49,6 +49,52 @@ title: Link Blade 组件
 </x-filament::link>
 ```
 
+## 设置连接的字体粗细
+
+默认情况下，链接的粗细为 `semibold`。使用 `weight` 属性，你可以将其设置为 `thin`、`extralight`、`light`、`normal`、`medium`、`bold`、`extrabold` 或 `black`：
+
+```blade
+<x-filament::link weight="thin">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="extralight">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="light">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="normal">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="medium">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="semibold">
+    New user
+</x-filament::link>
+   
+<x-filament::link weight="bold">
+    New user
+</x-filament::link>
+
+<x-filament::link weight="black">
+    New user
+</x-filament::link> 
+```
+
+此外，你可以传入自定义的 CSS 类，以定义字体粗细：
+
+```blade
+<x-filament::link weight="md:font-[650]">
+    New user
+</x-filament::link>
+```
+
 ## 修改链接的颜色
 
 默认情况下，链接的颜色是 "primary"。你可以使用 `color` 属性，将其改成 `danger`、`info`、`primary`、`success` 或 `warning`。

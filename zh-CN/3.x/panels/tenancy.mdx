@@ -8,7 +8,7 @@ title: 多租户(Multi-tenancy)
 
 多租户(Multi-tenancy)是一个应用程序的单个实例为多个客户提供服务的概念。每个客户都有自己的数据和访问规则，这些规则禁止他们查看或修改彼此的数据。这是 SaaS 应用程序中的常见模式。用户通常属于用户组(通常称为团队或组织)。记录归群组所有，用户可以是多个群组的成员。这适用于用户需要在数据上进行协作的应用程序。
 
-多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
+多租户是一个非常敏感的话题。了解多租户的安全含义以及如何正确实现它很重要。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助你在应用中实现多租户，但如何使用这些工具取决于你。Filament 不对你的应用的安全性提供任何保证。你有责任确保你的应用是安全的。有关详细信息，请参阅[安全](#租户安全)部分。
 
 ## 一对多租户
 
@@ -114,9 +114,9 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
 注册页面将允许用户创建新租户
 
-登录后访问您的应用时，如果用户还没有租户，他们将被重定向到此页面。
+登录后访问你的应用时，如果用户还没有租户，他们将被重定向到此页面。
 
-要设置注册页面，您需要创建一个继承 `Filament\Pages\Tenancy\RegisterTenant` 的新页面类。这是一个全页 Livewire 组件。你可以把它放在任何你想要的地方，比如 `app/Filament/Pages/Tenancy/RegisterTeam.php`：
+要设置注册页面，你需要创建一个继承 `Filament\Pages\Tenancy\RegisterTenant` 的新页面类。这是一个全页 Livewire 组件。你可以把它放在任何你想要的地方，比如 `app/Filament/Pages/Tenancy/RegisterTeam.php`：
 
 ```php
 namespace App\Filament\Pages\Tenancy;
@@ -171,7 +171,7 @@ public function panel(Panel $panel): Panel
 
 ### 自定义租户注册页面
 
-您可以覆盖注册页基类上所需的任何方法，使其按您的要求运行。甚至 `$view` 属性也可以被重写以使用您选择的自定义视图。
+你可以覆盖注册页基类上所需的任何方法，使其按你的要求运行。甚至 `$view` 属性也可以被重写以使用你选择的自定义视图。
 
 ## 添加租户简介页面
 
@@ -222,7 +222,7 @@ public function panel(Panel $panel): Panel
 
 ### 自定义租户简介页
 
-您可以重写覆盖简介页基类上所需的任何方法，使其按您的要求运行。甚至 `$view` 属性也可以被重写以使用您选择的自定义视图。
+你可以重写覆盖简介页基类上所需的任何方法，使其按你的要求运行。甚至 `$view` 属性也可以被重写以使用你选择的自定义视图。
 
 ## 访问当前租户
 
@@ -248,7 +248,7 @@ Filament 提供 [Laravel Spark](https://spark.laravel.com) 的账单集成。你
 composer require filament/spark-billing-provider
 ```
 
-在[配置](configuration)，设置 Spark 为 `tenantBillingProvider()`：
+在[配置](configuration)，将 Spark 设置为 `tenantBillingProvider()`：
 
 ```php
 use Filament\Billing\Providers\SparkBillingProvider;
@@ -342,7 +342,7 @@ public function panel(Panel $panel): Panel
 
 ## 自定义租户菜单
 
-租户切换菜单位于管理员(admin)布局的特性。它完全是可定制的。
+租户切换菜单是管理员(admin)布局的特色。它完全是可定制的。
 
 要注册新菜单项到租户菜单中，你可以使用[配置](configuration):
 
@@ -658,7 +658,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-默认情况下， 中间件会在页面首次加载时运行，不过不会在随后的 Livewire AJAX 请求中运行。如果你想在每个请求时都运行中间件，你可以传入 `true` 作为 `tenantMiddleware()` 方法的第二个参数，使之持久化：
+默认情况下，中间件会在页面首次加载时运行，不过不会在随后的 Livewire AJAX 请求中运行。如果你想在每个请求时都运行中间件，你可以传入 `true` 作为 `tenantMiddleware()` 方法的第二个参数，使之持久化：
 
 ```php
 use Filament\Panel;
@@ -755,7 +755,7 @@ protected static bool $isScopedToTenant = true;
 
 ## 租户安全
 
-理解多租户的安全含义以及如何实现合理地实现是很重要的。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助您在应用程序中实现多租户，但如何使用这些工具取决于您。Filament 不对您的应用程序的安全性提供任何保证。您有责任确保您的应用程序是安全的。
+理解多租户的安全含义以及如何合理地实现是很重要的。如果部分或错误地实现，属于一个租户的数据可能会暴露给另一个租户。Filament 提供了一组工具来帮助你在应用中实现多租户，但如何使用这些工具取决于你。Filament 不对你的应用的安全性提供任何保证。你有责任确保你的应用是安全的。
 
 以下是 Filament 提供的帮你在应用中实现多租户的一系列特性：
 

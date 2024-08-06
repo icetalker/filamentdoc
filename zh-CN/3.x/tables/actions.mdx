@@ -88,7 +88,7 @@ public function table(Table $table): Table
 
 ### 访问选中的表格行
 
-你可能希望一个 Action 可以访问表格中所有选中的行。通常，这是通过表格头部上的一个批量操作(#批量操作)来实现。不过，你可以使用行 Action 来实现，此处为选中的行提供该 Action 的上下文。
+你可能希望一个 Action 可以访问表格中所有选中的行。通常，这是通过表格头部上的一个[批量操作](#批量操作)来实现。不过，你可以使用行 Action 来实现，此处为选中的行提供该 Action 的上下文。
 
 比如，你可能希望行 Action 复制行数据到所有选中的记录。即使未定义批量操作，要强制使表格可被选中，那你需要使用 `selectable()` 方法。要允许该 Action 访问选中的记录，你需要使用 `accessSelectedRecords()` 方法。然后，你可以使用 Action 中的 `$selectedRecords` 参数，访问选中的记录：
 
@@ -339,7 +339,7 @@ ActionGroup::make([
 
 <AutoScreenshot name="tables/actions/group-button" alt="Table with button action group" version="3.x" />
 
-"链接"触发器没有背景色。它有一个标签及可选的[图标](#设置分组-action-按钮图标)。她看起来像文本中嵌入的链接。你可以使用 `link()` 方法切换到该样式：
+"链接"触发器没有背景色。它有一个标签及可选的[图标](#设置分组-action-按钮图标)。看起来像文本中嵌入的链接。你可以使用 `link()` 方法切换到该样式：
 
 ```php
 use Filament\Tables\Actions\ActionGroup;

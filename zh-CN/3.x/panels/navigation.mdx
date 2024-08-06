@@ -316,6 +316,35 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## 自定义侧边栏的宽度
+
+在[配置](configuration)的 `sidebarWidth()` 方法中传入宽度，可以自定义侧边栏的宽度：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->sidebarWidth('40rem');
+}
+```
+
+此外，如果你使用了 `sidebarCollapsibleOnDesktop()` 方法，你可以在[配置](configuration)的 `collapsedSidebarWidth()` 方法中自定义折叠图标的宽度：
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->sidebarCollapsibleOnDesktop()
+        ->collapsedSidebarWidth('9rem');
+}
+```
+
 ## 导航自定义进阶
 
 在[配置](configuration)中调用 `navigation()` 方法。允许你重写 Filament 自动生成的项目来创建一个自定义导航。该 API 是为了让你对导航有完全的控制权。
