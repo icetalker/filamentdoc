@@ -144,19 +144,16 @@ DatabaseNotifications::pollingInterval(null);
 
 此外，也可以本地集成 [Laravel Echo](https://laravel.com/docs/broadcasting#client-side-installation)。请确保已经安装了 Echo， 以及[服务端 websocket 集成](https://laravel.com/docs/broadcasting#server-side-installation)如 Pusher。
 
-一旦安装了 websocket，在发送数据库通知后，你可以排放 `DatabaseNotificationsSent` 事件，使用户立即获取新的通知：
+一旦设置了 websocket，你就可以通过将 `isEventDispatched` 参数设置为 `true` 来自动发送 `DatabaseNotificationsSent` 事件。这将使用户立即获取新的通知：
 
 ```php
-use Filament\Notifications\Events\DatabaseNotificationsSent;
 use Filament\Notifications\Notification;
 
 $recipient = auth()->user();
 
 Notification::make()
     ->title('Saved successfully')
-    ->sendToDatabase($recipient);
-
-event(new DatabaseNotificationsSent($recipient));
+    ->sendToDatabase($recipient, isEventDispatched: true);
 ```
 
 ## 将数据库通知标记为已读

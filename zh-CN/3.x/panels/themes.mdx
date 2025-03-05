@@ -113,6 +113,9 @@ Filament 允许你通过编译自定义样式表替换默认的样式，修改 C
 
 主题使用了 [Tailwind CSS](https://tailwindcss.com)、Tailwind Forms 插件、Tailwind Typography 插件、[PostCSS Nesting 插件](https://www.npmjs.com/package/postcss-nesting) 和 [Autoprefixer](https://github.com/postcss/autoprefixer)。
 
+> Filament v3 使用 Tailwind CSS v3 进行样式化。因此，当你创建一个主题时，你需要使用 Tailwind CSS v3。`php artisan make:filament-theme` 命令将安装 Tailwind CSS v3，如果你没有安装它。如果你使用 Tailwind CSS v4，它将不会完全安装所需的 Vite 配置来编译主题。我们建议你使用 Tailwind CLI 来编译主题，或者将项目降级到 Tailwind CSS v3。当你运行 `make:filament-theme` 命令时，它将输出编译主题所需的 Tailwind CLI 命令。你可以将此命令保存到 `package.json` 的脚本中，以便轻松使用。
+>
+> Filament v4 将支持 Tailwind CSS v4。
 要在面板中创建自定义主题，你可以使用 `php artisan make:filament-theme` 命令：
 
 ```bash
@@ -129,9 +132,9 @@ php artisan make:filament-theme admin
 
 ```bash
 php artisan make:filament-theme --pm=bun
-````
+```
 
-该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。**请遵照命令中的说明，完成安装过程**
+该命令将在 `/resources/css/filament` 目录中生成 CSS 文件及 Tailwind 配置文件。你可以编辑这些文件自定义主题。它同时说明了如何在 Filament 中编译主题并注册。**请遵照命令中的说明，完成安装过程：**
 
 ```
 ⇂ 首先，添加新项目到 `vite.config.js` 中的 `input` 数组中：`resources/css/filament/admin/theme.css`
@@ -140,6 +143,14 @@ php artisan make:filament-theme --pm=bun
 ```
 
 请参考命令以查看你需要注册的准确的文件名，它们可能不是 `admin/theme.css`。
+
+如果你已经安装了 Tailwind v4，命令输出可能如下所示：
+
+```
+⇂ It looks like you have Tailwind v4 installed. Filament uses Tailwind v3. You should downgrade your project and re-run this command with `--force`, or use the following command to compile the theme with the Tailwind v3 CLI:
+⇂ npx tailwindcss@3 --input ./resources/css/filament/admin/theme.css --output ./public/css/filament/admin/theme.css --config ./resources/css/filament/admin/tailwind.config.js --minify
+⇂ Make sure to register the theme in the admin panel provider using `->theme(asset('css/filament/admin/theme.css'))`
+```
 
 ## 禁用暗黑模式
 
@@ -172,7 +183,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## 添加 logo
+## 添加 Logo
 
 默认情况下，Filament 使用你的应用名来渲染基于文本的简单 Logo。不过你可以对此进行自定义。
 

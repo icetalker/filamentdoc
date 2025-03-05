@@ -351,6 +351,46 @@ it('can remove all table filters', function () {
 });
 ```
 
+### 隐藏过滤器
+
+要确保某个特定用户看不到过滤器，你可以使用 `assertTableFilterVisible()` 和 `assertTableFilterHidden()` 方法：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('shows the correct filters', function () {
+    livewire(PostsTable::class)
+        ->assertTableFilterVisible('created_at')
+        ->assertTableFilterHidden('author');
+```
+
+### 存在过滤器
+
+要断言某个过滤器存在，你可以使用 `assertTableFilterExists()` 方法：
+
+```php
+use function Pest\Livewire\livewire;
+
+it('has an author filter', function () {
+    livewire(PostResource\Pages\ListPosts::class)
+        ->assertTableFilterExists('author');
+});
+```
+
+你可以传入函数作为额外的参数，来断言某个过滤器通过一个给定的"真值测试"。这对于断言有特定配置的过滤器尤其有用：
+
+```php
+use function Pest\Livewire\livewire;
+use Filament\Tables\Filters\SelectFilter;
+
+it('has an author filter', function () {    
+    livewire(PostResource\Pages\ListPosts::class)
+        ->assertTableFilterExists('author', function (SelectFilter $column): bool {
+            return $column->getLabel() === 'Select author';
+        });
+});
+```
+
 ## Action
 
 ### 调用 Action
@@ -488,6 +528,28 @@ it('can load existing post data for editing', function () {
 
     expect($post->refresh())
         ->title->toBe($title);
+});
+```
+
+You may also find it useful to pass a function to the `assertTableActionDataSet()` and `assertTableBulkActionDataSet()` methods, which allow you to access the form `$state` and perform additional assertions:
+
+```php
+use Illuminate\Support\Str;
+use function Pest\Livewire\livewire;
+
+it('can automatically generate a slug from the title without any spaces', function () {
+    $post = Post::factory()->create();
+
+    livewire(PostResource\Pages\ListPosts::class)
+        ->mountTableAction(EditAction::class, $post)
+        ->assertTableActionDataSet(function (array $state) use ($post): array {
+            expect($state['slug'])
+                ->not->toContain(' ');
+                
+            return [
+                'slug' => Str::slug($post->title),
+            ];
+        });
 });
 ```
 
@@ -638,6 +700,8 @@ it('can average values in a column', function () {
 ```
 
 第一个参数为列名，第二个是汇总 ID，第三个是期望值。
+
+注意，期望值和实际值被归一化，因此，`123.12` 被视为与 `"123.12"` 相同，并且 `['Fred', 'Jim']` 与 `['Jim', 'Fred']` 相同。
 
 汇总 ID 可以通过将其传入 `make()` 方法设置：
 

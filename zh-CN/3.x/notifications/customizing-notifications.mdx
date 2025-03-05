@@ -33,11 +33,11 @@ Notifications::verticalAlignment(VerticalAlignment::End);
 use Filament\Notifications\Notification;
 
 Notification::configureUsing(function (Notification $notification): void {
-    $notification->view('filament-notifications.notification');
+    $notification->view('filament.notifications.notification');
 });
 ```
 
-接下来，新建视图文件，比如此例中的 `resources/views/notifications/notification.blade.php`。该视图应该使用该包的基础通知组件以使用通知功能，并通过 `notification` 属性传递 `$notification` 变量。本例是创建自定义通知视图的最低要求：
+接下来，新建视图文件，比如此例中的 `resources/views/filament/notifications/notification.blade.php`。该视图应该使用该包的基础通知组件以使用通知功能，并通过 `notification` 属性传递 `$notification` 变量。本例是创建自定义通知视图的最低要求：
 
 ```blade
 <x-filament-notifications::notification :notification="$notification">

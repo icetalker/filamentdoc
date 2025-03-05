@@ -96,6 +96,29 @@ protected function mutateFormDataBeforeFill(array $data): array
 
 此外，如果你想在模态框 Action 中查看记录，请查阅 [Action 文档](../../actions/prebuilt-actions/view#填充表单前自定义数据)。
 
+## 生命周期钩子
+
+钩子可用于在页面生命周期内的不同点执行代码，比如在填写表单之前。要设置钩子，请在 View 页面类上创建一个名为钩子的 `protected` 方法：
+
+```php
+use Filament\Resources\Pages\ViewRecord;
+
+class ViewUser extends ViewRecord
+{
+    // ...
+
+    protected function beforeFill(): void
+    {
+        // Runs before the disabled form fields are populated from the database. Not run on pages using an infolist.
+    }
+
+    protected function afterFill(): void
+    {
+        // Runs after the disabled form fields are populated from the database. Not run on pages using an infolist.
+    }
+}
+```
+
 ## 授权
 
 关于授权，Filament 会监听所有应用中注册的[模型策略](https://laravel.com/docs/authorization#creating-policies)。

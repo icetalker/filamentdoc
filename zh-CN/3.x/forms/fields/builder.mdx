@@ -175,6 +175,21 @@ Builder::make('content')
     ->addActionLabel('Add a new block')
 ```
 
+### 对齐添加 Action 按钮
+
+默认情况下，添加 Action 剧中对齐。你可以使用 `addActionAlignment()` 方法，传递一个 `Alignment` 选项如 `Alignment::Start` 或 `Alignment::End`，对其进行调整：
+
+```php
+use Filament\Forms\Components\Builder;
+use Filament\Support\Enums\Alignment;
+
+Builder::make('content')
+    ->schema([
+        // ...
+    ])
+    ->addActionAlignment(Alignment::Start)
+```
+
 ### 防止用户添加新项目
 
 使用 `addable(false)` 方法，你可以阻止用户添加新项目到 Builder 中：

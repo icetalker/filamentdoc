@@ -167,3 +167,27 @@ protected static ?string $pollingInterval = null;
 ```php
 protected static bool $isLazy = false;
 ```
+
+## 添加标题和描述
+
+你页可以通过重写 `$heading` 和 `$description` 属性在 Widget 上方添加标题和描述文本：
+
+```php
+protected ?string $heading = 'Analytics';
+
+protected ?string $description = 'An overview of some analytics.';
+```
+
+如果你需要动态生成标题或描述文本，你可以重写 `getHeading()` 和 `getDescription()` 方法：
+
+```php
+protected function getHeading(): ?string
+{
+    return 'Analytics';
+}
+
+protected function getDescription(): ?string
+{
+    return 'An overview of some analytics.';
+}
+```

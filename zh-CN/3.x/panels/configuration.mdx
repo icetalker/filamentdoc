@@ -117,6 +117,20 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+如果你想为 `SimplePage` 类型的页面(如登录和注册页面)设置最大内容宽度，可以使用 `simplePageMaxContentWidth()` 方法。默认值为 `Large`：
+
+```php
+use Filament\Panel;
+use Filament\Support\Enums\MaxWidth;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->simplePageMaxContentWidth(MaxWidth::Small);
+}
+```
+
 ## 生命周期钩子
 
 钩子可用于在面板的生命周期区间执行代码。`bootUsing()` 是在面板内每个请求上运行。如果你有多个面板，只有当前面板的 `bootUsing()` 会运行。该函数在所有服务提供者启动之后，在中间件中运行：
@@ -232,7 +246,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePost extends CreateRecord
 {
     protected ?bool $hasDatabaseTransactions = false;
-    
+
     // ...
 }
 ```
@@ -256,7 +270,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePost extends CreateRecord
 {
     protected ?bool $hasDatabaseTransactions = true;
-    
+
     // ...
 }
 ```
@@ -280,6 +294,8 @@ public function panel(Panel $panel): Panel
         ]);
 }
 ```
+
+要使用这些[资源(assets)](../support/assets)，你需要运行 `php artisan filament:assets`。
 
 ## 应用中间件
 

@@ -119,3 +119,28 @@ SelectFilter::make('status')
     ->default('draft')
     ->selectablePlaceholder(false)
 ```
+
+## 默认应用 Select 过滤器
+
+使用 `default()` 方法，你可以设置默认启用 Select 过滤器。l如果使用单选 Select 过滤器，`default()` 方法接受一个单一选项值。如果使用 `multiple()` 多选 Select 过滤器，`default()` 方法接受一个选项值数组：
+
+```php
+use Filament\Tables\Filters\SelectFilter;
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->default('draft')
+
+SelectFilter::make('status')
+    ->options([
+        'draft' => 'Draft',
+        'reviewing' => 'Reviewing',
+        'published' => 'Published',
+    ])
+    ->multiple()
+    ->default(['draft', 'reviewing'])
+```

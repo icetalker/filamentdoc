@@ -81,6 +81,21 @@ Repeater::make('members')
     ->addActionLabel('Add member')
 ```
 
+### 对齐添加 Action 按钮
+
+默认情况下，添加 Action 剧中对齐。你可以使用 `addActionAlignment()` 方法，传递一个 `Alignment` 选项如 `Alignment::Start` 或 `Alignment::End`，对其进行调整：
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Support\Enums\Alignment;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->addActionAlignment(Alignment::Start)
+```
+
 ### 阻止用户添加项目
 
 使用 `addable(false)` 方法，你可以阻止用户添加项目到 Repeater：
@@ -567,6 +582,23 @@ Repeater::make('members')
 
 该方法将在字段中自动启用 `distinct()` 和 `live()` 方法。
 
+假如你想要添加另一个条件来[禁用选项](../select#禁用指定选项)，你可以使用 `merge: true` 参数链式调用 `disableOptionWhen()` 方法。
+
+```php 
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+
+Repeater::make('members')
+    ->schema([
+        Select::make('role')
+            ->options([
+                // ...
+            ])
+            ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+            ->disableOptionWhen(fn (string $value): bool => $value === 'super_admin', merge: true),
+    ])
+```
+
 ## 自定义 Repeater 子项 Action 
 
 该字段使用 Action 对象，在其中对按钮进行自定义。通过传递一个函数到 action 注册方法中，可以自定义这些按钮。该函数可以访问 `$action` 对象，用于[自定义](../../actions/trigger-button)。下面是一些可以用于自定义 action 的方法：
@@ -696,7 +728,7 @@ livewire(EditPost::class, ['record' => $post])
 $undoRepeaterFake();
 ```
 
-你可能还发现，通过将函数传递到 `assertFormSet()` 方法来访问测试 Repeater 子项数量也是很有用的：
+你可能还发现，通过将函数传递到 `assertFormSet()` 方法来测试 Repeater 子项数量也是很有用的：
 
 ```php
 use Filament\Forms\Components\Repeater;
@@ -711,4 +743,24 @@ livewire(EditPost::class, ['record' => $post])
     });
 
 $undoRepeaterFake();
+```
+
+### 测试 Repeater Action
+
+为了测试 Repeater Action 如预期工作，你可以使用 `callFormComponentAction()` 方法来调用 Repeater Action，然后[执行额外的断言](../testing#actions)。
+
+要在特定的 Repeater 项目中与 Action 互动，你需要使用该 Repeater 项目的键名(key)传入 `item` 参数。如果你的 Repeater 是从关联中读取的，你应该在关联记录上使用 `record-` 前缀，来合成 Repeater 项目的键名。
+
+```php
+use App\Models\Quote;
+use Filament\Forms\Components\Repeater;
+use function Pest\Livewire\livewire;
+
+$quote = Quote::first();
+
+livewire(EditPost::class, ['record' => $post])
+    ->callFormComponentAction('quotes', 'sendQuote', arguments: [
+        'item' => "record-{$quote->getKey()}",
+    ])
+    ->assertNotified('Quote sent!');
 ```

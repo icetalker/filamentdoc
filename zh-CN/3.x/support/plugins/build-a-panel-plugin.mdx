@@ -138,7 +138,7 @@ class ClockWidget extends Widget
 
 接下来，为这个 Widget 创建视图。 创建一个新文件 `resources/views/widget.blade.php` 并添加如下代码。我们使用 Filament 的 Blade 组件来节省编写 HTML 的时间。
 
-我们使用异步 Alpine 来加载 Alpine 组件，因此我们需要将 `x-ignore` 属性添加到加载我们组件的 div。我们也需要将 `ax-load` 属性添加到该 div，用以告知 Alpine 加载我们的组件。你可以到本文档的[核心概念](/docs/3.x/support/assets#异步-alpinejs-组件)章节中了解更多相关信息。
+我们使用异步 Alpine 来加载 Alpine 组件，因此我们需要将 `x-ignore` 属性添加到加载我们组件的 div。我们也需要将 `x-load` 属性添加到该 div，用以告知 Alpine 加载我们的组件。你可以到本文档的[核心概念](/docs/3.x/support/assets#异步-alpinejs-组件)章节中了解更多相关信息。
 
 ```blade
 <x-filament-widgets::widget>
@@ -148,9 +148,8 @@ class ClockWidget extends Widget
         </h2>
 
         <div
-            x-ignore
-            ax-load
-            ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('clock-widget', 'awcodes/clock-widget') }}"
+            x-load
+            x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('clock-widget', 'awcodes/clock-widget') }}"
             x-data="clockWidget()"
             class="text-center"
         >

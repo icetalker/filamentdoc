@@ -321,13 +321,12 @@ FilamentAsset::register([
 
 当你运行 `php artisan filament:assets` 时，编译过的文件会被复制到 `/public` 目录中。
 
-最后，你可以在你的视图中使用 `ax-load` 属性及 `FilamentAsset::getAlpineComponentSrc()` 方法，加载这个异步 Alpine 组件：
+最后，你可以在你的视图中使用 `x-load` 属性及 `FilamentAsset::getAlpineComponentSrc()` 方法，加载这个异步 Alpine 组件：
 
 ```blade
 <div
-    x-ignore
-    ax-load
-    ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('test-component') }}"
+    x-load
+    x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('test-component') }}"
     x-data="testComponent({
         state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
     })"
@@ -338,7 +337,7 @@ FilamentAsset::register([
 
 上面是[自定义表单字段](../forms/fields/custom)的例子。它将 `state` 作为参数传入到 `testComponent()` 函数中，该参数与 Livewire 组件属性相关联。你可以传入任何你需要的参数，并在 `testComponent()` 函数中访问这些参数。如果你不使用自定义表单字段，你可以忽视本例中的 `state` 参数。
 
-`ax-load` 属性出自于 [异步 Alpine 包](https://async-alpine.dev/docs/strategies)，该包的其他特性也可以在此处使用。
+`x-load` 属性出自于 [异步 Alpine 包](https://async-alpine.dev/docs/strategies)，该包的其他特性也可以在此处使用。
 
 ### 注册脚本数据
 

@@ -22,9 +22,7 @@ php artisan notifications:table
 
 ```bash
 # All apps
-
 php artisan vendor:publish --tag=filament-actions-migrations
-
 php artisan migrate
 ```
 
@@ -136,6 +134,19 @@ ImportColumn::make('sku')
 ```
 
 如果数据库中的字段是必需的，你也需要确保它的验证规则有 [['required'] 验证规则](#验证-csv-数据)。
+
+如果某个字段没有映射到，它就不会进行验证，因为没有数据可供验证。
+
+如果你允许导入创建记录以及[更新记录](#导入时更新现有记录)，但在创建记录时只需要映射一列，因为这是必填字段，你可以使用 `requiredMappingForNewRecordsOnly()` 方法而不是 `requiredMapping()`；
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('sku')
+    ->requiredMappingForNewRecordsOnly()
+```
+
+如果 `resolveRecord()` 方法返回一个尚未保存在数据库中的模型实例，则需要映射该列，仅针对该行。如果用户没有映射该列，并且导入中的一行在数据库中尚不存在，则只有该行将失败，并且在分析完每一行后，将向失败的 CSV 行添加一条消息。
 
 ### 验证 CSV 数据
 
@@ -325,6 +336,19 @@ ImportColumn::make('customer_ratings')
     ->integer()
     ->rules(['array'])
     ->nestedRecursiveRules(['integer', 'min:1', 'max:5'])
+```
+
+### 将列数据标记为敏感
+
+当导入行验证失败时，它们会被记录到数据库中，以便在导入完成时导出。你可能希望从此日志记录中排除某些列，以避免以纯文本存储敏感数据。为了实现这一点，你可以在 `ImportColumn` 上使用 `sensitive()` 方法来防止其数据被日志记录：
+
+```php
+use Filament\Actions\Imports\ImportColumn;
+
+ImportColumn::make('ssn')
+    ->label('Social security number')
+    ->sensitive()
+    ->rules(['required', 'digits:9'])
 ```
 
 ### 自定义字段填入记录的方式

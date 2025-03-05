@@ -19,9 +19,9 @@ use Filament\Tables;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class ListPosts extends Component implements Tables\Contracts\HasTable // [tl! focus]
+class ListPosts extends Component implements Tables\Contracts\HasTable
 {
-    use Tables\Concerns\InteractsWithTable; // [tl! focus]
+    use Tables\Concerns\InteractsWithTable;
     
     public function render(): View
     {
@@ -55,10 +55,10 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
     
-    protected function getTableQuery(): Builder // [tl! focus:start]
+    protected function getTableQuery(): Builder
     {
         return Post::query();
-    } // [tl! focus:end]
+    }
     
     public function render(): View
     {
@@ -90,7 +90,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
         return Post::query();
     }
     
-    protected function getTableColumns(): array // [tl! focus:start]
+    protected function getTableColumns(): array
     {
         return [ // [tl! collapse:start]
             Tables\Columns\ImageColumn::make('author.avatar')
@@ -141,7 +141,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
                 })
                 ->requiresConfirmation(),
         ]; // [tl! collapse:end]
-    } // [tl! focus:end]
+    }
     
     public function render(): View
     {
@@ -184,10 +184,10 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
         ];
     }
     
-    protected function isTablePaginationEnabled(): bool // [tl! focus:start]
+    protected function isTablePaginationEnabled(): bool
     {
         return false;
-    } // [tl! focus:end]
+    }
     
     public function render(): View
     {
@@ -226,10 +226,10 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
         ];
     }
     
-    protected function getTableRecordsPerPageSelectOptions(): array // [tl! focus:start]
+    protected function getTableRecordsPerPageSelectOptions(): array
     {
         return [10, 25, 50, 100];
-    } // [tl! focus:end]
+    }
     
     public function render(): View
     {
@@ -432,7 +432,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
         ]; // [tl! collapse:end]
     }
 
-    protected function getTableEmptyStateIcon(): ?string // [tl! focus:start]
+    protected function getTableEmptyStateIcon(): ?string
     {
         return 'heroicon-o-bookmark';
     }
@@ -456,7 +456,7 @@ class ListPosts extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-o-plus')
                 ->button(),
         ];
-    } // [tl! focus:end]
+    }
 
     public function render(): View
     {

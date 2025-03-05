@@ -209,10 +209,14 @@ $dispatch('open-modal', { id: 'edit-user' })
 
 ## 隐藏模态框关闭按钮
 
-默认情况下，模态框在右上角有一个关闭按钮。你可以使用 `close-button` 属性将该关闭按钮从模态框中移除：
+默认情况下，带有标题的模态框在右上角有一个关闭按钮。你可以使用 `close-button` 属性将该关闭按钮从模态框中移除：
 
 ```blade
 <x-filament::modal :close-button="false">
+    <x-slot name="heading">
+        Modal heading
+    </x-slot>
+
     {{-- Modal content --}}
 </x-filament::modal>
 ```
@@ -227,3 +231,17 @@ $dispatch('open-modal', { id: 'edit-user' })
 </x-filament::modal>
 ```
 
+## 禁用模态框触发按钮
+
+默认情况下，即使触发器按钮被禁用，它也会打开模态框，因为点击事件监听器是在按钮本身的包裹元素上注册的。如果你想阻止模态框打开，你还应该在触发器插槽上使用 `disabled` 属性：
+
+```blade
+<x-filament::modal>
+    <x-slot name="trigger" disabled>
+        <x-filament::button :disabled="true">
+            Open modal
+        </x-filament::button>
+    </x-slot>
+    {{-- Modal content --}}
+</x-filament::modal>
+```

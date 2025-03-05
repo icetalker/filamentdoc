@@ -517,3 +517,5 @@ public static function getPages(): array
     ];
 }
 ```
+
+删除页面不会删除链接到该页面的 Action。所有 Action 将会打开模态框而不是将用户发送到不存在的页面。比如，列表页的 `CreateAction`、表格或查看页中的 `EditAction`、表格或查看页上的 `ViewAction`。如果你想移除这些按钮，你必须同时删除这些 Action。

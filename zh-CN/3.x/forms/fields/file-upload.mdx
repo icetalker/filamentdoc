@@ -64,6 +64,20 @@ class Message extends Model
 }
 ```
 
+### 控制最大并行上传数量
+
+使用 `maxParallelUploads()` 方法，你可以控制最大并行上传数量：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('attachments')
+    ->multiple()
+    ->maxParallelUploads(1)
+```
+
+这将会将并行上传数量限制为 `1`。如果未设置，我们将使用[FilePond 的默认值](https://pqina.nl/filepond/docs/api/instance/properties/#core-properties)，该值是 `2`。
+
 ## 控制文件名
 
 默认情况下，新上传的文件会生成随机文件名。这是为了确保不会和现有的文件产生冲突。
@@ -439,6 +453,23 @@ use Filament\Forms\Components\FileUpload;
 FileUpload::make('image')
     ->image()
 ```
+#### 自定义 MIME type 映射
+
+上传文件时，有些文件格式可能无法被浏览器正确识别。使用 `mimeTypeMap()` 方法，Filament 允许你为特定文件后缀手动定义 MIME 类型：
+
+```php
+use Filament\Forms\Components\FileUpload;
+
+FileUpload::make('designs')
+    ->acceptedFileTypes([
+        'x-world/x-3dmf',
+        'application/vnd.sketchup.skp',
+    ])
+    ->mimeTypeMap([
+        '3dm' => 'x-world/x-3dmf',
+        'skp' => 'application/vnd.sketchup.skp',
+    ]);
+```
 
 ### 文件大小验证
 
@@ -450,6 +481,33 @@ use Filament\Forms\Components\FileUpload;
 FileUpload::make('attachment')
     ->minSize(512)
     ->maxSize(1024)
+```
+
+#### 上传大文件
+
+如果你在上传大文件时遇到问题，例如 HTTP 请求失败，浏览器控制台中的响应状态为 422，你可能需要调整配置。
+
+在服务器的 `php.ini` 文件中，提高最大文件大小可能可以解决问题：
+
+```ini
+post_max_size = 120M
+upload_max_filesize = 120M
+```
+
+Livewire 也会在验证前验证文件大小。要发布 Livewire 配置文件，请运行
+
+```bash
+php artisan livewire:publish --config
+```
+
+可以在 [`temporary_file_upload` 的 `rules` 键中调整最大上传大小]((https://livewire.laravel.com/docs/uploads#global-validation))。下例规则中使用了 KB，120 MB 为 122880 KB：
+
+```php
+'temporary_file_upload' => [
+    // ...
+    'rules' => ['required', 'file', 'max:122880'],
+    // ...
+],
 ```
 
 ### 文件数量验证

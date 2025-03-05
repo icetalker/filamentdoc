@@ -35,3 +35,26 @@ ColorPicker::make('rgb_color')
 ColorPicker::make('rgba_color')
     ->rgba()
 ```
+
+## 拾色器验证
+
+你可以使用 Laravel 的验证规则对拾色器的值进行验证：
+
+```php
+use Filament\Forms\Components\ColorPicker;
+
+ColorPicker::make('hex_color')
+    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+
+ColorPicker::make('hsl_color')
+    ->hsl()
+    ->regex('/^hsl\(\s*(\d+)\s*,\s*(\d*(?:\.\d+)?%)\s*,\s*(\d*(?:\.\d+)?%)\)$/')
+
+ColorPicker::make('rgb_color')
+    ->rgb()
+    ->regex('/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/')
+
+ColorPicker::make('rgba_color')
+    ->rgba()
+    ->regex('/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)$/')
+```

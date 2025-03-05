@@ -17,6 +17,16 @@ RichEditor::make('content')
 
 <AutoScreenshot name="forms/fields/rich-editor/simple" alt="Rich editor" version="3.x" />
 
+## 安全
+
+默认情况下，该编辑器输出原始HTML，并将其发送到后端。攻击者能够拦截组件的值，并将不同的原始 HTML 字符串发送到后端。因此，从富文本编辑器输出 HTML 时，对其进行净化非常重要；否则，你的网站可能会暴露于跨站点脚本(XSS)漏洞。
+
+当 Filament 在 `TextColumn` 和 `TextEntry` 等组件中从数据库输出原始 HTML 时，它会对其进行净化，以删除任何危险的 JavaScript。但是，如果你在自己的 Blade 视图中输出来自富文本编辑器的 HTML，这是你的责任。一种选择是使用 Filament 的`sanctizeHtml()` 助手函数来执行此操作，这与我们在上述组件中用于净化 HTML 的工具相同：
+
+```blade
+{!! str($record->content)->sanitizeHtml() !!}
+```
+
 ## 自定义工具栏按钮
 
 使用 `toolbarButtons()` 方法，你可以设置编辑器的工具栏按钮。此例中的选项为默认值。此外，`'h1'` 也可用:
@@ -68,4 +78,15 @@ RichEditor::make('content')
     ->fileAttachmentsDisk('s3')
     ->fileAttachmentsDirectory('attachments')
     ->fileAttachmentsVisibility('private')
+```
+
+## 禁用语法检查
+
+如果用户安装了 Grammarly，而你想阻止它分析编辑器的内容，你可以使用 `disableGrammarly()` 方法：
+
+```php
+use Filament\Forms\Components\RichEditor;
+
+RichEditor::make('content')
+    ->disableGrammarly()
 ```

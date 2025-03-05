@@ -82,10 +82,10 @@ Grid::make([
 - `columnStart(['md' => 2, 'xl' => 4])` 使得组件在中等设备中起始于第 2 列，并在超大设备中起始于第 4 列。小型设备默认临界点使用 1 列，除非你使用了 `default` 数组键。
 
 ```php
-use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
 
-Section::make()
+Grid::make()
     ->columns([
         'sm' => 3,
         'xl' => 6,

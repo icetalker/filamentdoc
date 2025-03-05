@@ -340,13 +340,13 @@ use Filament\Forms\Set;
 use Illuminate\Support\Str;
 
 TextInput::make('title')
-    ->live()
+    ->live(onBlur: true)
     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
     
 TextInput::make('slug')
 ```
 
-本例中，`title` 字段是 [`live()`](#字段动态响应基础) 实时更新的。这允许在 `title` 字段值修改时，重新渲染表单。 `afterStateUpdated()` 方法用于在 `title` 字段状态更新后运行函数。该函数注入 [`$set()`](#注入函数设置另一个字段的状态)和 `title` 字段的新状态。`Str::slug()` 方法是 Laravel 的一部分，它用于从字符串中生成 slug。然后使用 `$set()` 函数更新 `slug` 字段。
+本例中，`title` 字段是 [`live(onBlur: true)`](#动态响应字段失焦) 实时更新的。这允许在 `title` 字段值修改时，重新渲染表单。 `afterStateUpdated()` 方法用于在 `title` 字段状态更新后运行函数。该函数注入 [`$set()`](#注入函数设置另一个字段的状态) 和 `title` 字段的新状态。`Str::slug()` 方法是 Laravel 的一部分，它用于从字符串中生成 slug。然后使用 `$set()` 函数更新 `slug` 字段。
 
 有一件需要注意的事情是，用户可能会手动自定义 slug，我们不想在标题修改时重写它们的更改。要阻止此，我们可以使用标题生成的老版本 slug 来计算用户是否对其做了修改。要访问老版本，你可以注入 `$old` 并获取修改前 slug 的当前值，我们可以使用 [`$get()`](#注入另一个字段的状态):
 
@@ -357,7 +357,7 @@ use Filament\Forms\Set;
 use Illuminate\Support\Str;
 
 TextInput::make('title')
-    ->live()
+    ->live(onBlur: true)
     ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
         if (($get('slug') ?? '') !== Str::slug($old)) {
             return;

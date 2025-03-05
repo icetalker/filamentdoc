@@ -296,7 +296,7 @@ public static function isTenantSubscriptionRequired(Panel $panel): bool
 
 ### 编写自定义账单集成
 
-账单集成很容易编写。你只需实现 `Filament\Billing\Contracts\Provider` 接口。该接口有两个方法。
+账单集成很容易编写。你只需实现 `Filament\Billing\Providers\Contracts\Provider` 接口。该接口有两个方法。
 
 `getRouteAction` 用在获取用户访问账单页面时需要运行的路由动作。它可以是回调函数、或者控制器名、或者 Livewire 组件 - 任何当使用 `Route::get()` 时可以正常工作的行为。比如，你可以使用回调函数重定向到账单页面。
 
@@ -306,7 +306,7 @@ public static function isTenantSubscriptionRequired(Panel $panel): bool
 
 ```php
 use App\Http\Middleware\RedirectIfUserNotSubscribed;
-use Filament\Billing\Contracts\Provider;
+use Filament\Billing\Providers\Contracts\Provider;
 use Illuminate\Http\RedirectResponse;
 
 class ExampleBillingProvider implements Provider

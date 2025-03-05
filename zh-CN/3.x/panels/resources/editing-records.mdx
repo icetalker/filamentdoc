@@ -307,7 +307,7 @@ class EditUser extends EditRecord
 
 ### 添加保存 Action 按钮到头部
 
-通过重写 `getHeaderActions()` 并使用 `getSaveFormAction()`，可以将保存按钮移动到页面的头部。你需要将 `formId()` 传递给该 Action，以指定该 Action 要提交的表单对应的 `form` 的 ID，也就是页面视图中使用的 `<form>` ID：
+通过重写 `getHeaderActions()` 并使用 `getSaveFormAction()`，可以将"保存"按钮添加页面的头部。你需要将 `formId()` 传递给该 Action，以指定该 Action 要提交的表单对应的 `form` 的 ID，也就是页面视图中使用的 `<form>` ID：
 
 ```php
 protected function getHeaderActions(): array

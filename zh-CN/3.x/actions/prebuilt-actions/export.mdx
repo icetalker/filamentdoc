@@ -348,6 +348,17 @@ ExportAction::make()
     ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
 ```
 
+你也可以将 `$options` 参数注入到函数中，它是该导出的[选项](#导出选项)数组：
+
+```php
+use App\Filament\Exports\ProductExporter;
+use Illuminate\Database\Eloquent\Builder;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->modifyQueryUsing(fn (Builder $query, array $options) => $query->where('is_active', $options['isActive'] ?? true))
+```
+
 此外，你可以重写 Exporter 类的 `modifyQuery()` 方法，该方法将修改使用该 Exporter 的所有 Action 的查询构造器：
 
 ```php
@@ -370,7 +381,11 @@ public static function modifyQuery(Builder $query): Builder
 
 ### 自定义存储磁盘
 
-默认情况下，导出文件将会被上传到[配置文件](../installation#发布配置)定义的存储磁盘中。你也可以设置 `FILAMENT_FILESYSTEM_DISK` 环境变量对此进行修改。
+默认情况下，导出文件将会被上传到[配置文件](../installation#发布配置)定义的存储磁盘中。默认为 `public`。你也可以设置 `FILAMENT_FILESYSTEM_DISK` 环境变量对此进行修改。
+
+虽然使用 `public` 磁盘是 Filament 许多部分的良好默认设置，但将其用于导出会导致导出的文件存储在公共位置。因此，如果默认的文件系统磁盘是 `public` ，并且你的 `config/filesystems.php` 文件中存在 `local` 磁盘，Filament 将使用 `local` 盘进行导出。如果你为 `ExportAction` 或在 Exporter 类中将磁盘重写为 `public`，Filament 将使用该磁盘。
+
+在生产中，你应该使用具有私有访问策略的磁盘，如 `s3`，以防止未经授权访问导出文件。
 
 如果你想为指定导出使用不同磁盘，你可以传递磁盘名称到该 Action 的 `disk()` 方法中：
 
@@ -378,6 +393,14 @@ public static function modifyQuery(Builder $query): Builder
 ExportAction::make()
     ->exporter(ProductExporter::class)
     ->fileDisk('s3')
+```
+
+你可以在服务提供者(如 `AppServiceProvider`)的 `boot()` 方法中一次性为私有导出 Action 设置磁盘：
+
+```php
+use Filament\Actions\ExportAction;
+
+ExportAction::configureUsing(fn (ExportAction $action) => $action->fileDisk('s3'));
 ```
 
 此外，你也可以重写导出类的 `getFileDisk()` 方法，使之返回磁盘名：
@@ -388,6 +411,8 @@ public function getFileDisk(): string
     return 's3';
 }
 ```
+
+如果开发者愿意，他们有责任删除创建的导出文件。Filament 不会删除这些文件，以防之后需要再次下载导出。
 
 ### 配置导出文件名
 

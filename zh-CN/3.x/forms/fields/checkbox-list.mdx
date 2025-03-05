@@ -38,6 +38,26 @@ class App extends Model
 }
 ```
 
+## 在选项标签中允许 HTML
+
+默认情况下，Filament 将在选项标签中转义 HTML。如果你想允许使用 HTML，可以使用 `allowHtml()`：
+
+```php
+use Filament\Forms\Components\CheckboxList;
+
+CheckboxList::make('technology')
+    ->options([
+        'tailwind' => '<span class="text-blue-500">Tailwind</span>',
+        'alpine' => '<span class="text-green-500">Alpine</span>',
+        'laravel' => '<span class="text-red-500">Laravel</span>',
+        'livewire' => '<span class="text-pink-500">Livewire</span>',
+    ])
+    ->searchable()
+    ->allowHtml()
+```
+
+请注意，你需要确保 HTML 的渲染是安全的，否则你的应用将容易受到 XSS 攻击。
+
 ## 设置选项描述
 
 使用 `descriptions()` 方法，你可以选择为每个选项提供描述。该方法接收一个普通文本字符串，或者 `Illuminate\Support\HtmlString` 和 `Illuminate\Contracts\Support\Htmlable` 实例。这就允许你在描述中渲染 HTML 甚至 Markdown 文本：

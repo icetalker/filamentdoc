@@ -24,7 +24,7 @@ composer require filament/filament:"^3.2" -W
 php artisan filament:install --panels
 ```
 
-这段命令将会创建并注册一个新的 [Laravel 服务提供者](https://laravel.com/docs/providers)，叫做 `app\Providers\Filament\AdminPanelProvider`.
+这段命令将会创建并注册一个新的 [Laravel 服务提供者](https://laravel.com/docs/providers)，叫做 `app\Providers\Filament\AdminPanelProvider`。
 
 > 如果访问面板时出错，请检查该服务提供者有没有在 `bootstrap/providers.php` (Laravel 11 及以上版本)或 `config/app.php` (Laravel 10 及以下版本) 中注册。如果没有，你应该手动添加。
 
@@ -90,7 +90,7 @@ php artisan filament:optimize-clear
 
 ### 允许用户访问面板
 
-默认情况下，所有的 `App\Models\User` 在本地下都可以访问 Filament。要允许用户在生成环境中访问，你还需要采取一些额外的措施来确保只有授权的用户可以访问该应用。
+默认情况下，所有的 `App\Models\User` 在本地下都可以访问 Filament。不过，当部署到生产环境或运行单元测试时，你需要更新 `App\Models\User.php` 使其实现 `FilamentUser` 契约，以确保只有正确的用户可以访问你的面板：
 
 ```php
 <?php
@@ -115,6 +115,13 @@ class User extends Authenticatable implements FilamentUser
 > 如果你没有完成这些步骤，当你在生产环境中试图访问应用时，会出现 403 错误。
 
 了解更多[用户](users)相关信息。
+
+### 用于生产的存储磁盘
+
+Filament 在[配置](#发布配置)中定义了一个存储磁盘，默认为 `public`。你可以设置 `FILAMENT_FILESSYSTEM_DISK` 环境变量来更改此设置。
+
+`public` 磁盘虽然便于本地开发，但不适合生产。它不支持文件可见性设置，因此 Filament 的功能，如[文件上传](../forms/fields/file-upload)，将创建公开文件。在生产环境中，你需要使用具有私有访问策略的磁盘，如 `s3`，以防止对上传文件的未经授权的访问。
+
 
 ## 发布配置
 

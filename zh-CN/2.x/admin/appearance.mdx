@@ -89,29 +89,29 @@ npm install tailwindcss @tailwindcss/forms @tailwindcss/typography autoprefixer 
 在 `tailwind.config.js` 中，注册你安装好的插件，添加表单构造器使用的自定义颜色：
 
 ```js
-import colors from 'tailwindcss/colors' // [tl! focus:start]
+import colors from 'tailwindcss/colors' 
 import forms from '@tailwindcss/forms'
-import typography from '@tailwindcss/typography' // [tl! focus:end]
+import typography from '@tailwindcss/typography' 
 
 export default {
     content: [
         './resources/**/*.blade.php',
-        './vendor/filament/**/*.blade.php', // [tl! focus]
+        './vendor/filament/**/*.blade.php', 
     ],
     darkMode: 'class',
     theme: {
         extend: {
-            colors: { // [tl! focus:start]
+            colors: { 
                 danger: colors.rose,
                 primary: colors.blue,
                 success: colors.green,
                 warning: colors.yellow,
-            }, // [tl! focus:end]
+            }, 
         },
     },
     plugins: [
-        forms, // [tl! focus:start]
-        typography, // [tl! focus:end]
+        forms, 
+        typography, 
     ],
 }
 ```
@@ -154,7 +154,7 @@ export default {
 const mix = require('laravel-mix')
 
 mix.postCss('resources/css/filament.css', 'public/css', [
-    require('tailwindcss'), // [tl! focus]
+    require('tailwindcss'), 
 ])
 ```
 
